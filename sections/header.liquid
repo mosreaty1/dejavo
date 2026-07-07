@@ -163,7 +163,13 @@
 						/>
 					{%- endif -%}
 				{%- else -%}
-					{{ shop.name }}
+					<img
+						src="{{ 'prestige-logo.png' | asset_url }}"
+						alt="{{ shop.name }}"
+						class="header__heading-logo"
+						width="{{ logo_width }}"
+						height="{{ logo_width | divided_by: 1.5 | round: 0 }}"
+					/>
 				{%- endif -%}
 			</a>
 			{%- if request.page_type == 'index' -%}
