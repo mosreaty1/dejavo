@@ -1,0 +1,356 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Trend products new
+	- section: object (required, object)
+
+	{% render 'trend-products-new', section: section %}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{{ 'trend-products-new.build.css' | asset_url | stylesheet_tag }}
+
+{% assign label 			= section.settings.label %}
+{% assign title 			= section.settings.title %}
+{% assign show_one_open 	= section.settings.show_one_open %}
+{% assign aspect_ratio 		= section.settings.aspect_ratio %}
+{% assign hotspot_background 	= section.settings.hotspot_background %}
+{% assign hotspot_color 		= section.settings.hotspot_color %}
+{% assign full_width 		= section.settings.full_width %}
+{% assign blocks 			= section.blocks %}
+
+{%- capture styles -%}
+	--hotspot-background: {{- hotspot_background -}};
+	--hotspot-color: {{- hotspot_color -}};
+{%- endcapture -%}
+
+<section class="trend-products-new js-trend-products-section{% if full_width %} trend-products-new--full-width{% endif %} js-animate {% if request.visual_preview_mode or section.index == 1 %} animated{% endif %}"
+		 style="{{- styles -}}"
+>
+	{% if label != blank or title != blank %}
+		<div class="trend-products-new__header need-animate">
+			{% if label != blank %}
+				<div class="trend-products-new__label subheading">{{ label }}</div>
+			{% endif %}
+
+			{% if title != blank %}
+				<h2 class="trend-products-new__title h2">{{ title }}</h2>
+			{% endif %}
+		</div>
+	{% endif %}
+
+	{% if blocks.size > 0 %}
+		<div class="trend-products-new__slider{% if section.blocks.size > 1 %} swiper js-trend-products-slider{% endif %}">
+			<div class="trend-products-new__row{% if section.blocks.size > 1 %} swiper-wrapper{% endif %}">
+				{% assign delay_step = 0 %}
+
+				{% for block in blocks %}
+					{% assign image   		= block.settings.image %}
+					{% assign is_lazy 		= true %}
+					{% assign delay_step 	= delay_step | plus: 0.4 %}
+
+					{% if section.index == 1 and forloop.index == 1 %}
+						{% assign is_lazy = false %}
+					{% endif %}
+
+					<div class="trend-product-new trend-products-new__col swiper-slide need-animate"
+						 style="transition-delay: {{ delay_step }}s;"
+					>
+						<div class="trend-product-new__image-wrapper{% if section.blocks.size == forloop.index and forloop.index > 1 %} trend-product-new__image-wrapper--last{% elsif forloop.index == 1 %} trend-product-new__image-wrapper--first{% endif %}{% if aspect_ratio == 'square' %} trend-product-new__image-wrapper--{{ aspect_ratio }}{% endif %}">
+							{% if image != blank %}
+								{% assign size_width 		= 470 %}
+								{% assign size_height 		= 634 %}
+								{% assign size_width_2x 	= size_width | times: 2 %}
+								{% assign size_height_2x 	= size_height | times: 2 %}
+
+								{% assign size_width_1500 		= 440 %}
+								{% assign size_height_1500 		= 594 %}
+								{% assign size_width_1500_2x 	= size_width_1500 | times: 2 %}
+								{% assign size_height_1500_2x 	= size_height_1500 | times: 2 %}
+
+								{% assign size_width_991 		= 314 %}
+								{% assign size_height_991 		= 424 %}
+								{% assign size_width_991_2x 	= size_width_991 | times: 2 %}
+								{% assign size_height_991_2x 	= size_height_991 | times: 2 %}
+
+								{% assign size_width_767 		= 735 %}
+								{% assign size_height_767 		= 992 %}
+								{% assign size_width_767_2x 	= size_width_767 | times: 2 %}
+								{% assign size_height_767_2x 	= size_height_767 | times: 2 %}
+
+								{% assign size_width_420 		= 388 %}
+								{% assign size_height_420 		= 524 %}
+								{% assign size_width_420_2x 	= size_width_420 | times: 2 %}
+								{% assign size_height_420_2x 	= size_height_420 | times: 2 %}
+
+								{% assign size_width_375 		= 343 %}
+								{% assign size_height_375 		= 463 %}
+								{% assign size_width_375_2x 	= size_width_375 | times: 2 %}
+								{% assign size_height_375_2x 	= size_height_375 | times: 2 %}
+
+								{% if aspect_ratio == 'square' %}
+									{% assign size_height 		= size_width %}
+									{% assign size_height_2x 	= size_height | times: 2 %}
+
+									{% assign size_height_1500 		= size_width_1500 %}
+									{% assign size_height_1500_2x 	= size_height_1500 | times: 2 %}
+
+									{% assign size_height_991 		= size_width_991 %}
+									{% assign size_height_991_2x 	= size_height_991 | times: 2 %}
+
+									{% assign size_height_767 		= size_width_767 %}
+									{% assign size_height_767_2x 	= size_height_767 | times: 2 %}
+
+									{% assign size_height_420 		= size_width_420 %}
+									{% assign size_height_420_2x 	= size_height_420 | times: 2 %}
+
+									{% assign size_height_375 		= size_width_375 %}
+									{% assign size_height_375_2x 	= size_height_375 | times: 2 %}
+								{% endif %}
+
+								{%- capture img_focal -%}
+									--img-desktop-pos: {{ image.presentation.focal_point }};
+								{%- endcapture -%}
+
+								<picture class="{% if is_lazy %}lazy{% endif %}">
+									<source
+										{% if is_lazy %}
+											data-srcset="{{ image | image_url: width: size_width_375, height: size_height_375 }} 1x,
+															 {{ image | image_url: width: size_width_375_2x, height: size_height_375_2x }} 2x"
+											srcset="{{ image | image_url: width: 10, height: 10 }}"
+										{% else %}
+											srcset="{{ image | image_url: width: size_width_375, height: size_height_375 }} 1x,
+														{{ image | image_url: width: size_width_375_2x, height: size_height_375_2x }} 2x"
+										{% endif %}
+										media="(max-width: 375px)"
+										width="{{ size_width_375 }}"
+										height="{{ size_height_375 }}"
+									>
+
+									<source
+										{% if is_lazy %}
+											data-srcset="{{ image | image_url: width: size_width_420, height: size_height_420 }} 1x,
+															 {{ image | image_url: width: size_width_420_2x, height: size_height_420_2x }} 2x"
+											srcset="{{ image | image_url: width: 10, height: 10 }}"
+										{% else %}
+											srcset="{{ image | image_url: width: size_width_420, height: size_height_420 }} 1x,
+														{{ image | image_url: width: size_width_420_2x, height: size_height_420_2x }} 2x"
+										{% endif %}
+										media="(max-width: 420px)"
+										width="{{ size_width_420 }}"
+										height="{{ size_height_420 }}"
+									>
+
+									<source
+										{% if is_lazy %}
+											data-srcset="{{ image | image_url: width: size_width_767, height: size_height_767 }} 1x,
+															 {{ image | image_url: width: size_width_767_2x, height: size_height_767_2x }} 2x"
+											srcset="{{ image | image_url: width: 10, height: 10 }}"
+										{% else %}
+											srcset="{{ image | image_url: width: size_width_767, height: size_height_767 }} 1x,
+														{{ image | image_url: width: size_width_767_2x, height: size_height_767_2x }} 2x"
+										{% endif %}
+										media="(max-width: 767px)"
+										width="{{ size_width_767 }}"
+										height="{{ size_height_767 }}"
+									>
+
+									<source
+										{% if is_lazy %}
+											data-srcset="{{ image | image_url: width: size_width_991, height: size_height_991 }} 1x,
+															 {{ image | image_url: width: size_width_991_2x, height: size_height_991_2x }} 2x"
+											srcset="{{ image | image_url: width: 10, height: 10 }}"
+										{% else %}
+											srcset="{{ image | image_url: width: size_width_991, height: size_height_991 }} 1x,
+														{{ image | image_url: width: size_width_991_2x, height: size_height_49912x }} 2x"
+										{% endif %}
+										media="(max-width: 991px)"
+										width="{{ size_width_991 }}"
+										height="{{ size_height_991 }}"
+									>
+
+									<source
+										{% if is_lazy %}
+											data-srcset="{{ image | image_url: width: size_width_1500, height: size_height_1500 }} 1x,
+															 {{ image | image_url: width: size_width_1500_2x, height: size_height_1500_2x }} 2x"
+											srcset="{{ image | image_url: width: 10, height: 10 }}"
+										{% else %}
+											srcset="{{ image | image_url: width: size_width_1500, height: size_height_1500 }} 1x,
+														{{ image | image_url: width: size_width_1500_2x, height: size_height_1500_2x }} 2x"
+										{% endif %}
+										media="(max-width: 1500px)"
+										width="{{ size_width_1500 }}"
+										height="{{ size_height_1500 }}"
+									>
+
+									<img class="trend-product-new__image"
+										{% if is_lazy %}
+											src="{{ image | image_url: width: 10, height: 10 }}"
+											data-src="{{ image | image_url: width: size_width, height: size_height }}"
+											data-srcset="{{ image | image_url: width: size_width, height: size_height }} 1x,
+															 {{ image | image_url: width: size_width_2x, height: size_height_2x }} 2x"
+										{% else %}
+											src="{{ image | image_url: width: size_width, height: size_height }}"
+											srcset="{{ image | image_url: width: size_width, height: size_height }} 1x,
+														{{ image | image_url: width: size_width_2x, height: size_height_2x }} 2x"
+										{% endif %}
+										 style="{{ img_focal }}"
+										 alt="{{ image.alt | escape }}"
+										 width="{{ size_width }}"
+										 height="{{ size_height }}"
+									>
+								</picture>
+							{% else %}
+								{%- assign placeholer_svg_name = 'product-' | append: forloop.index -%}
+
+								{{- placeholer_svg_name | placeholder_svg_tag: 'trend-product-new__image trend-product-new__image--placeholder' -}}
+							{% endif %}
+						</div>
+
+						{% for i in (1..3) %}
+							{% assign product_key = "product_" | append: i %}
+							{% assign product_image_key = "product_image_" | append: i %}
+							{% assign horizontal_spot_key = "horizontal_position_" | append: i %}
+							{% assign vertical_spot_key = "vertical_position_" | append: i %}
+
+							{% assign product = block.settings[product_key] %}
+							{% assign product_image = block.settings[product_image_key] | default: product.featured_image %}
+							{% assign y_pos = block.settings[vertical_spot_key] %}
+							{% assign x_pos = block.settings[horizontal_spot_key] %}
+
+							{% assign use_placeholder = false %}
+
+							{% if block.settings.product_1 == nill and block.settings.product_2 == nill and block.settings.product_3 == nill %}
+								{% assign use_placeholder = true %}
+							{% endif %}
+
+							{%- capture popup_class -%}
+								{%- if y_pos >= 50 -%}
+									trend-product-new__popup--top
+								{%- else -%}
+									trend-product-new__popup--bottom
+								{%- endif -%}
+
+								{% if forloop.parentloop.last %} trend-product-new__popup--left{% else %} trend-product-new__popup--right{% endif %}
+							{%- endcapture -%}
+
+							{% if product != blank %}
+								<div class="trend-product-new__spot {{ use_placeholder }}" style="--y-pos: {{ y_pos }}%; --x-pos: {{ x_pos }}%;">
+									<button class="trend-product-new__spot-button focus-visible-outline js-trend-products-spot {% if forloop.parentloop.first and i == 1 and show_one_open %}is-active{% endif %}"
+											data-target="{{ section.id }}-{{ forloop.parentloop.index }}-{{ forloop.index }}"
+											aria-label="{{ 'sections.trend_products.open_popup' | t: title: product.title | escape  }}"
+											aria-expanded="{% if forloop.parentloop.first and i == 1 and show_one_open %}true{% else %}false{% endif %}"
+											aria-controls="{{ section.id }}-{{ forloop.parentloop.index }}-{{ forloop.index }}"
+									>
+											<span class="trend-product-new__spot-plus">
+												{%- render 'icons-new', icon: 'close' -%}
+											</span>
+									</button>
+
+									<div id="{{ section.id }}-{{ forloop.parentloop.index }}-{{ forloop.index }}"
+										 class="trend-product-new__popup {{ popup_class }} js-trend-product-popup {% if forloop.parentloop.first and i == 1 and show_one_open %}need-animate is-active{% endif %}"
+									>
+										{% if product_image != blank %}
+											<a href="{{ product.url }}" class="trend-product-new__popup-image-wrapper focus-visible-outline">
+												<picture class="lazy">
+													<source
+														data-src="{{ product_image | image_url: width: 102 }}"
+														data-srcset="{{ product_image | image_url: width: 102 }} 1x,
+																		  {{ product_image | image_url: width: 204 }} 2x"
+														media="(max-width: 767px)"
+													>
+
+													<img class="trend-product-new__popup-image"
+														 src="{{ product_image | image_url: width: 10 }}"
+														 data-src="{{ product_image | image_url: width: 94 }}"
+														 data-srcset="{{ product_image | image_url: width: 94 }} 1x,
+																		  {{ product_image | image_url: width: 188 }} 2x"
+														 alt="{{ product_image.alt | escape }}"
+													>
+												</picture>
+											</a>
+										{% endif %}
+
+										<div class="trend-product-new__popup-content">
+											<a href="{{ product.url }}"
+											   class="trend-product-new__popup-title focus-visible-outline"
+											>
+												{{- product.title -}}
+											</a>
+
+											<div class="trend-product-new__popup-price">
+												{% render 'price', product: product %}
+											</div>
+
+											<button
+												class="trend-product-new__popup-button focus-visible-outline js-add-to-cart"
+												type="button"
+												data-product-handle="{{- product.handle -}}"
+												data-min-quantity="{{- product.selected_or_first_available_variant.quantity_rule.min -}}"
+												{% if product.template_suffix == 'pre-order' %}
+													data-preorder
+												{% endif %}
+												{% if product.has_only_default_variant or product.variants.size == 1 %}
+													data-variant-id="{{- product.variants[0].id -}}"
+												{% endif %}
+												{% unless product.available %}
+													disabled
+												{% endunless %}
+											>
+												{% render 'icons-new', icon: 'cart-3' %}
+											</button>
+										</div>
+									</div>
+								</div>
+							{% elsif use_placeholder %}
+								<div class="trend-product-new__spot {{ use_placeholder }}" style="--y-pos: {{ y_pos }}%; --x-pos: {{ x_pos }}%;">
+									<button class="trend-product-new__spot-button focus-visible-outline js-trend-products-spot {% if forloop.parentloop.first and i == 1 and show_one_open %}is-active{% endif %}"
+											data-target="{{ section.id }}-{{ forloop.parentloop.index }}-{{ forloop.index }}"
+											aria-label="{{ 'sections.trend_products.open_popup' | t: title: product.title | escape  }}"
+											aria-expanded="{% if forloop.parentloop.first and i == 1 and show_one_open %}true{% else %}false{% endif %}"
+											aria-controls="{{ section.id }}-{{ forloop.parentloop.index }}-{{ forloop.index }}"
+									>
+											<span class="trend-product-new__spot-plus">
+												{%- render 'icons-new', icon: 'close' -%}
+											</span>
+									</button>
+
+									<div id="{{ section.id }}-{{ forloop.parentloop.index }}-{{ forloop.index }}"
+										 class="trend-product-new__popup {{ popup_class }} js-trend-product-popup js-animate {% if forloop.parentloop.first and i == 1 and show_one_open %}is-active{% endif %}"
+									>
+										{%- assign placeholer_svg_name = 'product-' | append: forloop.index -%}
+
+										<div class="trend-product-new__popup-image-wrapper">
+											{{- placeholer_svg_name | placeholder_svg_tag: 'trend-product-new__popup-image' -}}
+										</div>
+
+										<div class="trend-product-new__popup-content">
+											<p class="trend-product-new__popup-title">
+												{{- 'products.product_card.product_title' | t -}}
+											</p>
+
+											<div class="trend-product-new__popup-price">
+												{% render 'price', product: product %}
+											</div>
+
+											<button class="trend-product-new__popup-button focus-visible-outline js-add-to-cart"
+													data-min-quantity="{{- product.selected_or_first_available_variant.quantity_rule.min -}}"
+													type="button"
+													disabled
+											>
+												{% render 'icons-new', icon: 'cart-3' %}
+											</button>
+										</div>
+									</div>
+								</div>
+							{% endif %}
+						{% endfor %}
+					</div>
+				{% endfor %}
+			</div>
+
+			{% if section.blocks.size > 1 %}
+				<div class="trend-products-new__pagination js-trend-products-slider-pagination"></div>
+			{% endif %}
+		</div>
+	{% endif %}
+</section>

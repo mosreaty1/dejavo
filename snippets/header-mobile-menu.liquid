@@ -1,0 +1,274 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Header menu
+	Render header menu
+	- menu: Menu object (required)
+	- is_show_language_selector: condition for render localization snippet.
+
+	Usage:
+	{%- render 'header-mobile-menu', menu: menu, is_show_language_selector: is_show_language_selector -%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign design = settings.design -%}
+
+<div
+	id="headerDrawerMenu"
+	class="drawer drawer--left {% if design == 'alternate' %}header-mobile-new{% else %}header-mobile{%- endif -%}"
+	data-menu-type="main"
+	role="dialog"
+	aria-labelledby="headerDrawerMenuTitle"
+>
+	<p class="is-hidden" id="headerDrawerMenuTitle">
+		{{- "layout.navigation.drawer_menu" | t | escape -}}
+	</p>
+
+	<nav class="drawer__body header-mobile__menu js-mobile-header-main-menu" aria-label="{{ "layout.navigation.drawer_menu" | t | escape }}">
+		<div class="header-mobile__menu-close-button-wrapper">
+			<button
+				class="header-mobile__menu-close-button js-header-drawer-close-button"
+				type="button"
+				aria-expanded="false"
+				aria-controls="headerDrawerMenu"
+				aria-label="{{- "layout.navigation.close_drawer_menu" | t | escape -}}"
+			>
+				{%- if design == 'alternate' -%}
+					{%- render "icons-new", icon: "close" -%}
+				{%- else -%}
+					{%- render 'icons-small', icon: 'close' -%}
+				{%- endif -%}
+			</button>
+		</div>
+
+		<ul class="header-mobile__menu-list">
+			{%- for first_level_link in menu.links -%}
+				{%- assign has_megamenu = false -%}
+				{%- assign megamenu_object = "" -%}
+
+				{%- for block in blocks -%}
+					{%- assign menu_handle = block.settings.menu_handle -%}
+
+					{%- if first_level_link.handle == menu_handle -%}
+						{%- assign has_megamenu = true -%}
+						{%- assign megamenu_object = block -%}
+
+						{%- break -%}
+					{%- endif -%}
+				{%- endfor -%}
+
+				<li>
+					{%- if first_level_link.links != blank or has_megamenu == true -%}
+						<button
+							class="header-mobile__menu-item js-mobile-header-menu-toggler"
+							type="button"
+							data-target="headerMobileMenu:{{- first_level_link.title | handleize -}}"
+							aria-controls="headerMobileMenu:{{- first_level_link.title | handleize -}}"
+							aria-expanded="false"
+						>
+							{%- assign badge_text			  = megamenu_object.settings.badge_text -%}
+							{%- assign badge_text_color		  = megamenu_object.settings.badge_text_color -%}
+							{%- assign badge_background_color = megamenu_object.settings.badge_background_color -%}
+
+							<span class="header-mobile__menu-item-text">
+								{{- first_level_link.title | escape -}}
+							</span>
+
+							{%- if badge_text != blank -%}
+								<span class="header-mobile__menu-item-badge" style="--badge-text-color: {{ badge_text_color }}; --badge-background-color: {{ badge_background_color }};">
+									{{- badge_text | truncate: 8 -}}
+								</span>
+							{%- endif -%}
+
+							<span class="header-mobile__menu-item-toggle-icon">
+									{%- if design == 'alternate' -%}
+										{%- render 'icons-new', icon: 'arrow-down' -%}
+									{%- else -%}
+										{%- render 'icons-small', icon: 'arrow-down' -%}
+									{%- endif -%}
+							</span>
+						</button>
+
+						<div
+							id="headerMobileMenu:{{- first_level_link.title | handleize -}}"
+							data-menu-type="nested"
+							class="header-mobile__menu-list-wrapper header-mobile__menu-list-wrapper--nested js-mobile-header-menu is-hidden"
+						>
+							<ul class="header-mobile__menu-list header-mobile__menu-list--nested">
+								<li>
+									<button
+										class="header-mobile__menu-item header-mobile__menu-item--back js-mobile-header-menu-toggler"
+										type="button"
+										data-target="headerMobileMenu:{{- first_level_link.title | handleize -}}"
+										aria-controls="headerMobileMenu:{{- first_level_link.title | handleize -}}"
+										aria-expanded="false"
+									>
+										<span class="header-mobile__menu-item-icon-back">
+											{%- if design == 'alternate' -%}
+												{%- render 'icons-new', icon: 'arrow-down' -%}
+											{%- else -%}
+												{%- render 'icons-small', icon: 'arrow-down' -%}
+											{%- endif -%}
+										</span>
+
+										<span class="header-mobile__menu-item-text">
+											{{- first_level_link.title -}}
+										</span>
+									</button>
+								</li>
+
+								{%- capture megamenu -%}
+									{%- if megamenu_object.type == 'megamenu-images' -%}
+										{%- render 'header-mobile-mega-menu-images', megamenu_object: megamenu_object -%}
+									{%- endif -%}
+
+									{%- if megamenu_object.type == 'megamenu-half-to-half' and has_megamenu == true -%}
+										{%- if megamenu_object.settings.heading == blank and megamenu_object.settings.subheading == blank and megamenu_object.settings.short_text == blank and megamenu_object.settings.image == blank -%}
+											{%- assign has_megamenu = false -%}
+										{%- else -%}
+											{%- render 'header-mobile-mega-menu-half-to-half', megamenu_object: megamenu_object -%}
+										{%- endif -%}
+									{%- endif -%}
+								{%- endcapture -%}
+
+								{%- if megamenu != blank and has_megamenu == true and megamenu_object.type != 'megamenu' -%}
+									<li>
+										{{- megamenu -}}
+									</li>
+								{%- else -%}
+									{%- for second_level_link in first_level_link.links -%}
+									<li>
+										{%- if second_level_link.links != blank -%}
+											<button
+												class="header-mobile__menu-item js-mobile-header-menu-toggler"
+												type="button"
+												data-target="headerMobileMenu:{{- second_level_link.title | handleize -}}-{{ first_level_link.handle }}-{{ forloop.index }}"
+												aria-controls="headerMobileMenu:{{- second_level_link.title | handleize -}}-{{ first_level_link.handle }}-{{ forloop.index }}"
+												aria-expanded="false"
+											>
+											<span class="header-mobile__menu-item-text">
+												{{ second_level_link.title | escape }}
+											</span>
+
+												<span class="header-mobile__menu-item-toggle-icon">
+												{%- if design == 'alternate' -%}
+													{%- render 'icons-new', icon: 'arrow-down' -%}
+												{%- else -%}
+													{%- render 'icons-small', icon: 'arrow-down' -%}
+												{%- endif -%}
+											</span>
+											</button>
+
+											<div
+												id="headerMobileMenu:{{- second_level_link.title | handleize -}}-{{ first_level_link.handle }}-{{ forloop.index }}"
+												data-menu-type="deep-nested"
+												class="header-mobile__menu-list-wrapper header-mobile__menu-list-wrapper--deep-nested js-mobile-header-menu is-hidden"
+											>
+												<ul class="header-mobile__menu-list header-mobile__menu-list--nested header-mobile__menu-list--deep-nested">
+													<li>
+														<button
+															class="header-mobile__menu-item header-mobile__menu-item--back js-mobile-header-menu-toggler"
+															type="button"
+															data-target="headerMobileMenu:{{- second_level_link.title | handleize -}}-{{ first_level_link.handle }}-{{ forloop.index }}"
+															aria-controls="headerMobileMenu:{{- second_level_link.title | handleize -}}-{{ first_level_link.handle }}-{{ forloop.index }}"
+															aria-expanded="false"
+														>
+														<span class="header-mobile__menu-item-icon-back">
+															{%- if design == 'alternate' -%}
+																{%- render 'icons-new', icon: 'arrow-down' -%}
+															{%- else -%}
+																{%- render 'icons-small', icon: 'arrow-down' -%}
+															{%- endif -%}
+														</span>
+
+															<span class="header-mobile__menu-item-text">
+															{{- second_level_link.title -}}
+														</span>
+														</button>
+													</li>
+
+													{%- for third_level_link in second_level_link.links -%}
+														<li>
+															<a
+																class="header-mobile__menu-item header-mobile__menu-item-link"
+																href="{{- third_level_link.url -}}"
+															>
+															<span class="header-mobile__menu-item-text">
+																{{- third_level_link.title -}}
+															</span>
+															</a>
+														</li>
+													{%- endfor -%}
+												</ul>
+											</div>
+										{%- else -%}
+											<a
+												class="header-mobile__menu-item header-mobile__menu-item-link"
+												href="{{- second_level_link.url -}}"
+											>
+											<span class="header-mobile__menu-item-text">
+												{{- second_level_link.title -}}
+											</span>
+											</a>
+										{%- endif -%}
+									</li>
+								{%- endfor -%}
+								{%- endif -%}
+							</ul>
+						</div>
+					{%- else -%}
+						<a
+							class="header-mobile__menu-item header-mobile__menu-item-link"
+							href="{{- first_level_link.url -}}"
+						>
+							<span class="header-mobile__menu-item-text">
+								{{- first_level_link.title | escape -}}
+							</span>
+						</a>
+					{%- endif -%}
+				</li>
+			{%- endfor -%}
+		</ul>
+
+		<ul class="header-mobile__additional-menu">
+			{%- if shop.customer_accounts_enabled -%}
+				<li>
+					<a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" class="header-mobile__menu-item header-mobile__menu-item-link">
+						{%- if design == 'alternate' -%}
+							{%- render "icons-new", icon: "account" -%}
+						{%- else -%}
+							{%- render 'icons-medium', icon: 'account' -%}
+						{%- endif -%}
+
+						<span class="header-mobile__menu-item-text">
+							{%- if customer -%}
+								{{ 'customer.account.title' | t }}
+							{% else %}
+								{{ 'customer.login.title' | t }}
+							{%- endif -%}
+						</span>
+					</a>
+				</li>
+			{%- endif -%}
+
+			{%- if is_show_language_selector == true and localization.available_languages.size > 1 -%}
+				{% assign language_selector = true %}
+			{%- endif -%}
+
+			{%- if is_show_country_selector == true and localization.available_countries.size > 1 -%}
+				{% assign country_selector = true %}
+			{%- endif -%}
+
+			{%- if language_selector == true or country_selector -%}
+				<div class="header-mobile__localization">
+					{%- if language_selector == true -%}
+						{%- render 'language-localization-form', class: 'header-mobile', id_prefix: 'header-mobile', form_id: 'header-mobile-localization-form' -%}
+					{%- endif -%}
+
+					{%- if country_selector == true -%}
+						{%- render 'country-localization-form', class: 'header-mobile', id_prefix: 'header-mobile', form_id: 'header-mobile-county-form' -%}
+					{%- endif -%}
+				</div>
+			{%- endif -%}
+		</ul>
+	</nav>
+</div>

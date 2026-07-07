@@ -1,0 +1,216 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Shop the look image new
+	This snippet will output main image on shop the look section
+
+	- image: image object (optional, object),
+	- is_lazy: is lazy load enable (optional, default: true, boolean)
+
+	{%- render "shop-the-look-image", image: image, is_lazy: is_lazy -%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- if image -%}
+	{%- capture img_focal -%}
+		--img-desktop-pos: {{ image.presentation.focal_point }};
+	{%- endcapture -%}
+
+	{%- if is_lazy -%}
+		<picture class="shop-the-look__image-wrapper-inner lazy">
+			<source
+				data-srcset="{{ image | img_url: '348x406', crop: image_crop }} 1x, {{ image | img_url: '696x812', crop: image_crop }} 2x"
+				srcset="{{ image | img_url: '10x', crop: image_crop }} 1x, {{ image | img_url: '10x', crop: image_crop }} 2x"
+				media="(max-width: 380px)"
+				width="348"
+				height="406"
+			>
+
+			<source
+				data-srcset="{{ image | img_url: '388x452', crop: image_crop }} 1x, {{ image | img_url: '776x904', crop: image_crop }} 2x"
+				srcset="{{ image | img_url: '10x', crop: image_crop }} 1x, {{ image | img_url: '10x', crop: image_crop }} 2x"
+				media="(max-width: 420px)"
+				width="388"
+				height="452"
+			>
+
+			<source
+				data-srcset="{{ image | img_url: '448x522', crop: image_crop }} 1x, {{ image | img_url: '896x1044', crop: image_crop }} 2x"
+				srcset="{{ image | img_url: '10x', crop: image_crop }} 1x, {{ image | img_url: '10x', crop: image_crop }} 2x"
+				media="(max-width: 480px)"
+				width="448"
+				height="522"
+			>
+
+			<source
+				data-srcset="{{- image | img_url: '735x857', crop: image_crop }} 1x, {{ image | img_url: '1470x1714', crop: image_crop }} 2x"
+				srcset="{{ image | img_url: '10x', crop: image_crop }} 1x, {{ image | img_url: '10x', crop: image_crop }} 2x"
+				media="(max-width: 767px)"
+				width="735"
+				height="857"
+			>
+
+			<source
+				data-srcset="{{- image | img_url: '445x519', crop: image_crop }} 1x, {{ image | img_url: '890x1038', crop: image_crop }} 2x"
+				srcset="{{ image | img_url: '10x', crop: image_crop }} 1x, {{ image | img_url: '10x', crop: image_crop }} 2x"
+				media="(max-width: 991px)"
+				width="445"
+				height="519"
+			>
+
+			<source
+				data-srcset="{{- image | img_url: '541x593', crop: image_crop }} 1x, {{ image | img_url: '1082x1186', crop: image_crop }} 2x"
+				srcset="{{ image | img_url: '10x', crop: image_crop }} 1x, {{ image | img_url: '10x', crop: image_crop }} 2x"
+				media="(max-width: 1199px)"
+				width="541"
+				height="593"
+			>
+
+			<source
+				data-srcset="{{- image | img_url: '666x730', crop: image_crop }} 1x, {{ image | img_url: '1332x1460', crop: image_crop }} 2x"
+				srcset="{{ image | img_url: '10x', crop: image_crop }} 1x, {{ image | img_url: '10x', crop: image_crop }} 2x"
+				media="(max-width: 1500px)"
+				width="666"
+				height="730"
+			>
+
+			<img
+				class="shop-the-look__image need-animate"
+				data-srcset="{{- image | img_url: '840x920', crop: image_crop }} 1x, {{ image | img_url: '1680x1840', crop: image_crop }} 2x"
+				data-src="{{- image | img_url: '840x920', crop: image_crop -}}"
+				src="{{- image | img_url: '10x', crop: image_crop -}}"
+				alt="{{- image.alt -}}"
+				width="840"
+				height="920"
+				style="{{ img_focal }}"
+			>
+		</picture>
+
+		<noscript>
+			<picture class="shop-the-look__image-wrapper-inner">
+				<source
+					srcset="{{ image | img_url: '348x406', crop: image_crop }} 1x, {{ image | img_url: '696x812', crop: image_crop }} 2x"
+					media="(max-width: 380px)"
+					width="348"
+					height="406"
+				>
+
+				<source
+					srcset="{{ image | img_url: '388x452', crop: image_crop }} 1x, {{ image | img_url: '776x904', crop: image_crop }} 2x"
+					media="(max-width: 420px)"
+					width="388"
+					height="452"
+				>
+
+				<source
+					srcset="{{ image | img_url: '448x522', crop: image_crop }} 1x, {{ image | img_url: '896x1044', crop: image_crop }} 2x"
+					media="(max-width: 480px)"
+					width="448"
+					height="522"
+				>
+
+				<source
+					srcset="{{- image | img_url: '735x857', crop: image_crop }} 1x, {{ image | img_url: '1470x1714', crop: image_crop }} 2x"
+					media="(max-width: 767px)"
+					width="735"
+					height="857"
+				>
+
+				<source
+					srcset="{{- image | img_url: '445x519', crop: image_crop }} 1x, {{ image | img_url: '890x1038', crop: image_crop }} 2x"
+					media="(max-width: 991px)"
+					width="445"
+					height="519"
+				>
+
+				<source
+					srcset="{{- image | img_url: '541x593', crop: image_crop }} 1x, {{ image | img_url: '1082x1186', crop: image_crop }} 2x"
+					media="(max-width: 1199px)"
+					width="541"
+					height="593"
+				>
+
+				<source
+					srcset="{{- image | img_url: '666x730', crop: image_crop }} 1x, {{ image | img_url: '1332x1460', crop: image_crop }} 2x"
+					media="(max-width: 1500px)"
+					width="666"
+					height="730"
+				>
+
+				<img
+					class="shop-the-look__image need-animate"
+					srcset="{{- image | img_url: '840x920', crop: image_crop }} 1x, {{ image | img_url: '1680x1840', crop: image_crop }} 2x"
+					src="{{- image | img_url: '840x920', crop: image_crop -}}"
+					alt="{{- image.alt -}}"
+					width="840"
+					height="920"
+					style="{{ img_focal }}"
+				>
+			</picture>
+		</noscript>
+	{%- else -%}
+		<picture class="shop-the-look__image-wrapper-inner">
+			<source
+				srcset="{{ image | img_url: '348x406', crop: image_crop }} 1x, {{ image | img_url: '696x812', crop: image_crop }} 2x"
+				media="(max-width: 380px)"
+				width="348"
+				height="406"
+			>
+
+			<source
+				srcset="{{ image | img_url: '388x452', crop: image_crop }} 1x, {{ image | img_url: '776x904', crop: image_crop }} 2x"
+				media="(max-width: 420px)"
+				width="388"
+				height="452"
+			>
+
+			<source
+				srcset="{{ image | img_url: '448x522', crop: image_crop }} 1x, {{ image | img_url: '896x1044', crop: image_crop }} 2x"
+				media="(max-width: 480px)"
+				width="448"
+				height="522"
+			>
+
+			<source
+				srcset="{{- image | img_url: '735x857', crop: image_crop }} 1x, {{ image | img_url: '1470x1714', crop: image_crop }} 2x"
+				media="(max-width: 767px)"
+				width="735"
+				height="857"
+			>
+
+			<source
+				srcset="{{- image | img_url: '445x519', crop: image_crop }} 1x, {{ image | img_url: '890x1038', crop: image_crop }} 2x"
+				media="(max-width: 991px)"
+				width="445"
+				height="519"
+			>
+
+			<source
+				srcset="{{- image | img_url: '541x593', crop: image_crop }} 1x, {{ image | img_url: '1082x1186', crop: image_crop }} 2x"
+				media="(max-width: 1199px)"
+				width="541"
+				height="593"
+			>
+
+			<source
+				srcset="{{- image | img_url: '666x730', crop: image_crop }} 1x, {{ image | img_url: '1332x1460', crop: image_crop }} 2x"
+				media="(max-width: 1500px)"
+				width="666"
+				height="730"
+			>
+
+			<img
+				class="shop-the-look__image need-animate"
+				srcset="{{- image | img_url: '840x920', crop: image_crop }} 1x, {{ image | img_url: '1680x1840', crop: image_crop }} 2x"
+				src="{{- image | img_url: '840x920', crop: image_crop -}}"
+				alt="{{- image.alt -}}"
+				width="840"
+				height="920"
+				style="{{ img_focal }}"
+			>
+		</picture>
+	{%- endif -%}
+{%- else -%}
+	<div class="shop-the-look__image-wrapper-inner">
+		{{- 'collection-1' | placeholder_svg_tag: 'shop-the-look__image' -}}
+	</div>
+{% endif %}

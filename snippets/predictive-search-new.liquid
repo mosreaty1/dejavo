@@ -1,0 +1,92 @@
+{{- "predictive-search-new.build.css" | asset_url | stylesheet_tag -}}
+
+{%- assign search_articles  = settings.predictive_search_articles -%}
+{%- assign search_pages     = settings.predictive_search_pages -%}
+{%- assign design    		= settings.design -%}
+
+{%- capture search_type_values -%}
+	product
+	{%- if search_articles -%},article{%- endif -%}
+	{%- if search_pages -%},page{%- endif -%}
+{%- endcapture -%}
+
+<div
+	class="predictive-search-new drawer drawer--new drawer--right js-predictive-search"
+	id="headerDrawerSearch"
+	role="dialog"
+	aria-labelledby="headerDrawerSearchTitle"
+>
+	<form
+		class="predictive-search-new__form js-predictive-search-form"
+		action="{{- routes.predictive_search_url -}}"
+		method="get"
+		role="search"
+	>
+		<div class="drawer__header">
+			<h2 class="drawer__title" id="headerDrawerSearchTitle">
+				{{- 'general.predictive_search.title' | t -}}
+			</h2>
+
+			<button
+					class="drawer__close js-header-drawer-toggler"
+					type="button"
+					aria-label="{{- 'general.predictive_search.close_aria_label' | t | escape -}}"
+					data-target="headerDrawerSearch"
+					data-js-toggle="searchToggleDrawer"
+			>
+				{%- render 'icons-new', icon: 'close' -%}
+			</button>
+		</div>
+
+		<div class="predictive-search-new__search">
+			<button
+				class="focus-visible-outline predictive-search-new__submit"
+				type="submit"
+				aria-label="{{- 'general.predictive_search.submit_query_aria_label' | t | escape -}}"
+			>
+				{%- render 'icons-new', icon: 'search' -%}
+			</button>
+
+			<div class="input-wrapper predictive-search-new__input-wrapper">
+				<input
+					class="input predictive-search-new__input js-predictive-search-input"
+					type="text"
+					name="q"
+					id="Search"
+					placeholder="{{- 'general.predictive_search.placeholder' | t -}}"
+					aria-label="{{- 'general.predictive_search.placeholder_aria_label' | t | escape -}}"
+					autocomplete="off"
+					autocapitalize="off"
+					spellcheck="false"
+					required
+				/>
+
+				<label class="input-label" for="Search">
+					{{- "general.predictive_search.placeholder" | t -}}
+				</label>
+			</div>
+		</div>
+
+		<div class="drawer__body predictive-search-new__result js-predictive-search-result"></div>
+
+		<div class="drawer__footer">
+			<button class="focus-visible-outline predictive-search-new__apply js-predictive-search-apply-button"
+					tabindex="0"
+					type="submit"
+					aria-label="{{- 'general.predictive_search.submit_query_aria_label' | t | escape -}}"
+					aria-hidden="true"
+					disabled
+			>
+				<span class="predictive-search-new__apply-text">
+					{{- 'general.predictive_search.submit' | t -}}
+				</span>
+
+				{%- render 'icons-new', icon: 'arrow-right' -%}
+			</button>
+		</div>
+
+		<input type="hidden" name="type" value="{{- search_type_values -}}" />
+	</form>
+
+	{%- render "preloader" -%}
+</div>

@@ -1,0 +1,184 @@
+{% comment %}
+	------------------------------------------------------------------------------
+	Snippet: Gallery carousel slide card
+	- image: image object
+	- link: link url
+	- image_aspect_ratio: select
+	- image_crop: select
+	- is_lazy: boolean
+	------------------------------------------------------------------------------
+{% endcomment %}
+
+{%- if link != blank -%}
+	<a href="{{ link }}" class="gallery-carousel__item focus-visible-outline swiper-slide">
+{%- else -%}
+	<div class="gallery-carousel__item swiper-slide">
+{%- endif -%}
+	<div class="gallery-carousel__item-image-wrapper{% if image_aspect_ratio == "portrait" %} gallery-carousel__item-image-wrapper--portrait{% endif %}">
+		{%- if image != blank -%}
+			{%- capture img_focal -%}
+				--img-desktop-pos: {{ brand_image.presentation.focal_point }};
+			{%- endcapture -%}
+
+			{%- assign size_width 		= 450 -%}
+			{%- assign size_height 		= 608 -%}
+			{%- assign size_width_2x 	= size_width | times: 2 -%}
+			{%- assign size_height_2x 	= size_height | times: 2 -%}
+
+			{%- assign size_width_1199 		= 270 -%}
+			{%- assign size_height_1199 	= 363 -%}
+			{%- assign size_width_1199_2x 	= size_width | times: 2 -%}
+			{%- assign size_height_1199_2x 	= size_height | times: 2 -%}
+
+			{%- assign size_width_991 		= 565 -%}
+			{%- assign size_height_991 		= 762 -%}
+			{%- assign size_width_991_2x 	= size_width | times: 2 -%}
+			{%- assign size_height_991_2x 	= size_height | times: 2 -%}
+
+			{%- assign size_width_767 		= 430 -%}
+			{%- assign size_height_767 		= 581 -%}
+			{%- assign size_width_767_2x 	= size_width | times: 2 -%}
+			{%- assign size_height_767_2x 	= size_height | times: 2 -%}
+
+			{%- assign size_width_420 		= 420 -%}
+			{%- assign size_height_420 		= 567 -%}
+			{%- assign size_width_420_2x 	= size_width | times: 2 -%}
+			{%- assign size_height_420_2x 	= size_height | times: 2 -%}
+
+			{%- assign size_width_375 		= 375 -%}
+			{%- assign size_height_375 		= 507 -%}
+			{%- assign size_width_375_2x 	= size_width | times: 2 -%}
+			{%- assign size_height_375_2x 	= size_height | times: 2 -%}
+
+			{%- if image_aspect_ratio == "square" -%}
+				{%- assign size_height 		= size_width -%}
+				{%- assign size_height_2x 	= size_height | times: 2 -%}
+
+				{%- assign size_height_1199 	= size_width_1199 -%}
+				{%- assign size_height_1199_2x 	= size_height_1199 | times: 2 -%}
+
+				{%- assign size_height_991 		= size_width_991 -%}
+				{%- assign size_height_991_2x 	= size_height_991 | times: 2 -%}
+
+				{%- assign size_height_767 		= size_width_767 -%}
+				{%- assign size_height_767_2x 	= size_height_767 | times: 2 -%}
+
+				{%- assign size_height_420 		= size_width_420 -%}
+				{%- assign size_height_420_2x 	= size_height_420 | times: 2 -%}
+
+				{%- assign size_height_375 		= size_width_375 -%}
+				{%- assign size_height_375_2x 	= size_height_375 | times: 2 -%}
+			{%- endif -%}
+
+			<picture class="{% if is_lazy %}lazy{% endif %}">
+				<source
+					{% if is_lazy %}
+						data-srcset="{{ image | image_url: width: size_width_375, height: size_height_375, crop: image_crop }} 1x,
+									 {{ image | image_url: width: size_width_375_2x, height: size_height_375_2x, crop: image_crop }} 2x"
+						srcset="{{ image | image_url: width: 10, height: 10 }} 1x,
+								{{ image | image_url: width: 20, height: 20 }} 2x"
+					{% else %}
+						srcset="{{ image | image_url: width: size_width_375, height: size_height_375, crop: image_crop }} 1x,
+								{{ image | image_url: width: size_width_375_2x, height: size_height_375_2x, crop: image_crop }} 2x"
+					{% endif %}
+					media="(max-width: 375px)"
+					width="{{- size_width_375 -}}"
+					height="{{- size_height_375 -}}"
+				/>
+
+				<source
+					{% if is_lazy %}
+						data-srcset="{{ image | image_url: width: size_width_420, height: size_height_420, crop: image_crop }} 1x,
+									 {{ image | image_url: width: size_width_420_2x, height: size_height_420_2x, crop: image_crop }} 2x"
+						srcset="{{ image | image_url: width: 10, height: 10 }} 1x,
+								{{ image | image_url: width: 20, height: 20 }} 2x"
+					{% else %}
+						srcset="{{ image | image_url: width: size_width_420, height: size_height_420, crop: image_crop }} 1x,
+								{{ image | image_url: width: size_width_420_2x, height: size_height_420_2x, crop: image_crop }} 2x"
+					{% endif %}
+					media="(max-width: 420px)"
+					width="{{- size_width_420 -}}"
+					height="{{- size_height_420 -}}"
+				/>
+
+				<source
+					{% if is_lazy %}
+						data-srcset="{{ image | image_url: width: size_width_767, height: size_height_767, crop: image_crop }} 1x,
+									 {{ image | image_url: width: size_width_767_2x, height: size_height_767_2x, crop: image_crop }} 2x"
+						srcset="{{ image | image_url: width: 10, height: 10 }} 1x,
+								{{ image | image_url: width: 20, height: 20 }} 2x"
+					{% else %}
+						srcset="{{ image | image_url: width: size_width_767, height: size_height_767, crop: image_crop }} 1x,
+								{{ image | image_url: width: size_width_767_2x, height: size_height_767_2x, crop: image_crop }} 2x"
+					{% endif %}
+					media="(max-width: 767px)"
+					width="{{- size_width_767 -}}"
+					height="{{- size_height_767 -}}"
+				/>
+
+				<source
+					{% if is_lazy %}
+						data-srcset="{{ image | image_url: width: size_width_991, height: size_height_991, crop: image_crop }} 1x,
+									 {{ image | image_url: width: size_width_991_2x, height: size_height_991_2x, crop: image_crop }} 2x"
+						srcset="{{ image | image_url: width: 10, height: 10 }} 1x,
+								{{ image | image_url: width: 20, height: 20 }} 2x"
+					{% else %}
+						srcset="{{ image | image_url: width: size_width_991, height: size_height_991, crop: image_crop }} 1x,
+								{{ image | image_url: width: size_width_991_2x, height: size_height_991_2x, crop: image_crop }} 2x"
+					{% endif %}
+					media="(max-width: 991px)"
+					width="{{- size_width_991 -}}"
+					height="{{- size_height_991 -}}"
+				/>
+
+				<source
+					{% if is_lazy %}
+						data-srcset="{{ image | image_url: width: size_width_1199, height: size_height_1199, crop: image_crop }} 1x,
+									 {{ image | image_url: width: size_width_1199_2x, height: size_height_1199_2x, crop: image_crop }} 2x"
+						srcset="{{ image | image_url: width: 10, height: 10 }} 1x,
+								{{ image | image_url: width: 20, height: 20 }} 2x"
+					{% else %}
+						srcset="{{ image | image_url: width: size_width_1199, height: size_height_1199, crop: image_crop }} 1x,
+								{{ image | image_url: width: size_width_1199_2x, height: size_height_1199_2x, crop: image_crop }} 2x"
+					{% endif %}
+					media="(max-width: 1199px)"
+					width="{{- size_width_1199 -}}"
+					height="{{- size_height_1199 -}}"
+				/>
+
+				<img
+					class="gallery-carousel__item-image"
+					{% if is_lazy %}
+						data-srcset="{{ image | image_url: width: size_width, height: size_height, crop: image_crop }} 1x,
+									 {{ image | image_url: width: size_width_2x, height: size_height_2x, crop: image_crop }} 2x"
+						data-src="{{ image | image_url: width: size_width, height: size_height, crop: image_crop }}"
+						srcset="{{ image | image_url: width: 10, height: 10 }} 1x,
+								{{ image | image_url: width: 20, height: 20 }} 2x"
+						src="{{ image | image_url: width: 10, height: 10 }}"
+					{% else %}
+						srcset="{{ image | image_url: width: size_width, height: size_height, crop: image_crop }} 1x,
+								{{ image | image_url: width: size_width_2x, height: size_height_2x, crop: image_crop }} 2x"
+						src="{{ image | image_url: width: size_width, height: size_height, crop: image_crop }}"
+					{% endif %}
+					alt="{{ image.alt | escape }}"
+					width="{{ size_width }}"
+					height="{{ size_height }}"
+					loading="lazy"
+					style="{{ img_focal }}"
+				/>
+			</picture>
+		{%- else -%}
+			{%- assign odd =  forloop.index | modulo: 2 -%}
+
+			{%- if odd  == 1 -%}
+				{{- "lifestyle-1" | placeholder_svg_tag: "gallery-carousel__item-image" -}}
+			{%- else -%}
+				{{- "lifestyle-2" | placeholder_svg_tag: "gallery-carousel__item-image" -}}
+			{%- endif -%}
+		{%- endif -%}
+	</div>
+{%- if link != blank -%}
+	</a>
+{%- else -%}
+	</div>
+{%- endif -%}

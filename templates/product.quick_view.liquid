@@ -1,0 +1,219 @@
+{%- layout none -%}
+
+{%- assign design 						= settings.design -%}
+{%- assign quick_view_image_fit 		= settings.quick_view_image_fit -%}
+{%- assign show_unit_price 				= settings.is_show_unit_price -%}
+{%- assign currency_code_enabled 		= settings.currency_code_enabled -%}
+{%- assign default_image 				= settings.product_default_image -%}
+{%- assign quick_view_enable_buy_it_now = settings.quick_view_enable_buy_it_now -%}
+{%- assign is_alternate_design 		    = false -%}
+{%- if settings.design == 'alternate' -%}
+	{%- assign is_alternate_design 		= true -%}
+{%- endif -%}
+
+<div
+	class="modal {% if is_alternate_design %}quick-view-new{% else %}quick-view{% endif %} js-quick-view"
+	id="quick-view"
+	data-modal-once="true"
+	tabindex="-1"
+	aria-modal="true"
+	role="dialog"
+	data-section-type="product"
+	data-url="{{ product.url }}"
+>
+	<header class="modal__header quick-view__header">
+		<h2 class="quick-view__heading quick-view__heading--mobile {% if is_alternate_design %}h4{% endif %}">
+			{{- product.title -}}
+		</h2>
+
+		<button
+			class="quick-view__close focus-visible-outline"
+			data-target="quick-view"
+			aria-label="{{ "products.quick_view.close_popup" | t }}"
+			data-js-toggle="quick-view"
+		>
+			{% render 'icons-small', icon: 'close' %}
+		</button>
+	</header>
+
+	<div class="modal__body quick-view__body">
+		{% unless is_alternate_design %}
+			<div class="quick-view__price quick-view__price--mobile js-quick-view-price">
+				{%- render 'price', product: product, show_unit_price: show_unit_price, currency_code_enabled: currency_code_enabled, use_variant: true -%}
+			</div>
+		{% endunless %}
+
+		{%- assign is_image_visible = true -%}
+		{%- assign image = product.selected_or_first_available_variant.image | default: product.featured_image | default: default_image -%}
+
+		{%- if image == blank -%}
+			{%- assign is_image_visible = false -%}
+		{%- endif -%}
+
+		<div class="quick-view__media {%- if is_image_visible == false %} is-hidden {%- endif %} js-quick-view-media">
+			{%- capture image_wrapper_classes -%}
+				quick-view__image-wrapper {{ quick_view_image_fit }} js-quick-view-image
+			{%- endcapture -%}
+
+			{%- capture style_one_image -%}
+				--aspect-ratio: {{- 1.0 | divided_by: image.aspect_ratio | times: 100 -}}%;
+			{%- endcapture -%}
+
+			{% if product.images.size > 1 %}
+				<div class="quick-view__slider swiper js-quick-view-slider">
+					<div class="swiper-wrapper">
+						{% for media in product.media %}
+							{%- assign aspect_ratio = 1.0 | divided_by: media.aspect_ratio | times: 100 -%}
+
+							{% if media.media_type == 'model' %}
+								{% assign aspect_ratio = 100 %}
+							{% endif %}
+
+							{%- capture styles -%}
+								--aspect-ratio: {{- aspect_ratio -}}%;
+							{%- endcapture -%}
+
+							{% case media.media_type %}
+								{% when 'image' %}
+									<div class="swiper-slide" data-slide-index="{{ forloop.index0 }}">
+										<div class="quick-view__image-wrapper {{ quick_view_image_fit }}" style="{{- styles -}}">
+											{% render 'quick-view-image', image: media %}
+										</div>
+									</div>
+								{% when 'video' %}
+									<div class="swiper-slide" data-slide-index="{{ forloop.index0 }}">
+										<div class="quick-view__image-wrapper {{ quick_view_image_fit }}" style="{{- styles -}}">
+											<video
+												class="quick-view__image js-video"
+												data-type="html"
+												tabindex="-1"
+												aria-hidden="true"
+												controls
+											>
+												{% for source in media.sources  %}
+													{%- if source.mime_type == 'video/mp4' -%}
+														<source
+															src="{{- source.url -}}#t=0.001"
+															type="{{- source.mime_type -}}"
+														>
+													{%- endif -%}
+												{% endfor %}
+											</video>
+										</div>
+									</div>
+								{% when 'external_video' %}
+									{% comment %}{%- assign show_arrows_on_mobile = true -%}{% endcomment %}
+									<div class="swiper-slide" data-slide-index="{{ forloop.index0 }}">
+										<div class="quick-view__image-wrapper {{ quick_view_image_fit }}" style="{{- styles -}}">
+											<div
+												class="quick-view__image js-video"
+												style="--aspect-ratio: {{ media.aspect_ratio | default: 1.0 }}"
+												data-type="{{- media.host -}}"
+												data-video-id="{{- media.external_id -}}"
+											>
+												{%- if media.host == 'youtube' -%}
+													<div
+														class="js-video-{{- media.host -}}"
+														data-video-id="{{- media.external_id -}}"
+														tabindex="-1"
+														aria-hidden="true"
+													></div>
+												{%- endif %}
+											</div>
+										</div>
+									</div>
+								{% when 'model' %}
+									{% comment %}{%- assign show_arrows_on_mobile = true -%}{% endcomment %}
+							<div class="swiper-slide" data-slide-index="{{ forloop.index0 }}">
+								<div class="quick-view__image-wrapper {{ quick_view_image_fit }}" style="{{- styles -}}">
+											{% render 'quick-view-image', image: media, is_model: true %}
+
+											<button
+												class="quick-view__image-button js-quick-view-model-button"
+												aria-label="{{- 'products.product.ar_button' | t | escape -}}"
+											>
+												{%- render 'icons-small', icon: 'model' -%}
+											</button>
+
+											<span class="js-quick-view-model-content is-hidden">
+												{{ media | model_viewer_tag }}
+											</span>
+
+											<button
+												class="quick-view__model-view-button"
+												type="button"
+												data-shopify-xr
+												aria-label="{{ 'products.product.xr_button_label' | t }}"
+												data-shopify-model3d-id="{{- media.id -}}"
+												data-shopify-title="{{- product.title | escape -}}"
+												data-shopify-xr-hidden
+											>
+												{%- render 'icons-small', icon: 'model' -%}
+
+												{{- 'products.product.xr_button' | t -}}
+											</button>
+								</div>
+							</div>
+							{% endcase %}
+						{% endfor %}
+					</div>
+
+					<button class="swiper-button-prev js-quick-view-slider-prev-btn"></button>
+					<button class="swiper-button-next js-quick-view-slider-next-btn"></button>
+				</div>
+			{% elsif product.images.size < 2 or default_image != blank %}
+				<div class="quick-view__image-wrapper {{ quick_view_image_fit }}" style="{{- style_one_image -}}">
+					{% render 'quick-view-image', image: image %}
+				</div>
+			{% endif %}
+		</div>
+
+		<div class="quick-view__meta">
+			<h2 class="quick-view__heading quick-view__heading--desktop {% if is_alternate_design %}h4{% endif %}">
+				{{- product.title -}}
+			</h2>
+
+			{% unless is_alternate_design %}
+				<div class="quick-view__price quick-view__price--desktop js-quick-view-price">
+					{%- render 'price', product: product, show_unit_price: show_unit_price, currency_code_enabled: currency_code_enabled, use_variant: true -%}
+				</div>
+			{% endunless %}
+
+			{%- assign show 					= settings.quick_view_timer_show -%}
+			{%- assign text 					= settings.quick_view_timer_text -%}
+			{%- assign icon 					= settings.quick_view_timer_image_picker -%}
+			{%- assign text_color 				= settings.quick_view_timer_text_color | default: "#000000" -%}
+			{%- assign timer_text_color 		= settings.quick_view_timer_text_color_timer | default: "#ffffff" -%}
+			{%- assign timer_background_color 	= settings.quick_view_timer_background_color | default: "#000000" -%}
+
+			{%- if show -%}
+				{%- render 'product-countdown-timer',
+					product: product,
+					text: text,
+					icon: icon,
+					text_color: text_color,
+					timer_text_color: timer_text_color,
+					timer_background_color: timer_background_color
+				-%}
+			{%- endif -%}
+
+			{%- if product == settings.product_promo_product and settings.product_promo_product_description != blank -%}
+				<div class="quick-view__description section-rte js-quick-view-description">
+					{{ settings.product_promo_product_description }}
+				</div>
+			{%- endif -%}
+
+			{%- render 'quick-view-form', product: product, quick_view_enable_buy_it_now: quick_view_enable_buy_it_now, design: design -%}
+		</div>
+	</div>
+
+	{%- capture models_json -%}
+		{{ product.media | where: 'media_type', 'model' | json }}
+	{%- endcapture -%}
+
+	{%- if models_json != "" -%}
+		<script type="application/json" id="ProductModelsJSON">
+				{{- models_json -}}
+		</script>
+	{%- endif -%}
+</div>

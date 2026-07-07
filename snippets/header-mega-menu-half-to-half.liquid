@@ -1,0 +1,180 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Header mega menu half to half
+	Render header mega menu half to half
+	- menu: Menu object (required)
+	- blocks: blocks object using for output media content.
+	- enable_mega_menu_borders: option to show/hide borders in mega menu
+
+	Usage:
+	{%- render 'header-mega-menu-half-to-half', menu: first_level_link, megamenu_object: megamenu_object, enable_mega_menu_borders: enable_mega_menu_borders -%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign design 			= settings.design -%}
+
+{%- assign heading          = megamenu_object.settings.heading -%}
+{%- assign subheading       = megamenu_object.settings.subheading -%}
+{%- assign short_text       = megamenu_object.settings.short_text -%}
+{%- assign button_text1		= megamenu_object.settings.button_label1 -%}
+{%- assign button_text2		= megamenu_object.settings.button_label2 -%}
+{%- assign button_link1		= megamenu_object.settings.button_link1 -%}
+{%- assign button_link2		= megamenu_object.settings.button_link2 -%}
+{%- assign button1_style	= megamenu_object.settings.button1_style -%}
+{%- assign button2_style	= megamenu_object.settings.button2_style -%}
+
+
+{%- assign show_shadow      = megamenu_object.settings.show_shadow -%}
+{%- assign shadow_color     = megamenu_object.settings.shadow_color -%}
+{%- assign image			= megamenu_object.settings.image -%}
+{%- assign image_link		= megamenu_object.settings.image_link -%}
+
+{%- capture classes -%}
+	{%- if design == 'alternate' -%}
+		header-mega-menu-new header-mega-menu-new--half-to-half
+	{%- else -%}
+		header-mega-menu header-mega-menu--half-to-half
+	{%- endif -%}
+{%- endcapture -%}
+
+<div
+		id="headerMegaMenu:{{- menu.title | handleize -}}"
+		class="{{- classes }} is-hidden js-header-mega-menu"
+	>
+		<div class="header-mega-menu__container js-header-mega-menu-content">
+			<div class="header-mega-menu__block header-mega-menu__block--text">
+				<div class="header-mega-menu__content {% if image == blank and design == 'alternate' %} header-mega-menu__content--centered {%- endif -%}">
+				{%- if heading != blank -%}
+					<h2 class="header-mega-menu__heading {% if design == 'alternate' %}subheading{%- endif -%}">
+						{{- heading -}}
+					</h2>
+				{%- endif %}
+
+				{%- if subheading != blank -%}
+					<h3 class="header-mega-menu__subheading">
+						{{- subheading -}}
+					</h3>
+				{%- endif -%}
+
+				{%- if short_text -%}
+					<p class="header-mega-menu__text">
+						{{- short_text -}}
+					</p>
+				{%- endif -%}
+
+				{%- if button_link1 != blank and button_text1 != blank or button_link2 != blank and button_text2 != blank -%}
+					<div class="header-mega-menu__buttons">
+						{%- if button_link1 != blank and button_text1 != blank -%}
+							{%- if design == 'alternate' -%}
+								{%- if button1_style == 'primary' -%}
+									<a href="{{- button_link1 -}}" class="header-mega-menu__button-circle button-circle">
+										<span class="button__text">
+											{{- button_text1 -}}
+										</span>
+
+										<span class="button-new__icon-container">
+											<span class="button-new__icon-wrapper">
+												{% render "icons-new", icon: "wave", section_id: 'asdasdsa' %}
+											</span>
+										</span>
+									</a>
+								{%- else -%}
+									<a href="{{- button_link1 -}}" class="header-mega-menu__button-link button-link-new focus-visible-outline">
+										{{- button_text1 -}}
+										<span class="button-link-new__icon-wrapper">
+											<span class="button-link-new__icon">
+												{% render 'icons-new', icon: 'arrow-right' %}
+											</span>
+										</span>
+									</a>
+								{%- endif -%}
+							{%- else -%}
+								<a class="button button--{{- button1_style -}}" href="{{- button_link1 -}}">
+									{{- button_text1 -}}
+								</a>
+							{%- endif -%}
+						{%- endif -%}
+
+						{%- if button_link2 != blank and button_text2 != blank -%}
+							{%- if design == 'alternate' -%}
+								{%- if button2_style == 'primary' -%}
+									<a href="{{- button_link2 -}}" class="header-mega-menu__button-circle button-circle">
+										<span class="button__text">
+											{{- button_text2 -}}
+										</span>
+
+										<span class="button-new__icon-container">
+											<span class="button-new__icon-wrapper">
+												{% render "icons-new", icon: "wave", section_id: 'asdasdsa' %}
+											</span>
+										</span>
+									</a>
+								{%- else -%}
+									<a href="{{- button_link2 -}}" class="header-mega-menu__button-link button-link-new focus-visible-outline">
+										{{- button_text2 -}}
+										<span class="button-link-new__icon-wrapper">
+											<span class="button-link-new__icon">
+												{% render 'icons-new', icon: 'arrow-right' %}
+											</span>
+										</span>
+									</a>
+								{%- endif -%}
+							{%- else -%}
+								<a class="button button--{{- button2_style -}}" href="{{- button_link2 -}}">
+									{{- button_text2 -}}
+								</a>
+							{%- endif -%}
+						{%- endif -%}
+					</div>
+				{%- endif -%}
+				</div>
+			</div>
+
+			{%- if design == 'standard' and enable_mega_menu_borders -%}
+				<div class="header-mega-menu__column-separator"></div>
+			{%- endif -%}
+
+			{%- if image != blank -%}
+				<div class="header-mega-menu__block header-mega-menu__block--image">
+					{%- capture img_focal -%}
+						--img-desktop-pos: {{ image.presentation.focal_point }};
+					{%- endcapture -%}
+
+					{%- capture image_capture -%}
+						<picture>
+							<source
+								srcset="{{ image | image_url: width: 750 }} 1x, {{ image | image_url: width: 1500 }} 2x"
+								media="(max-width: 1500px)"
+							/>
+
+							<img
+								class="header-mega-menu__image"
+								src="{{- image | image_url: width: 960 -}}"
+								srcset="{{- image | image_url: width: 960 }} 1x, {{ image | image_url: width: 1920 }} 2x"
+								alt="{{- image.alt -}}"
+								style="{{ img_focal }}"
+								loading="lazy"
+							>
+						</picture>
+
+						{%- if show_shadow and shadow_color != blank -%}
+							<div class="header-mega-menu__shadow" style="background: {{- shadow_color -}}"></div>
+						{%- endif -%}
+					{%- endcapture -%}
+
+					{%- if image_link != blank -%}
+						<a href="{{- image_link -}}" class="header-mega-menu__image-wrapper header-mega-menu__image-wrapper--hover">
+							{{- image_capture -}}
+						</a>
+					{%- else -%}
+						<div class="header-mega-menu__image-wrapper">
+							{{- image_capture -}}
+						</div>
+					{%- endif -%}
+
+				</div>
+			{%- endif -%}
+		</div>
+
+		<div class="header-mega-menu__overlay js-mega-menu-overlay"></div>
+	</div>

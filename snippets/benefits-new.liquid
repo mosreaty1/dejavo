@@ -1,0 +1,80 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Benefits
+	This snippet displays an alternative view for the Benefits snippet
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{{- 'benefits-new.build.css' | asset_url | stylesheet_tag -}}
+
+<section
+	class="benefits-new js-animate{% if request.visual_preview_mode or section.index == 1 %} animated{% endif %}"
+	style="{{ styles }}">
+	<div class="benefits-new__container {% if full_width %}benefits-new__container--full-width{% endif %}">
+		<ul class="benefits-new__row need-animate">
+			{%- for block in section.blocks -%}
+				{%- assign heading = block.settings.heading -%}
+				{%- assign text = block.settings.text -%}
+				{%- assign image = block.settings.image -%}
+				{%- assign block_link = block.settings.block_link -%}
+				{%- assign button_aria = block.settings.button_aria -%}
+
+				{%- if image != blank -%}
+					{%- assign benefits_has_image = true -%}
+				{%- else -%}
+					{%- assign benefits_has_image = false -%}
+				{%- endif -%}
+
+				{%- if benefits_has_image -%}
+					{%- capture col_image -%}
+						{%- capture img_focal -%}
+							--img-desktop-pos: {{ image.presentation.focal_point }};
+						{%- endcapture -%}
+
+						<div class="benefits-new__icon-wrapper">
+							<img
+								class="benefits-new__icon"
+								srcset="{{ image | img_url: '54x' }} 1x, {{ image | img_url: '108x' }} 2x"
+								src="{{- image | img_url: '54x' -}}"
+								alt="{{- image.alt | escape -}}"
+								style="{{ img_focal }}"
+							>
+						</div>
+					{%- endcapture -%}
+				{%- endif -%}
+
+				{%- if benefits_has_image or heading != blank or text != blank -%}
+					<li class="benefits-new__col need-animate {% unless show_borders %}benefits-new__col--no-border{% endunless %}">
+						<div class="benefits-new__col-content">
+							{% if block_link != blank %}
+								<a
+									href="{{ block_link }}"
+									class="benefits-new__link"
+									{% if button_aria != blank -%}
+										aria-label="{{- button_aria | escape -}}"
+									{%- endif -%}
+								></a>
+							{% endif %}
+
+							{%- if benefits_has_image -%}
+								{{- col_image -}}
+							{%- endif -%}
+
+							{%- if heading != blank -%}
+								<div class="h5 benefits-new__heading">
+									{{- heading -}}
+								</div>
+							{%- endif -%}
+
+							{%- if text != blank -%}
+								<p class="benefits-new__text">
+									{{- text -}}
+								</p>
+							{%- endif -%}
+						</div>
+					</li>
+				{%- endif -%}
+			{%- endfor -%}
+		</ul>
+	</div>
+</section>

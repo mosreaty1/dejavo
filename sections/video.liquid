@@ -1,0 +1,389 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Video
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{{- 'video.build.css' | asset_url | stylesheet_tag -}}
+
+{%- assign label     	= section.settings.label -%}
+{%- assign heading      = section.settings.heading -%}
+{%- assign text_content = section.settings.text_content -%}
+{%- assign aspect_ratio = section.settings.aspect_ratio -%}
+{%- assign image        = section.settings.image -%}
+{%- assign full_width   = section.settings.full_width -%}
+{%- assign design   	= settings.design -%}
+
+{% if full_width %}
+	{% assign layout = "full-width" %}
+{% else %}
+	{% assign layout = "default" %}
+{% endif %}
+
+{%- assign video_type                 = section.settings.video_type -%}
+{%- assign html_video_desktop     	  = section.settings.html_video_desktop -%}
+{%- assign html_video_mobile		  = section.settings.html_video_mobile | default: html_video_desktop -%}
+{%- assign external_video_url_desktop = section.settings.external_video_url_desktop -%}
+{%- assign external_video_url_mobile  = section.settings.external_video_url_mobile | default: external_video_url_desktop -%}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{%- if html_video_desktop != blank -%}
+	{%- capture html_video -%}
+		<video
+			class="video__player js-video"
+			data-device="desktop"
+			data-type="html"
+			muted
+			controls
+			playsinline
+		>
+			{%- for source in html_video_desktop.sources -%}
+				{%- if source.mime_type == 'video/mp4' -%}
+					<source src="{{- source.url -}}" type="{{- source.mime_type -}}">
+				{%- endif -%}
+			{%- endfor -%}
+		</video>
+
+		<video
+			class="video__player video__player--mobile js-video"
+			data-device="mobile"
+			data-type="html"
+			muted
+			controls
+			playsinline
+		>
+			{%- for source in html_video_mobile.sources -%}
+				{%- if source.mime_type == 'video/mp4' -%}
+					<source src="{{- source.url -}}" type="{{- source.mime_type -}}">
+				{%- endif -%}
+			{%- endfor -%}
+		</video>
+	{%- endcapture -%}
+{%- endif -%}
+
+{%- if external_video_url_desktop != nil -%}
+	{%- capture external_video -%}
+		{%- if external_video_url_desktop.type == 'youtube' -%}
+			<div
+				class="video__player js-video"
+				data-device="desktop"
+				data-type="{{- external_video_url_desktop.type -}}"
+			>
+				<div
+					class="js-video-youtube"
+					data-video-id="{{- external_video_url_desktop.id -}}"
+				></div>
+			</div>
+		{%- else -%}
+			<div
+				class="video__player js-video"
+				data-device="desktop"
+				data-video-id="{{- external_video_url_desktop.id -}}"
+				data-type="{{- external_video_url_desktop.type -}}"
+			></div>
+		{%- endif -%}
+
+		{%- if external_video_url_mobile.type == 'youtube' -%}
+			<div
+				class="video__player video__player--mobile js-video"
+				data-device="mobile"
+				data-type="{{- external_video_url_mobile.type -}}"
+			>
+				<div
+					class="js-video-youtube"
+					data-video-id="{{- external_video_url_mobile.id -}}"
+				></div>
+			</div>
+		{%- else -%}
+			<div
+				class="video__player video__player--mobile js-video"
+				data-device="mobile"
+				data-video-id="{{- external_video_url_mobile.id -}}"
+				data-type="{{- external_video_url_mobile.type -}}"
+			></div>
+		{%- endif -%}
+	{%- endcapture -%}
+{%- endif -%}
+
+{%- capture old_layout -%}
+	<section class="video js-video-section">
+		<div class="video__container">
+			{%- if label != blank or heading != blank or text_content != blank -%}
+				<div class="video__header">
+					{%- if label != blank -%}
+						<div class="video__label">
+							{{- label -}}
+						</div>
+					{%- endif -%}
+
+					{%- if heading != blank -%}
+						<h2 class="h2 video__heading">
+							{{- heading -}}
+						</h2>
+					{%- endif -%}
+
+					{%- if text_content != blank -%}
+						<div class="video__text-content section-rte">
+							{{- text_content -}}
+						</div>
+					{%- endif -%}
+				</div>
+			{%- endif -%}
+
+			<div class="video__media-wrapper video__media-wrapper--{{ layout }} {%- if heading == blank and text_content == blank -%}video__media-wrapper--no-margin{% endif %} js-animate">
+				<div class="video__media-container video__media-container--{{ aspect_ratio }} js-video-container">
+					<button
+						class="video__play-button button button--play js-video-start-button"
+						aria-label="{{- "general.accessibility.video_play" | t | escape -}}"
+					>
+						{% render 'icons-medium', icon: "play" %}
+					</button>
+
+					{% if image != blank %}
+						{%- capture img_focal -%}
+							--img-desktop-pos: {{ image.presentation.focal_point }};
+						{%- endcapture -%}
+
+						<picture class="lazy">
+							<source
+								data-srcset="{{ image | img_url: '375x' }} 1x, {{ image | img_url: '750x' }} 2x"
+								srcset="{{ image | img_url: '10x' }} 1x, {{ image | img_url: '10x' }} 2x"
+								media="(max-width: 375px)"
+							/>
+
+							<source
+								data-srcset="{{ image | img_url: '575x' }} 1x, {{ image | img_url: '1150x' }} 2x"
+								srcset="{{ image | img_url: '10x' }} 1x, {{ image | img_url: '10x' }} 2x"
+								media="(max-width: 575px)"
+							/>
+
+							<source
+								data-srcset="{{ image | img_url: '768x' }} 1x, {{ image | img_url: '1536x' }} 2x"
+								srcset="{{ image | img_url: '10x' }} 1x, {{ image | img_url: '10x' }} 2x"
+								media="(max-width: 768px)"
+							/>
+
+							<source
+								data-srcset="{{ image | img_url: '991x' }} 1x, {{ image | img_url: '1982x' }} 2x"
+								srcset="{{ image | img_url: '10x' }} 1x, {{ image | img_url: '10x' }} 2x"
+								media="(max-width: 991px)"
+							/>
+
+							<source
+								data-srcset="{{ image | img_url: '1440x' }} 1x, {{ image | img_url: '2880x' }} 2x"
+								srcset="{{ image | img_url: '10x' }} 1x, {{ image | img_url: '10x' }} 2x"
+								media="(max-width: 1440px)"
+							/>
+
+							<img
+								data-srcset="{{ image | img_url: "1920x" }} 1x, {{ image | img_url: "3840x" }} 2x"
+								srcset="{{ image | img_url: "10x" }} 1x, {{ image | img_url: "10x" }} 2x"
+								data-src="{{ image | img_url: "1920x" }}"
+								src="{{ image | img_url: "10x" }}"
+								alt="{{ image.alt }}"
+								class="video__placeholder-image js-video-placeholder"
+								style="{{ img_focal }}"
+							/>
+						</picture>
+					{% else %}
+						{{- "lifestyle-1" | placeholder_svg_tag: 'video__placeholder-image js-video-placeholder' -}}
+					{% endif %}
+
+
+					{%- case video_type -%}
+						{%- when 'html' -%}
+							{{- html_video -}}
+						{%- when 'youtube_vimeo' -%}
+							{{- external_video -}}
+					{%- endcase -%}
+				</div>
+			</div>
+		</div>
+	</section>
+{%- endcapture -%}
+
+{%- if design == "alternate" -%}
+	{% render "video-new", section: section %}
+{%- else -%}
+	{{- old_layout -}}
+{%- endif -%}
+
+<script src="{{- 'component-video.build.min.js' | asset_url -}}" defer></script>
+<script src="{{- 'video-section.build.min.js' | asset_url -}}" defer></script>
+
+{%- schema -%}
+	{
+		"name": "Video",
+		"disabled_on": {
+			"groups": ["header", "footer"]
+		},
+		"settings": [
+			{
+				"type": "text",
+				"id": "label",
+				"label": "Label"
+			},
+			{
+				"id": "heading",
+				"type": "text",
+				"label": "Heading",
+				"default": "Video heading"
+			},
+			{
+				"id": "text_content",
+				"type": "richtext",
+				"label": "Text",
+				"default": "<p>Add a short description to the video so that the customer can better understand what it is about.</p>"
+			},
+			{
+				"id": "aspect_ratio",
+				"type": "select",
+				"label": "Aspect ratio",
+				"options": [
+					{
+						"value": "sixteen-nine",
+						"label": "16/9"
+					},
+					{
+						"value": "four-three",
+						"label": "4/3"
+					}
+				],
+				"default": "sixteen-nine"
+			},
+			{
+				"id": "image",
+				"type": "image_picker",
+				"label": "Image",
+				"info": "3840 x 2160px recommended"
+			},
+			{
+				"type": "header",
+				"content": "VIDEO"
+			},
+			{
+				"id": "video_type",
+				"type": "select",
+				"label": "Video type",
+				"options": [
+					{
+						"value": "html",
+						"label": "HTML5"
+					},
+					{
+						"value": "youtube_vimeo",
+						"label": "Youtube/Vimeo"
+					}
+				],
+				"default": "youtube_vimeo"
+			},
+			{
+				"type": "video",
+				"id": "html_video_desktop",
+				"label": "HTML5 desktop video",
+				"info": "Only works with 'HTML5 video' media type. 3840 x 2160px recommended"
+			},
+			{
+				"type": "video",
+				"id": "html_video_mobile",
+				"label": "HTML5 mobile video",
+				"info": "Only works with 'HTML5 video' media type. 1534 x 1534px recommended"
+			},
+			{
+				"type": "video_url",
+				"accept": [
+					"youtube",
+					"vimeo"
+				],
+				"id": "external_video_url_desktop",
+				"label": "Youtube/Vimeo desktop video url",
+				"default": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+				"info": "Only works with 'Youtube/Vimeo' media type"
+			},
+			{
+				"type": "video_url",
+				"accept": [
+					"youtube",
+					"vimeo"
+				],
+				"id": "external_video_url_mobile",
+				"label": "Youtube/Vimeo mobile video url",
+				"default": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+				"info": "Only works with 'Youtube/Vimeo' media type"
+			},
+			{
+				"type": "header",
+				"content": "Layout"
+			},
+			{
+				"type": "checkbox",
+				"id": "full_width",
+				"label": "Make full width",
+				"default": true,
+				"info": "If unchecked - container width will be set based on the group 'Layout' settings in the Theme settings."
+			},
+			{
+				"type": "range",
+				"id": "offset_top_desktop",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Desktop offset top",
+				"default": 60
+			},
+			{
+				"type": "range",
+				"id": "offset_bottom_desktop",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Desktop offset bottom",
+				"default": 60
+			},
+			{
+				"type": "range",
+				"id": "offset_top_mobile",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Mobile offset top",
+				"default": 30
+			},
+			{
+				"type": "range",
+				"id": "offset_bottom_mobile",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Mobile offset bottom",
+				"default": 30
+			}
+		],
+		"presets": [
+			{
+				"name": "Video",
+				"settings": {
+					"external_video_url_desktop": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+					"external_video_url_mobile": "https://www.youtube.com/watch?v=_9VUPq3SxOc"
+				}
+			}
+		]
+	}
+{%- endschema -%}

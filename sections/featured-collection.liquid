@@ -1,0 +1,276 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Featured collection
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{%- assign collection           = section.settings.collection -%}
+{%- assign label                = section.settings.label -%}
+{%- assign heading              = section.settings.heading -%}
+{%- assign link_url 			= section.settings.link_url -%}
+{%- assign link_text 			= section.settings.link_text -%}
+{%- assign link_aria_label_text = section.settings.link_aria_label_text -%}
+{%- assign button_style 		= section.settings.button_style -%}
+{%- assign layout               = section.settings.layout -%}
+{%- assign enable_cards_indent  = section.settings.enable_cards_indent -%}
+{%- assign full_width           = section.settings.full_width -%}
+{%- assign products             = collection.products -%}
+
+{% if link_url != blank %}
+	{% assign button_link = link_url  %}
+{% else %}
+	{% assign button_link = collection.url  %}
+{% endif %}
+
+{%- if layout > product.size -%}
+	{%- assign products_size = products.size -%}
+{%- else -%}
+	{%- assign products_size = layout | times: 1 -%}
+{%- endif -%}
+
+{%- assign product_size_modulo = products_size | modulo: 2 -%}
+
+{%- capture product_grid -%}
+	<div class="featured-collection__grid {% if enable_cards_indent %}featured-collection__grid--indent{% endif %}">
+		{%- if collection != blank and products.size > 0 -%}
+			{%- for product in products limit: layout -%}
+				{%- capture featured_collection_item_classes -%}
+					featured-collection__item {{-  -}}
+					{% if forloop.index == 1 and product_size_modulo != 0 %} featured-collection__item--mobile-big {%- endif -%}
+				{%- endcapture -%}
+
+				{% assign is_lazy = true %}
+
+				{% if section.index == 1 and forloop.index < 4 %}
+					{% assign is_lazy = false %}
+				{% endif %}
+
+				<div class="{{- featured_collection_item_classes | strip_newlines -}}">
+					{%- if forloop.index == 1 or forloop.index == 10 -%}
+						{%- if forloop.index == 1 and product_size_modulo != 0 -%}
+							{%- render 'product-card', product: product, size: 950, tablet_size: 765, mobile_size: 478 big_card: true, is_lazy: is_lazy -%}
+						{%- else -%}
+							{%- render 'product-card', product: product, size: 950, tablet_size: 373, mobile_size: 230, big_card: true, is_lazy: is_lazy -%}
+						{%- endif %}
+					{%- else -%}
+						{%- render 'product-card', product: product, size: 475, tablet_size: 373, mobile_size: 230, is_lazy: is_lazy -%}
+					{%- endif -%}
+				</div>
+			{%- endfor -%}
+		{%- else -%}
+			{%- for i in (1..layout) -%}
+				{%- capture featured_collection_item_classes -%}
+					featured-collection__item {{-  -}}
+					{% if forloop.index == 1 %} featured-collection__item--mobile-big {%- endif -%}
+				{%- endcapture -%}
+
+				<div class="{{- featured_collection_item_classes | strip_newlines -}}">
+					{%- render 'product-card' -%}
+				</div>
+			{%- endfor -%}
+		{%- endif -%}
+	</div>
+{%- endcapture -%}
+
+{%- capture featured_collection -%}
+	{%- if label != blank -%}
+		<p class="text featured-collection__label">
+			{{- label -}}
+		</p>
+	{%- endif -%}
+
+	{%- if heading != blank -%}
+		<h2 class="h2 featured-collection__heading">
+			{{- heading -}}
+		</h2>
+	{%- endif -%}
+
+	{{- product_grid -}}
+
+	{%- if link_text != blank and button_link != blank -%}
+		<div class="featured-collection__link-wrapper">
+			<a
+				class="focus-visible-outline button {% if button_style == 'circle' %}button--primary{% else %}button--{{- button_style }}{% endif %} featured-collection__link"
+				href="{{- button_link -}}"
+				aria-label="{{- link_aria_label_text | escape -}}"
+			>
+				{{- link_text -}}
+			</a>
+		</div>
+	{%- endif -%}
+{%- endcapture -%}
+
+{% if settings.design == 'alternate' %}
+	{% render 'featured-collection-new' %}
+{% else %}
+	{{- 'featured-collection.build.css' | asset_url | stylesheet_tag -}}
+
+	<section class="featured-collection">
+		<div {% if full_width == false %} class="featured-collection__container" {% endif %}>
+			{{- featured_collection -}}
+		</div>
+	</section>
+{% endif %}
+
+{%- schema -%}
+{
+	"name": "Featured collection",
+	"disabled_on": {
+		"groups": ["header", "footer"],
+		"templates": ["password"]
+	},
+	"settings": [
+		{
+			"type": "collection",
+			"id": "collection",
+			"label": "Collection"
+		},
+		{
+			"type": "text",
+			"id": "label",
+			"label": "Label"
+		},
+		{
+			"type": "text",
+			"id": "heading",
+			"label": "Heading"
+		},
+		{
+			"type": "url",
+			"id": "link_url",
+			"label": "Link url",
+			"info": "By default selected collection url will be used."
+		},
+		{
+			"type": "text",
+			"id": "link_text",
+			"label": "Link label"
+		},
+		{
+			"type": "text",
+			"id": "link_aria_label_text",
+			"label": "Link aria-label",
+			"info": "Need for good accessibility, e.g. 'Shop all shirts.'. [Learn more](https://utdweb.team/shopify-themes/gain/manual#section-featured-collection)"
+		},
+		{
+			"type": "select",
+			"id": "button_style",
+			"label": "Button style",
+			"options": [
+				{
+					"value": "primary",
+					"label": "Primary"
+				},
+				{
+					"value": "secondary",
+					"label": "Secondary"
+				},
+				{
+					"value": "circle",
+					"label": "Circle"
+				}
+			],
+			"default": "primary",
+			"info": "Circle button appears with an alternate design"
+		},
+		{
+			"type": "select",
+			"id": "layout",
+			"label": "Layout",
+			"options": [
+				{
+					"value": "5",
+					"label": "5 products"
+				},
+				{
+					"value": "10",
+					"label": "10 products"
+				}
+			],
+			"default": "5"
+		},
+		{
+			"type": "checkbox",
+			"id": "enable_cards_indent",
+			"label": "Enable product cards indent",
+			"default": false,
+			"info": "Works with a standard design"
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "checkbox",
+			"id": "full_width",
+			"label": "Make full width",
+			"default": true,
+			"info": "If unchecked - container width will be set based on the group 'Layout' settings in the Theme settings."
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 60
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 0
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 0
+		}
+	],
+	"presets": [
+		{
+			"name": "Featured collection",
+			"settings": {
+				"label": "Label",
+				"heading": "Featured collection",
+				"link_text": "Link label"
+			}
+		}
+	]
+}
+{%- endschema -%}

@@ -1,0 +1,285 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Benefits
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign section_background 	= section.settings.section_background -%}
+{%- assign heading_color 		= section.settings.heading_color -%}
+{%- assign text_color 			= section.settings.text_color -%}
+{%- assign border_color 		= section.settings.border_color -%}
+{%- assign outline_color 		= section.settings.outline_color -%}
+{%- assign show_borders 		= section.settings.show_borders -%}
+{%- assign full_width 			= section.settings.full_width -%}
+
+
+{%- capture section_styles -%}
+	--background-color: {{- section_background -}}; {{-  -}}
+	--heading-color: {{- heading_color -}}; {{-  -}}
+	--text-color: {{- text_color -}}; {{-  -}}
+	--border-color: {{- border_color -}};
+	--outline-color: {{- outline_color -}};
+{%- endcapture -%}
+
+{%- if section.blocks.size > 0 and settings.design != 'alternate' -%}
+	{%- capture benefits -%}
+		<ul class="benefits__row">
+			{%- for block in section.blocks -%}
+				{%- assign heading		= block.settings.heading -%}
+				{%- assign text			= block.settings.text -%}
+				{%- assign image		= block.settings.image -%}
+				{%- assign block_link	= block.settings.block_link -%}
+				{%- assign button_aria	= block.settings.button_aria -%}
+
+				{%- if image != blank -%}
+					{%- assign benefits_has_image = true -%}
+				{%- else -%}
+					{%- assign benefits_has_image = false -%}
+				{%- endif -%}
+
+				{%- if benefits_has_image -%}
+					{%- capture col_image -%}
+						{%- capture img_focal -%}
+							--img-desktop-pos: {{ image.presentation.focal_point }};
+						{%- endcapture -%}
+
+						<div class="benefits__icon-wrapper">
+							<img
+								class="benefits__icon"
+								srcset="{{ image | img_url: '54x' }} 1x, {{ image | img_url: '108x' }} 2x"
+								src="{{- image | img_url: '54x' -}}"
+								alt="{{- image.alt | escape -}}"
+								style="{{ img_focal }}"
+							>
+						</div>
+					{%- endcapture -%}
+				{%- endif -%}
+
+				{%- if benefits_has_image or heading != blank or text != blank -%}
+					{%- capture block_content -%}
+						{% if block_link != blank %}
+							<a
+								href="{{ block_link }}"
+								class="benefits__link"
+								{% if button_aria != blank -%}
+								aria-label="{{- button_aria | escape -}}"
+								{%- endif -%}
+							></a>
+						{% endif %}
+
+						{%- if benefits_has_image -%}
+							{{- col_image -}}
+						{%- endif -%}
+
+						{%- if heading != blank -%}
+							<div class="h3 benefits__heading">
+								{{- heading -}}
+							</div>
+						{%- endif -%}
+
+						{%- if text != blank -%}
+							<p class="benefits__text">
+								{{- text -}}
+							</p>
+						{%- endif -%}
+					{%- endcapture -%}
+
+					<li class="benefits__col {% unless show_borders %}benefits__col--no-border{% endunless %}">
+						{{- block_content -}}
+					</li>
+				{%- endif -%}
+			{%- endfor -%}
+		</ul>
+	{%- endcapture -%}
+{%- endif -%}
+
+{%- if section.blocks.size > 0 -%}
+	{%- style -%}
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_mobile -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+		}
+
+		@media screen and (min-width: 768px) {
+			#shopify-section-{{- section.id -}} {
+				padding-top: {{- section.settings.offset_top_desktop -}}px;
+				padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+			}
+		}
+	{%- endstyle -%}
+
+	{% if settings.design == 'alternate' %}
+		{% render 'benefits-new',
+			full_width: full_width,
+			show_borders: show_borders,
+			styles: section_styles
+		%}
+	{% else %}
+		{{- 'benefits.build.css' | asset_url | stylesheet_tag -}}
+
+		<section class="benefits js-animate" style="{{- section_styles -}}">
+			<div class="benefits__container {% if full_width %}benefits__container--full-width{% endif %}">
+				{{- benefits -}}
+			</div>
+		</section>
+	{% endif %}
+{%- endif -%}
+
+{%- schema -%}
+{
+	"name": "Benefits",
+	"max_blocks": 3,
+	"disabled_on": {
+		"groups": ["header", "footer"]
+	},
+	"settings": [
+		{
+			"type": "header",
+			"content": "Colors"
+		},
+		{
+			"type": "color",
+			"id": "section_background",
+			"label": "Section background",
+			"default": "#FFFFFF",
+			"info": "Works with a standard design"
+		},
+		{
+			"type": "color",
+			"id": "heading_color",
+			"label": "Heading",
+			"default": "#000000"
+		},
+		{
+			"type": "color",
+			"id": "text_color",
+			"label": "Text",
+			"default": "#757575"
+		},
+		{
+			"type": "color",
+			"id": "border_color",
+			"label": "Border",
+			"default": "#E6E6E6"
+		},
+		{
+			"type": "color",
+			"id": "outline_color",
+			"label": "Outline",
+			"default": "#D2D2D2",
+			"info": "The setting is used for alternative design."
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "checkbox",
+			"id": "full_width",
+			"label": "Make full width",
+			"default": true,
+			"info": "If unchecked - container width will be set based on the group 'Layout' settings in the Theme settings."
+		},
+		{
+			"type": "checkbox",
+			"id": "show_borders",
+			"label": "Show borders",
+			"default": true
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 0
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 0
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 0
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 0
+		}
+	],
+	"blocks": [
+		{
+			"type": "benefits_item",
+			"name": "Item",
+			"settings": [
+				{
+					"type": "text",
+					"id": "heading",
+					"label": "Heading",
+					"default": "Heading"
+				},
+				{
+					"type": "text",
+					"id": "text",
+					"label": "Text",
+					"default": "Benefit text"
+				},
+				{
+					"type": "image_picker",
+					"id": "image",
+					"label": "Image",
+					"info": "108 x 108px recommended"
+				},
+				{
+					"type": "url",
+					"id": "block_link",
+					"label": "Link"
+				},
+				{
+					"type": "text",
+					"id": "button_aria",
+					"label": "Link aria-label",
+					"info": "Need for good accessibility, e.g. 'Learn more about...'. [Learn more](https://utdweb.team/shopify-themes/gain/manual#section-benefits)"
+				}
+			]
+		}
+	],
+	"presets": [
+		{
+			"name": "Benefits",
+			"settings": {},
+			"blocks": [
+				{
+					"type": "benefits_item"
+				},
+				{
+					"type": "benefits_item"
+				},
+				{
+					"type": "benefits_item"
+				}
+			]
+		}
+	]
+}
+{%- endschema -%}

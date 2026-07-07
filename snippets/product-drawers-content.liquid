@@ -1,0 +1,121 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Product Drawers Content
+------------------------------------------------------------------------------
+{% endcomment %}
+
+{%- assign drawers = blocks | where: 'type', 'drawers' | first -%}
+{%- assign options = blocks | where: 'type', 'options' | first -%}
+
+{%- if drawers != nil -%}
+	{%- comment -%}
+		Description variables
+	{%- endcomment -%}
+	{%- assign description_show = drawers.settings.show_description -%}
+	{%- assign description_toggle_text = drawers.settings.description_toggle_text -%}
+	{%- assign description_drawer_title = drawers.settings.description_drawer_title -%}
+	{%- assign show_description = false -%}
+	{%- if description_show
+		and description_toggle_text != blank
+		and product.description != blank
+		and description_drawer_title != blank
+	-%}
+		{%- assign show_description = true -%}
+	{%- endif -%}
+
+	{%- comment -%}
+		Shipping & Returns variables
+	{%- endcomment -%}
+	{%- assign shipping_and_returns = drawers.settings.shipping_and_returns -%}
+	{%- assign shipping_and_returns_toggle_text = drawers.settings.shipping_and_returns_toggle_text -%}
+	{%- assign shipping_and_returns_drawer_title = drawers.settings.shipping_and_returns_drawer_title | default: shipping_and_returns.title -%}
+	{%- assign show_shipping_and_returns = false -%}
+
+	{%- if shipping_and_returns != blank
+		and shipping_and_returns.content != blank
+		and shipping_and_returns_toggle_text != blank
+	-%}
+		{%- assign show_shipping_and_returns = true -%}
+	{%- endif -%}
+
+	{%- comment -%}
+		Custom drawer 1 variables
+	{%- endcomment -%}
+	{%- assign custom_drawer_title_1 = drawers.settings.custom_drawer_title_1 -%}
+	{%- assign custom_drawer_text_1 = drawers.settings.custom_drawer_text_1 -%}
+	{%- assign show_custom_drawer_1 = false -%}
+
+	{% if custom_drawer_title_1 != blank and custom_drawer_text_1 != blank %}
+		{%- assign show_custom_drawer_1 = true -%}
+	{% endif %}
+
+	{%- capture description -%}
+		{% assign toggle_id = 'descriptionDrawer-' | append: section.id %}
+		{% assign product_description = product.description | replace: '<img', '<img loading="lazy"'%}
+
+		{%- include 'product-form-drawer',
+			title: description_drawer_title,
+			content: product_description,
+			toggle_id: toggle_id,
+			class_container: 'product-description-drawer',
+			class_body: 'rte-product-drawer rte-product-drawer--description'
+		-%}
+	{%- endcapture -%}
+
+	{%- capture shipping_and_returns -%}
+		{% assign toggle_id = 'shippingAndReturnsDrawer-' | append: section.id %}
+
+		{%- include 'product-form-drawer',
+			title: shipping_and_returns_drawer_title,
+			content: shipping_and_returns.content,
+			toggle_id: toggle_id,
+			class_container: 'product-shipping-and-returns-drawer',
+			class_body: 'rte-product-drawer'
+		-%}
+	{%- endcapture -%}
+
+	{% capture custom_drawer_1 %}
+		{% assign toggle_id = 'CustomDrawer-1-' | append: section.id %}
+
+		{%- include 'product-form-drawer',
+			title: custom_drawer_title_1,
+			content: custom_drawer_text_1,
+			toggle_id: toggle_id,
+			class_container: '',
+			class_body: 'rte-product-drawer'
+		-%}
+	{% endcapture %}
+
+	{%- if show_description or show_shipping_and_returns or show_custom_drawer_1 -%}
+		{%- if show_description -%}
+			{{- description -}}
+		{%- endif -%}
+
+		{%- if show_shipping_and_returns -%}
+			{{- shipping_and_returns -}}
+		{%- endif -%}
+
+		{%- if show_custom_drawer_1 -%}
+			{{- custom_drawer_1 -}}
+		{%- endif -%}
+	{%- endif -%}
+{%- endif -%}
+
+{%- if options != nil -%}
+	{%- assign size_guide_page = product.metafields.size_guide.page.value -%}
+
+	{%- if size_guide_page != blank and size_guide_page.content != blank -%}
+		{% assign toggle_id = 'productSizeGuideDrawer-' | append: section.id %}
+		{% assign size_guide_page_content = size_guide_page.content | replace: '<img', '<img loading="lazy"'%}
+
+		{% include 'product-form-drawer',
+			title: options.settings.size_guide_title,
+			content: size_guide_page_content,
+			toggle_id: toggle_id,
+			class_container: 'product-size-guide-drawer',
+			tab_general_name: options.settings.size_guide_tab_general_name,
+			tab_model_name: options.settings.size_guide_tab_model_name,
+			full_width_mode: true
+		%}
+	{%- endif -%}
+{%- endif -%}

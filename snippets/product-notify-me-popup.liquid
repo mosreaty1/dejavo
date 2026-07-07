@@ -1,0 +1,155 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Product notify me popup
+------------------------------------------------------------------------------
+{% endcomment %}
+
+
+{%- assign notify_me_button_label = block.settings.notify_me_button_label -%}
+{%- assign notify_me_button_icon = block.settings.notify_me_button_icon -%}
+{%- assign notify_me_button_icon_alt = block.settings.notify_me_button_icon.alt -%}
+{%- assign notify_me_form_heading = block.settings.notify_me_form_heading -%}
+{%- assign notify_me_form_email_placeholder = block.settings.notify_me_form_email_placeholder -%}
+{%- assign notify_me_form_submit_button_label = block.settings.notify_me_form_submit_button_label -%}
+{%- assign notify_me_form_success_message = block.settings.notify_me_form_success_message -%}
+{%- assign close_modal = 'general.accessibility.close_modal' | t -%}
+{%- assign product_notify_me_message = 'products.product.product_notify_me_message' | t -%}
+{%- assign id = section.id -%}
+{%- assign design = settings.design -%}
+
+{%- if notify_me_button_label != blank and
+	notify_me_form_email_placeholder != blank and
+	notify_me_form_submit_button_label != blank and
+	notify_me_form_success_message != blank and
+	notify_me_form_heading != blank and
+	product_notify_me_message != blank
+-%}
+
+	<div class="{% if design == 'alternate' %}product-notify-me-popup-new{% else %}product-notify-me-popup{% endif %} js-notify-me-popup"
+		 id="ProductNotifyMePopup-{{- id -}}"
+		 role="dialog"
+		 aria-labelledby="ProductNotifyMePopupTitle-{{- id -}}"
+	>
+		<div class="product-notify-me-popup__container">
+
+			<div class="product-notify-me-popup__content">
+				<h2 class="product-notify-me-popup__heading {% if design == 'alternate' %}h4{% else %}h3{% endif %}"
+					id="ProductNotifyMePopupTitle-{{- id -}}"
+				>
+					{{- notify_me_form_heading -}}
+				</h2>
+
+				{%- assign contact_form_id = 'ProductNotifyMeContactForm--' | append: id -%}
+				{%- assign form_class = 'product-notify-me-contact-form js-notify-me-form' -%}
+
+				{% if design == 'alternate' %}
+					{%- assign form_class = 'product-notify-me-contact-form-new js-notify-me-form' -%}
+				{% endif %}
+
+				{%- form "contact", class: form_class, id: contact_form_id -%}
+					<div class="js-notify-me-form-status" hidden data-form-status="{%- if form.errors or form.posted_successfully? -%}posted{%- endif -%}"></div>
+
+					<div class="product-notify-me-contact-form__message-container">
+						{% if form.errors %}
+							<small
+								class="product-notify-me-contact-form__message product-notify-me-contact-form__message--error"
+								tabindex="-1"
+							>
+								{% render 'icons-small' with icon: 'close' %}
+
+								{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}
+							</small>
+						{% endif %}
+
+						{% if form.posted_successfully? %}
+							<h3
+								class="product-notify-me-contact-form__message product-notify-me-contact-form__message--success text"
+								tabindex="-1"
+							>
+								{% render 'icons-small' with icon: 'check' %}
+
+								{{- notify_me_form_success_message -}}
+							</h3>
+						{% endif %}
+					</div>
+
+					<div class="product-notify-me-contact-form__field">
+						<label hidden for="ProductNotifyMeContactFormMessageTextarea--{{- id -}}"></label>
+						<textarea name="contact[message]"
+								  data-notify-me-message="{{- product_notify_me_message -}}"
+								  hidden
+								  readonly
+								  id="ProductNotifyMeContactFormMessageTextarea--{{- id -}}"
+								  class="is-hidden"
+						></textarea>
+
+						<label hidden for="ProductNotifyMeContactFormProductUrlTextarea--{{- id -}}"></label>
+
+						<textarea name="contact[ProductURL]"
+								  data-notify-me-message="{{- product_notify_me_message -}}"
+								  hidden
+								  readonly
+								  id="ProductNotifyMeContactFormProductUrlTextarea--{{- id -}}"
+								  class="is-hidden"
+						></textarea>
+
+						<div class="input-wrapper product-notify-me-contact-form__input-wrapper">
+							<input
+								id="ProductNotifyMeContactFormEmailInput--{{- id -}}"
+								type="email"
+								name="contact[email]"
+								class="input product-notify-me-contact-form__input js-notify-me-input"
+								value="{{- form.email -}}"
+								aria-required="true"
+								autocapitalize="off"
+								autocomplete="email"
+								placeholder="{{- notify_me_form_email_placeholder -}}"
+								required
+							/>
+
+							<label class="input-label product-notify-me-contact-form__label"
+								   for="ProductNotifyMeContactFormEmailInput--{{- id -}}">
+								{{- notify_me_form_email_placeholder -}}
+							</label>
+						</div>
+
+						{% if design == 'alternate' %}
+							<button type="submit" class="button-circle product-notify-me-contact-form__submit">
+								<span class="button__text">
+									{{- notify_me_form_submit_button_label -}}
+								</span>
+
+								<span class="button-new__icon-container">
+									<span class="button-new__icon-wrapper">
+										{% render "icons-new", icon: "wave", section_id: 'notify-me-popup' %}
+									</span>
+								</span>
+							</button>
+
+						{% else %}
+							<button
+								type="submit"
+								class="button button--secondary button--text-uppercase product-notify-me-contact-form__button"
+							>
+								{{- notify_me_form_submit_button_label -}}
+							</button>
+						{% endif %}
+					</div>
+				{%- endform -%}
+			</div>
+
+			<button type="button"
+					class="product-notify-me-popup__close-icon-button"
+					aria-label="{{- close_modal | escape -}}"
+					data-target="ProductNotifyMePopup-{{- id -}}"
+					data-js-toggle="ProductNotifyMePopup-{{- id -}}"
+			>
+				{% if design == 'alternate' %}
+					{%- render 'icons-new', icon: 'close' -%}
+				{% else %}
+					{% render 'icons-small', icon: 'close' %}
+				{% endif %}
+			</button>
+		</div>
+	</div>
+{%- endif -%}

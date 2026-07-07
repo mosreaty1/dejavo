@@ -1,0 +1,307 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Video new
+	- product: Section (required, object)
+
+	{%- render '_video-new', section: section -%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{{- "video-new.build.css" | asset_url | stylesheet_tag -}}
+
+{%- assign label     		= section.settings.label -%}
+{%- assign heading      	= section.settings.heading -%}
+{%- assign text_content 	= section.settings.text_content -%}
+{%- assign aspect_ratio 	= section.settings.aspect_ratio -%}
+{%- assign image        	= section.settings.image -%}
+{%- assign video_type                 = section.settings.video_type -%}
+{%- assign html_video_desktop     	  = section.settings.html_video_desktop -%}
+{%- assign html_video_mobile		  = section.settings.html_video_mobile | default: html_video_desktop -%}
+{%- assign external_video_url_desktop = section.settings.external_video_url_desktop -%}
+{%- assign external_video_url_mobile  = section.settings.external_video_url_mobile | default: external_video_url_desktop -%}
+{%- assign full_width   			  = section.settings.full_width -%}
+
+{%- assign enable_accents_spot 	= settings.enable_accents_spot -%}
+{%- assign accents_spot_color 	= settings.accents_spot_color -%}
+{%- assign is_lazy 				= true -%}
+
+{%- if section.index == 1 -%}
+	{%- assign is_lazy = false -%}
+{%- endif -%}
+
+{%- capture animated_classes -%}
+	js-animate{% if request.visual_preview_mode or section.index == 1 %} animated{% endif %}
+{%-endcapture-%}
+
+{%- if html_video_desktop != blank -%}
+	{%- capture html_video -%}
+		<video
+			class="video-new__player js-video"
+			data-device="desktop"
+			data-type="html"
+			muted
+			controls
+			playsinline
+		>
+			{%- for source in html_video_desktop.sources -%}
+				{%- if source.mime_type == 'video/mp4' -%}
+					<source src="{{- source.url -}}" type="{{- source.mime_type -}}">
+				{%- endif -%}
+			{%- endfor -%}
+		</video>
+
+		<video
+			class="video-new__player video__player--mobile js-video"
+			data-device="mobile"
+			data-type="html"
+			muted
+			controls
+			playsinline
+		>
+			{%- for source in html_video_mobile.sources -%}
+				{%- if source.mime_type == 'video/mp4' -%}
+					<source src="{{- source.url -}}" type="{{- source.mime_type -}}">
+				{%- endif -%}
+			{%- endfor -%}
+		</video>
+	{%- endcapture -%}
+{%- endif -%}
+
+{%- if external_video_url_desktop != nil -%}
+	{%- capture external_video -%}
+		{%- if external_video_url_desktop.type == 'youtube' -%}
+			<div
+				class="video-new__player js-video"
+				data-device="desktop"
+				data-type="{{- external_video_url_desktop.type -}}"
+			>
+				<div
+					class="js-video-youtube"
+					data-video-id="{{- external_video_url_desktop.id -}}"
+				></div>
+			</div>
+		{%- else -%}
+			<div
+				class="video-new__player js-video"
+				data-device="desktop"
+				data-video-id="{{- external_video_url_desktop.id -}}"
+				data-type="{{- external_video_url_desktop.type -}}"
+			></div>
+		{%- endif -%}
+
+		{%- if external_video_url_mobile.type == 'youtube' -%}
+			<div
+				class="video-new__player video__player--mobile js-video"
+				data-device="mobile"
+				data-type="{{- external_video_url_mobile.type -}}"
+			>
+				<div
+					class="js-video-youtube"
+					data-video-id="{{- external_video_url_mobile.id -}}"
+				></div>
+			</div>
+		{%- else -%}
+			<div
+				class="video-new__player video__player--mobile js-video"
+				data-device="mobile"
+				data-video-id="{{- external_video_url_mobile.id -}}"
+				data-type="{{- external_video_url_mobile.type -}}"
+			></div>
+		{%- endif -%}
+	{%- endcapture -%}
+{%- endif -%}
+
+<section class="video-new{% if enable_accents_spot %} video-new--accent-spot{% endif %}{% if full_width %} video-new--full-width{% endif %} js-video-section">
+	<div class="video-new__container">
+		{%- if label != blank or heading != blank or text_content != blank -%}
+			<div class="video-new__header {{ animated_classes }}">
+				<div class="video-new__header-wrapper">
+					{%- if label != blank -%}
+						<div class="video-new__label subheading need-animate">
+							{{- label -}}
+						</div>
+					{%- endif -%}
+
+					{%- if heading != blank -%}
+						<h2 class="h2 video-new__heading need-animate">
+							{{- heading -}}
+						</h2>
+					{%- endif -%}
+
+					{%- if text_content != blank -%}
+						<div class="video-new__text-content rte need-animate">
+							{{- text_content -}}
+						</div>
+					{%- endif -%}
+				</div>
+			</div>
+		{%- endif -%}
+
+		<div class="video-new__media-wrapper {% if aspect_ratio == "four-three" %} video-new__media-wrapper--{{ aspect_ratio }}{% endif %} js-video-container">
+			<div class="video-new__media-container">
+				<button
+					class="video-new__play-button button-new button--play js-video-start-button"
+					aria-label="{{- "general.accessibility.video_play" | t | escape -}}"
+				>
+					{% render 'icons-medium', icon: "play" %}
+				</button>
+
+				{% if image != blank %}
+					{%- capture img_focal -%}
+						--img-desktop-pos: {{ image.presentation.focal_point }};
+					{%- endcapture -%}
+
+					{%- assign size_width 	= 924 -%}
+					{%- assign size_height 	= 519 -%}
+					{%- assign size_width_2x 	= size_width | times: 2 -%}
+					{%- assign size_height_2x 	= size_height | times: 2 -%}
+
+					{%- assign size_width_1500 		= 733 -%}
+					{%- assign size_height_1500 	= 412 -%}
+					{%- assign size_width_1500_2x 	= size_width_1500 | times: 2 -%}
+					{%- assign size_height_1500_2x 	= size_height_1500 | times: 2 -%}
+
+					{%- assign size_width_991 	= 926 -%}
+					{%- assign size_height_991 	= 649 -%}
+					{%- assign size_width_991_2x 	= size_width_991 | times: 2 -%}
+					{%- assign size_height_991_2x 	= size_height_991 | times: 2 -%}
+
+					{%- assign size_width_767 	= 702 -%}
+					{%- assign size_height_767 	= 492 -%}
+					{%- assign size_width_767_2x 	= size_width_767 | times: 2 -%}
+					{%- assign size_height_767_2x 	= size_height_767 | times: 2 -%}
+
+					{%- assign size_width_420 	= 257 -%}
+					{%- assign size_height_420 	= 248 -%}
+					{%- assign size_width_420_2x 	= size_width_420 | times: 2 -%}
+					{%- assign size_height_420_2x 	= size_height_420 | times: 2 -%}
+
+					{%- assign size_width_375 	= 310 -%}
+					{%- assign size_height_375 	= 217 -%}
+					{%- assign size_width_375_2x 	= size_width_375 | times: 2 -%}
+					{%- assign size_height_375_2x 	= size_height_375 | times: 2 -%}
+
+					{%- if aspect_ratio == "four-three" -%}
+						{%- assign size_height 	= 692 -%}
+						{%- assign size_height_2x 	= size_height | times: 2 -%}
+
+						{%- assign size_height_1500 	= 550 -%}
+						{%- assign size_height_1500_2x 	= size_height_1500 | times: 2 -%}
+
+						{%- assign size_height_991 	= 650 -%}
+						{%- assign size_height_991_2x 	= size_height_991 | times: 2 -%}
+					{%- endif -%}
+
+					<picture class="{% if is_lazy %}lazy{% endif %}">
+						<source
+							{% if is_lazy %}
+								data-srcset="{{ image | image_url: width: size_width_375, height: size_height_375 }} 1x,
+											 {{ image | image_url: width: size_width_375_2x, height: size_height_375_2x }} 2x"
+								srcset="{{ image | image_url: width: 10, height: 10 }} 1x,
+										{{ image | image_url: width: 20, height: 20 }} 2x"
+							{% else %}
+								srcset="{{ image | image_url: width: size_width_375, height: size_height_375 }} 1x,
+										{{ image | image_url: width: size_width_375_2x, height: size_height_375_2x }} 2x"
+							{% endif %}
+							media="(max-width: 375px)"
+							width="{{ size_width_375 }}"
+							height="{{ size_height_375 }}"
+						/>
+
+						<source
+							{% if is_lazy %}
+								data-srcset="{{ image | image_url: width: size_width_420, height: size_height_420 }} 1x,
+											 {{ image | image_url: width: size_width_420_2x, height: size_height_420_2x }} 2x"
+								srcset="{{ image | image_url: width: 10, height: 10 }} 1x,
+										{{ image | image_url: width: 20, height: 20 }} 2x"
+							{% else %}
+								srcset="{{ image | image_url: width: size_width_420, height: size_height_420 }} 1x,
+										{{ image | image_url: width: size_width_420_2x, height: size_height_420_2x }} 2x"
+							{% endif %}
+							media="(max-width: 420px)"
+							width="{{ size_width_420 }}"
+							height="{{ size_height_420 }}"
+						/>
+
+						<source
+							{% if is_lazy %}
+								data-srcset="{{ image | image_url: width: size_width_767, height: size_height_767 }} 1x,
+											 {{ image | image_url: width: size_width_767_2x, height: size_height_767_2x }} 2x"
+								srcset="{{ image | image_url: width: 10, height: 10 }} 1x,
+										{{ image | image_url: width: 20, height: 20 }} 2x"
+							{% else %}
+								srcset="{{ image | image_url: width: size_width_767, height: size_height_767 }} 1x,
+										{{ image | image_url: width: size_width_767_2x, height: size_height_767_2x }} 2x"
+							{% endif %}
+							media="(max-width: 767px)"
+							width="{{ size_width_767 }}"
+							height="{{ size_height_767 }}"
+						/>
+
+						<source
+							{% if is_lazy %}
+								data-srcset="{{ image | image_url: width: size_width_991, height: size_height_991 }} 1x,
+											 {{ image | image_url: width: size_width_991_2x, height: size_height_991_2x }} 2x"
+								srcset="{{ image | image_url: width: 10, height: 10 }} 1x,
+										{{ image | image_url: width: 20, height: 20 }} 2x"
+							{% else %}
+								srcset="{{ image | image_url: width: size_width_991, height: size_height_991 }} 1x,
+										{{ image | image_url: width: size_width_991_2x, height: size_height_991_2x }} 2x"
+							{% endif %}
+							media="(max-width: 991px)"
+							width="{{ size_width_991 }}"
+							height="{{ size_height_991 }}"
+						/>
+
+						<source
+							{% if is_lazy %}
+								data-srcset="{{ image | image_url: width: size_width_1500, height: size_height_1500 }} 1x,
+											 {{ image | image_url: width: size_width_1500_2x, height: size_height_1500_2x }} 2x"
+								srcset="{{ image | image_url: width: 10, height: 10 }} 1x,
+										{{ image | image_url: width: 20, height: 20 }} 2x"
+							{% else %}
+								srcset="{{ image | image_url: width: size_width_1500, height: size_height_1500 }} 1x,
+										{{ image | image_url: width: size_width_1500_2x, height: size_height_1500_2x }} 2x"
+							{% endif %}
+							media="(max-width: 1500px)"
+							width="{{ size_width_1500 }}"
+							height="{{ size_height_1500 }}"
+						/>
+
+						<img
+							{% if is_lazy %}
+								data-srcset="{{ image | image_url: width: size_width, height: size_height }} 1x,
+											 {{ image | image_url: width: size_width_2x, height: size_height_2x }} 2x"
+								srcset="{{ image | image_url: width: 10, height: 10 }} 1x,
+										{{ image | image_url: width: 20, height: 20 }} 2x"
+								data-src="{{ image | image_url: width: size_width, height: size_height }}"
+								src="{{ image | image_url: width: 10, height: 10 }}"
+							{% else %}
+								srcset="{{ image | image_url: width: size_width, height: size_height }} 1x,
+										{{ image | image_url: width: size_width_2x, height: size_height_2x }} 2x"
+								src="{{ image | image_url: width: size_width, height: size_height }}"
+							{% endif %}
+							alt="{{ image.alt | escape }}"
+							class="video-new__placeholder-image need-animate js-video-placeholder {{ animated_classes }}"
+							style="{{ img_focal }}"
+						/>
+					</picture>
+				{% else %}
+					{%- capture placeholder_svg_classes -%}
+						video-new__placeholder-image need-animate js-video-placeholder {{ animated_classes }}
+					{%- endcapture -%}
+
+					{{- "lifestyle-1" | placeholder_svg_tag: placeholder_svg_classes -}}
+				{% endif %}
+
+
+				{%- case video_type -%}
+					{%- when 'html' -%}
+						{{- html_video -}}
+					{%- when 'youtube_vimeo' -%}
+						{{- external_video -}}
+				{%- endcase -%}
+			</div>
+		</div>
+	</div>
+</section>

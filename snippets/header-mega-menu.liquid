@@ -1,0 +1,274 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Header mega menu
+	Render header mega menu
+	- menu: Menu object (required)
+	- blocks: blocks object using for output media content.
+	- enable_mega_menu_borders: option to show/hide borders in mega menu
+
+	Usage:
+	{%- render 'header-mega-menu', menu: first_level_link, megamenu_object: megamenu_object, enable_mega_menu_borders: enable_mega_menu_borders -%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign design 			= settings.design -%}
+
+{%- assign menu_type		= megamenu_object.settings.menu_type -%}
+
+{%- assign image            		= megamenu_object.settings.image -%}
+{%- assign label            		= megamenu_object.settings.label -%}
+{%- assign heading          		= megamenu_object.settings.heading -%}
+{%- assign link             		= megamenu_object.settings.link -%}
+{%- assign link_label				= megamenu_object.settings.link_label -%}
+{%- assign product1         		= megamenu_object.settings.product1 -%}
+{%- assign media_rounded_corners 	= megamenu_object.settings.media_rounded_corners -%}
+
+{%- assign label2           		= megamenu_object.settings.label2 -%}
+{%- assign image2           		= megamenu_object.settings.image2 -%}
+{%- assign heading2        			= megamenu_object.settings.heading2 -%}
+{%- assign link2           			= megamenu_object.settings.link2 -%}
+{%- assign link_label2				= megamenu_object.settings.link_label2 -%}
+{%- assign product2         		= megamenu_object.settings.product2 -%}
+{%- assign media_rounded_corners 	= megamenu_object.settings.media_rounded_corners -%}
+
+{%- capture classes -%}
+	{%- if design == 'alternate' -%}
+		header-mega-menu-new header-mega-menu-new--main
+	{%- else -%}
+		header-mega-menu header-mega-menu--main
+	{%- endif -%}
+{%- endcapture -%}
+
+<div
+	id="headerMegaMenu:{{- menu.title | handleize -}}"
+	class="{{- classes }} is-hidden js-header-mega-menu"
+>
+	<span class="visually-hidden">
+		{{- "layout.navigation.mega_menu" | t -}}
+	</span>
+
+	<div class="header-mega-menu__container js-header-mega-menu-content">
+		{%- capture media1 -%}
+			{%- if image != blank or product1 != blank -%}
+				<div class="header-mega-menu__block header-mega-menu__block--image">
+					{%- if product1 != blank -%}
+						{%- if design == 'alternate' -%}
+							{%- render 'product-card-new', product: product1, size: 415 -%}
+						{%- else -%}
+							{%- render 'product-card', product: product1, size: 415, simplified_view: true -%}
+						{%- endif -%}
+					{%- elsif image != blank -%}
+						{%- render 'header-mega-menu-image-card', image: image, label: label, heading: heading, link: link, link_label: link_label, media_rounded_corners: media_rounded_corners -%}
+					{%- endif -%}
+				</div>
+			{%- endif -%}
+		{%- endcapture -%}
+
+		{%- capture media2 -%}
+			{%- if image2 != blank or product2 != blank -%}
+				<div class="header-mega-menu__block header-mega-menu__block--image">
+					{%- if product2 != blank -%}
+						{%- if design == 'alternate' -%}
+							{%- render 'product-card-new', product: product2, size: 415 -%}
+						{%- else -%}
+							{%- render 'product-card', product: product2, size: 415, simplified_view: true -%}
+						{%- endif -%}
+					{%- elsif image2 != blank -%}
+						{%- render 'header-mega-menu-image-card', image: image2, label: label2, heading: heading2, link: link2, link_label: link_label2, media_rounded_corners: media_rounded_corners2 -%}
+					{%- endif -%}
+				</div>
+			{%- endif -%}
+		{%- endcapture -%}
+
+		{%- if menu_type == 'tabs' -%}
+			{%- capture class -%}
+				{% if media1 != blank and media2 != blank -%}
+					header-mega-menu__block--menu header-mega-menu__block--menu-nested
+				{%- elsif media1 == blank and media2 == blank -%}
+					header-mega-menu__block--menu header-mega-menu__block--menu-nested header-mega-menu__block--menu-no-image
+				{%- else -%}
+					header-mega-menu__block--menu header-mega-menu__block--menu-nested header-mega-menu__block--menu-one-image
+				{%- endif -%}
+			{%- endcapture -%}
+
+			<div class="header-mega-menu__block header-mega-menu__block--menu header-mega-menu__block--menu-main">
+				<ul class="header-mega-menu__menu js-mega-menu-main">
+					{%- for main_link in menu.links -%}
+						<li class="header-mega-menu__menu-item-wrapper">
+							{%- if main_link.links != blank -%}
+								<button
+									class="header-mega-menu__menu-item js-header-mega-menu-toggler-nested"
+									type="button"
+									data-target="headerMegaMenuNested:{{- main_link.title | handleize -}}-{{ menu.handle }}-{{ forloop.index }}"
+									aria-controls="headerMegaMenuNested:{{- main_link.title | handleize -}}-{{ menu.handle }}-{{ forloop.index }}"
+									aria-expanded="false"
+								>
+									<span class="header-mega-menu__menu-item-text">
+										{{- main_link.title | escape -}}
+									</span>
+
+									<span class="header-mega-menu__menu-item-toggle-icon">
+										{%- if design == 'alternate' -%}
+											{%- render 'icons-new', icon: 'arrow-down' -%}
+										{%- else -%}
+											{%- render 'icons-small', icon: 'arrow-down' -%}
+										{%- endif -%}
+									</span>
+								</button>
+							{%- else -%}
+								<a
+									class="header-mega-menu__menu-item"
+									href="{{- main_link.url -}}"
+									{% if main_link.current %}
+										aria-current="page"
+									{% endif %}
+								>
+								<span class="header-mega-menu__menu-item-text">
+									{{- main_link.title | escape -}}
+								</span>
+								</a>
+							{%- endif -%}
+						</li>
+					{%- endfor -%}
+				</ul>
+			</div>
+
+			{%- if enable_mega_menu_borders -%}
+				<div class="header-mega-menu__column-separator"></div>
+			{%- endif -%}
+
+			<div class="header-mega-menu__block {{ class -}}">
+				{%- for main_link in menu.links %}
+					{%- if main_link.links != blank -%}
+						<ul
+							id="headerMegaMenuNested:{{- main_link.title | handleize -}}-{{ menu.handle }}-{{ forloop.index }}"
+							class="header-mega-menu__menu header-mega-menu__menu--nested is-hidden js-header-mega-menu-nested"
+						>
+							{%- for link in main_link.links -%}
+								<li class="header-mega-menu__menu-item-wrapper">
+									<a
+										class="header-mega-menu__menu-item"
+										href="{{- link.url -}}"
+										{% if link.current %}
+											aria-current="page"
+										{% endif %}
+									>
+									<span class="header-mega-menu__menu-item-text">
+										{{- link.title | escape -}}
+									</span>
+									</a>
+								</li>
+							{%- endfor -%}
+						</ul>
+					{%- endif -%}
+				{%- endfor -%}
+			</div>
+		{%- else -%}
+			{% assign menu_links_count = menu.links.size %}
+
+			{%- capture class -%}
+				{% if media1 != blank and media2 != blank -%}
+					header-mega-menu__block--menu-rows
+				{%- elsif media1 == blank and media2 == blank -%}
+					header-mega-menu__block--menu-rows header-mega-menu__block--menu-rows-no-image
+				{%- else -%}
+					header-mega-menu__block--menu-rows header-mega-menu__block--menu-rows-one-image
+				{%- endif -%}
+			{%- endcapture -%}
+
+			<div class="header-mega-menu__block header-mega-menu__block--menu {{ class -}}">
+				<ul class="header-mega-menu__menu">
+					{%- for main_link in menu.links -%}
+						<li class="header-mega-menu__menu-item-wrapper header-mega-menu__menu-item-wrapper--parent">
+							{%- if main_link.links != blank -%}
+								{%- if main_link.url != '#' -%}
+									<a
+										href="{{- main_link.url -}}"
+										class="header-mega-menu__menu-item header-mega-menu__menu-item--parent"
+										{% if main_link.current %}
+											aria-current="page"
+										{% endif %}
+									>
+										<span class="header-mega-menu__menu-item-text">
+											{{- main_link.title | escape -}}
+										</span>
+									</a>
+								{%- else -%}
+									<h3
+										class="header-mega-menu__menu-item header-mega-menu__menu-item--parent"
+									>
+										<span class="header-mega-menu__menu-item-text">
+											{{- main_link.title | escape -}}
+										</span>
+									</h3>
+								{% endif %}
+
+								<ul
+									class="header-mega-menu__menu header-mega-menu__menu--nested is-active"
+								>
+									{%- for link in main_link.links -%}
+										<li class="header-mega-menu__menu-item-wrapper">
+											<a
+												class="header-mega-menu__menu-item"
+												href="{{- link.url -}}"
+												{% if link.current %}
+													aria-current="page"
+												{% endif %}
+											>
+												<span class="header-mega-menu__menu-item-text">
+													{{- link.title | escape -}}
+												</span>
+											</a>
+										</li>
+									{%- endfor -%}
+								</ul>
+							{%- else -%}
+								<a
+									class="header-mega-menu__menu-item header-mega-menu__menu-item--parent"
+									href="{{- main_link.url -}}"
+									{% if main_link.current %}
+										aria-current="page"
+									{% endif %}
+								>
+								<span class="header-mega-menu__menu-item-text">
+									{{- main_link.title | escape -}}
+								</span>
+								</a>
+							{%- endif -%}
+						</li>
+
+						{%- if design == 'alternate' and enable_mega_menu_borders -%}
+							{%- assign index = forloop.index -%}
+							{%- render 'header-mega-menu-row-separator', index: index, position: 3, count: menu_links_count -%}
+							{%- render 'header-mega-menu-row-separator', index: index, position: 4, count: menu_links_count -%}
+							{%- render 'header-mega-menu-row-separator', index: index, position: 5, count: menu_links_count -%}
+							{%- render 'header-mega-menu-row-separator', index: index, position: 6, count: menu_links_count -%}
+						{%- endif -%}
+					{%- endfor -%}
+				</ul>
+			</div>
+		{%- endif -%}
+
+		{%- if enable_mega_menu_borders -%}
+			<div class="header-mega-menu__column-separator"></div>
+		{%- endif -%}
+
+		{%- if media1 != blank -%}
+			{{- media1 -}}
+
+			{%- if design == 'standard' and enable_mega_menu_borders -%}
+				<div class="header-mega-menu__column-separator"></div>
+			{%- endif -%}
+		{%- endif -%}
+
+		{%- if media2 != blank -%}
+			{{- media2 -}}
+
+			{%- if design == 'standard' and enable_mega_menu_borders -%}
+				<div class="header-mega-menu__column-separator"></div>
+			{%- endif -%}
+		{%- endif -%}
+	</div>
+
+	<div class="header-mega-menu__overlay js-mega-menu-overlay"></div>
+</div>

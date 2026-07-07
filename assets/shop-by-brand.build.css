@@ -1,0 +1,85 @@
+.shop-by-brand .shop-by-brand__container {
+	padding: 0 20px;
+}
+.shop-by-brand .shop-by-brand__container.shop-by-brand__container--max-width {
+	max-width: calc(var(--global-container-width) + 40px);
+	margin: 0 auto;
+}
+.shop-by-brand .shop-by-brand__label {
+	margin-bottom: 10px;
+	padding: 0 20px;
+	line-height: 1.37;
+	text-align: center;
+	color: var(--color-secondary-text, #757575);
+	word-wrap: break-word;
+	-webkit-hyphens: auto;
+	        hyphens: auto;
+}
+.shop-by-brand .shop-by-brand__heading {
+	margin-bottom: 30px;
+	text-align: center;
+}
+.shop-by-brand .shop-by-brand__items-container {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	margin: -12px;
+}
+.shop-by-brand .shop-by-brand__item-wrapper {
+	width: 50%;
+	padding: 12px;
+}
+.shop-by-brand .shop-by-brand__item {
+	position: relative;
+	overflow: hidden;
+	display: inline-block;
+	width: 100%;
+	height: 0;
+	padding-top: 42.92%;
+	background-color: var(--card-background);
+}
+@media (-moz-touch-enabled: 0), (hover: hover), (pointer: fine) {
+	.shop-by-brand a.shop-by-brand__item:hover .shop-by-brand__item-image {
+		transform: scale(1.1);
+	}
+}
+.shop-by-brand .shop-by-brand__item-image {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	-o-object-fit: contain;
+	   object-fit: contain;
+	-o-object-position: var(--img-desktop-pos);
+	   object-position: var(--img-desktop-pos);
+	transition: var(--timing-base);
+}
+@media (min-width: 576px) {
+	.shop-by-brand .shop-by-brand__heading {
+		margin-bottom: 40px;
+	}
+	.shop-by-brand .shop-by-brand__item-wrapper {
+		width: 33.333%;
+	}
+}
+@media (min-width: 992px) {
+	.shop-by-brand .shop-by-brand__items-container {
+		margin: -20px -12px;
+	}
+	.shop-by-brand .shop-by-brand__item-wrapper {
+		width: 25%;
+		padding: 20px 12px;
+	}
+}
+@media (min-width: 1200px) {
+	.shop-by-brand .shop-by-brand__container {
+		padding: 0 40px;
+	}
+	.shop-by-brand .shop-by-brand__container.shop-by-brand__container--max-width {
+		max-width: calc(var(--global-container-width) + 80px);
+	}
+	.shop-by-brand .shop-by-brand__item-wrapper {
+		width: 20%;
+	}
+}

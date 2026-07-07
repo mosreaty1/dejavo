@@ -1,0 +1,33 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Share buttons
+  ----------------------
+  Used on PDP
+------------------------------------------------------------------------------
+{% endcomment %}
+<div class="{% if design == 'alternate' %}product-share-buttons-new{% else %}product-share-buttons{% endif %}">
+	<span class="product-share-buttons__label {% if design == 'standard' %}text{% endif %}">
+		{{- 'products.product.share_label' | t -}}
+	</span>
+
+	<input id="share-input-{{ section.id }}" class="is-hidden" type="text" value="{{ shop.url | append: product.url }}">
+
+	<a href="#"
+	   class="button-social js-social-share"
+	   data-share-title="{{ product.title | escape }}"
+	   data-share-url="{{ shop.url | append: product.url }}"
+	   data-input-fallback="share-input-{{ section.id }}"
+	   aria-label="{{ 'general.social.share_button' | t }}"
+	>
+		<span class="tooltip js-share-tooltip">{{ 'general.social.share_success' | t }}</span>
+
+		{% render 'icons-social', icon: "share" %}
+	</a>
+
+	{% comment %}Facebook{% endcomment %}
+	{% render 'share-button', social: "facebook", product: product %}
+
+	{% comment %}Twitter{% endcomment %}
+	{% render 'share-button', social: "twitter", product: product %}
+</div>
+

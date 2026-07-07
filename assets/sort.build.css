@@ -1,0 +1,9 @@
+.sort .sort__select {
+	padding: 11px 20px;
+	font-weight: 600;
+	line-height: 1.6;
+	text-transform: uppercase;
+	color: var(--color-text-primary, #000000);
+	cursor: pointer;
+	-webkit-tap-highlight-color: transparent;
+}

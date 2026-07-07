@@ -1,0 +1,236 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Featured products (Only settings.design == 'alternate')
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{{- 'featured-products-new.build.css' | asset_url | stylesheet_tag -}}
+
+{%- assign heading      		= section.settings.heading -%}
+{%- assign subheading      		= section.settings.subheading -%}
+{%- assign description     		= section.settings.description -%}
+{%- assign layout       		= section.settings.layout -%}
+{%- assign product_list 		= section.settings.product_list -%}
+{%- assign link_url 			= section.settings.link_url -%}
+{%- assign link_text 			= section.settings.link_text -%}
+{%- assign link_aria_label_text = section.settings.link_aria_label_text -%}
+{%- assign button_style 		= section.settings.button_style -%}
+{%- assign full_width 			= section.settings.full_width -%}
+
+{%- capture featured_products_row_wrapper_classes -%}
+	featured-products__row-wrapper swiper {{-  -}}
+	{% if product_list.count > 2 or product_list == blank %} js-featured-content-slider {{-  -}} {%- endif -%}
+	{% if product_list.count > 3 or product_list == blank %} js-featured-content-scrollable-wrapper {%- endif -%}
+{%- endcapture -%}
+
+{%- capture featured_product_row_classes -%}
+	featured-products__row swiper-wrapper {{-  -}}
+	{% if product_list.count > 3 or product_list == blank %} featured-products__row--scrollable {% endif %}
+{%- endcapture -%}
+
+{%- capture featured_product_container_classes -%}
+	featured-products__container featured-products__container--{{- layout }} {{-  -}}
+	{% if full_width == false %} featured-products__container--max-width{% endif %}
+	js-animate{% if request.visual_preview_mode or section.index == 1 %} animated{% endif %}
+{%- endcapture -%}
+
+<section class="featured-products-new js-featured-products"
+		 id="{{- section.id -}}"
+>
+	<div class="{{ featured_product_container_classes }}">
+		{%- if layout == 'main' -%}
+			<div class="featured-products__single-product">
+				<div class="featured-products__text-content-wrapper">
+					<div class="featured-products__text-content">
+						{%- if subheading != blank -%}
+							<h3 class="subheading featured-products__subheading">
+								{{ subheading }}
+							</h3>
+						{%- endif -%}
+
+						{%- if heading != blank -%}
+							<h2 class="h2 featured-products__heading">
+								{{- heading -}}
+							</h2>
+						{%- endif -%}
+
+						{%- if description != blank -%}
+							<p class="featured-products__description">
+								{{- description -}}
+							</p>
+						{%- endif -%}
+					</div>
+
+					{% if link_text != blank and link_url != blank %}
+						<div class="featured-products__link-wrapper">
+							{%- if button_style == "circle" -%}
+								<a
+									href="{{- link_url -}}"
+									class="button-circle"
+									{% if link_aria_label_text != blank %}
+										aria-label="{{ link_aria_label_text }}"
+									{% endif %}
+								>
+							<span class="button__text">
+								{{- link_text -}}
+							</span>
+
+									<span class="button-new__icon-container">
+								<span class="button-new__icon-wrapper">
+									{% render "icons-new", icon: "wave" %}
+								</span>
+							</span>
+								</a>
+							{%- else -%}
+								<a href="{{ link_url }}"
+								   class="button-new button--{{ button_style }} focus-visible-outline"
+									{% if link_aria_label_text != blank %}
+										aria-label="{{ link_aria_label_text }}"
+									{% endif %}
+								>
+									{{ link_text }}
+								</a>
+							{%- endif -%}
+						</div>
+					{% endif %}
+				</div>
+
+				{%- if product_list != blank and product_list.count > 0 -%}
+					{%- assign image_size        = 840 -%}
+					{%- assign image_size_tablet = 735 -%}
+					{%- assign image_size_mobile = 388 -%}
+
+					{% assign product = product_list | first %}
+
+					{%- render
+						'product-card-new',
+						big_card: true,
+						product: product,
+						size: image_size,
+						tablet_size: image_size_tablet,
+						mobile_size: image_size_mobile,
+						is_lazy: is_lazy
+					-%}
+				{%- else -%}
+					{%- render 'product-card-new', product: nil -%}
+				{%- endif -%}
+			</div>
+		{%- endif -%}
+
+		<div class="featured-products__main-content">
+			<div class="featured-products__text-content-wrapper">
+				<div class="featured-products__text-content">
+					{%- if subheading != blank -%}
+						<h3 class="subheading featured-products__subheading">
+							{{ subheading }}
+						</h3>
+					{%- endif -%}
+
+					{%- if heading != blank -%}
+						<h2 class="h2 featured-products__heading">
+							{{- heading -}}
+						</h2>
+					{%- endif -%}
+
+					{%- if description != blank -%}
+						<p class="featured-products__description">
+							{{- description -}}
+						</p>
+					{%- endif -%}
+				</div>
+
+				{% if link_text != blank and link_url != blank %}
+					<div class="featured-products__link-wrapper">
+						{%- if button_style == "circle" -%}
+							<a
+								href="{{- link_url -}}"
+								class="button-circle"
+								{% if link_aria_label_text != blank %}
+									aria-label="{{ link_aria_label_text }}"
+								{% endif %}
+							>
+							<span class="button__text">
+								{{- link_text -}}
+							</span>
+
+								<span class="button-new__icon-container">
+								<span class="button-new__icon-wrapper">
+									{% render "icons-new", icon: "wave" %}
+								</span>
+							</span>
+							</a>
+						{%- else -%}
+							<a href="{{ link_url }}"
+							   class="button-new button--{{ button_style }} focus-visible-outline"
+								{% if link_aria_label_text != blank %}
+									aria-label="{{ link_aria_label_text }}"
+								{% endif %}
+							>
+								{{ link_text }}
+							</a>
+						{%- endif -%}
+					</div>
+				{% endif %}
+			</div>
+
+			<div class="{{- featured_products_row_wrapper_classes | strip_newlines -}}">
+				<div class="{{- featured_product_row_classes | strip_newlines -}}">
+					{%- if product_list != blank and product_list.count > 0 -%}
+						{%- assign image_size        = 405 -%}
+						{%- assign image_size_tablet = 362 -%}
+						{%- assign image_size_mobile = 190 -%}
+
+						{%- assign offset = 1 -%}
+
+						{%- if layout == 'alternative' -%}
+							{%- assign offset = 0 -%}
+
+							{%- assign image_size = 480 -%}
+						{%- endif -%}
+
+						{%- for product in product_list offset: offset -%}
+							{% assign is_lazy = true %}
+
+							{% if section.index == 1 and forloop.index < 3 %}
+								{% assign is_lazy = false %}
+							{% endif %}
+
+							<div class="featured-products__col swiper-slide">
+								{%- render
+									'product-card-new',
+									product: product,
+									size: image_size,
+									tablet_size: image_size_tablet,
+									mobile_size: image_size_mobile,
+									is_lazy: is_lazy
+								-%}
+							</div>
+						{%- endfor -%}
+					{%- else -%}
+						{%- assign size = 3 -%}
+
+						{%- if layout == 'alternative' -%}
+							{%- assign size = 4 -%}
+						{%- endif -%}
+
+						{%- for i in (1..size) -%}
+							<div class="featured-products__col swiper-slide">
+								{%- render 'product-card-new', product: nil -%}
+							</div>
+						{%- endfor -%}
+					{%- endif -%}
+				</div>
+
+				{%- if product_list.count > 2 or product_list == blank -%}
+					<div class="featured-products__slider-pagination js-featured-content-slider-pagination"></div>
+				{%- endif -%}
+			</div>
+		</div>
+
+	</div>
+</section>
+
+{%- if product_list.count > 2 or product_list == blank -%}
+	<script src="{{- 'component-featured-content-slider.build.min.js' | asset_url -}}" defer></script>
+	<script src="{{- 'section-featured-products-new.build.min.js' | asset_url -}}" defer></script>
+{%- endif -%}

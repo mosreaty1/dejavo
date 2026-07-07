@@ -1,0 +1,252 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Images row (Only settings.design == 'alternate')
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign is_lazy 		= section.settings.is_lazy -%}
+{%- assign full_width 	= section.settings.full_width -%}
+{%- assign blocks  		= section.blocks -%}
+
+{%- if blocks.size > 0 -%}
+	{%- capture images -%}
+		{%- for block in blocks -%}
+			{%- assign image = block.settings.image -%}
+
+			{%- if image != blank -%}
+				{%- liquid
+					assign desktop_coeficient = 0.88541666666
+					assign tablet_coeficient = 1
+					assign mobile_coeficient = 1
+					assign image_crop = 'center'
+
+					assign width_mobile = 172
+					assign width_mobile_landscape = 240
+					assign width_small_tablet_portrait = 192
+					assign width_extra_small = 256
+					assign width_small = 165
+					assign width_medium = 536
+					assign width_large = 750
+					assign width_extra_large = 850
+					assign width_default = 960
+
+					assign height_mobile = width_mobile | times: mobile_coeficient | ceil
+					assign height_mobile_landscape = width_mobile_landscape | times: mobile_coeficient | ceil
+					assign height_small_tablet_portrait = width_small_tablet_portrait | times: tablet_coeficient | ceil
+					assign height_extra_small = width_extra_small | times: tablet_coeficient | ceil
+					assign height_small = width_small | times: tablet_coeficient | ceil
+					assign height_medium = width_medium | times: tablet_coeficient | ceil
+					assign height_large = width_large | times: desktop_coeficient | ceil
+					assign height_extra_large = width_extra_large | times: desktop_coeficient | ceil
+					assign height_default = width_default | times: desktop_coeficient | ceil
+
+					assign width_mobile_x2 = width_mobile | times: 2
+					assign width_mobile_landscape_x2 = width_mobile_landscape | times: 2
+					assign width_small_tablet_portrait_x2 = width_small_tablet_portrait | times: 2
+					assign width_extra_small_x2 = width_extra_small | times: 2
+					assign width_small_x2 = width_small | times: 2
+					assign width_extra_large_x2 = width_extra_large | times: 2
+					assign width_large_x2 = width_large | times: 2
+					assign width_medium_x2 = width_medium | times: 2
+					assign width_default_x2 = width_default | times: 2
+
+					assign height_mobile_x2 = height_mobile | times: 2
+					assign height_mobile_landscape_x2 = height_mobile_landscape | times: 2
+					assign height_small_tablet_portrait_x2 = height_small_tablet_portrait | times: 2
+					assign height_extra_small_x2 = height_extra_small | times: 2
+					assign height_small_x2 = height_small | times: 2
+					assign height_extra_large_x2 = width_extra_large | times: 2
+					assign height_large_x2 = width_large | times: 2
+					assign height_medium_x2 = width_medium | times: 2
+					assign height_default_x2 = height_default | times: 2
+				-%}
+
+				{%- capture img_focal -%}
+					--img-desktop-pos: {{ image.presentation.focal_point }};
+				{%- endcapture -%}
+
+				{%- capture default_image -%}
+					<picture>
+						<source
+							srcset="{{- image | image_url: width: width_mobile, height: height_mobile, crop: image_crop }} 1x, {{ image | image_url: width: 760 }} 2x"
+							media="(max-width: 380px)"
+							width="{{ width_mobile }}"
+							height="{{ height_mobile }}"
+						/>
+
+						<source
+							srcset="{{- image | image_url: width: width_mobile_landscape, height: height_mobile_landscape, crop: image_crop }} 1x, {{ image | image_url: width: 1150 }} 2x"
+							media="(max-width: 480px)"
+							width="{{ width_mobile_landscape }}"
+							height="{{ height_mobile_landscape }}"
+						/>
+
+						<source
+							srcset="{{- image | image_url: width: width_small_tablet_portrait, height: height_small_tablet_portrait, crop: image_crop }} 1x, {{ image | image_url: width: 1150 }} 2x"
+							media="(max-width: 575px)"
+							width="{{ width_small_tablet_portrait }}"
+							height="{{ height_small_tablet_portrait }}"
+						/>
+
+						<source
+							srcset="{{- image | image_url: width: width_extra_small, height: height_extra_small, crop: image_crop }} 1x, {{ image | image_url: width: 767 }} 2x"
+							media="(max-width: 767px)"
+							width="{{ width_extra_small }}"
+							height="{{ height_extra_small }}"
+						/>
+
+						<source
+							srcset="{{- image | image_url: width: width_small, height: height_small, crop: image_crop }} 1x, {{ image | image_url: width: 990 }} 2x"
+							media="(max-width: 991px)"
+							width="{{ width_small }}"
+							height="{{ height_small }}"
+						/>
+
+						<source
+							srcset="{{- image | image_url: width: width_medium, height: height_medium, crop: image_crop }} 1x, {{ image | image_url: width: 1440 }} 2x"
+							media="(max-width: 1199px)"
+							width="{{ width_medium }}"
+							height="{{ height_medium }}"
+						/>
+
+						<source
+							srcset="{{- image | image_url: width: width_large, height: height_large, crop: image_crop }} 1x, {{ image | image_url: width: 1680 }} 2x"
+							media="(max-width: 1500px)"
+							width="{{ width_large }}"
+							height="{{ height_large }}"
+						/>
+
+						<source
+							srcset="{{- image | image_url: width: width_extra_large, height: height_extra_large, crop: image_crop }} 1x, {{ image | image_url: width: 1880 }} 2x"
+							media="(max-width: 1700px)"
+							width="{{ width_extra_large }}"
+							height="{{ height_extra_large }}"
+						/>
+
+						<img
+							srcset="{{- image | image_url: width: width_default, height: height_default, crop: image_crop }} 1x, {{ image | image_url: width: 3840 }} 2x"
+							src="{{- image | image_url: width: 1920 -}}"
+							alt="{{- image.alt -}}"
+							class="images-row__item"
+							width="{{ width_default }}"
+							height="{{ height_default }}"
+							style="{{ img_focal }}"
+						/>
+					</picture>
+				{%- endcapture -%}
+
+				<div class="images-row__wrapper">
+					{%- if is_lazy -%}
+						<picture class="lazy">
+							<source
+								data-srcset="{{- image | image_url: width: width_mobile, height: height_mobile, crop: image_crop }} 1x, {{ image | image_url: width: 760 }} 2x"
+								srcset="{{- image | image_url: width: 10 }} 1x, {{ image | image_url: width: 10 }} 2x"
+								media="(max-width: 380px)"
+								width="{{ width_mobile }}"
+								height="{{ height_mobile }}"
+							/>
+
+							<source
+								data-srcset="{{- image | image_url: width: width_mobile_landscape, height: height_mobile_landscape, crop: image_crop }} 1x, {{ image | image_url: width: 1150 }} 2x"
+								srcset="{{- image | image_url: width: 10 }} 1x, {{ image | image_url: width: 10 }} 2x"
+								media="(max-width: 480px)"
+								width="{{ width_mobile_landscape }}"
+								height="{{ height_mobile_landscape }}"
+							/>
+
+							<source
+								data-srcset="{{- image | image_url: width: width_small_tablet_portrait, height: height_small_tablet_portrait, crop: image_crop }} 1x, {{ image | image_url: width: 1150 }} 2x"
+								srcset="{{- image | image_url: width: 10 }} 1x, {{ image | image_url: width: 10 }} 2x"
+								media="(max-width: 575px)"
+								width="{{ width_small_tablet_portrait }}"
+								height="{{ height_small_tablet_portrait }}"
+							/>
+
+							<source
+								data-srcset="{{- image | image_url: width: width_extra_small, height: height_extra_small, crop: image_crop }} 1x, {{ image | image_url: width: 767 }} 2x"
+								srcset="{{- image | image_url: width: 10 }} 1x, {{ image | image_url: width: 10 }} 2x"
+								media="(max-width: 767px)"
+								width="{{ width_extra_small }}"
+								height="{{ height_extra_small }}"
+							/>
+
+							<source
+								data-srcset="{{- image | image_url: width: width_small, height: height_small, crop: image_crop }} 1x, {{ image | image_url: width: 990 }} 2x"
+								srcset="{{- image | image_url: width: 10 }} 1x, {{ image | image_url: width: 10 }} 2x"
+								media="(max-width: 991px)"
+								width="{{ width_small }}"
+								height="{{ height_small }}"
+							/>
+
+							<source
+								data-srcset="{{- image | image_url: width: width_medium, height: height_medium, crop: image_crop }} 1x, {{ image | image_url: width: 1440 }} 2x"
+								srcset="{{- image | image_url: width: 10 }} 1x, {{ image | image_url: width: 10 }} 2x"
+								media="(max-width: 1199px)"
+								width="{{ width_medium }}"
+								height="{{ height_medium }}"
+							/>
+
+							<source
+								data-srcset="{{- image | image_url: width: width_large, height: height_large, crop: image_crop }} 1x, {{ image | image_url: width: 1680 }} 2x"
+								srcset="{{- image | image_url: width: 10 }} 1x, {{ image | image_url: width: 10 }} 2x"
+								media="(max-width: 1500px)"
+								width="{{ width_large }}"
+								height="{{ height_large }}"
+							/>
+
+							<source
+								data-srcset="{{- image | image_url: width: width_extra_large, height: height_extra_large, crop: image_crop }} 1x, {{ image | image_url: width: 1880 }} 2x"
+								srcset="{{- image | image_url: width: 10 }} 1x, {{ image | image_url: width: 10 }} 2x"
+								media="(max-width: 1700px)"
+								width="{{ width_extra_large }}"
+								height="{{ height_extra_large }}"
+							/>
+
+							<img
+								data-srcset="{{- image | image_url: width: width_default, height: height_default, crop: image_crop }} 1x, {{ image | image_url: width: 3840 }} 2x"
+								data-src="{{- image | image_url: width: 1920 -}}"
+								srcset="{{- image | image_url: width: 10 }} 1x, {{ image | image_url: width: 10 }} 2x"
+								src="{{- image | image_url: width: 10 -}}"
+								alt="{{- image.alt -}}"
+								class="images-row__item"
+								width="{{ width_default }}"
+								height="{{ height_default }}"
+								style="{{ img_focal }}"
+							/>
+						</picture>
+
+						<noscript>
+							{{- default_image -}}
+						</noscript>
+					{%- else -%}
+						{{- default_image -}}
+					{%- endif -%}
+				</div>
+			{%- endif -%}
+		{%- endfor -%}
+	{%- endcapture -%}
+
+	{%- if images != blank -%}
+		{{- 'images-row-new.build.css' | asset_url | stylesheet_tag -}}
+
+		{%- style -%}
+			#shopify-section-{{- section.id -}} {
+				padding-top: {{- section.settings.offset_top_mobile -}}px;
+				padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+			}
+
+			@media screen and (min-width: 768px) {
+				#shopify-section-{{- section.id -}} {
+					padding-top: {{- section.settings.offset_top_desktop -}}px;
+					padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+				}
+			}
+		{%- endstyle -%}
+
+		<section class="images-row js-animate{% if request.visual_preview_mode or section.index == 1 %} animated{% endif %} need-animate">
+			<div class="images-row__container {% if full_width == false %}images-row__container--max-width{% endif %}">
+				{{- images -}}
+			</div>
+		</section>
+	{%- endif -%}
+{%- endif -%}

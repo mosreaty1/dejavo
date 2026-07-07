@@ -1,0 +1,156 @@
+{{- 'products-bundle-new.build.css' | asset_url | stylesheet_tag -}}
+
+{%- assign default_button_text 		= 'products.label' | t -%}
+{%- assign label 					= section.settings.label -%}
+{%- assign heading 					= section.settings.heading -%}
+{%- assign subheading 				= section.settings.subheading -%}
+{%- assign product_list 			= section.settings.product_list -%}
+{%- assign button_label 			= section.settings.button_label | default: default_button_text -%}
+{%- assign button_disabled_label 	= section.settings.button_disabled_label | default: button_label -%}
+{%- assign full_width 				= section.settings.full_width -%}
+{%- assign button_type 				= section.settings.button_type -%}
+{%- assign show_total 				= section.settings.show_total -%}
+{%- assign border_color 			= section.settings.border_color | default: "transparent" -%}
+{%- assign checkbox_color 			= section.settings.checkbox_color | default: "#000000" -%}
+
+{%- capture style -%}
+	--border-color: {{- border_color -}}; {{-  -}}
+	--checkbox-color: {{- checkbox_color -}};
+{%- endcapture -%}
+
+{%- assign all_products_has_available_variant = true -%}
+{%- for product in product_list -%}
+	{%- unless product.selected_or_first_available_variant.available -%}
+		{%- assign all_products_has_available_variant = false -%}
+		{%- break -%}
+	{%- endunless -%}
+{%- endfor -%}
+
+{%- assign all_products_has_only_one_variant = true -%}
+{%- for product in product_list -%}
+	{%- unless product.has_only_default_variant -%}
+		{%- assign all_products_has_only_one_variant = false -%}
+		{%- break -%}
+	{%- endunless -%}
+{%- endfor -%}
+
+{%- if product_list == blank -%}
+	{%- assign all_products_has_available_variant = false -%}
+	{%- assign all_products_has_only_one_variant = false -%}
+{%- endif -%}
+
+{%- capture animated_classes -%}
+	js-animate{% if request.visual_preview_mode or section.index == 1 %} animated{% endif %}
+{%-endcapture-%}
+
+{%- capture button_wrapper -%}
+	<small class="products-bundle-new__error js-product-bundle-error"></small>
+
+	{%- if show_total -%}
+		<div class="products-bundle-new__total js-product-total">
+			{{ "sections.bundle.total" | t }} <span class="products-bundle-new__total-price js-product-total-price"></span>
+		</div>
+	{%- endif -%}
+
+	<button
+		class="button-circle js-products-bundle-button"
+		data-disabled-label="{{- button_disabled_label -}}"
+		data-enabled-label="{{- button_label -}}"
+		{% unless all_products_has_only_one_variant %}
+			disabled
+		{%- endunless -%}
+		{% unless all_products_has_available_variant %}
+			disabled
+		{%- endunless -%}
+	>
+		<span class="button__text js-products-bundle-button-text">
+			{% if all_products_has_only_one_variant %}
+				{%- if all_products_has_available_variant -%}
+					{{- "products.product.add_to_cart" | t -}}
+				{%- else -%}
+					{{- "products.product.sold_out" | t -}}
+				{%- endif -%}
+			{%- else -%}
+				{{- button_disabled_label -}}
+			{%- endif-%}
+		</span>
+
+		<span class="button-new__icon-container">
+			<span class="button-new__icon-wrapper">
+				{% render "icons-new", icon: "wave" %}
+			</span>
+		</span>
+	</button>
+{%- endcapture -%}
+
+<section class="products-bundle-new{% if full_width %} products-bundle-new--full-width{% endif %} js-products-bundle" style="{{- style -}}" data-section="{{- section.id -}}">
+	<div class="products-bundle-new__container">
+		<div class="products-bundle-new__header">
+			{%- if label != blank or heading != blank or subheading != blank -%}
+				<div class="products-bundle-new__header-text {{ animated_classes }}">
+					{%- if label != blank -%}
+						<div class="products-bundle-new__label subheading need-animation">
+							{{- label -}}
+						</div>
+					{%- endif -%}
+
+					{%- if heading != blank -%}
+						<h2 class="products-bundle-new__heading need-animation">
+							{{- heading -}}
+						</h2>
+					{%- endif -%}
+
+					{%- if subheading != blank -%}
+						<div class="products-bundle-new__subheading rte-new need-animation">
+							{{- subheading -}}
+						</div>
+					{%- endif -%}
+				</div>
+			{%- endif -%}
+
+			<div class="products-bundle-new__button-wrapper products-bundle-new__button-wrapper--desktop no-js-hidden {{ animated_classes }}">
+				{{- button_wrapper -}}
+			</div>
+		</div>
+
+		<div class="products-bundle-new__content {{ animated_classes }}">
+			<div class="products-bundle-new__row">
+				{%- if product_list != blank -%}
+					{%- for product in product_list -%}
+						{%- assign sault = section.id | append: "-" | append: forloop.index -%}
+
+						<div class="products-bundle-new__col">
+							{%- render
+								'product-card-with-form-new',
+								product: product,
+								size: 548,
+								tablet_size: 734,
+								mobile_size: 386,
+								sault: sault,
+								hide_buttons: true,
+								section_id: section.id
+							-%}
+						</div>
+					{%- endfor -%}
+				{%- else -%}
+					{%- for i in (1..3) -%}
+						{%- assign sault = section.id | append: "-" | append: forloop.index -%}
+
+						<div class="products-bundle-new__col">
+							{%- render
+								'product-card-with-form-new',
+								sault: sault,
+								hide_buttons: true,
+								section_id: section.id
+							-%}
+						</div>
+					{%- endfor -%}
+				{%- endif -%}
+			</div>
+
+			<div class="products-bundle-new__button-wrapper products-bundle-new__button-wrapper--mob no-js-hidden {{ animated_classes }}">
+				{{- button_wrapper -}}
+			</div>
+		</div>
+	</div>
+</section>

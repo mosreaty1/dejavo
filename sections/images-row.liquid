@@ -1,0 +1,274 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Images row
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{% case settings.design %}
+	{% when 'alternate' %}
+		{% render 'images-row-new' %}
+	{% when 'standard' %}
+		{%- assign is_lazy 		= section.settings.is_lazy -%}
+		{%- assign full_width 	= section.settings.full_width -%}
+		{%- assign blocks  		= section.blocks -%}
+
+		{%- if blocks.size > 0 -%}
+			{%- capture images -%}
+				{%- for block in blocks -%}
+					{%- assign image = block.settings.image -%}
+
+					{%- if image != blank -%}
+						{%- capture img_focal -%}
+							--img-desktop-pos: {{ image.presentation.focal_point }};
+						{%- endcapture -%}
+
+						{%- capture default_image -%}
+							<picture>
+								<source
+									srcset="{{- image | img_url: "375x" }} 1x, {{ image | img_url: "750x" }} 2x"
+									media="(max-width: 375px)"
+									width="375"
+									height="375"
+								/>
+
+								<source
+									srcset="{{- image | img_url: "575x" }} 1x, {{ image | img_url: "1150x" }} 2x"
+									media="(max-width: 575px)"
+									width="575"
+									height="575"
+								/>
+
+								<source
+									srcset="{{- image | img_url: "385x" }} 1x, {{ image | img_url: "767x" }} 2x"
+									media="(max-width: 768px)"
+									width="385"
+									height="385"
+								/>
+
+								<source
+									srcset="{{- image | img_url: "495x" }} 1x, {{ image | img_url: "990x" }} 2x"
+									media="(max-width: 991px)"
+									width="495"
+									height="495"
+								/>
+
+								<source
+									srcset="{{- image | img_url: "720x" }} 1x, {{ image | img_url: "1440x" }} 2x"
+									media="(max-width: 1440px)"
+									width="720"
+									height="720"
+								/>
+
+								<source
+									srcset="{{- image | img_url: "840x" }} 1x, {{ image | img_url: "1680x" }} 2x"
+									media="(max-width: 1680px)"
+									width="840"
+									height="840"
+								/>
+
+								<source
+									srcset="{{- image | img_url: "940x" }} 1x, {{ image | img_url: "1880x" }} 2x"
+									media="(max-width: 1920px)"
+									width="940"
+									height="940"
+								/>
+
+								<img
+									srcset="{{- image | img_url: "1920x" }} 1x, {{ image | img_url: "3840x" }} 2x"
+									src="{{- image | img_url: "1920x" -}}"
+									alt="{{- image.alt -}}"
+									class="images-row__item"
+									width="1920"
+									height="1920"
+									style="{{ img_focal }}"
+								/>
+							</picture>
+						{%- endcapture -%}
+
+						<div class="images-row__wrapper">
+							{%- if is_lazy -%}
+								<picture class="lazy">
+									<source
+										data-srcset="{{- image | img_url: "375x" }} 1x, {{ image | img_url: "750x" }} 2x"
+										srcset="{{- image | img_url: "10x" }} 1x, {{ image | img_url: "10x" }} 2x"
+										media="(max-width: 375px)"
+										width="375"
+										height="375"
+									/>
+
+									<source
+										data-srcset="{{- image | img_url: "575x" }} 1x, {{ image | img_url: "1150x" }} 2x"
+										srcset="{{- image | img_url: "10x" }} 1x, {{ image | img_url: "10x" }} 2x"
+										media="(max-width: 575px)"
+										width="575"
+										height="575"
+									/>
+
+									<source
+										data-srcset="{{- image | img_url: "385x" }} 1x, {{ image | img_url: "767x" }} 2x"
+										srcset="{{- image | img_url: "10x" }} 1x, {{ image | img_url: "10x" }} 2x"
+										media="(max-width: 768px)"
+										width="385"
+										height="385"
+									/>
+
+									<source
+										data-srcset="{{- image | img_url: "495x" }} 1x, {{ image | img_url: "990x" }} 2x"
+										srcset="{{- image | img_url: "10x" }} 1x, {{ image | img_url: "10x" }} 2x"
+										media="(max-width: 991px)"
+										width="495"
+										height="495"
+									/>
+
+									<source
+										data-srcset="{{- image | img_url: "720x" }} 1x, {{ image | img_url: "1440x" }} 2x"
+										srcset="{{- image | img_url: "10x" }} 1x, {{ image | img_url: "10x" }} 2x"
+										media="(max-width: 1440px)"
+										width="720"
+										height="720"
+									/>
+
+									<source
+										data-srcset="{{- image | img_url: "840x" }} 1x, {{ image | img_url: "1680x" }} 2x"
+										srcset="{{- image | img_url: "10x" }} 1x, {{ image | img_url: "10x" }} 2x"
+										media="(max-width: 1680px)"
+										width="840"
+										height="840"
+									/>
+
+									<source
+										data-srcset="{{- image | img_url: "940x" }} 1x, {{ image | img_url: "1880x" }} 2x"
+										srcset="{{- image | img_url: "10x" }} 1x, {{ image | img_url: "10x" }} 2x"
+										media="(max-width: 1920px)"
+										width="940"
+										height="940"
+									/>
+
+									<img
+										data-srcset="{{- image | img_url: "1920x" }} 1x, {{ image | img_url: "3840x" }} 2x"
+										srcset="{{- image | img_url: "10x" }} 1x, {{ image | img_url: "10x" }} 2x"
+										data-src="{{- image | img_url: "1920px" -}}"
+										src="{{- image | img_url: "10px" -}}"
+										alt="{{- image.alt -}}"
+										class="images-row__item"
+										width="1920"
+										height="1920"
+										style="{{ img_focal }}"
+									/>
+								</picture>
+
+								<noscript>
+									{{- default_image -}}
+								</noscript>
+							{%- else -%}
+								{{- default_image -}}
+							{%- endif -%}
+						</div>
+					{%- endif -%}
+				{%- endfor -%}
+			{%- endcapture -%}
+
+			{%- if images != blank -%}
+				{{- 'images-row.build.css' | asset_url | stylesheet_tag -}}
+
+				{%- style -%}
+					#shopify-section-{{- section.id -}} {
+						padding-top: {{- section.settings.offset_top_mobile -}}px;
+						padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+					}
+
+					@media screen and (min-width: 768px) {
+						#shopify-section-{{- section.id -}} {
+							padding-top: {{- section.settings.offset_top_desktop -}}px;
+							padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+						}
+					}
+				{%- endstyle -%}
+
+				<section class="images-row">
+					<div class="images-row__container {% if full_width == false %}images-row__container--max-width{% endif %}">
+						{{- images -}}
+					</div>
+				</section>
+			{%- endif -%}
+		{%- endif -%}
+{% endcase %}
+
+{%- schema -%}
+{
+	"name": "Images row",
+	"settings": [
+		{
+			"type": "checkbox",
+			"id": "is_lazy",
+			"label": "Enable lazy load",
+			"default": true
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "checkbox",
+			"id": "full_width",
+			"label": "Make full width",
+			"default": true,
+			"info": "If unchecked - container width will be set based on the group 'Layout' settings in the Theme settings."
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 0
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 50
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 0
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 25
+		}
+	],
+	"max_blocks": 2,
+	"blocks": [
+		{
+			"type": "row_image",
+			"name": "Row image",
+			"settings": [
+				{
+					"type": "image_picker",
+					"id": "image",
+					"label": "Image"
+				}
+			]
+		}
+	]
+}
+{%- endschema -%}

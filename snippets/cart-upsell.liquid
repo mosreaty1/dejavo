@@ -1,0 +1,230 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Cart upsell
+	Render upsell products in the shopping cart
+	- products: Products list (required)
+	- heading: Upsell section heading (optional)
+
+	Usage:
+	{%- render 'cart-upsell', products: products, heading: heading -%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign design = settings.design -%}
+
+{%- if products != blank and products.count > 0 and cart != empty -%}
+	{%- assign currency_code_enabled = settings.is_currency_code_enabled -%}
+	{%- assign show_unit_price		 = settings.is_show_unit_price -%}
+
+	{%- assign slides_count = 0 -%}
+
+	{%- capture	upsell_items -%}
+		{%- assign added_products = cart.items | map: 'product_id' -%}
+
+		{%- for product in products -%}
+			{%- if added_products contains product.id or product.available == false -%}
+				{%- continue -%}
+			{%- endif -%}
+
+			{%- assign image = product.featured_image -%}
+
+			<div class="cart-upsell__item swiper-slide">
+				<div class="cart-upsell__item-media">
+					<a class="focus-visible-outline cart-upsell__item-link" href="{{- product.url -}}" aria-label="{{- product.title | escape -}}">
+						<span class="visually-hidden">
+							{{- product.title -}}
+						</span>
+					</a>
+
+					<div class="cart-upsell__item-image-wrapper">
+						<picture class="lazy">
+							<source
+								data-srcset="{{ image | img_url: '90x' }} 1x, {{ image | img_url: '180x' }} 2x"
+								srcset="{{ image | img_url: '10x' }} 1x, {{ image | img_url: '10x' }} 2x"
+								media="(max-width: 480px)"
+								width="90"
+								height="{{- 90 | divided_by: image.aspect_ratio | ceil -}}"
+							/>
+
+							<source
+								data-srcset="{{ image | img_url: '122x' }} 1x, {{ image | img_url: '244x' }} 2x"
+								srcset="{{ image | img_url: '10x' }} 1x, {{ image | img_url: '10x' }} 2x"
+								media="(max-width: 480px)"
+								width="122"
+								height="{{- 122 | divided_by: image.aspect_ratio | ceil -}}"
+							/>
+
+							<source
+								data-srcset="{{ image | img_url: '154x' }} 1x, {{ image | img_url: '308x' }} 2x"
+								srcset="{{ image | img_url: '10x' }} 1x, {{ image | img_url: '10x' }} 2x"
+								media="(max-width: 575px)"
+								width="154"
+								height="{{- 154 | divided_by: image.aspect_ratio | ceil -}}"
+							/>
+
+							<source
+								data-srcset="{{ image | img_url: '218x' }} 1x, {{ image | img_url: '436x' }} 2x"
+								srcset="{{ image | img_url: '10x' }} 1x, {{ image | img_url: '10x' }} 2x"
+								media="(max-width: 767px)"
+								width="218"
+								height="{{- 218 | divided_by: image.aspect_ratio | ceil -}}"
+							/>
+
+							<img
+								class="cart-upsell__image"
+								alt="{{- image.alt | escape -}}"
+								src="{{ image | img_url: '10x' }}"
+								data-src="{{ image | img_url: '106x' }}"
+								srcset="{{ image | img_url: '10x' }}"
+								data-srcset="{{ image | img_url: '106x' }} 1x, {{ image | img_url: '212x' }} 2x"
+								width="106"
+								height="{{- 106 | divided_by: image.aspect_ratio | ceil -}}"
+							/>
+						</picture>
+
+						<noscript>
+							<picture>
+								<source
+									srcset="{{ image | img_url: '90x' }} 1x, {{ image | img_url: '180x' }} 2x"
+									media="(max-width: 480px)"
+									width="90"
+									height="{{- 90 | divided_by: image.aspect_ratio | ceil -}}"
+								/>
+
+								<source
+									srcset="{{ image | img_url: '122x' }} 1x, {{ image | img_url: '244x' }} 2x"
+									media="(max-width: 480px)"
+									width="122"
+									height="{{- 122 | divided_by: image.aspect_ratio | ceil -}}"
+								/>
+
+								<source
+									srcset="{{ image | img_url: '154x' }} 1x, {{ image | img_url: '308x' }} 2x"
+									media="(max-width: 575px)"
+									width="154"
+									height="{{- 154 | divided_by: image.aspect_ratio | ceil -}}"
+								/>
+
+								<source
+									srcset="{{ image | img_url: '218x' }} 1x, {{ image | img_url: '436x' }} 2x"
+									media="(max-width: 767px)"
+									width="218"
+									height="{{- 218 | divided_by: image.aspect_ratio | ceil -}}"
+								/>
+
+								<img
+									class="cart-upsell__image"
+									src="{{- image | img_url: '106x' -}}"
+									srcset="{{ image | img_url: '106x' }} 1x, {{ image | img_url: '212x' }} 2x"
+									alt="{{- image.alt | escape -}}"
+									loading="lazy"
+									width="106"
+									height="{{- 106 | divided_by: image.aspect_ratio | ceil -}}"
+								/>
+							</picture>
+						</noscript>
+					</div>
+				</div>
+
+				<a class="focus-visible-outline cart-upsell__item-title" href="{{- product.url -}}" aria-label="{{- product.title | escape -}}">
+					{{- product.title -}}
+				</a>
+
+				<div class="cart-upsell__item-details">
+					<div class="cart-upsell__item-price">
+						{%- render 'price', product: product, show_unit_price: show_unit_price, currency_code_enabled: currency_code_enabled -%}
+					</div>
+
+					<div class="cart-upsell__item-actions">
+						{%- assign form_id = 'upsell-form-' | append: forloop.index | append: '-' | append: product.id -%}
+						{%- assign variant = product.selected_or_first_available_variant.id -%}
+
+						{%- form 'product', product, id: form_id, class: 'form', novalidate: 'novalidate', data-cart-upsell: ''  -%}
+							<input type="hidden" name="id" value="{{- variant -}}" />
+							<input type="hidden" name="handle" value="{{- product.handle -}}" />
+							<input type="hidden" name="quantity" value="{{- product.selected_or_first_available_variant.quantity_rule.min -}}" />
+							<input type="hidden" name="singleVariant" value="{% if product.variants.size == 1 or product.has_only_default_variant %}true{% else %}false{% endif %}" />
+
+							<button class="focus-visible-outline cart-upsell__item-button" type="submit" name="add">
+								{%- if design == 'standard' -%}
+									{% render 'icons-small', icon: 'plus' %}
+								{%- endif -%}
+
+								<span class="cart-upsell__item-button-text">
+									{{- 'products.product.add_to_cart' | t -}}
+								</span>
+
+								{%- if design == 'alternate' -%}
+									{%- render "icons-new", icon: "cart-3" -%}
+								{%- endif -%}
+							</button>
+						{%- endform -%}
+					</div>
+				</div>
+			</div>
+
+			{%- assign slides_count = slides_count | plus: 1 -%}
+		{%- endfor -%}
+	{%- endcapture	-%}
+
+	{%- if upsell_items != '' -%}
+		<div class="{% if design == 'standard' %}cart-upsell{% elsif design == 'alternate' %}cart-upsell-new{% endif %}">
+			{%- capture top_bar_content -%}
+				{%- if heading != blank -%}
+					<h5 class="h5 cart-upsell__heading">
+						{{- heading -}}
+					</h5>
+				{%- endif -%}
+
+				{%- capture navagation_buttons -%}
+					<div class="cart-upsell__controls js-upsell-slider-controls">
+						<button
+							class="swiper-button-prev focus-visible-outline cart-upsell__control cart-upsell__control--prev js-upsell-slider-prev"
+							type="button"
+							aria-label="{{- 'general.accessibility.slider.prev_slide_message' | t | escape -}}"
+						>
+							{%- if design == 'standard' -%}
+								{%- render 'icons-small', icon: 'arrow-left' -%}
+							{%- elsif design == 'alternate' -%}
+								{%- render 'icons-new', icon: 'arrow-left' -%}
+							{%- endif -%}
+						</button>
+
+						<button
+							class="swiper-button-next focus-visible-outline cart-upsell__control cart-upsell__control--next js-upsell-slider-next"
+							type="button"
+							aria-label="{{- 'general.accessibility.slider.next_slide_message' |t | escape -}}"
+						>
+							{%- if design == 'standard' -%}
+								{%- render 'icons-small', icon: 'arrow-right' -%}
+							{%- elsif design == 'alternate' -%}
+								{%- render 'icons-new', icon: 'arrow-right' -%}
+							{%- endif -%}
+						</button>
+					</div>
+				{%- endcapture -%}
+
+				{%- if design == 'standard' and slides_count > 4 -%}
+					{{- navagation_buttons -}}
+				{%- elsif design == 'alternate' and slides_count > 2 -%}
+					{{- navagation_buttons -}}
+				{%- endif -%}
+			{%- endcapture -%}
+
+			{%- if top_bar_content != '' -%}
+				<div class="cart-upsell__top-bar">
+					{{- top_bar_content -}}
+				</div>
+			{%- endif -%}
+
+			<div
+				class="cart-upsell__slider swiper{% if design == 'standard' and slides_count > 4 %} js-upsell-slider{% elsif design == 'alternate' and slides_count > 2 %} js-upsell-slider{%- endif -%}"
+				data-design-type="{{- design -}}"
+			>
+				<div class="cart-upsell__content swiper-wrapper js-upsell-scrollable-wrapper" data-scrollable>
+					{{- upsell_items -}}
+				</div>
+			</div>
+		</div>
+	{%- endif -%}
+{%- endif -%}

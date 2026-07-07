@@ -1,0 +1,190 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Header mobile mega menu half to half
+	Render header mobile mega menu half to half
+	- menu: Menu object (required)
+	- blocks: blocks object using for output media content.
+	- enable_mega_menu_borders: option to show/hide borders in mega menu
+
+	Usage:
+	{%- render 'header-mobile-mega-menu-half-to-half', menu: first_level_link, megamenu_object: megamenu_object, enable_mega_menu_borders: enable_mega_menu_borders -%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign design 			= settings.design -%}
+
+{%- assign heading          = megamenu_object.settings.heading -%}
+{%- assign subheading       = megamenu_object.settings.subheading -%}
+{%- assign short_text       = megamenu_object.settings.short_text -%}
+{%- assign button_label1	= megamenu_object.settings.button_label1 -%}
+{%- assign button_label2	= megamenu_object.settings.button_label2 -%}
+{%- assign button_link1		= megamenu_object.settings.button_link1 -%}
+{%- assign button_link2		= megamenu_object.settings.button_link2 -%}
+{%- assign button1_style	= megamenu_object.settings.button1_style -%}
+{%- assign button2_style	= megamenu_object.settings.button2_style -%}
+
+
+{%- assign show_shadow      = megamenu_object.settings.show_shadow -%}
+{%- assign shadow_color     = megamenu_object.settings.shadow_color_mobile -%}
+{%- assign image			= megamenu_object.settings.image -%}
+{%- assign image_link		= megamenu_object.settings.image_link -%}
+
+{%- capture classes -%}
+	{%- if design == 'alternate' -%}
+		header-mega-menu-new header-mega-menu-new--half-to-half
+	{%- else -%}
+		header-mega-menu header-mega-menu--half-to-half
+	{%- endif -%}
+{%- endcapture -%}
+
+<div class="{{- classes -}}">
+		<div class="header-mega-menu__container">
+			{%- if image != blank -%}
+				<div class="header-mega-menu__block header-mega-menu__block--image">
+					{%- capture img_focal -%}
+						--img-desktop-pos: {{ image.presentation.focal_point }};
+					{%- endcapture -%}
+
+					{%- if design == 'alternate' -%}
+						{%- assign image_width_375 		= 343 -%}
+						{%- assign image_width_991		= 388 -%}
+						{%- assign image_width			= 528 -%}
+					{%- else -%}
+						{%- assign image_width_375 		= 315 -%}
+						{%- assign image_width_991		= 360 -%}
+						{%- assign image_width			= 528 -%}
+					{%- endif -%}
+
+					{% assign image_width_375_x2 	= image_width_375 | times: 2 %}
+					{% assign image_width_991_x2	= image_width_991 | times: 2 %}
+					{% assign image_width_x2 		= image_width | times: 2 %}
+
+					{%- capture image_capture -%}
+						<picture>
+							<source
+								srcset="{{ image | image_url: width: image_width_375 }} 1x, {{ image | image_url: width: image_width_375_x2 }} 2x"
+								media="(max-width: 375px)"
+							>
+
+							<source
+								srcset="{{ image | image_url: width: image_width_991 }} 1x, {{ image | image_url: width: image_width_991_x2 }} 2x"
+								media="(max-width: 991px)"
+							>
+
+							<img
+								class="header-mega-menu__image"
+								src="{{- image | image_url: width: image_width -}}"
+								srcset="{{- image | image_url: width: image_width }} 1x, {{ image | image_url: width: image_width_x2 }} 2x"
+								alt="{{- image.alt -}}"
+								style="{{ img_focal }}"
+								loading="lazy"
+							>
+						</picture>
+
+						{%- if show_shadow and shadow_color != blank -%}
+							<div class="header-mega-menu__shadow" style="background: {{- shadow_color -}}"></div>
+						{%- endif -%}
+					{%- endcapture -%}
+
+					{%- if image_link != blank -%}
+						<a href="{{- image_link -}}" class="header-mega-menu__image-wrapper header-mega-menu__image-wrapper--hover">
+							{{- image_capture -}}
+						</a>
+					{%- else -%}
+						<div class="header-mega-menu__image-wrapper">
+							{{- image_capture -}}
+						</div>
+					{%- endif -%}
+
+				</div>
+			{%- endif -%}
+
+			<div class="header-mega-menu__block header-mega-menu__block--text">
+				<div class="header-mega-menu__content">
+				{%- if heading != blank -%}
+					<h2 class="header-mega-menu__heading {% if design == 'alternate' %}subheading{%- endif -%}">
+						{{- heading -}}
+					</h2>
+				{%- endif %}
+
+				{%- if subheading != blank -%}
+					<h3 class="header-mega-menu__subheading">
+						{{- subheading -}}
+					</h3>
+				{%- endif -%}
+
+				{%- if short_text -%}
+					<p class="header-mega-menu__text">
+						{{- short_text -}}
+					</p>
+				{%- endif -%}
+
+				{%- if button_link1 != blank and button_label1 != blank or button_link2 != blank and button_label2 != blank -%}
+					<div class="header-mega-menu__buttons">
+						{%- if button_link1 != blank and button_label1 != blank -%}
+							{%- if design == 'alternate' -%}
+								{%- if button1_style == 'primary' -%}
+									<a href="{{- button_link1 -}}" class="header-mega-menu__button-circle button-circle">
+										<span class="button__text">
+											{{- button_label1 -}}
+										</span>
+
+										<span class="button-new__icon-container">
+											<span class="button-new__icon-wrapper">
+												{% render "icons-new", icon: "wave", section_id: 'asdasdsa' %}
+											</span>
+										</span>
+									</a>
+								{%- else -%}
+									<a href="{{- button_link1 -}}" class="header-mega-menu__button-link button-link-new focus-visible-outline">
+										{{- button_label1 -}}
+										<span class="button-link-new__icon-wrapper">
+											<span class="button-link-new__icon">
+												{% render 'icons-new', icon: 'arrow-right' %}
+											</span>
+										</span>
+									</a>
+								{%- endif -%}
+							{%- else -%}
+								<a class="button button--{{- button1_style -}}" href="{{- button_link1 -}}">
+									{{- button_label1 -}}
+								</a>
+							{%- endif -%}
+						{%- endif -%}
+
+						{%- if button_link2 != blank and button_label2 != blank -%}
+							{%- if design == 'alternate' -%}
+								{%- if button2_style == 'primary' -%}
+									<a href="{{- button_link2 -}}" class="header-mega-menu__button-circle button-circle">
+										<span class="button__text">
+											{{- button_label2 -}}
+										</span>
+
+										<span class="button-new__icon-container">
+											<span class="button-new__icon-wrapper">
+												{% render "icons-new", icon: "wave", section_id: 'asdasdsa' %}
+											</span>
+										</span>
+									</a>
+								{%- else -%}
+									<a href="{{- button_link2 -}}" class="header-mega-menu__button-link button-link-new focus-visible-outline">
+										{{- button_label2 -}}
+										<span class="button-link-new__icon-wrapper">
+											<span class="button-link-new__icon">
+												{% render 'icons-new', icon: 'arrow-right' %}
+											</span>
+										</span>
+									</a>
+								{%- endif -%}
+							{%- else -%}
+								<a class="button button--{{- button2_style -}}" href="{{- button_link2 -}}">
+									{{- button_label2 -}}
+								</a>
+							{%- endif -%}
+						{%- endif -%}
+					</div>
+				{%- endif -%}
+				</div>
+			</div>
+		</div>
+	</div>

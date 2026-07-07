@@ -1,0 +1,302 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+Section: Gallery (Only settings.design == 'alternate')
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{{- "gallery-new.build.css" | asset_url | stylesheet_tag -}}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{%- assign image_aspect_ratio = section.settings.image_aspect_ratio -%}
+{%- assign image_crop 	      = section.settings.image_crop -%}
+{%- assign overlay_opacity    = section.settings.overlay_opacity | divided_by: 100.0 -%}
+{%- assign overlay_color      = section.settings.overlay_color -%}
+{%- assign full_width 	      = section.settings.full_width -%}
+{%- assign blocks 		      = section.blocks -%}
+
+{%- assign portrait_coefficient = 0.666 -%} {% comment %} 1:1.5 {% endcomment %}
+
+{%- capture styles -%}
+	--img-overlay-opacity: {{ overlay_opacity }}; {{-  -}}
+	--img-overlay-color: {{ overlay_color }}; {{-  -}}
+	--img-wrapper-padding-top: calc(100%/{{ portrait_coefficient }}); {{-  -}}
+{%- endcapture -%}
+
+<section class="gallery-new {% if full_width == false %}gallery-new--max-width{% endif %} js-animate{% if request.visual_preview_mode or section.index == 1 %} animated{% endif %} gallery-new--{{- image_aspect_ratio -}}" style="{{- styles -}}">
+	{%- if blocks.size > 0 -%}
+		{%- for block in blocks -%}
+			{%- assign delay_step       = forloop.index0 -%}
+			{%- assign image 			= block.settings.image -%}
+			{%- assign video 			= block.settings.video -%}
+
+			{% if video != blank %}
+				{% assign image = video.preview_image %}
+			{% endif %}
+
+			{%- assign icon_hover 		= block.settings.icon_hover -%}
+			{%- assign url 				= block.settings.url -%}
+			{%- assign open_in_new_tab 	= block.settings.open_in_new_tab -%}
+
+			{% assign is_lazy = true %}
+
+			{% if section.index == 1 %}
+				{% assign is_lazy = false %}
+			{% endif %}
+
+			{%- if image != blank -%}
+				{%- capture img_focal -%}
+					--img-desktop-pos: {{ image.presentation.focal_point }};
+				{%- endcapture -%}
+
+				<div class="gallery-new__col need-animate" style="--delay-step: {{- delay_step -}};">
+					{%- if url != blank -%}
+						<a
+							class="gallery-new__link {% if video != blank %}js-gallery-video-container{% endif %}"
+							href="{{- url -}}"
+							{% if open_in_new_tab %}
+								target="_blank"
+							{% endif %}
+							aria-label="{{ image.alt | escape }}"
+						>
+					{%- endif -%}
+
+					<span class="gallery-new__col-content">
+                            <span class="gallery-new__image-wrapper {% if video != blank and url == blank %}js-gallery-video-container{% endif %}">
+								{% if video != blank %}
+									<video
+										class="gallery-new__video js-gallery-video"
+										muted
+										loop
+										playsinline
+									>
+										{%- for source in video.sources -%}
+											{%- if source.mime_type == 'video/mp4' -%}
+												<source src="{{- source.url -}}" type="{{- source.mime_type -}}">
+											{%- endif -%}
+										{%- endfor -%}
+									</video>
+								{% endif %}
+
+                                <picture {% if is_lazy %}class="lazy"{% endif %}>
+	                                {%- liquid
+		                                assign width_default = 336
+		                                assign width_small = 165
+		                                assign width_extra_small = 256
+		                                assign width_small_tablet_portrait = 192
+		                                assign width_mobile_landscape = 240
+		                                assign width_mobile = 187
+
+		                                assign height_default = width_default
+		                                assign height_small = width_small
+		                                assign height_extra_small = width_extra_small
+		                                assign height_small_tablet_portrait = width_small_tablet_portrait
+		                                assign height_mobile_landscape = width_mobile_landscape
+		                                assign height_mobile = width_mobile
+
+		                                if image_aspect_ratio == 'portrait'
+			                                assign height_default = height_default | divided_by: portrait_coefficient | ceil
+			                                assign height_small = height_small | divided_by: portrait_coefficient | ceil
+			                                assign height_extra_small = height_extra_small | divided_by: portrait_coefficient | ceil
+			                                assign height_small_tablet_portrait = height_small_tablet_portrait | divided_by: portrait_coefficient | ceil
+			                                assign height_mobile_landscape = height_mobile_landscape | divided_by: portrait_coefficient | ceil
+			                                assign height_mobile = height_mobile | divided_by: portrait_coefficient | ceil
+		                                endif
+
+		                                assign width_default_x2 = width_default | times: 2
+		                                assign width_small_x2 = width_small | times: 2
+		                                assign width_extra_small_x2 = width_extra_small | times: 2
+		                                assign width_small_tablet_portrait_x2 = width_small_tablet_portrait | times: 2
+		                                assign width_mobile_landscape_x2 = width_mobile_landscape | times: 2
+		                                assign width_mobile_x2 = width_mobile | times: 2
+
+		                                assign height_default_x2 = height_default | times: 2
+		                                assign height_small_x2 = height_small | times: 2
+		                                assign height_extra_small_x2 = height_extra_small | times: 2
+		                                assign height_small_tablet_portrait_x2 = height_small_tablet_portrait | times: 2
+		                                assign height_mobile_landscape_x2 = height_mobile_landscape | times: 2
+		                                assign height_mobile_x2 = height_mobile | times: 2
+	                                -%}
+
+	                                {% if is_lazy %}
+		                                <source
+			                                data-srcset="{{ image | image_url: width: width_mobile, height: height_mobile, crop: image_crop }} 1x, {{ image | image_url: width: width_mobile_x2, height: height_mobile_x2, crop: image_crop }} 2x"
+			                                srcset="{{ image | image_url: width: 10 }} 1x, {{ image | image_url: width: 20 }} 2x"
+			                                media="(max-width: 380px)"
+			                                width="{{ width_mobile }}"
+			                                height="{{ height_mobile }}"
+		                                />
+
+		                                <source
+			                                data-srcset="{{ image | image_url: width: width_mobile_landscape, height: height_mobile_landscape, crop: image_crop }} 1x, {{ image | image_url: width: width_mobile_landscape_x2, height: height_mobile_landscape_x2, crop: image_crop }} 2x"
+			                                srcset="{{ image | image_url: width: 10 }} 1x, {{ image | image_url: width: 20 }} 2x"
+			                                media="(max-width: 480px)"
+			                                width="{{ width_mobile_landscape }}"
+			                                height="{{ height_mobile_landscape }}"
+		                                />
+
+		                                <source
+			                                data-srcset="{{ image | image_url: width: width_small_tablet_portrait, height: height_small_tablet_portrait, crop: image_crop }} 1x, {{ image | image_url: width: width_small_tablet_portrait_x2, height: height_small_tablet_portrait_x2, crop: image_crop }} 2x"
+			                                srcset="{{ image | image_url: width: 10 }} 1x, {{ image | image_url: width: 20 }} 2x"
+			                                media="(max-width: 575px)"
+			                                width="{{ width_small_tablet_portrait }}"
+			                                height="{{ height_small_tablet_portrait }}" />
+
+		                                <source
+			                                data-srcset="{{ image | image_url: width: width_extra_small, height: height_extra_small, crop: image_crop }} 1x, {{ image | image_url: width: width_extra_small_x2, height: height_extra_small_x2, crop: image_crop }} 2x"
+			                                srcset="{{ image | image_url: width: 10 }} 1x, {{ image | image_url: width: 20 }} 2x"
+			                                media="(max-width: 767px)"
+			                                width="{{ width_extra_small }}"
+			                                height="{{ height_extra_small }}" />
+
+		                                <source
+			                                data-srcset="{{ image | image_url: width: width_small, height: height_small, crop: image_crop }} 1x, {{ image | image_url: width: width_small_x2, height: height_small_x2, crop: image_crop }} 2x"
+			                                srcset="{{ image | image_url: width: 10 }} 1x, {{ image | image_url: width: 20 }} 2x"
+			                                media="(max-width: 991px)"
+			                                width="{{ width_small }}"
+			                                height="{{ height_small }}" />
+
+		                                <img
+			                                data-srcset="{{ image | image_url: width: width_default, height: height_default, crop: image_crop }} 1x, {{ image | image_url: width: width_default_x2, height: height_default_x2, crop: image_crop }} 2x"
+			                                data-src="{{- image | image_url: width: width_default, height: height_default, crop: image_crop -}}"
+			                                srcset="{{ image | image_url: width: 10 }} 1x, {{ image | image_url: width: 20 }} 2x"
+			                                src="{{ image | image_url: width: 10 }}"
+			                                class="gallery-new__image"
+			                                alt="{%- if url == blank -%}{{- image.alt -}}{%- endif -%}"
+			                                width="{{ width_default }}"
+			                                height="{{ height_default }}"
+			                                style="{{ img_focal }}"
+		                                />
+	                                {% else %}
+		                                <source
+			                                srcset="{{ image | image_url: width: width_mobile, height: height_mobile, crop: image_crop }} 1x, {{ image | image_url: width: width_mobile_x2, height: height_mobile_x2, crop: image_crop }} 2x"
+			                                media="(max-width: 380px)"
+			                                width="{{ width_mobile }}"
+			                                height="{{ height_mobile }}"
+		                                />
+
+		                                <source
+			                                srcset="{{ image | image_url: width: width_mobile_landscape, height: height_mobile_landscape, crop: image_crop }} 1x, {{ image | image_url: width: width_mobile_landscape_x2, height: height_mobile_landscape_x2, crop: image_crop }} 2x"
+			                                media="(max-width: 480px)"
+			                                width="{{ width_mobile_landscape }}"
+			                                height="{{ height_mobile_landscape }}"
+		                                />
+
+		                                <source
+			                                srcset="{{ image | image_url: width: width_small_tablet_portrait, height: height_small_tablet_portrait, crop: image_crop }} 1x, {{ image | image_url: width: width_small_tablet_portrait_x2, height: height_small_tablet_portrait_x2, crop: image_crop }} 2x"
+			                                media="(max-width: 575px)"
+			                                width="{{ width_small_tablet_portrait }}"
+			                                height="{{ height_small_tablet_portrait }}" />
+
+		                                <source
+			                                srcset="{{ image | image_url: width: width_extra_small, height: height_extra_small, crop: image_crop }} 1x, {{ image | image_url: width: width_extra_small_x2, height: height_extra_small_x2, crop: image_crop }} 2x"
+			                                media="(max-width: 767px)"
+			                                width="{{ width_extra_small }}"
+			                                height="{{ height_extra_small }}" />
+
+		                                <source
+			                                srcset="{{ image | image_url: width: width_small, height: height_small, crop: image_crop }} 1x, {{ image | image_url: width: width_small_x2, height: height_small_x2, crop: image_crop }} 2x"
+			                                media="(max-width: 991px)"
+			                                width="{{ width_small }}"
+			                                height="{{ height_small }}" />
+
+		                                <img
+			                                srcset="{{ image | image_url: width: width_default, height: height_default, crop: image_crop }} 1x, {{ image | image_url: width: width_default_x2, height: height_default_x2, crop: image_crop }} 2x"
+			                                src="{{- image | image_url: width: width_default, height: height_default, crop: image_crop -}}"
+			                                class="gallery-new__image"
+			                                alt="{%- if url == blank -%}{{- image.alt -}}{%- endif -%}"
+			                                width="{{ width_default }}"
+			                                height="{{ height_default }}"
+			                                style="{{ img_focal }}"
+		                                />
+	                                {% endif %}
+                                </picture>
+
+                                <noscript>
+                                    <picture>
+                                        <source
+	                                        srcset="{{ image | image_url: width: width_mobile, height: height_mobile, crop: image_crop }} 1x, {{ image | image_url: width: width_mobile_x2, height: height_mobile_x2, crop: image_crop }} 2x"
+	                                        media="(max-width: 380px)"
+	                                        width="{{ width_mobile }}"
+	                                        height="{{ height_mobile }}"
+                                        />
+
+										<source
+											srcset="{{ image | image_url: width: width_mobile_landscape, height: height_mobile_landscape, crop: image_crop }} 1x, {{ image | image_url: width: width_mobile_landscape_x2, height: height_mobile_landscape_x2, crop: image_crop }} 2x"
+											media="(max-width: 480px)"
+											width="{{ width_mobile_landscape }}"
+											height="{{ height_mobile_landscape }}"
+										/>
+
+										<source
+											srcset="{{ image | image_url: width: width_small_tablet_portrait, height: height_small_tablet_portrait, crop: image_crop }} 1x, {{ image | image_url: width: width_small_tablet_portrait_x2, height: height_small_tablet_portrait_x2, crop: image_crop }} 2x"
+											media="(max-width: 575px)"
+											width="{{ width_small_tablet_portrait }}"
+											height="{{ height_small_tablet_portrait }}" />
+
+										<source
+											srcset="{{ image | image_url: width: width_extra_small, height: height_extra_small, crop: image_crop }} 1x, {{ image | image_url: width: width_extra_small_x2, height: height_extra_small_x2, crop: image_crop }} 2x"
+											media="(max-width: 767px)"
+											width="{{ width_extra_small }}"
+											height="{{ height_extra_small }}" />
+
+										<source
+											srcset="{{ image | image_url: width: width_small, height: height_small, crop: image_crop }} 1x, {{ image | image_url: width: width_small_x2, height: height_small_x2, crop: image_crop }} 2x"
+											media="(max-width: 991px)"
+											width="{{ width_small }}"
+											height="{{ height_small }}" />
+
+										<img
+											srcset="{{ image | image_url: width: width_default, height: height_default, crop: image_crop }} 1x, {{ image | image_url: width: width_default_x2, height: height_default_x2, crop: image_crop }} 2x"
+											src="{{- image | image_url: width: width_default, height: height_default, crop: image_crop -}}"
+											class="gallery-new__image"
+											alt="{%- if url == blank -%}{{- image.alt -}}{%- endif -%}"
+											width="{{ width_default }}"
+											height="{{ height_default }}"
+											style="{{ img_focal }}"
+										/>
+                                    </picture>
+                                </noscript>
+                            </span>
+
+                            <span class="gallery-new__overlay">
+								{% if icon_hover != blank %}
+									<span class="gallery-new__icon" aria-hidden="true">
+										<img class="gallery-new__icon-img"
+										     src="{{ icon_hover | image_url: width: 50, height: 50 }}"
+										     srcset="{{ icon_hover | image_url: width: 25, height: 25 }} 1x, {{ icon_hover | image_url: width: 50, height: 50 }} 2x"
+										     alt=""
+										     style="object-position: {{ icon_hover.presentation.focal_point }};"
+										     aria-hidden="true"
+										>
+									</span>
+								{% endif %}
+                            </span>
+                        </span>
+
+					{%- if url != blank -%}
+						</a>
+					{%- endif -%}
+				</div>
+			{%- endif -%}
+		{%- endfor -%}
+	{%- else -%}
+		{%- for i in (1..6) -%}
+			<div class="gallery-new__col">
+				{{- "image" | placeholder_svg_tag -}}
+			</div>
+		{%- endfor -%}
+	{%- endif -%}
+</section>

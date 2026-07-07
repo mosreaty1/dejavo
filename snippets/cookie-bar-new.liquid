@@ -1,0 +1,67 @@
+{%- assign enabled 		= settings.is_cookie_bar_enabled -%}
+{%- assign cookie_time 	= settings.cookie_bar_cookie_time | default: "Cookies" -%}
+{%- assign heading 		= settings.cookie_bar_heading -%}
+{%- assign description 	= settings.cookie_bar_description -%}
+{%- assign button_label = settings.cookie_bar_button_label | default: "Accept all cookies" -%}
+{%- assign show_shadow	= settings.cookie_bar_show_shadow -%}
+
+{%- assign background_color 				= settings.cookie_bar_background_color | default: "#000000" -%}
+{%- assign text_color 						= settings.cookie_bar_text_color | default: "#ffffff" -%}
+{%- assign button_background_color 			= settings.cookie_bar_button_background_color | default: "#000000" -%}
+{%- assign button_label_color 				= settings.cookie_bar_button_label_color | default: "#ffffff" -%}
+{%- assign button_border_color 				= settings.cookie_bar_button_border_color | default: "#ffffff" -%}
+{%- assign button_background_hover_color 	= settings.cookie_bar_button_background_hover_color | default: "#ffffff" -%}
+{%- assign button_label_hover_color 		= settings.cookie_bar_button_label_hover_color | default: "#000000" -%}
+{%- assign button_border_hover_color 		= settings.cookie_bar_button_border_hover_color | default: "#000000" -%}
+
+{%- capture styles -%}
+	--background-color: {{- background_color -}}; {{-  -}}
+	--text-color: {{- text_color -}}; {{-  -}}
+	--button-background-color: {{- button_background_color -}}; {{-  -}}
+	--button-label-color: {{- button_label_color -}}; {{-  -}}
+	--button-border-color: {{- button_border_color -}}; {{-  -}}
+	--button-background-hover-color: {{- button_background_hover_color -}}; {{-  -}}
+	--button-label-hover-color: {{- button_label_hover_color -}}; {{-  -}}
+	--button-border-hover-color: {{- button_border_hover_color -}};
+{%- endcapture -%}
+
+{%- if enabled -%}
+	<div
+		class="cookie-bar-new{% if show_shadow %} cookie-bar-new--shadow{% endif %} js-cookie-bar is-hidden"
+		style="{{- styles -}}"
+		data-cookie-time="{{- cookie_time -}}"
+	>
+		{{ 'cookie-bar-new.build.css' | asset_url | stylesheet_tag }}
+
+		<button
+			class="cookie-bar-new__close focus-visible-outline js-cookie-bar-accept"
+			aria-label="{{ "general.accessibility.close" | t }}"
+		>
+			{%- render 'icons-small', icon: 'close' -%}
+		</button>
+
+		<div class="cookie-bar-new__content">
+			<div class="cookie-bar-new__heading h4">
+				{{- heading -}}
+			</div>
+
+			{%- if description != blank -%}
+				<p class="cookie-bar-new__description rte-new">
+					{{- description -}}
+				</p>
+			{%- endif -%}
+
+			<button class="button-link-new focus-visible-outline cookie-bar-new__button js-cookie-bar-accept">
+				{{- button_label -}}
+
+				<span class="button-link-new__icon-wrapper">
+					<span class="button-link-new__icon">
+						{% render 'icons-new', icon: 'arrow-right' %}
+					</span>
+				</span>
+			</button>
+		</div>
+
+		<script src="{{- 'section-cookie-bar.build.min.js' | asset_url -}}" defer></script>
+	</div>
+{%- endif -%}

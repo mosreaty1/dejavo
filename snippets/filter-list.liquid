@@ -1,0 +1,116 @@
+{% comment %}
+	------------------------------------------------------------------------------
+	Snippet: Filter list
+	- filter: filter object (required)
+
+	Usage:
+
+	{%- render 'filter-list', filter: filter -%}
+	------------------------------------------------------------------------------
+{% endcomment %}
+
+{%- if settings.design == "alternate" -%}
+	{{- 'filter-list-new.build.css' | asset_url | stylesheet_tag -}}
+{%- else -%}
+	{{- 'filter-list.build.css' | asset_url | stylesheet_tag -}}
+{%- endif -%}
+
+
+{%- assign sorted_values = filter.values -%}
+{%- assign swatch_option = settings.color_swatches_option | default: 'Color' | downcase -%}
+{%- assign filter_label = filter.label | downcase -%}
+
+{% if filter.operator == "AND" %}
+	{% comment %} Keep the selected values grouped together when operator is AND {% endcomment %}
+
+	{% assign active_filter_values = filter.values | where: 'active', true %}
+	{% assign inactive_filter_values = filter.values | where: 'active', false %}
+	{% assign sorted_values = active_filter_values | concat: inactive_filter_values %}
+{% endif %}
+
+<ul class="{%- if settings.design == "alternate" -%}filter-list-new{%- else -%}filter-list{% endif %} js-filter-list">
+	{%- for filter_value in sorted_values -%}
+		<li class="filter-list__item">
+			{%- capture filter_active -%}
+				{% if filter_value.active %}
+					checked
+				{% endif %}
+			{%- endcapture -%}
+
+			{%- capture filter_disable -%}
+				{% if filter_value.count == 0 and filter_value.active == false %}
+					disabled
+				{% endif %}
+			{%- endcapture -%}
+
+			<input
+				class="checkbox__input visually-hidden filter-list__checkbox"
+				id="Filter-{{- filter.label | escape -}}-{{- forloop.index -}}"
+				type="checkbox"
+				name="{{- filter_value.param_name -}}"
+				value="{{- filter_value.value -}}"
+				{{ filter_active | strip_newlines }}
+				{{ filter_disable | strip_newlines }}
+			>
+
+			{% assign filter_value_label = filter_value.label %}
+			{% assign tech_tag = filter_value_label | slice: 0, 7 %}
+
+			{% if tech_tag contains 'label__' %}
+				{% assign filter_value_label = filter_value_label
+					| remove_first: 'label__'
+					| remove_first: ':primary'
+					| remove_first: ':secondary'
+				%}
+			{% endif %}
+
+			{% if filter.presentation == "swatch" %}
+					<label
+						class="filter-list__input-label checkbox__label filter-list__input-label--swatch"
+						for="Filter-{{- filter.label | escape -}}-{{- forloop.index -}}"
+					style="{%- if filter_value.swatch.image -%}
+							--swatch-image: url({{- filter_value.swatch.image | image_url: width: 60, height: 60 -}});
+							{%- elsif filter_value.swatch.color -%}
+							--swatch-color: {{ filter_value.swatch.color }};
+							{%- endif -%}"
+					>
+						<span class="checkbox__label-box"></span>
+
+						{{- filter_value_label | escape }} ({{- filter_value.count -}})
+					</label>
+			{% elsif filter.presentation == "image" %}
+					<label
+					class="filter-list__input-label checkbox__label filter-list__input-label--swatch filter-list__input-label--swatch-img"
+						for="Filter-{{- filter.label | escape -}}-{{- forloop.index -}}"
+					style="{%- if filter_value.image -%}
+							--swatch-image: url({{- filter_value.image | image_url: width: 60 -}});
+							{%- endif -%}"
+					>
+						<span class="checkbox__label-box"></span>
+
+						{{- filter_value_label | escape }} ({{- filter_value.count -}})
+					</label>
+			{% else %}
+				{%- assign swatch_image = filter_value.value | handle | prepend: 'swatch-' | append: '.png' -%}
+
+				<label
+					class="filter-list__input-label checkbox__label {% if filter_label == swatch_option and show_swatches %}filter-list__input-label--swatch{% endif %}"
+					for="Filter-{{- filter.label | escape -}}-{{- forloop.index -}}"
+					{% if filter_label == swatch_option and show_swatches %}
+						style="--swatch-color: {{ filter_value.value | split: ' ' | last | handle }}; {{-  -}}
+							{% if images[swatch_image] != blank %}
+								--swatch-image: url({{- images[swatch_image] | image_url: width: 34, height: 34 -}});
+							{% endif %}
+							"
+					{% endif %}
+				>
+					{% if filter_label == swatch_option and show_swatches %}
+						<span class="checkbox__label-box"></span>
+					{% endif %}
+
+					{{- filter_value_label | escape }} ({{- filter_value.count -}})
+				</label>
+			{% endif %}
+		</li>
+	{%- endfor -%}
+</ul>

@@ -1,0 +1,56 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Product Custom fields
+------------------------------------------------------------------------------
+{% endcomment %}
+{% if block.settings.field_label != blank %}
+	<div class="{% if design == 'alternate' %}product-custom-field-new{% else %}product-custom-field{% endif %} js-custom-field-block">
+		<div class="input-wrapper">
+			<input
+				class="product-custom-field__input input js-custom-field-input"
+				id="Custom-field-input-{{ block.id }}"
+				type="text"
+				placeholder="{{ block.settings.field_label }}"
+				name="properties[{{ block.settings.field_label }}]"
+				value=""
+			>
+
+			<label class="input-label" for="Custom-field-input-{{ block.id }}">
+				<span class="product-custom-field__label-normal">
+					{{ block.settings.field_label }}
+				</span>
+			</label>
+
+			<span
+				id="Custom-field-error-{{- block.id -}}"
+				class="product-custom-field__error error"
+				tabindex="-1"
+				role="alert"
+			>
+				{{ 'products.product.custom_fields_errors.input_error' | t }}
+			</span>
+		</div>
+
+		{% if block.settings.required_text != blank %}
+			<div>
+				<input id="Custom-field-checkbox-{{ block.id }}"
+					   class="checkbox__input input js-custom-field-checkbox"
+					   type="checkbox"
+				>
+
+				<label for="Custom-field-checkbox-{{ block.id }}" class="checkbox__label">
+					{{ block.settings.required_text }}
+				</label>
+
+				<span
+					id="Custom-field-error-{{- block.id -}}"
+					class="product-custom-field__error error"
+					tabindex="-1"
+					role="alert"
+				>
+					{{ 'products.product.custom_fields_errors.checkbox_error' | t }}
+			</span>
+			</div>
+		{% endif %}
+	</div>
+{% endif %}

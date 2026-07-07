@@ -1,0 +1,95 @@
+{{ "image-compare-new.build.css" | asset_url | stylesheet_tag }}
+
+{%- assign label 						= section.settings.label -%}
+{%- assign heading 						= section.settings.heading -%}
+{%- assign text 						= section.settings.text -%}
+{%- assign desktop_image_height 		= section.settings.desktop_image_height -%}
+{%- assign mobile_image_height 			= section.settings.mobile_image_height -%}
+{%- assign first_image 					= section.settings.first_image -%}
+{%- assign second_image 				= section.settings.second_image -%}
+{%- assign full_width 					= section.settings.full_width -%}
+{%- assign drag_cursor_color 			= section.settings.drag_cursor_color -%}
+{%- assign drag_cursor_background 		= section.settings.drag_cursor_background -%}
+
+{%- capture styles -%}
+	--drag-cursor-color: {{ drag_cursor_color }};
+	--drag-cursor-background: {{ drag_cursor_background }};
+	--drag-cursor-background-opacity: {{ drag_cursor_background | color_modify: "alpha", 0.3 }};
+	--desktop_image_height: {{ desktop_image_height }};
+	--mobile_image_height: {{ mobile_image_height }};
+{%- endcapture -%}
+
+{%- capture first_image_focal -%}
+	--first-img-pos: {{ first_image.presentation.focal_point }};
+{%- endcapture -%}
+
+{%- capture second_image_focal -%}
+	--second-img-pos: {{ second_image.presentation.focal_point }};
+{%- endcapture -%}
+
+<section
+	class="image-compare-new{% if full_width %} image-compare-new--full-width{% endif %}"
+	data-section-id="{{- section.id -}}"
+	data-section-type="image-compare"
+>
+	{% if label != blank or heading != blank or text != blank %}
+		<div class="image-compare-new__header js-animate{% if request.visual_preview_mode or section.index == 1 %} animated{% endif %}">
+			{% if label != blank %}
+				<div class="image-compare-new__label subheading need-animate">
+					{{ label }}
+				</div>
+			{% endif %}
+
+			{% if heading != blank %}
+				<h2 class="h2 image-compare-new__heading need-animate">
+					{{ heading }}
+				</h2>
+			{% endif %}
+
+			{% if text != blank %}
+				<div class="image-compare-new__rte rte need-animate">
+					{{ text }}
+				</div>
+			{% endif %}
+		</div>
+	{% endif %}
+
+	<div class="image-compare-new__wrapper{% if section.index > 1 %} need-animate{% endif %} js-animate{% if request.visual_preview_mode or section.index == 1 %} animated{% endif %}">
+		<img-comparison-slider class="image-compare__img-comparison-slider" tabindex="0" style="{{ styles }}">
+			{% if first_image != blank %}
+				<img slot="first"
+					 srcset="{{ first_image | image_url: width: 1710 }} 1x ,
+							 {{ first_image | image_url: width: 3420 }} 2x"
+					 alt="{{ first_image.alt | escape }}"
+					 style="{{ first_image_focal }}"
+					 class="image-compare-new__image image-compare-new__image--first"
+					 loading="lazy"
+				>
+			{% else %}
+				<div slot="first" class="image-compare-new__placeholder">
+					{{- 'lifestyle-2' | placeholder_svg_tag: 'image-compare-new__svg' -}}
+				</div>
+			{% endif %}
+
+			{% if second_image != blank %}
+				<img slot="second"
+					 srcset="{{ second_image | image_url: width: 1710 }} 1x ,
+							 {{ second_image | image_url: width: 3420 }} 2x"
+					 alt="{{ first_image.alt | escape }}"
+					 style="{{ second_image_focal }}"
+					 class="image-compare-new__image image-compare-new__image--second"
+					 loading="lazy"
+				>
+			{% else %}
+				<div slot="second" class="image-compare-new__placeholder">
+					{{- 'lifestyle-2' | placeholder_svg_tag: 'image-compare-new__svg image-compare-new__svg--black' -}}
+				</div>
+			{% endif %}
+
+			<div slot="handle" class="image-compare-new__handle button-new button--play">
+				{% render "icons-small", icon: "arrow-down" %}
+				{% render "icons-small", icon: "arrow-down" %}
+			</div>
+		</img-comparison-slider>
+	</div>
+</section>

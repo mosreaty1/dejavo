@@ -1,0 +1,194 @@
+{% comment %}
+	------------------------------------------------------------------------------
+	Snippet: Collection card
+	- collection: Collection object (required)
+	------------------------------------------------------------------------------
+{% endcomment %}
+
+{{- 'collection-card.build.css' | asset_url | stylesheet_tag -}}
+
+{%- assign min = 1 -%}
+{%- assign max = 6 -%}
+{%- assign diff = max | minus: min -%}
+
+{%- if collection != blank -%}
+	{% if collection.featured_image %}
+		{%- assign image = collection.featured_image -%}
+	{%- endif -%}
+
+	<a
+		class="focus-visible-outline collection-card"
+		href="{{- collection.url -}}"
+		aria-label="{{- 'collections.general.collection_card_link_aria_label' | t: title: collection.title | escape -}}"
+	>
+		<span class="collection-card__image-wrapper">
+			{% if collection != blank %}
+				<picture class="lazy no-js-hidden">
+					<source
+						data-srcset="{{ image | img_url: 'x191' }} 1x, {{ image | img_url: 'x382' }} 2x"
+						srcset="{{ image | img_url: 'x10' }} 1x, {{ image | img_url: 'x10' }} 2x"
+						media="(max-width: 360px)"
+						width="152"
+						height="190"
+					>
+
+					<source
+						data-srcset="{{ image | img_url: 'x205' }} 1x, {{ image | img_url: 'x410' }} 2x"
+						srcset="{{ image | img_url: 'x10' }} 1x, {{ image | img_url: 'x10' }} 2x"
+						media="(max-width: 380px)"
+						width="163"
+						height="204"
+					>
+
+					<source
+						data-srcset="{{ image | img_url: 'x270' }} 1x, {{ image | img_url: 'x540' }} 2x"
+						srcset="{{ image | img_url: 'x10' }} 1x, {{ image | img_url: 'x10' }} 2x"
+						media="(max-width: 480px)"
+						width="213"
+						height="266"
+					>
+
+					<source
+						data-srcset="{{ image | img_url: 'x325' }} 1x, {{ image | img_url: 'x650' }} 2x"
+						srcset="{{ image | img_url: 'x10' }} 1x, {{ image | img_url: 'x10' }} 2x"
+						media="(max-width: 575px)"
+						width="260"
+						height="286"
+					>
+
+					<source
+						data-srcset="{{ image | img_url: 'x445' }} 1x, {{ image | img_url: 'x890' }} 2x"
+						srcset="{{ image | img_url: 'x10' }} 1x, {{ image | img_url: 'x10' }} 2x"
+						media="(max-width: 767px)"
+						width="356"
+						height="392"
+					>
+
+					<source
+						data-srcset="{{ image | img_url: 'x375' }} 1x, {{ image | img_url: 'x750' }} 2x"
+						srcset="{{ image | img_url: 'x10' }} 1x, {{ image | img_url: 'x10' }} 2x"
+						media="(max-width: 991px)"
+						width="237"
+						height="214"
+					>
+
+					<source
+						data-srcset="{{ image | img_url: 'x435' }} 1x, {{ image | img_url: 'x870' }} 2x"
+						srcset="{{ image | img_url: 'x10' }} 1x, {{ image | img_url: 'x10' }} 2x"
+						media="(max-width: 1199px)"
+						width="307"
+						height="278"
+					>
+
+					<source
+						data-srcset="{{ image | img_url: 'x535' }} 1x, {{ image | img_url: 'x1070' }} 2x"
+						srcset="{{ image | img_url: 'x10' }} 1x, {{ image | img_url: 'x10' }} 2x"
+						media="(max-width: 1500px)"
+						width="407"
+						height="365"
+					>
+
+					<img
+						class="collection-card__image"
+						src="{{- image | img_url: 'x10' -}}"
+						data-src="{{- image | img_url: 'x585' -}}"
+						data-srcset="{{ image | img_url: 'x585' }} 1x, {{ image | img_url: 'x1170' }} 2x"
+						alt="{{- image.alt -}}"
+						width="470"
+						height="420"
+					>
+				</picture>
+
+				<noscript>
+					<picture>
+						<source
+							srcset="{{ image | img_url: 'x191' }} 1x, {{ image | img_url: 'x382' }} 2x"
+							media="(max-width: 360px)"
+							width="152"
+							height="190"
+						>
+
+						<source
+							srcset="{{ image | img_url: 'x205' }} 1x, {{ image | img_url: 'x410' }} 2x"
+							media="(max-width: 380px)"
+							width="163"
+							height="204"
+						>
+
+						<source
+							srcset="{{ image | img_url: 'x270' }} 1x, {{ image | img_url: 'x540' }} 2x"
+							media="(max-width: 480px)"
+							width="213"
+							height="266"
+						>
+
+						<source
+							srcset="{{ image | img_url: 'x325' }} 1x, {{ image | img_url: 'x650' }} 2x"
+							media="(max-width: 575px)"
+							width="260"
+							height="286"
+						>
+
+						<source
+							srcset="{{ image | img_url: 'x445' }} 1x, {{ image | img_url: 'x890' }} 2x"
+							media="(max-width: 767px)"
+							width="356"
+							height="392"
+						>
+
+						<source
+							srcset="{{ image | img_url: 'x375' }} 1x, {{ image | img_url: 'x750' }} 2x"
+							media="(max-width: 991px)"
+							width="237"
+							height="214"
+						>
+
+						<source
+							srcset="{{ image | img_url: 'x435' }} 1x, {{ image | img_url: 'x870' }} 2x"
+							media="(max-width: 1199px)"
+							width="307"
+							height="278"
+						>
+
+						<source
+							srcset="{{ image | img_url: 'x535' }} 1x, {{ image | img_url: 'x1070' }} 2x"
+							media="(max-width: 1500px)"
+							width="407"
+							height="365"
+						>
+
+						<img
+							class="collection-card__image"
+							src="{{- image | img_url: 'x585' -}}"
+							srcset="{{ image | img_url: 'x585' }} 1x, {{ image | img_url: 'x1170' }} 2x"
+							alt="{{- image.alt -}}"
+							width="470"
+							height="420"
+							loading="lazy"
+						>
+					</picture>
+				</noscript>
+			{% else %}
+				{%- assign random_number = "now" | date: "%N" | modulo: diff | plus: min -%}
+				{%- assign placeholder_svg_name = 'collection-' | append: random_number -%}
+
+				<span aria-hidden="true">
+					{{- placeholder_svg_name | placeholder_svg_tag: 'collection-card__image' -}}
+				</span>
+			{% endif %}
+		</span>
+
+		<span class="collection-card__title">
+			{{- collection.title -}}
+		</span>
+
+		{% if is_show_products_count %}
+			{% assign one_product_label = 'sections.collection_list.one_product' | t %}
+			{% assign many_product_label = 'sections.collection_list.many_products' | t %}
+
+			<div class="collection-card__count">
+				{{ collection.all_products_count }} {{ collection.all_products_count | pluralize: one_product_label, many_product_label }}
+			</div>
+		{% endif %}
+	</a>
+{%- endif -%}

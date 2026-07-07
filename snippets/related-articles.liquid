@@ -1,0 +1,103 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Related articles
+	This snippet is responsible for displaying the last 3 articles from the blog
+
+	- current_article_id: article id for exclude current id from related articles list,
+	- blog: blog object for output related article,
+	- label: block label,
+	- heading: block heading,
+	- show_back_to_blog_btn: condition for render blog button,
+	- button_style: blog button style selection
+
+	{% render 'related-articles',
+		current_article_id: article.id,
+		blog: blog,
+		label: label,
+		heading: heading,
+		show_back_to_blog_btn: show_back_to_blog_btn,
+		button_style: button_style
+	%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{{- 'featured-blog.build.css' | asset_url | stylesheet_tag -}}
+
+{%- assign limit = 3 -%}
+{%- assign show_borders 	   	= settings.article_card_show_borders -%}
+
+{%- capture blog_posts -%}
+	{%- capture featured_blog_row_wrapper_classes -%}
+		featured-blog__row-wrapper swiper
+
+		{% if blog.articles.size != 1 %} js-featured-content-slider {% endif -%}
+	{%- endcapture -%}
+
+	<div class="{{- featured_blog_row_wrapper_classes | strip_newlines -}}">
+		<div class="featured-blog__row swiper-wrapper">
+			{%- if blog and blog.articles.size > 0 -%}
+				{%- for article in blog.articles-%}
+					{% if current_article_id != article.id and limit > 0 %}
+						{% assign limit = limit | minus: 1 %}
+
+						<div class="featured-blog__col {% unless show_borders %}featured-blog__col--no-border{% endunless %} swiper-slide js-animate">
+							{%- render 'article-card', article: article -%}
+						</div>
+					{% endif %}
+				{%- endfor -%}
+			{%- else -%}
+				{%- for i in (1..3) -%}
+					<div class="featured-blog__col swiper-slide">
+						{%- render 'article-card' -%}
+					</div>
+				{%- endfor -%}
+			{%- endif -%}
+		</div>
+
+		{%- if blog.articles.size != 1 -%}
+			<div class="featured-blog__slider-pagination js-featured-content-slider-pagination"></div>
+		{%- endif -%}
+	</div>
+{%- endcapture -%}
+
+{%- capture featured_blog -%}
+	{%- if label != blank -%}
+		<p class="text featured-blog__label">
+			{{- label -}}
+		</p>
+	{%- endif -%}
+
+	{%- if heading != blank -%}
+		<h2 class="h2 featured-blog__heading">
+			{{- heading -}}
+		</h2>
+	{%- endif -%}
+
+	{{- blog_posts -}}
+
+	{%- if show_back_to_blog_btn -%}
+		{% if settings.design == "standard" and button_style == "circle" %}
+			{%- assign button_style = "primary" -%}
+		{% endif %}
+
+		<div class="featured-blog__link-wrapper js-animate">
+			<a
+				class="button button--{{ button_style }} featured-blog__link"
+				href="{{- blog.url -}}"
+			>
+				{{ 'blogs.article.back_to_blog' | t: title: blog.title }}
+			</a>
+		</div>
+	{%- endif -%}
+{%- endcapture -%}
+
+<section class="featured-blog js-featured-blog" id="{{- section.id -}}">
+	<div class="featured-blog__container">
+		{{- featured_blog -}}
+	</div>
+</section>
+
+{%- if blog.articles.size != 1 -%}
+	<script src="{{- 'component-featured-content-slider.build.min.js' | asset_url -}}" defer></script>
+	<script src="{{- 'section-featured-blog.build.min.js' | asset_url -}}" defer></script>
+{%- endif -%}

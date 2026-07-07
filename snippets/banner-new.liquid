@@ -1,0 +1,620 @@
+{%- assign full_width 	   							= section.settings.full_width -%}
+{%- assign enable_sepia 							= settings.enable_sepia -%}
+{%- assign section_background 						= section.settings.section_background -%}
+{%- assign label_color 								= section.settings.label_color -%}
+{%- assign heading_color 							= section.settings.heading_color -%}
+{%- assign text_color 								= section.settings.text_color -%}
+{%- assign link_color 								= section.settings.link_color -%}
+{%- assign button_background 						= section.settings.button_background -%}
+{%- assign button_color 							= section.settings.button_color -%}
+{%- assign button_border 							= section.settings.button_border -%}
+{%- assign button_background_hover				 	= section.settings.button_background_hover -%}
+{%- assign button_color_hover 						= section.settings.button_color_hover -%}
+{%- assign button_border_hover 						= section.settings.button_border_hover -%}
+{%- assign image_border_color       				= section.settings.image_border_color -%}
+{%- assign button_circle_text_color 				= section.settings.button_circle_text_color -%}
+{%- assign button_circle_background_color 			= section.settings.button_circle_background_color -%}
+{%- assign button_circle_border_color 				= section.settings.button_circle_border_color -%}
+{%- assign button_circle_outer_border_color 		= section.settings.button_circle_outer_border_color -%}
+{%- assign button_circle_text_color_hover 			= section.settings.button_circle_text_color_hover -%}
+{%- assign button_circle_background_color_hover 	= section.settings.button_circle_background_color_hover -%}
+{%- assign button_circle_border_color_hover 		= section.settings.button_circle_border_color_hover -%}
+{%- assign button_circle_outer_border_color_hover 	= section.settings.button_circle_outer_border_color_hover -%}
+
+{%- capture section_colors -%}
+	--banner-background-color: {{- section_background -}}; {{-  -}}
+	--banner-label-color: {{- label_color -}}; {{-  -}}
+	--banner-heading-color: {{- heading_color -}}; {{-  -}}
+	--banner-text-color: {{- text_color -}}; {{-  -}}
+	--banner-link-color: {{- link_color -}}; {{-  -}}
+	--banner-button-background: {{- button_background -}}; {{-  -}}
+	--banner-button-color: {{- button_color -}}; {{-  -}}
+	--banner-button-border: {{- button_border -}}; {{-  -}}
+	--banner-button-background-hover: {{- button_background_hover -}}; {{-  -}}
+	--banner-button-color-hover: {{- button_color_hover -}}; {{-  -}}
+	--banner-button-border-hover: {{- button_border_hover -}}; {{-  -}}
+	--banner-image-border-color: {{- image_border_color -}};
+	--button-circle-text-color: {{- button_circle_text_color -}};
+	--button-circle-background-color: {{- button_circle_background_color -}};
+	--button-circle-border-color: {{- button_circle_border_color -}};
+	--button-circle-outer-border-color: {{- button_circle_outer_border_color -}};
+	--button-circle-text-color-hover: {{- button_circle_text_color_hover -}};
+	--button-circle-background-color-hover: {{- button_circle_background_color_hover -}};
+	--button-circle-border-color-hover: {{- button_circle_border_color_hover -}};
+	--button-circle-outer-border-color-hover: {{- button_circle_outer_border_color_hover -}};
+{%- endcapture -%}
+
+{%- capture banner -%}
+	{%- if section.blocks.size > 0 -%}
+		{%- for block in section.blocks -%}
+			{%- assign media_type 					  			= block.settings.media_type -%}
+			{%- assign label 						  			= block.settings.label -%}
+			{%- assign heading						  			= block.settings.heading -%}
+			{%- assign text 						  			= block.settings.text -%}
+			{%- assign button_text 					  			= block.settings.button_text -%}
+			{%- assign button_url 					  			= block.settings.button_url -%}
+			{%- assign button_aria 							  	= block.settings.button_aria -%}
+			{%- assign make_link_full_media 					= block.settings.make_link_full_media -%}
+			{%- assign image_desktop 						  	= block.settings.image_desktop -%}
+			{%- assign image_mobile 						  	= block.settings.image_mobile | default: image_desktop -%}
+			{%- assign background_overlay					  	= block.settings.background_overlay -%}
+			{%- assign background_image_desktop		 		 	= block.settings.background_image_desktop -%}
+			{%- assign background_image_mobile				  	= block.settings.background_image_mobile | default: background_image_desktop -%}
+			{%- assign enable_lazy_load 					  	= block.settings.enable_lazy_load -%}
+			{%- assign html_video_desktop 		  				= block.settings.html_video_desktop -%}
+			{%- assign html_video_mobile 		  				= block.settings.html_video_mobile | default: html_video_desktop -%}
+			{%- assign external_video_url_desktop 				= block.settings.external_video_url_desktop -%}
+			{%- assign external_video_url_mobile 				= block.settings.external_video_url_mobile | default: external_video_url_desktop -%}
+			{%- assign content_alignment 						= block.settings.content_alignment -%}
+			{%- assign content_alignment_mobile 				= block.settings.content_alignment_mobile -%}
+			{%- assign block_alignment 							= block.settings.block_alignment -%}
+			{%- assign overlay_opacity 							= block.settings.overlay_opacity -%}
+			{%- assign overlay_color 							= block.settings.overlay_color -%}
+			{%- assign timer_year 								= block.settings.timer_year -%}
+			{%- assign timer_month 								= block.settings.timer_month -%}
+			{%- assign timer_day 								= block.settings.timer_day -%}
+			{%- assign timer_hour 								= block.settings.timer_hour -%}
+			{%- assign timer_timezone 							= block.settings.timer_timezone -%}
+			{%- assign timer_cell_background_color  			= block.settings.timer_cell_background_color -%}
+			{%- assign timer_cell_color 						= block.settings.timer_cell_color -%}
+			{%- assign timer_label_color 						= block.settings.timer_label_color -%}
+			{%- assign image_border_width           			= block.settings.image_border_width -%}
+			{%- assign image_border_indent_desktop      		= block.settings.image_border_indent_desktop -%}
+			{%- assign image_border_indent_mobile       		= block.settings.image_border_indent_mobile -%}
+			{%- assign background_border_width      			= block.settings.image_border_width -%}
+			{%- assign background_image_border_width			= block.settings.background_image_border_width -%}
+			{%- assign background_image_border_indent_desktop	= block.settings.background_image_border_indent_desktop -%}
+			{%- assign background_image_border_indent_mobile	= block.settings.background_image_border_indent_mobile -%}
+			{%- assign background_image_border_color			= block.settings.background_image_border_color -%}
+			{%- assign desktop_image_height 					= block.settings.desktop_image_height -%}
+			{%- assign mobile_image_height 						= block.settings.mobile_image_height -%}
+
+			{%- if desktop_image_height != blank and desktop_image_height != 'auto' -%}
+				{%- assign image_height_desktop = desktop_image_height | replace: 'px', '' -%}
+			{%- endif -%}
+
+			{%- if mobile_image_height != blank and mobile_image_height != 'auto' -%}
+				{%- assign image_height_mobile = mobile_image_height | replace: 'px', '' -%}
+			{%- endif -%}
+
+			{%- if block.type == 'full_width' or block.type == 'countdown_timer' -%}
+				{%- assign is_full_width = true -%}
+			{%- else -%}
+				{%- assign is_full_width = false -%}
+			{%- endif -%}
+
+			{%- if block.type == 'countdown_timer' or media_type == 'html_video' or media_type == 'iframe_video' -%}
+				{%- assign is_script_needed = true -%}
+			{%- endif -%}
+
+			{%- assign delay_step_media = 0 -%}
+
+			{%- capture image -%}
+				{%- if image_desktop != blank -%}
+					{%- if is_full_width == false -%}
+						{%- assign image_width_1199 = 600 -%}
+						{%- assign image_width_1500 = 750 -%}
+						{%- assign image_width_1680 = 840 -%}
+						{%- assign image_width_1920 = 960 -%}
+					{%- endif -%}
+
+					{%- render
+						'banner-image',
+						image_desktop: image_desktop,
+						image_mobile: image_mobile,
+						enable_lazy_load: enable_lazy_load,
+						image_width_1199: image_width_1199,
+						image_width_1500: image_width_1500,
+						image_width_1680: image_width_1680,
+						image_width_1920: image_width_1920,
+						image_height_mobile: image_height_mobile,
+						image_height_desktop: image_height_desktop
+					-%}
+				{%- endif -%}
+			{%- endcapture -%}
+
+			{%- capture html_video -%}
+				{%- if html_video_desktop != blank -%}
+					<video
+						class="banner__media banner__video banner__media-animate need-animate js-video"
+						data-device="desktop"
+						data-type="html"
+						loop
+						muted
+						playsinline
+						tabindex="-1"
+						aria-hidden="true"
+					>
+						{%- for source in html_video_desktop.sources -%}
+							{%- if source.mime_type == 'video/mp4' -%}
+								<source src="{{- source.url -}}" type="{{- source.mime_type -}}">
+							{%- endif -%}
+						{%- endfor -%}
+					</video>
+
+					<video
+						class="banner__media banner__video banner__video--mobile banner__media-animate need-animate js-video"
+						data-device="mobile"
+						data-type="html"
+						loop
+						muted
+						playsinline
+						tabindex="-1"
+						aria-hidden="true"
+					>
+						{%- for source in html_video_mobile.sources -%}
+							{%- if source.mime_type == 'video/mp4' -%}
+								<source src="{{- source.url -}}" type="{{- source.mime_type -}}">
+							{%- endif -%}
+						{%- endfor -%}
+					</video>
+				{%- endif -%}
+			{%- endcapture -%}
+
+			{%- if external_video_url_desktop != nil -%}
+				{%- capture external_video -%}
+					{%- if external_video_url_desktop != nil -%}
+						{%- if external_video_url_desktop.type == 'youtube' -%}
+							<div
+								class="banner__media banner__video banner__media-animate need-animate js-video"
+								data-device="desktop"
+								data-type="{{- external_video_url_desktop.type -}}"
+							>
+								<div
+									class="js-video-youtube"
+									data-video-id="{{- external_video_url_desktop.id -}}"
+									tabindex="-1"
+									aria-hidden="true"
+								></div>
+							</div>
+						{%- else -%}
+							<div
+								class="banner__media banner__video banner__media-animate need-animate js-video"
+								data-device="desktop"
+								data-video-id="{{- external_video_url_desktop.id -}}"
+								data-type="{{- external_video_url_desktop.type -}}"
+								aria-hidden="true"
+							></div>
+						{%- endif -%}
+					{%- endif -%}
+
+					{%- if external_video_url_mobile != nil -%}
+						{%- if external_video_url_mobile.type == 'youtube' -%}
+							<div
+								class="banner__media banner__video banner__video--mobile banner__media-animate need-animate js-video"
+								data-device="mobile"
+								data-type="{{- external_video_url_mobile.type -}}"
+							>
+								<div
+									class="js-video-youtube"
+									data-video-id="{{- external_video_url_mobile.id -}}"
+									tabindex="-1"
+									aria-hidden="true"
+								></div>
+							</div>
+						{%- else -%}
+							<div
+								class="banner__media banner__video banner__video--mobile banner__media-animate need-animate js-video"
+								data-device="mobile"
+								data-video-id="{{- external_video_url_mobile.id -}}"
+								data-type="{{- external_video_url_mobile.type -}}"
+								aria-hidden="true"
+							></div>
+						{%- endif -%}
+					{%- endif -%}
+				{%- endcapture -%}
+			{%- endif -%}
+
+			{%- capture banner_media -%}
+				{%- case media_type -%}
+					{%- when 'image' -%}
+						{{- image -}}
+					{%- when 'html_video' -%}
+						{{- html_video -}}
+					{%- when 'iframe_video' -%}
+						{{- external_video -}}
+				{%- endcase -%}
+			{%- endcapture -%}
+
+			{%- assign delay_step_border = 0 -%}
+
+			{%- if banner_media != 0 -%}
+				{%- if block.type == 'two_columns' -%}
+					{%- if background_image_border_width != 0 or background_image_border_indent_desktop != 0 -%}
+						{%- assign delay_step_border = 0.25 -%}
+					{%- endif -%}
+				{%- else -%}
+					{%- if image_border_width != 0 -%}
+						{%- assign delay_step_border = 0.25 -%}
+					{%- endif -%}
+				{%- endif -%}
+			{%- endif -%}
+
+			{%- if delay_step_border == 0 -%}
+				{%- assign delay_step_content = delay_step_media | plus: 0.25 -%}
+			{%- else -%}
+				{%- assign delay_step_content = delay_step_border | plus: 0.25 -%}
+			{%- endif -%}
+
+			{%- if timer_year != blank and timer_month != blank and timer_day != blank and timer_hour != blank -%}
+				{%- assign timer = true -%}
+			{% endif %}
+
+			{%- capture banner_content -%}
+				{%- if label != blank or heading != blank or text != blank or button_url != blank or timer != blank -%}
+					<div class="banner__content">
+						{%- if label != blank -%}
+							<p
+								class="subheading banner__label banner__content-animate need-animate"
+							    style="--animate-delay-content: {{- delay_step_content | append: 's' -}};"
+							>
+								{{- label -}}
+							</p>
+
+							{%- assign delay_step_content = delay_step_content | plus: 0.25 -%}
+						{%- endif -%}
+
+						{%- if heading != blank -%}
+							<h2
+								class="h2 banner__heading banner__content-animate need-animate"
+								style="--animate-delay-content: {{- delay_step_content | append: 's' -}};"
+							>
+								{{- heading -}}
+							</h2>
+
+							{%- assign delay_step_content = delay_step_content | plus: 0.25 -%}
+						{%- endif -%}
+
+						{%- if text != blank -%}
+							<div
+								class="banner__text rte-new banner__content-animate need-animate"
+								style="--animate-delay-content: {{- delay_step_content | append: 's' -}};"
+							>
+								{{- text -}}
+							</div>
+
+							{%- assign delay_step_content = delay_step_content | plus: 0.25 -%}
+						{%- endif -%}
+
+						{%- if timer -%}
+							<div class="banner__timer js-timer banner__content-animate need-animate" role="timer" aria-live="off"
+								 style="--animate-delay-content: {{- delay_step_content | append: 's' -}};"
+							>
+								<script class="js-timer-settings" type="application/json">
+									{
+										"year": {{- timer_year | json -}},
+										"month": {{- timer_month | json -}},
+										"day": {{- timer_day | json -}},
+										"hour": {{- timer_hour | json -}},
+										"timezone": {{- timer_timezone | json -}}
+									}
+								</script>
+
+								<div class="banner__timer-col">
+									<div class="banner__timer-values">
+										<p class="is-hidden banner__timer-value js-timer-days-hundreds">
+											0
+										</p>
+
+										<p class="banner__timer-value js-timer-days-dozens">
+											0
+										</p>
+
+										<p class="banner__timer-value js-timer-days-units">
+											0
+										</p>
+									</div>
+
+									<p class="text banner__timer-label">
+										<span
+											class="banner__timer-text banner__timer-text--desktop">{{- 'sections.banner.timer_days_label' | t -}}</span>
+										<span
+											class="banner__timer-text banner__timer-text--mobile">{{- 'sections.banner.timer_days_label_short' | t -}}</span>
+									</p>
+								</div>
+
+								<div class="banner__timer-col">
+									<div class="banner__timer-values">
+										<p class="banner__timer-value js-timer-hours-dozens">
+											0
+										</p>
+
+										<p class="banner__timer-value js-timer-hours-units">
+											0
+										</p>
+									</div>
+
+									<p class="text banner__timer-label">
+										<span
+											class="banner__timer-text banner__timer-text--desktop">{{- 'sections.banner.timer_hours_label' | t -}}</span>
+										<span
+											class="banner__timer-text banner__timer-text--mobile">{{- 'sections.banner.timer_hours_label_short' | t -}}</span>
+									</p>
+								</div>
+
+								<div class="banner__timer-col">
+									<div class="banner__timer-values">
+										<p class="banner__timer-value js-timer-minutes-dozens">
+											0
+										</p>
+
+										<p class="banner__timer-value js-timer-minutes-units">
+											0
+										</p>
+									</div>
+
+									<p class="text banner__timer-label">
+										<span
+											class="banner__timer-text banner__timer-text--desktop">{{- 'sections.banner.timer_minutes_label' | t -}}</span>
+										<span
+											class="banner__timer-text banner__timer-text--mobile">{{- 'sections.banner.timer_minutes_label_short' | t -}}</span>
+									</p>
+								</div>
+
+								<div class="banner__timer-col">
+									<div class="banner__timer-values">
+										<p class="banner__timer-value js-timer-seconds-dozens">
+											0
+										</p>
+
+										<p class="banner__timer-value js-timer-seconds-units">
+											0
+										</p>
+									</div>
+
+									<p class="text banner__timer-label">
+										<span
+											class="banner__timer-text banner__timer-text--desktop">{{- 'sections.banner.timer_seconds_label' | t -}}</span>
+										<span
+											class="banner__timer-text banner__timer-text--mobile">{{- 'sections.banner.timer_seconds_label_short' | t -}}</span>
+									</p>
+								</div>
+							</div>
+
+							{%- assign delay_step_content = delay_step_content | plus: 0.25 -%}
+						{%- endif -%}
+
+						{%- if button_text != blank and button_url != blank -%}
+							<div
+								class="banner__button-wrapper banner__content-animate need-animate"
+								style="--animate-delay-content: {{- delay_step_content | append: 's' -}};"
+							>
+								<a
+									class="button-circle banner__button"
+									href="{{- button_url -}}"
+									aria-label="{{- button_aria | escape -}}"
+								>
+									<span class="button__text">
+										{{- button_text -}}
+									</span>
+
+									<span class="button-new__icon-container">
+										<span class="button-new__icon-wrapper">
+											{% render "icons-new", icon: "wave", section_id: 'sdsasfasf' %}
+										</span>
+									</span>
+								</a>
+							</div>
+						{%- endif -%}
+					</div>
+				{%- endif -%}
+
+				{%- if background_image_desktop != blank -%}
+					<div class="banner__col-background">
+						{%- assign image_width_1199 = 600 -%}
+						{%- assign image_width_1500 = 750 -%}
+						{%- assign image_width_1680 = 840 -%}
+						{%- assign image_width_1920 = 960 -%}
+
+						{%- render
+							'banner-image',
+							image_desktop: background_image_desktop,
+							image_mobile: background_image_mobile,
+							enable_lazy_load: enable_lazy_load,
+							image_width_1199: image_width_1199,
+							image_width_1500: image_width_1500,
+							image_width_1680: image_width_1680,
+							image_width_1920: image_width_1920,
+							image_height_mobile: image_height_mobile,
+							image_height_desktop: image_height_desktop
+						-%}
+					</div>
+				{%- endif -%}
+			{%- endcapture -%}
+
+			{%- case content_alignment -%}
+				{%- when 'center' -%}
+					{%- assign timer_content_alignment = 'center' -%}
+				{%- when 'right' -%}
+					{%- assign timer_content_alignment = 'flex-end' -%}
+				{%- else -%}
+					{%- assign timer_content_alignment = 'flex-start' -%}
+			{%- endcase -%}
+
+			{%- case content_alignment_mobile -%}
+				{%- when 'center' -%}
+					{%- assign timer_content_alignment_mobile = 'center' -%}
+				{%- when 'right' -%}
+					{%- assign timer_content_alignment_mobile = 'flex-end' -%}
+				{%- else -%}
+					{%- assign timer_content_alignment_mobile = 'flex-start' -%}
+			{%- endcase -%}
+
+			{%- capture banner_wrapper_classes -%}
+				banner__wrapper {{-  -}}
+				{% if overlay_opacity > 0 %} banner__wrapper--overlayed {{-  -}} {%- endif -%}
+				{% if block.type == 'two_columns' %} banner__wrapper--two-cols {% else %} banner__wrapper--one-col banner__border-animate need-animate {%- endif -%}
+				{% if banner_media == blank and block.type == 'two_columns' %} banner__wrapper--no-media {%- endif -%}
+			{%- endcapture -%}
+
+			{%- capture banner_wrapper_styles -%}
+				{% if block.type == 'countdown_timer' or block.type == 'full_width' or block.type == 'two_columns' %}
+					--banner-min-height-desktop: {{ desktop_image_height }}; {{-  -}}
+					--banner-min-height-mobile: {{ mobile_image_height }}; {{-  -}}
+				{% endif %}
+				--banner-inner-content-alignment: {{- content_alignment | replace: 'left', 'start' | replace: 'right', 'end' -}}; {{-  -}}
+				--banner-inner-content-alignment-mobile: {{- content_alignment_mobile | replace: 'left', 'start' | replace: 'right', 'end' -}}; {{-  -}}
+				--banner-overlay-opacity: {{- overlay_opacity | times: 0.01 -}}; {{-  -}}
+				--banner-overlay-color: {{- overlay_color  -}}; {{-  -}}
+				--banner-image-border-width: {{ image_border_width }}px; {{- -}}
+				--banner-image-border-indent-desktop: {{ image_border_indent_desktop }}px; {{- -}}
+				--banner-image-border-indent-mobile: {{ image_border_indent_mobile }}px; {{- -}}
+				{% if block.type == 'countdown_timer' or block.type == 'full_width' %}
+					--banner-block-alignment: {{- block_alignment -}}; {{-  -}}
+
+					{%- if block_alignment == "flex-start" -%}
+						{%- assign banner_inner_class = "banner__inner--left" -%}
+					{%- elsif block_alignment == "flex-end" -%}
+						{%- assign banner_inner_class = "banner__inner--right" -%}
+					{%- endif -%}
+				{%- endif -%}
+				{% if block.type == 'countdown_timer' %}
+					--timer-content-alignment: {{- timer_content_alignment | replace: 'left', 'start' | replace: 'right', 'end' -}}; {{-  -}}
+					--timer-content-alignment-mobile: {{- timer_content_alignment_mobile | replace: 'left', 'start' | replace: 'right', 'end' -}}; {{-  -}}
+					--timer-cell-background-color: {{- timer_cell_background_color -}}; {{-  -}}
+					--timer-cell-color: {{- timer_cell_color -}}; {{-  -}}
+					--timer-label-color: {{- timer_label_color -}};
+				{%- endif -%}
+				{%- if block.type == 'two_columns' -%}
+					--background-overlay: {{- background_overlay | default: "linear-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 100%)" -}} {{-  -}};
+					--background-image-border-width: {{- background_image_border_width -}}px; {{-  -}}
+					--background-image-border-indent-desktop: {{- background_image_border_indent_desktop -}}px; {{-  -}}
+					--background-image-border-indent-mobile: {{- background_image_border_indent_mobile -}}px; {{-  -}}
+					--background-image-border-color: {{- background_image_border_color -}};
+				{%- endif -%}
+			{%- endcapture -%}
+
+			{%- capture media_wrapper_classes -%}
+				banner__media-wrapper need-animate
+				{% if media_type == 'html_video' or media_type == 'iframe_video' %} js-videos {%- endif -%}
+			{%- endcapture -%}
+
+			{%- capture banner_full_size -%}
+				<div class="{{- banner_wrapper_classes | strip_newlines -}}" style="{{- banner_wrapper_styles | strip_newlines -}}">
+					{% if button_url != blank and make_link_full_media %}
+						<a href="{{ button_url }}" class="banner__link--full" aria-label="{{ button_aria }}"></a>
+					{% endif %}
+
+					{%- if banner_media != blank -%}
+						<div class="{{- media_wrapper_classes | strip_newlines -}}">
+							{{- banner_media -}}
+						</div>
+					{%- endif -%}
+
+					{%- if banner_content != blank -%}
+						<div class="banner__inner {{ banner_inner_class -}}">
+							{{- banner_content -}}
+						</div>
+					{%- endif -%}
+				</div>
+			{%- endcapture -%}
+
+			{%- case block.type -%}
+				{%- when 'full_width' or 'countdown_timer' -%}
+					{{- banner_full_size -}}
+				{%- when 'two_columns' -%}
+					{%- assign media_content_position 	= block.settings.media_content_position -%}
+
+					{%- capture banner_two_cols -%}
+						{%- case media_content_position -%}
+							{%- when 'first' -%}
+								{%- if banner_media != blank -%}
+									<div class="banner__col banner__border-animate need-animate">
+										{% if button_url != blank and make_link_full_media %}
+											<a href="{{ button_url }}" class="banner__link--full" aria-label="{{ button_aria }}"></a>
+										{% endif %}
+
+										<div class="{{ media_wrapper_classes | strip_newlines }}">
+											{{- banner_media -}}
+										</div>
+									</div>
+								{%- endif -%}
+
+								<div class="banner__col banner__col--text banner__border-animate need-animate">
+									<div class="banner__inner {% if enable_sepia %}banner__inner--sepia-background{% endif %}">
+										{{- banner_content -}}
+									</div>
+								</div>
+							{%- when 'last' -%}
+								<div class="banner__col banner__col--text banner__border-animate need-animate">
+									<div class="banner__inner {% if enable_sepia %}banner__inner--sepia-background{% endif %}">
+										{{- banner_content -}}
+									</div>
+								</div>
+
+								{%- if banner_media != blank -%}
+									<div class="banner__col banner__border-animate need-animate">
+										{% if button_url != blank and make_link_full_media %}
+											<a href="{{ button_url }}" class="banner__link--full" aria-label="{{ button_aria }}"></a>
+										{% endif %}
+
+										<div class="{{ media_wrapper_classes | strip_newlines }}">
+											{{- banner_media -}}
+										</div>
+									</div>
+								{%- endif -%}
+						{%- endcase -%}
+					{%- endcapture -%}
+
+					<div class="{{- banner_wrapper_classes | strip_newlines -}}" style="{{- banner_wrapper_styles | strip_newlines -}}">
+						{{- banner_two_cols -}}
+					</div>
+			{%- endcase -%}
+		{%- endfor -%}
+	{%- endif -%}
+{%- endcapture -%}
+
+{%- if banner != blank -%}
+	{{- 'banner-new.build.css' | asset_url | stylesheet_tag -}}
+
+	{%- style -%}
+		#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+		}
+
+		@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_desktop -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+		}
+	{%- endstyle -%}
+
+	{% capture animations %}
+		--animate-delay-media: {{- delay_step_media | append: 's' -}}; {{-  -}}
+		--animate-delay-border: {{- delay_step_border | append: 's' -}};
+	{% endcapture %}
+
+	<section
+		class="banner-new {% if full_width == false %}banner-new--max-width{% endif %} js-banner js-animate {% if request.visual_preview_mode or section.index == 1 %} animated {% endif %}"
+		style="{{- section_colors | strip_newlines -}} {{- animations | strip_newlines -}}"
+	>
+		{{- banner -}}
+	</section>
+
+	{%- if is_script_needed == true -%}
+		<script src="{{- 'component-video.build.min.js' | asset_url -}}" defer></script>
+		<script src="{{- 'section-banner.build.min.js' | asset_url -}}" defer></script>
+	{%- endif -%}
+{%- endif -%}

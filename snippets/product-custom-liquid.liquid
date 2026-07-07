@@ -1,0 +1,13 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Product custom liquid
+------------------------------------------------------------------------------
+{% endcomment %}
+
+{% assign custom_liquid = block.settings.custom_liquid %}
+
+{% if custom_liquid != blank %}
+	<div class="product-custom-liquid">
+		{{- custom_liquid -}}
+	</div>
+{% endif %}

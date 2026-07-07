@@ -1,0 +1,164 @@
+{%- comment -%}
+  ------------------------------------------------------------------------------
+  Snippet: Banner with text new
+  ------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{{- 'banner-with-text-new.build.css' | asset_url | stylesheet_tag -}}
+
+{%- assign label                        = section.settings.label -%}
+{%- assign heading                      = section.settings.heading -%}
+{%- assign text_content                 = section.settings.text_content -%}
+{%- assign content_alignment            = section.settings.content_alignment -%}
+{%- assign desktop_image                = section.settings.desktop_image -%}
+{%- assign mobile_image                 = section.settings.mobile_image | default: desktop_image -%}
+{%- assign image_border_width           = section.settings.image_border_width -%}
+{%- assign image_border_indent_desktop  = section.settings.image_border_indent_desktop -%}
+{%- assign image_border_indent_mobile   = section.settings.image_border_indent_mobile -%}
+{%- assign is_lazy 			                = section.settings.is_lazy -%}
+{%- assign overlay_opacity              = section.settings.overlay_opacity -%}
+{%- assign overlay_color                = section.settings.overlay_color -%}
+{%- assign background_color             = section.settings.background_color -%}
+{%- assign text_color                   = section.settings.text_color -%}
+{%- assign image_border_color           = section.settings.image_border_color -%}
+{%- assign should_load_immediately      = false -%}
+
+{% if section.index == 1 and is_lazy == false %}
+  {%- assign should_load_immediately = true -%}
+{% endif %}
+
+{%- capture banner_image -%}
+  {%- capture img_focal -%}
+    --img-desktop-pos: {{ desktop_image.presentation.focal_point }}; --img-mob-pos: {{ mobile_image.presentation.focal_point }};
+  {%- endcapture -%}
+
+  {%- if is_lazy -%}
+    <picture class="lazy">
+      <source
+        data-srcset="{{ mobile_image | img_url: "375x" }} 1x, {{ mobile_image | img_url: "750x" }} 2x"
+        srcset="{{ mobile_image | img_url: "10x" }} 1x, {{ mobile_image | img_url: "10x" }} 2x"
+        media="(max-width: 375px)"
+      />
+
+      <source
+        data-srcset="{{ mobile_image | img_url: "420x" }} 1x, {{ mobile_image | img_url: "840x" }} 2x"
+        srcset="{{ mobile_image | img_url: "10x" }} 1x, {{ mobile_image | img_url: "10x" }} 2x"
+        media="(max-width: 420px)"
+      />
+
+      <source
+        data-srcset="{{ mobile_image | img_url: "575x" }} 1x, {{ mobile_image | img_url: "1150x" }} 2x"
+        srcset="{{ mobile_image | img_url: "10x" }} 1x, {{ mobile_image | img_url: "10x" }} 2x"
+        media="(max-width: 575px)"
+      />
+
+      <source
+        data-srcset="{{ mobile_image | img_url: "767x" }} 1x, {{ mobile_image | img_url: "1534x" }} 2x"
+        srcset="{{ mobile_image | img_url: "10x" }} 1x, {{ mobile_image | img_url: "10x" }} 2x"
+        media="(max-width: 767px)"
+      />
+
+      <source
+        data-srcset="{{ desktop_image | img_url: "991x" }} 1x, {{ desktop_image | img_url: "1982x" }} 2x"
+        srcset="{{ desktop_image | img_url: "10x" }} 1x, {{ desktop_image | img_url: "10x" }} 2x"
+        media="(max-width: 991px)"
+      />
+
+      <source
+        data-srcset="{{ desktop_image | img_url: "1440x" }} 1x, {{ desktop_image | img_url: "2880x" }} 2x"
+        srcset="{{ desktop_image | img_url: "10x" }} 1x, {{ desktop_image | img_url: "10x" }} 2x"
+        media="(max-width: 1440px)"
+      />
+
+      <img
+        data-srcset="{{ desktop_image | img_url: "1920x" }} 1x, {{ desktop_image | img_url: "3840x" }} 2x"
+        srcset="{{ desktop_image | img_url: "10x" }} 1x, {{ desktop_image | img_url: "10x" }} 2x"
+        data-src="{{- desktop_image | img_url: "1920x" -}}"
+        src="{{ desktop_image | img_url: "10x" }}"
+        alt="{{ desktop_image.alt }}"
+        class="banner-with-text__image js-animate{% if should_load_immediately %} animated{% endif %}"
+        style="{{ img_focal }}"
+      />
+    </picture>
+  {%- else -%}
+    <picture>
+      <source
+        srcset="{{ mobile_image | img_url: "375x" }} 1x, {{ mobile_image | img_url: "750x" }} 2x"
+        media="(max-width: 375px)"
+      />
+
+      <source
+        srcset="{{ mobile_image | img_url: "420x" }} 1x, {{ mobile_image | img_url: "840x" }} 2x"
+        media="(max-width: 420px)"
+      />
+
+      <source
+        srcset="{{ mobile_image | img_url: "575x" }} 1x, {{ mobile_image | img_url: "1150x" }} 2x"
+        media="(max-width: 575px)"
+      />
+
+      <source
+        srcset="{{ mobile_image | img_url: "767x" }} 1x, {{ mobile_image | img_url: "1534x" }} 2x"
+        media="(max-width: 767px)"
+      />
+
+      <source
+        srcset="{{ desktop_image | img_url: "991x" }} 1x, {{ desktop_image | img_url: "1982x" }} 2x"
+        media="(max-width: 991px)"
+      />
+
+      <source
+        srcset="{{ desktop_image | img_url: "1440x" }} 1x, {{ desktop_image | img_url: "2880x" }} 2x"
+        media="(max-width: 1440px)"
+      />
+
+      <img
+        srcset="{{ desktop_image | img_url: "1920x" }} 1x, {{ desktop_image | img_url: "3840x" }} 2x"
+        src="{{- desktop_image | img_url: "1920x" -}}"
+        alt="{{ desktop_image.alt }}"
+        class="banner-with-text__image js-animate{% if should_load_immediately %} animated{% endif %}"
+        {% if should_load_immediately %}
+          fetchpriority="high"
+        {% endif %}
+        style="{{ img_focal }}"
+      />
+    </picture>
+  {%- endif -%}
+{%- endcapture -%}
+
+{%- capture section_styles -%}
+  --overlay-opacity: {{ overlay_opacity }}%;
+  --overlay-color: {{ overlay_color }};
+  --background-color: {{ background_color }};
+  --text-color: {{ text_color }};
+  --image-border-color: {{ image_border_color }};
+  --image-border-width: {{ image_border_width }}px;
+  --image-border-indent-desktop: {{ image_border_indent_desktop }}px;
+  --image-border-indent-mobile: {{ image_border_indent_mobile }}px;
+{%- endcapture -%}
+
+<section class="banner-with-text-new need-animate js-animate{% if should_load_immediately %} animated{% endif %}" style="{{ section_styles }}">
+  {%- if desktop_image != blank -%}
+    {{- banner_image -}}
+  {%- endif -%}
+
+  <div class="banner-with-text__content-container banner-with-text__content-container--{{- content_alignment }} need-animate">
+    {%- if label != blank -%}
+      <p class="banner-with-text__label subheading">
+        {{ label }}
+      </p>
+    {%- endif -%}
+
+    {%- if heading != blank -%}
+      <h1 class="h2 banner-with-text__heading">
+        {{ heading }}
+      </h1>
+    {%- endif -%}
+
+    {%- if text_content != blank -%}
+      <div class="banner-with-text__text-content section-rte">
+        {{ text_content }}
+      </div>
+    {%- endif -%}
+  </div>
+</section>

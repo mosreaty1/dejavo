@@ -1,0 +1,217 @@
+{% comment %}
+  ------------------------------------------------------------------------------
+  Snippet: Slideshow Slide (Only settings.design == 'alternate')
+  Arguments;
+  - image_mobile
+  - image_desktop
+  - height_mobile
+  - height_desktop
+  - enable_lazy_load
+  - small_width
+  - small_width_retina
+  - medium_width
+  - medium_width_retina
+  - large_width
+  - large_width_retina
+  - extra_large_width
+  - extra_large_width_retina
+  - full_hd_width
+  - full_hd_width_retina
+  - extra_classes
+  - image_crop
+  ------------------------------------------------------------------------------
+{% endcomment %}
+
+{% unless image_crop %}
+	{% assign image_crop = 'center' %}
+{% endunless %}
+
+{%- capture image_eager -%}
+	<picture>
+		<source
+			srcset="{{ image_mobile | image_url: width: 360, crop: image_crop }} 1x, {{ image_mobile | image_url: width: 720, crop: image_crop }} 2x"
+			media="(max-width: 360px)"
+			width="360"
+			height="{{ 640 | times: height_mobile | times: 0.01 | round }}"
+		>
+
+		<source
+			srcset="{{ image_mobile | image_url: width: 380, crop: image_crop }} 1x, {{ image_mobile | image_url: width: 760, crop: image_crop }} 2x"
+			media="(max-width: 380px)"
+			width="380"
+			height="{{ 667 | times: height_mobile | times: 0.01 | round }}"
+		>
+
+		<source
+			srcset="{{ image_mobile | image_url: width: 420, crop: image_crop }} 1x, {{ image_mobile | image_url: width: 840, crop: image_crop }} 2x"
+			media="(max-width: 420px)"
+			width="420"
+			height="{{ 896 | times: height_mobile | times: 0.01 | round }}"
+		>
+
+		<source
+			srcset="{{ image_mobile | image_url: width: 480, crop: image_crop }} 1x, {{ image_mobile | image_url: width: 960, crop: image_crop }} 2x"
+			media="(max-width: 480px)"
+			width="480"
+			height="{{ 896 | times: height_mobile | times: 0.01 | round }}"
+		>
+
+		<source
+			srcset="{{ image_mobile | image_url: width: 575, crop: image_crop }} 1x, {{ image_mobile | image_url: width: 1150, crop: image_crop }} 2x"
+			media="(max-width: 575px)"
+			width="575"
+			height="{{ 896 | times: height_mobile | times: 0.01 | round }}"
+		>
+
+		<source
+			srcset="{{ image_mobile | image_url: width: 767, crop: image_crop }} 1x, {{ image_mobile | image_url: width: 1534, crop: image_crop }} 2x"
+			media="(max-width: 767px)"
+			width="767"
+			height="{{ 1024 | times: height_mobile | times: 0.01 | round }}"
+		>
+
+		<source
+			srcset="{{ image_desktop | image_url: width: small_width, crop: image_crop }} 1x, {{ image_desktop | image_url: width: small_width_retina, crop: image_crop }} 2x"
+			media="(max-width: 991px)"
+			width={{ small_width | remove: "x" }}
+			height="{{ 601 | times: height_desktop | times: 0.01 | round }}"
+		>
+
+		<source
+			srcset="{{ image_desktop | image_url: width: medium_width }} 1x, {{ image_desktop | image_url: width: medium_width_retina }} 2x"
+			media="(max-width: 1199px)"
+			width="{{ medium_width | remove: "x" }}"
+			height="{{ 720 | times: height_desktop | times: 0.01 | round }}"
+		>
+
+		<source
+			srcset="{{ image_desktop | image_url: width: large_width }} 1x, {{ image_desktop | image_url: width: large_width_retina }} 2x"
+			media="(max-width: 1500px)"
+			width="{{ large_width | remove: "x" }}"
+			height="{{ 900 | times: height_desktop | times: 0.01 | round }}"
+		>
+
+		<source
+			srcset="{{ image_desktop | image_url: width: extra_large_width }} 1x, {{ image_desktop | image_url: width: extra_large_width_retina }} 2x"
+			media="(max-width: 1680px)"
+			width="{{ extra_large_width | remove: "x" }}"
+			height="{{ 740 | times: height_desktop | times: 0.01 | round }}"
+		>
+
+		<img
+			class="slideshow-new__slide-media {{ extra_classes }}"
+			srcset="{{ image_desktop | image_url: width: full_hd_width }} 1x, {{ image_desktop | image_url: width: full_hd_width_retina }} 2x"
+			src="{{ image_desktop | image_url: width: full_hd_width }}"
+			alt="{{- image_desktop.alt -}}"
+			width="{{ full_hd_width | remove: "x" }}"
+			height="{{ 1080 | times: height_desktop | times: 0.01 | round }}"
+			style="--img-desktop-pos: {{ image_desktop.presentation.focal_point }}; --img-mob-pos: {{ image_mobile.presentation.focal_point }};"
+			{% if enable_fetch_priority %}
+				fetchpriority="high"
+			{% endif %}
+		>
+	</picture>
+{%- endcapture -%}
+
+{%- if enable_lazy_load -%}
+	<picture class="lazy">
+		<source
+			data-srcset="{{ image_mobile | image_url: width: 360 }} 1x, {{ image_mobile | image_url: width: 720 }} 2x"
+			srcset="{{ image_mobile | image_url: width: 10 }} 1x, {{ image_mobile | image_url: width: 10 }} 2x"
+			media="(max-width: 360px)"
+			width="360"
+			height="{{ 640 | times: height_mobile | times: 0.01 | round }}"
+		>
+
+		<source
+			data-srcset="{{ image_mobile | image_url: width: 380 }} 1x, {{ image_mobile | image_url: width: 760 }} 2x"
+			srcset="{{ image_mobile | image_url: width: 10 }} 1x, {{ image_mobile | image_url: width: 10 }} 2x"
+			media="(max-width: 380px)"
+			width="380"
+			height="{{ 667 | times: height_mobile | times: 0.01 | round }}"
+		>
+
+		<source
+			data-srcset="{{ image_mobile | image_url: width: 420 }} 1x, {{ image_mobile | image_url: width: 840 }} 2x"
+			srcset="{{ image_mobile | image_url: width: 10 }} 1x, {{ image_mobile | image_url: width: 10 }} 2x"
+			media="(max-width: 420px)"
+			width="420"
+			height="{{ 896 | times: height_mobile | times: 0.01 | round }}"
+		>
+
+		<source
+			data-srcset="{{ image_mobile | image_url: width: 480 }} 1x, {{ image_mobile | image_url: width: 960 }} 2x"
+			srcset="{{ image_mobile | image_url: width: 10 }} 1x, {{ image_mobile | image_url: width: 10 }} 2x"
+			media="(max-width: 480px)"
+			width="480"
+			height="{{ 896 | times: height_mobile | times: 0.01 | round }}"
+		>
+
+		<source
+			data-srcset="{{ image_mobile | image_url: width: 575 }} 1x, {{ image_mobile | image_url: width: 1150 }} 2x"
+			srcset="{{ image_mobile | image_url: width: 10 }} 1x, {{ image_mobile | image_url: width: 10 }} 2x"
+			media="(max-width: 575px)"
+			width="575"
+			height="{{ 896 | times: height_mobile | times: 0.01 | round }}"
+		>
+
+		<source
+			data-srcset="{{ image_mobile | image_url: width: 767 }} 1x, {{ image_mobile | image_url: width: 1534 }} 2x"
+			srcset="{{ image_mobile | image_url: width: 10 }} 1x, {{ image_mobile | image_url: width: 10 }} 2x"
+			media="(max-width: 767px)"
+			width="767"
+			height="{{ 1024 | times: height_mobile | times: 0.01 | round }}"
+		>
+
+		<source
+			data-srcset="{{ image_desktop | image_url: width: small_width }} 1x, {{ image_desktop | image_url: width: small_width_retina }} 2x"
+			srcset="{{ image_desktop | image_url: width: 10 }} 1x, {{ image_desktop | image_url: width: 10 }} 2x"
+			media="(max-width: 991px)"
+			width="{{ small_width }}"
+			height="{{ 601 | times: height_desktop | times: 0.01 | round }}"
+		>
+
+		<source
+			data-srcset="{{ image_desktop | image_url: width: medium_width }} 1x, {{ image_desktop | image_url: width: medium_width_retina }} 2x"
+			srcset="{{ image_desktop | image_url: width: 10 }} 1x, {{ image_desktop | image_url: width: 10 }} 2x"
+			media="(max-width: 1199px)"
+			width="{{ medium_width }}"
+			height="{{ 720 | times: height_desktop | times: 0.01 | round }}"
+		>
+
+		<source
+			data-srcset="{{ image_desktop | image_url: width: large_width }} 1x, {{ image_desktop | image_url: width: large_width_retina }} 2x"
+			srcset="{{ image_desktop | image_url: width: 10 }} 1x, {{ image_desktop | image_url: width: 10 }} 2x"
+			media="(max-width: 1500px)"
+			width="{{ large_width }}"
+			height="{{ 900 | times: height_desktop | times: 0.01 | round }}"
+		>
+
+		<source
+			data-srcset="{{ image_desktop | image_url: width: extra_large_width }} 1x, {{ image_desktop | image_url: width: extra_large_width_retina }} 2x"
+			srcset="{{ image_desktop | image_url: width: 10 }} 1x, {{ image_desktop | image_url: width: 10 }} 2x"
+			media="(max-width: 1680px)"
+			width="{{ extra_large_width }}"
+			height="{{ 740 | times: height_desktop | times: 0.01 | round }}"
+		>
+
+		<img
+			data-index="{{ forloop.index }}"
+			class="slideshow-new__slide-media no-js-hide {{ extra_classes }}"
+			data-srcset="{{ image_desktop | image_url: width: full_hd_width }} 1x, {{ image_desktop | image_url: width: full_hd_width_retina }} 2x"
+			srcset="{{ image_desktop | image_url: width: 10 }} 1x, {{ image_desktop | image_url: width: 20 }} 2x"
+			src="{{- image_desktop | image_url: width: 10 -}}"
+			data-src="{{ image_desktop | image_url: width: full_hd_width }}"
+			alt="{{- image_desktop.alt -}}"
+			width="{{ full_hd_width }}"
+			height="{{ 1080 | times: height_desktop | times: 0.01 | round }}"
+			style="--img-desktop-pos: {{ image_desktop.presentation.focal_point }}; --img-mob-pos: {{ image_mobile.presentation.focal_point }};"
+		>
+	</picture>
+
+	<noscript>
+		{{- image_eager -}}
+	</noscript>
+{%- else -%}
+	{{- image_eager -}}
+{%- endif -%}

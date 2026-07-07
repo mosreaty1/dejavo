@@ -1,0 +1,112 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Product gallery video
+	This snippet will output main video on product page
+
+	- video: video object (optional, object),
+	- is_lazy: is lazy load enable (optional, default: true, boolean)
+	- type: [video/external_video]
+
+	{%- render "product-gallery-image", image: image, is_lazy: is_lazy -%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- capture placeholder_video -%}
+	{%- assign preview_image = video.preview_image -%}
+
+	<div class="product-gallery-video__placeholder js-product-gallery-video-placeholder">
+		<picture>
+			<source
+				srcset="{{ preview_image | image_url: width: 380 }} 1x, {{ preview_image | image_url: width: 760 }} 2x"
+				media="(max-width: 380px)"
+			>
+
+			<source
+				srcset="{{ preview_image | image_url: width: 420 }} 1x, {{ preview_image | image_url: width: 840 }} 2x"
+				media="(max-width: 420px)"
+			>
+
+			<source
+				srcset="{{ preview_image | image_url: width: 480 }} 1x, {{ preview_image | image_url: width: 960 }} 2x"
+				media="(max-width: 480px)"
+			>
+
+			<source
+				srcset="{{ preview_image | image_url: width: 720 }} 1x, {{ preview_image | image_url: width: 1440 }} 2x"
+				media="(max-width: 767px)"
+			>
+
+			<img
+				class="product-gallery-video__placeholder-img"
+				src="{{ preview_image | image_url: width: 800 }}"
+				srcset="{{ preview_image | image_url: width: 800 }} 1x, {{ preview_image | image_url: width: 1600 }} 2x"
+				alt="{{ preview_image.alt | escape }}"
+				loading="lazy"
+			/>
+		</picture>
+
+		<button class="product-media__slider-slide-icon focus-visible-outline" aria-label="{{ 'general.accessibility.video_play' | t }}">
+			{%- render 'icons-small', icon: 'product-play' -%}
+		</button>
+	</div>
+{%- endcapture -%}
+
+{%- capture html_video -%}
+	<video
+		class="product-gallery-video__html js-video"
+		data-device="desktop"
+		data-type="html"
+		tabindex="-1"
+		preload="none"
+		controls
+	>
+		{% for source in video.sources  %}
+			{%- if source.mime_type == 'video/mp4' -%}
+				<source
+					src="{{- source.url -}}#t=0.001"
+					type="{{- source.mime_type -}}"
+				>
+			{%- endif -%}
+		{% endfor %}
+	</video>
+{%- endcapture -%}
+
+{%- capture external_video -%}
+	{%- if video.host == 'youtube' -%}
+		<div
+			class="product-gallery-video__youtube js-video"
+			style="--aspect-ratio: {{ video.aspect_ratio | default: 1.0 }}"
+			data-device="desktop"
+			data-type="{{- video.host -}}"
+			{% if video.preview_image != nil %}data-lazy{% endif %}
+		>
+			<div
+				class="js-video-youtube"
+				data-video-id="{{- video.external_id -}}"
+				tabindex="-1"
+				aria-hidden="true"
+			></div>
+		</div>
+	{%- else -%}
+		<div
+			class="product-gallery-video__vimeo js-video"
+			style="--aspect-ratio: {{ video.aspect_ratio | default: 1.0 }}"
+			data-device="desktop"
+			data-video-id="{{- video.external_id -}}"
+			data-type="{{- video.host -}}"
+			aria-hidden="true"
+			{% if video.preview_image != nil %}data-lazy{% endif %}
+		></div>
+	{%- endif -%}
+{%- endcapture -%}
+
+{% case type %}
+	{% when 'video' %}
+		{{- placeholder_video -}}
+
+		{{- html_video -}}
+	{% when 'external_video' %}
+		{{- placeholder_video -}}
+
+		{{- external_video -}}
+{% endcase %}

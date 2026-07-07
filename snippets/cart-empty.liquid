@@ -1,0 +1,53 @@
+{% comment %}
+	------------------------------------------------------------------------------
+	Snippet: Cart empty
+	Render empty cart state
+
+	Usage:
+	{%- render 'cart-empty' -%}
+	------------------------------------------------------------------------------
+{% endcomment %}
+
+{%- assign design = settings.design -%}
+
+<div class="cart-empty">
+	<form id="cart-{{- section.id -}}" class="is-hidden"></form>
+
+	{%- capture default_heading -%}
+		{{- 'cart.general.empty' | t -}}
+	{%- endcapture -%}
+
+	{%- assign heading = settings.empty_cart_heading | default: default_heading -%}
+
+	<h3 class="{% if design == 'standard' %}h1{% elsif design == 'alternate' %}h2{% endif %} cart-empty__heading">
+		{{- heading -}}
+	</h3>
+
+	{%- if settings.show_empty_cart_link -%}
+		{%- capture default_link_text -%}
+			{{ 'cart.general.continue_shopping' | t }}
+		{%- endcapture -%}
+
+		{%- assign link_text = settings.empty_cart_link_text | default: default_link_text -%}
+		{%- assign link_url  = settings.empty_cart_link_url | default: routes.all_products_collection_url -%}
+
+		<a class="{% if design == 'alternate' %}button-new{% else %}button{% endif %} button--secondary cart-empty__link cart-empty__link--drawer"
+		   href="{{- link_url -}}">
+			{{- link_text -}}
+		</a>
+
+		{% if design == 'alternate' %}
+			<a href="{{- link_url -}}" type="submit" class="button-circle cart-empty__link--template">
+				<span class="button__text">
+					{{- link_text -}}
+				</span>
+
+				<span class="button-new__icon-container">
+					<span class="button-new__icon-wrapper">
+						{% render "icons-new", icon: "wave", section_id: 'notify-me-popup' %}
+					</span>
+				</span>
+			</a>
+		{% endif %}
+	{%- endif -%}
+</div>

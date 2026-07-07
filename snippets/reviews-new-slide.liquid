@@ -1,0 +1,170 @@
+{% comment %}
+	------------------------------------------------------------------------------
+	Snippet: Reviews new slide
+	------------------------------------------------------------------------------
+{% endcomment %}
+
+{% assign price = product.price %}
+{% assign title = product.title %}
+{% assign url = product.url %}
+{% assign product_image = product_image | default: product.featured_image %}
+{% assign image_link_label = image_link_label | default: 'sections.reviews.shop_now' | t %}
+
+{% assign is_product_image = false %}
+
+{% if product_image != blank and product != blank and layout != 'only_text' %}
+	{% assign is_product_image = true %}
+{% endif %}
+
+{% capture image_link_label_styles %}
+	--image-link-label-color: {{ image_link_label_color }};
+{% endcapture %}
+
+{%- capture img_focal -%}
+	--img-desktop-pos: {{ product_image.presentation.focal_point }};
+{%- endcapture -%}
+
+{% capture reviews_image %}
+	<a href="{{ url }}" class="reviews-new__item-product-link focus-visible-outline">
+		<picture>
+			<source
+				srcset="{{ product_image | image_url: width: 296 }} 1x, {{ product_image | image_url: width: 592 }} 2x"
+				media="(max-width: 360px)"
+				width="296"
+				height="296"
+			>
+
+			<source
+				srcset="{{ product_image | image_url: width: 316 }} 1x, {{ product_image | image_url: width: 632 }} 2x"
+				media="(max-width: 380px)"
+				width="316"
+				height="316"
+			>
+
+			<source
+				srcset="{{ product_image | image_url: width: 416 }} 1x, {{ product_image | image_url: width: 832 }} 2x"
+				media="(max-width: 480px)"
+				width="416"
+				height="416"
+			>
+
+			<source
+				srcset="{{ product_image | image_url: width: 511 }} 1x, {{ product_image | image_url: width: 1022 }} 2x"
+				media="(max-width: 575px)"
+				width="511"
+				height="511"
+			>
+
+			<source
+				srcset="{{ product_image | image_url: width: 703 }} 1x, {{ product_image | image_url: width: 1406 }} 2x"
+				media="(max-width: 767px)"
+				width="703"
+				height="703"
+			>
+
+			<source
+				srcset="{{ product_image | image_url: width: 449 }} 1x, {{ product_image | image_url: width: 898 }} 2x"
+				media="(max-width: 991px)"
+				width="449"
+				height="449"
+			>
+
+			<source
+				srcset="{{ product_image | image_url: width: 558 }} 1x, {{ product_image | image_url: width: 1116 }} 2x"
+				media="(max-width: 1199px)"
+				width="558"
+				height="558"
+			>
+
+			<img
+				class="reviews-new__item-image"
+				src="{{- product_image | image_url: width: 399 -}}"
+				srcset="{{ product_image | image_url: width: 399 }} 1x, {{ product_image | image_url: width: 798 }} 2x"
+				alt="{{ product_image.alt }}"
+				loading="lazy"
+				style="{{ img_focal }}"
+				width="399"
+				height="399"
+			/>
+		</picture>
+
+		<div class="reviews-new__overlay" style="{{ image_link_label_styles }}">
+			<p class="reviews-new__overlay-text">
+				{{ image_link_label }}
+			</p>
+		</div>
+	</a>
+{% endcapture %}
+
+{%- if review_text != blank -%}
+	<div class="reviews-new__slide swiper-slide"
+		 style="--color-slide-background: {{ settings.color_background | color_darken: 4 }}">
+		<div class="reviews-new__item">
+			<div class="reviews-new__item-stars">
+				{%- render 'icons-small', icon: 'five-stars' -%}
+			</div>
+
+			{% if layout != 'only_text' %}
+				<div class="reviews-new__item-title-wrapper">
+					<div class="h5 reviews-new__heading">
+						{{ title }}
+					</div>
+
+					<div class="reviews-new__price">
+						{{ price | money }}
+					</div>
+				</div>
+			{% endif %}
+
+			<div class="reviews-new__item-text rte">
+				<p>
+					{{- review_text -}}
+				</p>
+			</div>
+
+			<div class="reviews-new__author-info-wrapper">
+				{%- if review_author_image != blank -%}
+					<div class="reviews-new__item-author-image-container">
+						<picture>
+							<img
+								class="reviews-new__item-author-image"
+								srcset="{{ review_author_image | img_url: "60x", crop: "center" }} 1x, {{ review_author_image | img_url: "120x", crop: "center" }} 2x"
+								src="{{ review_author_image | img_url: "60x", crop: "center" }}"
+								alt="{{ review_author_image.alt }}"
+								width="60"
+								height="60"
+								style="{{ img_focal }}"
+							/>
+						</picture>
+					</div>
+				{%- endif -%}
+
+				<div class="reviews-new__author-info">
+					{%- if review_author_name != blank -%}
+						<div class="reviews-new__item-author-name">
+							{{- review_author_name -}}
+						</div>
+					{%- endif -%}
+
+					{%- if review_additional_info != blank -%}
+						<div class="reviews-new__item-additional-info">
+							{{- review_additional_info -}}
+						</div>
+					{%- endif -%}
+				</div>
+			</div>
+
+			{% if is_product_image %}
+				<div class="reviews-new__item-image-wrapper reviews-new__item-image-wrapper--mobile">
+					{{ reviews_image }}
+				</div>
+			{% endif %}
+		</div>
+
+		{% if is_product_image %}
+			<div class="reviews-new__item-image-wrapper reviews-new__item-image-wrapper--desktop">
+				{{ reviews_image }}
+			</div>
+		{% endif %}
+	</div>
+{%- endif -%}

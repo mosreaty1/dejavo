@@ -1,0 +1,392 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Swipe
+------------------------------------------------------------------------------
+{% endcomment %}
+
+{%- assign design = settings.design -%}
+
+{%- if design == 'standard' -%}
+	{%- assign enable_lazy_load     = section.settings.enable_lazy_load -%}
+	{%- assign heading 				= section.settings.heading -%}
+	{%- assign background_color 	= section.settings.background_color -%}
+	{%- assign heading_color 		= section.settings.heading_color -%}
+	{%- assign block_heading_color 	= section.settings.block_heading_color -%}
+	{%- assign block_text_color 	= section.settings.text_color -%}
+	{%- assign blocks 				= section.blocks -%}
+	{%- assign blocks_count 	    = 0 -%}
+
+	{%- style -%}
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_mobile -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+		}
+
+		@media screen and (min-width: 768px) {
+			#shopify-section-{{- section.id -}} {
+				padding-top: {{- section.settings.offset_top_desktop -}}px;
+				padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+			}
+		}
+	{%- endstyle -%}
+
+	{%- capture section_styles -%}
+		--background-color: {{- background_color -}}; {{- -}}
+		--heading-color: {{- heading_color -}}; {{- -}}
+		--block-heading-color: {{- block_heading_color -}}; {{- -}}
+		--block-text-color: {{- block_text_color -}}; {{- -}}
+	{%- endcapture -%}
+
+	{%- assign content_blocks = '' -%}
+	{%- assign image_blocks = '' -%}
+
+	{%- for block in blocks -%}
+		{%- assign content_image 				= block.settings.content_image -%}
+		{%- assign content_heading 				= block.settings.content_heading -%}
+		{%- assign content_text 				= block.settings.content_text -%}
+
+		{%- capture img_focal -%}
+			--img-desktop-pos: {{ content_image.presentation.focal_point }};
+		{%- endcapture -%}
+
+		{%- capture content_block -%}
+			{%- if content_heading != blank or content_text != blank -%}
+				{%- if content_heading != blank -%}
+					<p class="swipe__content-block-heading">
+						{{- content_heading -}}
+					</p>
+				{%- endif -%}
+
+				{%- if content_text != blank -%}
+					<p class="swipe__content-block-text">
+						{{- content_text -}}
+					</p>
+				{%- endif -%}
+			{%- endif -%}
+		{%- endcapture -%}
+
+		{%- capture content_block_desktop -%}
+			{%- if content_block != blank -%}
+				<div class="swipe__content-block swipe__content-block--desktop js-swipe-content-block">
+					{{- content_block -}}
+				</div>
+			{%- endif -%}
+		{%- endcapture -%}
+
+		{%- capture content_block_mobile -%}
+			{%- if content_block != blank -%}
+				<div class="swipe__content-block swipe__content-block--mobile">
+					{{- content_block -}}
+				</div>
+			{%- endif -%}
+		{%- endcapture -%}
+
+		{%- capture image_with_content_block -%}
+			{%- if content_block_mobile != blank -%}
+				<div class="swipe__image-with-content-block js-swipe-image-block">
+					{{- content_block_mobile -}}
+
+					<div class="swipe__image-block-image-container">
+						{%- if content_image != blank -%}
+							{%- if enable_lazy_load -%}
+								<picture class="lazy">
+									<source data-srcset="{{ content_image | image_url: width: 335, height: 335 }} 1x, {{ content_image | image_url: width: 670, height: 670 }} 2x"
+											srcset="{{ content_image | image_url: width: 10, height: 10 }} 1x"
+											media="(max-width: 375px)">
+
+									<source data-srcset="{{ content_image | image_url: width: 535, height: 535 }} 1x, {{ content_image | image_url: width: 1070, height: 1070 }} 2x"
+											srcset="{{ content_image | image_url: width: 10, height: 10 }} 1x"
+											media="(max-width: 575px)">
+
+									<source data-srcset="{{ content_image | image_url: width: 727, height: 727 }} 1x, {{ content_image | image_url: width: 1454, height: 1454 }} 2x"
+											srcset="{{ content_image | image_url: width: 10, height: 10 }} 1x"
+											media="(max-width: 767px)">
+
+									<source data-srcset="{{ content_image | image_url: width: 436, height: 436 }} 1x, {{ content_image | image_url: width: 872, height: 872 }} 2x"
+											srcset="{{ content_image | image_url: width: 10, height: 10 }} 1x"
+											media="(max-width: 991px)">
+
+									<source data-srcset="{{ content_image | image_url: width: 540, height: 540 }} 1x, {{ content_image | image_url: width: 1080, height: 1080 }} 2x"
+											srcset="{{ content_image | image_url: width: 10, height: 10 }} 1x"
+											media="(max-width: 1199px)">
+
+									<source data-srcset="{{ content_image | image_url: width: 690, height: 690 }} 1x, {{ content_image | image_url: width: 1380, height: 1380 }} 2x"
+											srcset="{{ content_image | image_url: width: 10, height: 10 }} 1x"
+											media="(max-width: 1500px)">
+
+									<img
+										class="swipe__image-block-image"
+										src="{{- content_image | image_url: width: 10, height: 10 -}}"
+										data-src="{{ content_image | image_url: width: 780, height: 780 }}"
+										data-srcset="{{ content_image | image_url: width: 780, height: 780  }} 1x, {{ content_image | image_url: width: 1560, height: 1560 }} 2x"
+										alt="{{- content_image.alt -}}"
+										style="{{ img_focal }}"
+									>
+								</picture>
+							{%- else -%}
+								<picture>
+									<source srcset="{{ content_image | image_url: width: 335, height: 335 }} 1x, {{ content_image | image_url: width: 670, height: 670 }} 2x"
+											media="(max-width: 375px)">
+
+									<source srcset="{{ content_image | image_url: width: 535, height: 535 }} 1x, {{ content_image | image_url: width: 1070, height: 1070 }} 2x"
+											media="(max-width: 575px)">
+
+									<source srcset="{{ content_image | image_url: width: 727, height: 727 }} 1x, {{ content_image | image_url: width: 1454, height: 1454 }} 2x"
+											media="(max-width: 767px)">
+
+									<source srcset="{{ content_image | image_url: width: 436, height: 436 }} 1x, {{ content_image | image_url: width: 872, height: 872 }} 2x"
+											media="(max-width: 991px)">
+
+									<source srcset="{{ content_image | image_url: width: 540, height: 540 }} 1x, {{ content_image | image_url: width: 1080, height: 1080 }} 2x"
+											media="(max-width: 1199px)">
+
+									<source srcset="{{ content_image | image_url: width: 690, height: 690 }} 1x, {{ content_image | image_url: width: 1380, height: 1380 }} 2x"
+											media="(max-width: 1500px)">
+
+									<img
+										class="swipe__image-block-image"
+										src="{{ content_image | image_url: width: 780, height: 780 }}"
+										srcset="{{ content_image | image_url: width: 780, height: 780  }} 1x, {{ content_image | image_url: width: 1560, height: 1560 }} 2x"
+										alt="{{- content_image.alt -}}"
+										style="{{ img_focal }}"
+									>
+								</picture>
+							{%- endif -%}
+						{%- else -%}
+							{{ 'image' | placeholder_svg_tag }}
+						{%- endif -%}
+					</div>
+				</div>
+			{%- endif -%}
+		{%- endcapture -%}
+
+		{% if content_block_desktop != blank and image_with_content_block != blank %}
+			{%- assign blocks_count = blocks_count | plus: 1 -%}
+		{% endif %}
+
+		{%- assign content_blocks = content_blocks | append: content_block_desktop -%}
+		{%- assign image_with_content_blocks = image_with_content_blocks | append: image_with_content_block -%}
+	{%- endfor -%}
+
+
+	{%- if heading != blank and blocks_count > 1 -%}
+		{{- "swipe.build.css" | asset_url | stylesheet_tag -}}
+
+		<section class="swipe js-swipe"
+				 id="{{- section.id -}}"
+				 style="{{- section_styles -}}"
+		>
+			<div class="swipe__container">
+				<div class="swipe__row">
+					<div class="swipe__column swipe__column--content">
+						<div class="swipe__content js-swipe-content">
+							<div class="swipe__content-wrapper">
+							{%- if heading != blank -%}
+								<h2 class="swipe__heading h2">
+									{{- heading -}}
+								</h2>
+							{%- endif -%}
+
+							<div class="swipe__content-blocks swipe__content-blocks--desktop">
+								{{- content_blocks -}}
+							</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="swipe__column swipe__column--images-with-content">
+						<div class="swipe__image-with-content-blocks js-swipe-image-blocks">
+							{{- image_with_content_blocks -}}
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<script src="{{- 'section-swipe.build.min.js' | asset_url -}}" defer></script>
+	{%- endif -%}
+{%- elsif design == 'alternate' -%}
+	{%- render 'swipe-new', section: section -%}
+{%- endif -%}
+
+{%- schema -%}
+{
+	"name": "Swipe",
+	"disabled_on": {
+		"groups": ["header", "footer"]
+	},
+	"settings": [
+		{
+			"type": "paragraph",
+			"content": "The number of 'Content' blocks should be more than one"
+		},
+		{
+			"type": "checkbox",
+			"id": "enable_lazy_load",
+			"label": "Enable lazy load",
+			"default": true
+		},
+		{
+			"id": "heading",
+			"type": "textarea",
+			"label": "Heading",
+			"info": "The text in this field is truncated to 4 lines. Make sure that the text is displayed correctly on all resolutions. Required field",
+			"default": "Section heading. This text is static and does not change when changing images"
+		},
+		{
+			"type": "textarea",
+			"id": "subheading",
+			"label": "Subheading",
+			"default": "Subheading",
+			"info": "The setting is used for alternative design."
+		},
+		{
+			"type": "header",
+			"content": "Colors"
+		},
+		{
+			"type": "color_background",
+			"id": "background_color",
+			"label": "Background",
+			"default": "#222222"
+		},
+		{
+			"type": "color",
+			"id": "heading_color",
+			"label": "Heading",
+			"default": "#ffffff"
+		},
+		{
+			"type": "color",
+			"id": "subheading_color",
+			"label": "Subheading",
+			"default": "#ffffff",
+			"info": "The setting is used for alternative design."
+		},
+		{
+			"type": "color",
+			"id": "block_heading_color",
+			"label": "Block heading",
+			"default": "#ffffff"
+		},
+		{
+			"type": "color",
+			"id": "text_color",
+			"label": "Block text",
+			"default": "#ffffff"
+		},
+		{
+			"type": "color",
+			"id": "accents_spot_color",
+			"label": "Accents spot color",
+			"default": "#D29E72",
+			"info": "The setting is used for alternative design."
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 0
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 0
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 0
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 0
+		}
+	],
+	"blocks": [
+		{
+			"type": "content",
+			"name": "Content",
+			"limit": 6,
+			"settings": [
+				{
+					"type": "image_picker",
+					"id": "content_image",
+					"label": "Image",
+					"info": "1560 x 1560px recommended"
+				},
+				{
+					"type": "textarea",
+					"id": "content_heading",
+					"label": "Heading",
+					"default": "Block heading. This text will change as the image appears in the field of view",
+					"info": "The text in this field is truncated to 4 lines. Make sure that the text is displayed correctly on all resolutions"
+				},
+				{
+					"type": "textarea",
+					"id": "content_text",
+					"label": "Text",
+					"info": "The text in this field is truncated to 6 lines. Make sure that the text is displayed correctly on all resolutions",
+					"default": "Text that describe content of block. Describe the image associated with the text. This text will change as the image appears in the field of view."
+				}
+			]
+		}
+	],
+	"presets": [
+		{
+			"name": "Swipe",
+			"settings": {
+				"heading": "Section heading. This text is static and does not change when changing images"
+			},
+			"blocks": [
+				{
+					"type": "content",
+					"settings": {
+						"content_heading": "Heading 1",
+						"content_text": "Text that describe content of block 1. Describe the image associated with the text. This text will change as the image appears in the field of view."
+					}
+				},
+				{
+					"type": "content",
+					"settings": {
+						"content_heading": "Heading 2",
+						"content_text": "Text that describe content of block 2. Describe the image associated with the text. This text will change as the image appears in the field of view."
+					}
+				},
+				{
+					"type": "content",
+					"settings": {
+						"content_heading": "Heading 3",
+						"content_text": "Text that describe content of block 3. Describe the image associated with the text. This text will change as the image appears in the field of view."
+					}
+				}
+			]
+		}
+	]
+}
+{%- endschema -%}
+

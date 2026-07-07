@@ -1,0 +1,37 @@
+.shipping-page-main {
+	max-width: 840px;
+	margin: 0 auto;
+	padding: 0 20px;
+}
+
+.shipping-page-main-new .shipping-page-main__container {
+	position: relative;
+	z-index: 1;
+	margin: 0 auto;
+	padding: 0 16px;
+	max-width: 840px;
+}
+
+@media (min-width: 992px) {
+	.shipping-page-main-new.shipping-page-main--accent-spot {
+		position: relative;
+		overflow-x: clip;
+	}
+	.shipping-page-main-new.shipping-page-main--accent-spot::before, .shipping-page-main-new.shipping-page-main--accent-spot::after {
+		content: "";
+		position: absolute;
+		z-index: -1;
+		width: 600px;
+		height: 600px;
+		background: var(--ellipse-gradient);
+		pointer-events: none;
+	}
+	.shipping-page-main-new.shipping-page-main--accent-spot::before {
+		top: 0;
+		left: -169px;
+	}
+	.shipping-page-main-new.shipping-page-main--accent-spot::after {
+		bottom: -94px;
+		right: -81px;
+	}
+}

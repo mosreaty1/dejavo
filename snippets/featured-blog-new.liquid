@@ -1,0 +1,112 @@
+{% comment %}
+	------------------------------------------------------------------------------
+	Snippet: Featured blog new
+	- section: section object (required)
+
+	{%- render 'featured-blog-new', section: section -%}
+	------------------------------------------------------------------------------
+{% endcomment %}
+
+{{- "featured-blog-new.build.css" | asset_url | stylesheet_tag -}}
+
+{%- assign blog 				= section.settings.blog -%}
+{%- assign label 				= section.settings.label -%}
+{%- assign heading 				= section.settings.heading -%}
+{%- assign link_url 			= section.settings.link_url -%}
+{%- assign link_text 			= section.settings.link_text -%}
+{%- assign link_aria_label_text = section.settings.link_aria_label_text -%}
+{%- assign button_style 		= section.settings.button_style -%}
+{%- assign show_borders 	   	= settings.article_card_show_borders -%}
+{%- assign border_color 	   	= settings.article_card_border_color -%}
+{%- assign full_width 	   		= section.settings.full_width -%}
+{%- assign design 	   			= settings.design -%}
+
+{% assign delay_step = 0 %}
+
+{%- capture section_styles -%}
+	--border-color: {{ border_color }};
+{%- endcapture -%}
+
+{%- capture animated_classes -%}
+	js-animate{% if request.visual_preview_mode or section.index == 1 %} animated{% endif %}
+{%-endcapture-%}
+
+<section class="featured-blog-new{% if full_width %} featured-blog-new--full{% endif %} js-featured-blog" id="{{- section.id -}}" style="{{- section_styles -}}">
+	{%- if label != blank or heading != blank -%}
+		<div class="featured-blog-new__header {{ animated_classes }}">
+			{%- if label != blank -%}
+				<p class="text featured-blog-new__label subheading need-animate">
+					{{- label -}}
+				</p>
+			{%- endif -%}
+
+			{%- if heading != blank -%}
+				<h2 class="featured-blog-new__heading h2 need-animate">
+					{{- heading -}}
+				</h2>
+			{%- endif -%}
+		</div>
+	{%- endif -%}
+
+	{%- capture featured_blog_row_wrapper_classes -%}
+		featured-blog-new__row-wrapper swiper {{-  -}}
+		{% if blog.articles.size > 1 or blog == blank %} js-featured-content-slider {% endif %}
+		{{ animated_classes }}
+	{%- endcapture -%}
+
+	{%- capture featured_blog_new_col_classes -%}
+		featured-blog-new__col{% unless show_borders %} featured-blog-new__col--no-border{% endunless %} swiper-slide need-animate
+	{%- endcapture -%}
+
+	<div class="{{- featured_blog_row_wrapper_classes | strip_newlines -}}">
+		<div class="featured-blog-new__row swiper-wrapper">
+			{%- if blog and blog.articles.size > 0 -%}
+				{%- for article in blog.articles limit: 3 -%}
+					{%- assign delay_step = delay_step | plus: 0.4 -%}
+
+					<div class="{{- featured_blog_new_col_classes | strip_newlines -}}"
+						 style="transition-delay: {{ delay_step }}s;"
+					>
+						{%- render 'article-card-new', article: article, delay_step: delay_step -%}
+					</div>
+				{%- endfor -%}
+			{%- else -%}
+				{%- for i in (1..3) -%}
+					{%- assign delay_step = delay_step | plus: 0.4 -%}
+
+					<div class="{{- featured_blog_new_col_classes | strip_newlines -}}"
+						 style="transition-delay: {{ delay_step }}s;"
+					>
+						{%- render 'article-card-new', article: blank, delay_step: delay_step -%}
+					</div>
+				{%- endfor -%}
+			{%- endif -%}
+		</div>
+
+		{%- if blog.articles.size > 1 or blog == blank -%}
+			<div class="featured-blog-new__slider-pagination swiper-pagination js-featured-content-slider-pagination"></div>
+		{%- endif -%}
+	</div>
+
+	{%- if link_text != blank -%}
+		<div class="featured-blog-new-new__button-wrapper">
+			<a
+				href="{{- blog.url -}}"
+				{%- if link_aria_label_text != blank -%}aria-label="{{- link_aria_label_text | escape -}}"{%- endif -%}
+				class="{% if design == "alternate" and button_style == "circle" %} button-circle{% else %} button-new button--{{ button_style }}{% endif %} focus-visible-outline"
+			>
+				<span class="button__text">
+					{{- link_text -}}
+				</span>
+
+				{%- if design == "alternate" and button_style == "circle" -%}
+					<span class="button-new__icon-container">
+						<span class="button-new__icon-wrapper">
+							{% render "icons-new", icon: "wave" %}
+						</span>
+					</span>
+				{%- endif -%}
+			</a>
+		</div>
+	{%- endif -%}
+</section>

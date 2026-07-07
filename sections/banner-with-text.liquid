@@ -1,0 +1,368 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Banner with text
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{%- assign design = settings.design -%}
+
+{%- if design == 'standard' -%}
+	{{- 'banner-with-text.build.css' | asset_url | stylesheet_tag -}}
+
+	{%- assign label               					= section.settings.label -%}
+	{%- assign heading             					= section.settings.heading -%}
+	{%- assign text_content        					= section.settings.text_content -%}
+	{%- assign content_alignment        		= section.settings.content_alignment -%}
+	{%- assign desktop_image       					= section.settings.desktop_image -%}
+	{%- assign mobile_image        					= section.settings.mobile_image | default: desktop_image -%}
+	{%- assign image_border_width  					= section.settings.image_border_width -%}
+	{%- assign image_border_indent_desktop 	= section.settings.image_border_indent_desktop -%}
+	{%- assign image_border_indent_mobile 	= section.settings.image_border_indent_mobile -%}
+	{%- assign is_lazy 			   		 					= section.settings.is_lazy -%}
+	{%- assign overlay_opacity     					= section.settings.overlay_opacity -%}
+	{%- assign overlay_color       					= section.settings.overlay_color -%}
+	{%- assign background_color    					= section.settings.background_color -%}
+	{%- assign text_color          					= section.settings.text_color -%}
+	{%- assign image_border_color  					= section.settings.image_border_color -%}
+	{%- assign should_load_immediately 			= false -%}
+
+	{% if section.index == 1 and is_lazy == false %}
+		{%- assign should_load_immediately = true -%}
+	{% endif %}
+
+	{%- capture banner_image -%}
+		{%- capture img_focal -%}
+			--img-desktop-pos: {{ desktop_image.presentation.focal_point }}; --img-mob-pos: {{ mobile_image.presentation.focal_point }};
+		{%- endcapture -%}
+
+		{%- if is_lazy -%}
+			<picture class="lazy">
+				<source
+					data-srcset="{{ mobile_image | img_url: "375x" }} 1x, {{ mobile_image | img_url: "750x" }} 2x"
+					srcset="{{ mobile_image | img_url: "10x" }} 1x, {{ mobile_image | img_url: "10x" }} 2x"
+					media="(max-width: 375px)"
+				/>
+
+				<source
+					data-srcset="{{ mobile_image | img_url: "420x" }} 1x, {{ mobile_image | img_url: "840x" }} 2x"
+					srcset="{{ mobile_image | img_url: "10x" }} 1x, {{ mobile_image | img_url: "10x" }} 2x"
+					media="(max-width: 420px)"
+				/>
+
+				<source
+					data-srcset="{{ mobile_image | img_url: "575x" }} 1x, {{ mobile_image | img_url: "1150x" }} 2x"
+					srcset="{{ mobile_image | img_url: "10x" }} 1x, {{ mobile_image | img_url: "10x" }} 2x"
+					media="(max-width: 575px)"
+				/>
+
+				<source
+					data-srcset="{{ mobile_image | img_url: "767x" }} 1x, {{ mobile_image | img_url: "1534x" }} 2x"
+					srcset="{{ mobile_image | img_url: "10x" }} 1x, {{ mobile_image | img_url: "10x" }} 2x"
+					media="(max-width: 767px)"
+				/>
+
+				<source
+					data-srcset="{{ desktop_image | img_url: "991x" }} 1x, {{ desktop_image | img_url: "1982x" }} 2x"
+					srcset="{{ desktop_image | img_url: "10x" }} 1x, {{ desktop_image | img_url: "10x" }} 2x"
+					media="(max-width: 991px)"
+				/>
+
+				<source
+					data-srcset="{{ desktop_image | img_url: "1440x" }} 1x, {{ desktop_image | img_url: "2880x" }} 2x"
+					srcset="{{ desktop_image | img_url: "10x" }} 1x, {{ desktop_image | img_url: "10x" }} 2x"
+					media="(max-width: 1440px)"
+				/>
+
+				<img
+					data-srcset="{{ desktop_image | img_url: "1920x" }} 1x, {{ desktop_image | img_url: "3840x" }} 2x"
+					srcset="{{ desktop_image | img_url: "10x" }} 1x, {{ desktop_image | img_url: "10x" }} 2x"
+					data-src="{{- desktop_image | img_url: "1920x" -}}"
+					src="{{ desktop_image | img_url: "10x" }}"
+					alt="{{ desktop_image.alt }}"
+					class="banner-with-text__image js-animate{% if should_load_immediately %} animated{% endif %}"
+					style="{{ img_focal }}"
+				/>
+			</picture>
+		{%- else -%}
+			<picture>
+				<source
+					srcset="{{ mobile_image | img_url: "375x" }} 1x, {{ mobile_image | img_url: "750x" }} 2x"
+					media="(max-width: 375px)"
+				/>
+
+				<source
+					srcset="{{ mobile_image | img_url: "420x" }} 1x, {{ mobile_image | img_url: "840x" }} 2x"
+					media="(max-width: 420px)"
+				/>
+
+				<source
+					srcset="{{ mobile_image | img_url: "575x" }} 1x, {{ mobile_image | img_url: "1150x" }} 2x"
+					media="(max-width: 575px)"
+				/>
+
+				<source
+					srcset="{{ mobile_image | img_url: "767x" }} 1x, {{ mobile_image | img_url: "1534x" }} 2x"
+					media="(max-width: 767px)"
+				/>
+
+				<source
+					srcset="{{ desktop_image | img_url: "991x" }} 1x, {{ desktop_image | img_url: "1982x" }} 2x"
+					media="(max-width: 991px)"
+				/>
+
+				<source
+					srcset="{{ desktop_image | img_url: "1440x" }} 1x, {{ desktop_image | img_url: "2880x" }} 2x"
+					media="(max-width: 1440px)"
+				/>
+
+				<img
+					srcset="{{ desktop_image | img_url: "1920x" }} 1x, {{ desktop_image | img_url: "3840x" }} 2x"
+					src="{{- desktop_image | img_url: "1920x" -}}"
+					alt="{{ desktop_image.alt }}"
+					class="banner-with-text__image js-animate{% if should_load_immediately %} animated{% endif %}"
+					{% if should_load_immediately %}
+						fetchpriority="high"
+					{% endif %}
+					style="{{ img_focal }}"
+				/>
+			</picture>
+		{%- endif -%}
+	{%- endcapture -%}
+
+	{%- capture section_styles -%}
+		--overlay-opacity: {{ overlay_opacity }}%;
+		--overlay-color: {{ overlay_color }};
+		--background-color: {{ background_color }};
+		--text-color: {{ text_color }};
+		--image-border-color: {{ image_border_color }};
+		--image-border-width: {{ image_border_width }}px;
+		--image-border-indent-desktop: {{ image_border_indent_desktop }}px;
+		--image-border-indent-mobile: {{ image_border_indent_mobile }}px;
+	{%- endcapture -%}
+
+	<section class="banner-with-text" style="{{ section_styles }}">
+		{%- if desktop_image != blank -%}
+			{{- banner_image -}}
+		{%- endif -%}
+
+		<div class="banner-with-text__content-container banner-with-text__content-container--{{- content_alignment }} js-animate{% if should_load_immediately %} animated{% endif %}">
+			{%- if label != blank -%}
+				<p class="banner-with-text__label">
+					{{ label }}
+				</p>
+			{%- endif -%}
+
+			{%- if heading != blank -%}
+				<h1 class="h1 banner-with-text__heading">
+					{{ heading }}
+				</h1>
+			{%- endif -%}
+
+			{%- if text_content != blank -%}
+				<div class="banner-with-text__text-content section-rte">
+					{{ text_content }}
+				</div>
+			{%- endif -%}
+		</div>
+	</section>
+{%- elsif design == 'alternate' -%}
+	{%- render 'banner-with-text-new', section: section -%}
+{%- endif -%}
+
+{%- schema -%}
+	{
+		"name": "Banner with text",
+		"disabled_on": {
+			"groups": ["header", "footer"]
+		},
+		"settings": [
+			{
+				"id": "label",
+				"type": "text",
+				"label": "Label",
+				"default": "Label"
+			},
+			{
+				"id": "heading",
+				"type": "text",
+				"label": "Heading",
+				"default": "Banner with text"
+			},
+			{
+				"id": "text_content",
+				"type": "richtext",
+				"label": "Text",
+				"default": "<p>Give customers details about the banner image or content on the banner.</p>"
+			},
+			{
+				"type": "select",
+				"id": "content_alignment",
+				"label": "Content alignment",
+				"options": [
+					{
+						"value": "left",
+						"label": "Left"
+					},
+					{
+						"value": "center",
+						"label": "Center"
+					},
+					{
+						"value": "right",
+						"label": "Right"
+					}
+				],
+				"default": "center",
+				"info": "This setting works only on desktop."
+			},
+			{
+				"id": "desktop_image",
+				"type": "image_picker",
+				"label": "Image desktop",
+				"info": "3840 x 2160px recommended"
+			},
+			{
+				"id": "mobile_image",
+				"type": "image_picker",
+				"label": "Image mobile",
+				"info": "1534 x 1534px recommended"
+			},
+			{
+				"type": "range",
+				"id": "image_border_width",
+				"min": 0,
+				"max": 6,
+				"step": 1,
+				"unit": "px",
+				"label": "Image border width",
+				"default": 0
+			},
+			{
+				"type": "range",
+				"id": "image_border_indent_desktop",
+				"min": 0,
+				"max": 30,
+				"step": 1,
+				"unit": "px",
+				"label": "Image border indent (desktop)",
+				"default": 30
+			},
+			{
+				"type": "range",
+				"id": "image_border_indent_mobile",
+				"min": 0,
+				"max": 30,
+				"step": 1,
+				"unit": "px",
+				"label": "Image border indent (mobile)",
+				"default": 16
+			},
+			{
+				"type": "checkbox",
+				"id": "is_lazy",
+				"label": "Enable lazy load",
+				"default": true
+			},
+			{
+				"type": "range",
+				"id": "overlay_opacity",
+				"label": "Overlay opacity",
+				"min": 0,
+				"max": 100,
+				"unit": "%",
+				"default": 50
+			},
+			{
+				"type": "color",
+				"id": "overlay_color",
+				"label": "Overlay color",
+				"default": "#000000"
+			},
+			{
+				"type": "header",
+				"content": "COLORS"
+			},
+			{
+				"id": "background_color",
+				"type": "color_background",
+				"label": "Background",
+				"default": "#000000"
+			},
+			{
+				"id": "text_color",
+				"type": "color",
+				"label": "Text",
+				"default": "#fff"
+			},
+			{
+				"type": "color",
+				"id": "image_border_color",
+				"label": "Image border color",
+				"default": "#FFFFFF"
+			},
+			{
+				"type": "header",
+				"content": "Layout"
+			},
+			{
+				"type": "range",
+				"id": "offset_top_desktop",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Desktop offset top",
+				"default": 0
+			},
+			{
+				"type": "range",
+				"id": "offset_bottom_desktop",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Desktop offset bottom",
+				"default": 0
+			},
+			{
+				"type": "range",
+				"id": "offset_top_mobile",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Mobile offset top",
+				"default": 0
+			},
+			{
+				"type": "range",
+				"id": "offset_bottom_mobile",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Mobile offset bottom",
+				"default": 0
+			}
+		],
+		"presets": [
+			{
+				"name": "Banner with text"
+			}
+		]
+	}
+{%- endschema -%}

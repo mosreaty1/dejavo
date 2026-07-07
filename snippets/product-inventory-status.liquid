@@ -1,0 +1,45 @@
+{% assign show_inventory_quantity 	= block.settings.show_inventory_quantity %}
+{% assign show_background		 	= block.settings.show_background %}
+{% assign background_opacity		= block.settings.background_opacity | divided_by: 100.0 %}
+
+{% assign current_variant 			= product.selected_or_first_available_variant %}
+{% assign inventory_quantity 		= product.selected_or_first_available_variant.inventory_quantity %}
+
+{% capture styles %}
+	--text-color: {{ block.settings.text_color }};
+	--high-stock-color: {{ block.settings.high_stock_color }};
+	--low-stock-color: {{ block.settings.low_stock_color }};
+	--background-color: {{ block.settings.background_color | color_modify: 'alpha', background_opacity }};
+{% endcapture %}
+
+<div class="{% if design == 'alternate' %}product-inventory-status-new{% else %}product-inventory-status{% endif %} {% unless current_variant.available %}is-hidden{% endunless %} js-product-inventory-wrapper"
+	 style="{{ styles }}"
+>
+	{% assign low_stock_threshold = block.settings.low_stock_threshold %}
+	{% assign can_sell_after_zero = false %}
+
+	{% if current_variant.inventory_policy == "continue" or current_variant.inventory_management == nil %}
+		{% assign can_sell_after_zero = true %}
+	{% endif %}
+
+	<p class="product-inventory-status__text {% if show_background %}product-inventory-status__text--bg{% endif %} product-inventory-status__text--low js-product-low-stock-msg {% if current_variant.inventory_quantity > low_stock_threshold or current_variant.available == false or can_sell_after_zero %}is-hidden{% endif %}">
+		{%- if show_inventory_quantity -%}
+			<span class="product-inventory-status__quantity js-product-inventory-status-quantity{% if inventory_quantity <= 0 %} is-hidden{% endif %}">
+				{{- product.selected_or_first_available_variant.inventory_quantity -}}
+			</span>
+		{%- endif -%}
+
+		{{- block.settings.inv_low_stock_text -}}
+	</p>
+
+	<p class="product-inventory-status__text {% if show_background %}product-inventory-status__text--bg{% endif %} product-inventory-status__text--high js-product-high-stock-msg {% if current_variant.inventory_quantity <= low_stock_threshold and can_sell_after_zero == false or current_variant.available == false %}is-hidden{% endif %}">
+		{%- if show_inventory_quantity -%}
+			<span class="product-inventory-status__quantity js-product-inventory-status-quantity{% if inventory_quantity <= 0 %} is-hidden{% endif %}">
+				{{- inventory_quantity -}}
+			</span>
+		{%- endif -%}
+
+		{{- block.settings.inv_high_stock_text -}}
+	</p>
+</div>
+

@@ -1,0 +1,62 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Simple description new
+	This snippet displays an alternative view for the Simple description snippet
+
+	{% render 'simple-description-new',
+		section: section
+	%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign heading 	  = section.settings.heading -%}
+{%- assign content    = section.settings.content -%}
+
+{%- if heading != blank or content != blank -%}
+	{{- 'simple-description-new.build.css' | asset_url | stylesheet_tag -}}
+
+	{%- assign subheading        = section.settings.subheading -%}
+	{%- assign content_alignment = section.settings.content_alignment -%}
+	{%- assign block_alignment   = section.settings.block_alignment -%}
+
+	{%- capture styles -%}
+		--simple-description-content-alignment: {{- content_alignment -}}; {{-  -}}
+		--simple-description-block-alignment: {{- block_alignment -}};
+	{%- endcapture -%}
+
+	{%- style -%}
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_mobile -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+		}
+
+		@media screen and (min-width: 768px) {
+			#shopify-section-{{- section.id -}} {
+				padding-top: {{- section.settings.offset_top_desktop -}}px;
+				padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+			}
+		}
+	{%- endstyle -%}
+
+	<section class="simple-description simple-description-new{% if request.visual_preview_mode or section.index == 1 %} animated{% endif %} js-animate" style="{{- styles -}}">
+		<div class="simple-description__container">
+			{%- if subheading != blank -%}
+				<div class="subheading simple-description__subheading">
+					{{- subheading -}}
+				</div>
+			{%- endif -%}
+
+			{%- if heading != blank -%}
+				<h2 class="h2 simple-description__heading">
+					{{- heading -}}
+				</h2>
+			{%- endif -%}
+
+			{%- if content != blank -%}
+				<div class="rte-new simple-description__content">
+					{{- content -}}
+				</div>
+			{%- endif -%}
+		</div>
+	</section>
+{%- endif -%}

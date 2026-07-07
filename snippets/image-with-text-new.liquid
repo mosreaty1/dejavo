@@ -1,0 +1,374 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Image with text new
+	This snippet displays an alternative view for the Image with text snippet
+
+	{% render 'image-with-text-new',
+		subheading: subheading,
+		heading: heading,
+		text_content: text_content,
+		button: button,
+		first_desktop_image: first_desktop_image,
+		second_desktop_image: second_desktop_image,
+		first_mobile_image: first_mobile_image,
+		second_mobile_image: second_mobile_image,
+		styles: section_styles,
+		is_lazy: is_lazy,
+		full_width: full_width
+	%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{{- 'image-with-text-new.build.css' | asset_url | stylesheet_tag -}}
+
+<section
+	class="image-with-text-new {% if full_width %}image-with-text-new--full-width{% endif %} js-animate{% if request.visual_preview_mode or section.index == 1 %} animated{% endif %}"
+	style="{{ styles }}"
+>
+	{% if settings.enable_accents_spot %}
+		<div class="image-with-text-new__ellipse-aspect-ratio">
+			<div class="image-with-text-new__ellipse"></div>
+		</div>
+	{% endif %}
+
+	<div
+		class="image-with-text-new__wrapper {% if first_desktop_image == blank or second_desktop_image == blank %}image-with-text-new__wrapper--one-image{% endif %}">
+		<div class="image-with-text-new__content-wrapper need-animate">
+			{% if subheading != blank %}
+				<p class="subheading image-with-text-new__label">{{ subheading }}</p>
+			{% endif %}
+
+			{%- if heading != blank -%}
+				<h2 class="h2 image-with-text-new__heading">
+					{{- heading -}}
+				</h2>
+			{%- endif -%}
+
+			{%- if text_content != blank -%}
+				<div class="rte-new image-with-text-new__text">
+					{{- text_content -}}
+				</div>
+			{%- endif -%}
+
+			{% if button != blank %}
+				<div class="image-with-text-new__button--desktop">
+					{{- button -}}
+				</div>
+			{% endif %}
+		</div>
+
+		<div class="image-with-text-new__images-wrapper">
+			{% if first_desktop_image != blank or second_desktop_image != blank %}
+				{% assign second_img_width_1920 = '620x' %}
+				{% assign second_img_width_1920_2x = '1240x' %}
+
+				{% assign second_img_width_1440 = '456x' %}
+				{% assign second_img_width_1440_2x = '912x' %}
+
+				{% if first_desktop_image == blank or second_desktop_image == blank %}
+					{% assign first_img_width_1920 = '694x' %}
+					{% assign first_img_width_1920_2x = '1388x' %}
+
+					{% assign first_img_width_1440 = '536x' %}
+					{% assign first_img_width_1440_2x = '1072x' %}
+
+					{% assign img_width_991 = '959x' %}
+					{% assign img_width_991_2x = '1918x' %}
+
+					{% assign img_width_768 = '736x' %}
+					{% assign img_width_768_2x = '1472x' %}
+
+					{% assign img_width_575 = '547x' %}
+					{% assign img_width_575_2x = '1086x' %}
+
+					{% assign img_width_420 = '388x' %}
+					{% assign img_width_420_2x = '776x' %}
+
+					{% assign img_width_375 = '343x' %}
+					{% assign img_width_375_2x = '686x' %}
+				{% else %}
+					{% assign first_img_width_1920 = '456x' %}
+					{% assign first_img_width_1920_2x = '912x' %}
+
+					{% assign first_img_width_1440 = '336x' %}
+					{% assign first_img_width_1440_2x = '672x' %}
+
+					{% assign img_width_991 = '474x' %}
+					{% assign img_width_991_2x = '948x' %}
+
+					{% assign img_width_768 = '362x' %}
+					{% assign img_width_768_2x = '724x' %}
+
+					{% assign img_width_575 = '266x' %}
+					{% assign img_width_575_2x = '532x' %}
+
+					{% assign img_width_420 = '188x' %}
+					{% assign img_width_420_2x = '376x' %}
+
+					{% assign img_width_375 = '166x' %}
+					{% assign img_width_375_2x = '332x' %}
+				{% endif %}
+
+				{% if first_desktop_image != blank %}
+					<div class="image-with-text-new__image need-animate">
+						<div class="image-with-text-new__aspect-ratio">
+							{%- capture img_focal -%}
+								--first-img-desktop-pos: {{ first_desktop_image.presentation.focal_point }};
+								--first-img-mob-pos: {{ first_mobile_image.presentation.focal_point }};
+							{%- endcapture -%}
+
+							{% if is_lazy %}
+								<picture class="lazy">
+									<source
+										data-srcset="{{ first_mobile_image | img_url: img_width_375 }} 1x, {{ first_mobile_image | img_url: img_width_375_2x }} 2x"
+										srcset="{{ first_mobile_image | img_url: '10x' }} 1x, {{ first_mobile_image | img_url: '10x' }} 2x"
+										media="(max-width: 375px)"
+										width="166"
+										height="166"
+									/>
+
+									<source
+										data-srcset="{{ first_mobile_image | img_url: img_width_420 }} 1x, {{ first_mobile_image | img_url: img_width_420_2x }} 2x"
+										srcset="{{ first_mobile_image | img_url: '10x' }} 1x, {{ first_mobile_image | img_url: '10x' }} 2x"
+										media="(max-width: 420px)"
+										width="188"
+										height="188"
+									/>
+
+									<source
+										data-srcset="{{ first_mobile_image | img_url: img_width_575 }} 1x, {{ first_mobile_image | img_url: img_width_575_2x }} 2x"
+										srcset="{{ first_mobile_image | img_url: '10x' }} 1x, {{ first_mobile_image | img_url: '10x' }} 2x"
+										media="(max-width: 575px)"
+										width="266"
+										height="266"
+									/>
+
+									<source
+										data-srcset="{{ first_mobile_image | img_url: img_width_768 }} 1x, {{ first_mobile_image | img_url: img_width_768_2x }} 2x"
+										srcset="{{ first_mobile_image | img_url: '10x' }} 1x, {{ first_mobile_image | img_url: '10x' }} 2x"
+										media="(max-width: 768px)"
+										width="362"
+										height="362"
+									/>
+
+									<source
+										data-srcset="{{ first_mobile_image | img_url: img_width_991 }} 1x, {{ first_mobile_image | img_url: img_width_991_2x }} 2x"
+										srcset="{{ first_mobile_image | img_url: '10x' }} 1x, {{ first_mobile_image | img_url: '10x' }} 2x"
+										media="(max-width: 991px)"
+										width="474"
+										height="474"
+									/>
+
+									<source
+										data-srcset="{{ first_desktop_image | img_url: first_img_width_1440 }} 1x, {{ first_desktop_image | img_url: first_img_width_1440_2x }} 2x"
+										srcset="{{ first_desktop_image | img_url: '10x' }} 1x, {{ first_desktop_image | img_url: '10x' }} 2x"
+										media="(max-width: 1440px)"
+										width="336"
+										height="336"
+									/>
+
+									<img
+										data-srcset="{{ first_desktop_image | img_url: first_img_width_1920 }} 1x, {{ first_desktop_image | img_url: first_img_width_1920_2x }} 2x"
+										srcset="{{ first_desktop_image | img_url: "10x" }} 1x, {{ first_desktop_image | img_url: "10x" }} 2x"
+										data-src="{{ first_desktop_image | img_url: first_img_width_1920 }}"
+										src="{{ first_desktop_image | img_url: first_img_width_1920 }}"
+										width="456"
+										height="456"
+										style="{{ img_focal }}"
+										alt="{{ first_desktop_image.alt | escape }}">
+								</picture>
+							{% else %}
+								<picture>
+									<source
+										srcset="{{ first_mobile_image | img_url: img_width_375 }} 1x, {{ first_mobile_image | img_url: img_width_375_2x }} 2x"
+										media="(max-width: 375px)"
+										width="166"
+										height="166"
+									/>
+
+									<source
+										srcset="{{ first_mobile_image | img_url: img_width_420 }} 1x, {{ first_mobile_image | img_url: img_width_420_2x }} 2x"
+										media="(max-width: 420px)"
+										width="188"
+										height="188"
+									/>
+
+									<source
+										srcset="{{ first_mobile_image | img_url: img_width_575 }} 1x, {{ first_mobile_image | img_url: img_width_575_2x }} 2x"
+										media="(max-width: 575px)"
+										width="266"
+										height="266"
+									/>
+
+									<source
+										srcset="{{ first_mobile_image | img_url: img_width_768 }} 1x, {{ first_mobile_image | img_url: img_width_768_2x }} 2x"
+										media="(max-width: 768px)"
+										width="362"
+										height="362"
+									/>
+
+									<source
+										srcset="{{ first_mobile_image | img_url: img_width_991 }} 1x, {{ first_mobile_image | img_url: img_width_991_2x }} 2x"
+										media="(max-width: 991px)"
+										width="474"
+										height="474"
+									/>
+
+									<source
+										srcset="{{ first_desktop_image | img_url: first_img_width_1440 }} 1x, {{ first_desktop_image | img_url: first_img_width_1440_2x }} 2x"
+										media="(max-width: 1440px)"
+										width="336"
+										height="336"
+									/>
+
+									<img
+										srcset="{{ first_desktop_image | img_url: first_img_width_1920 }} 1x, {{ first_desktop_image | img_url: first_img_width_1920_2x }} 2x"
+										src="{{ first_desktop_image | img_url: first_img_width_1920 }}"
+										width="456"
+										height="456"
+										style="{{ img_focal }}"
+										alt="{{ first_desktop_image.alt | escape }}">
+								</picture>
+							{% endif %}
+						</div>
+					</div>
+				{% endif %}
+
+				{% if second_desktop_image != blank %}
+					{%- capture img_focal -%}
+						--second-img-desktop-pos: {{ second_desktop_image.presentation.focal_point }};
+						--second-img-mob-pos: {{ second_mobile_image.presentation.focal_point }};
+					{%- endcapture -%}
+
+					<div class="image-with-text-new__image need-animate">
+						<div class="image-with-text-new__aspect-ratio">
+							{% if is_lazy %}
+								<picture class="lazy">
+									<source
+										data-srcset="{{ second_mobile_image | img_url: img_width_375 }} 1x, {{ second_mobile_image | img_url: img_width_375_2x }} 2x"
+										srcset="{{ second_mobile_image | img_url: '10x' }} 1x, {{ second_mobile_image | img_url: '10x' }} 2x"
+										media="(max-width: 375px)"
+										width="166"
+										height="166"
+									/>
+
+									<source
+										data-srcset="{{ second_mobile_image | img_url: img_width_420 }} 1x, {{ second_mobile_image | img_url: img_width_420_2x }} 2x"
+										srcset="{{ second_mobile_image | img_url: '10x' }} 1x, {{ second_mobile_image | img_url: '10x' }} 2x"
+										media="(max-width: 420px)"
+										width="188"
+										height="188"
+									/>
+
+									<source
+										data-srcset="{{ second_mobile_image | img_url: img_width_575 }} 1x, {{ second_mobile_image | img_url: img_width_575_2x }} 2x"
+										srcset="{{ second_mobile_image | img_url: '10x' }} 1x, {{ second_mobile_image | img_url: '10x' }} 2x"
+										media="(max-width: 575px)"
+										width="266"
+										height="266"
+									/>
+
+									<source
+										data-srcset="{{ second_mobile_image | img_url: img_width_768 }} 1x, {{ second_mobile_image | img_url: img_width_768_2x }} 2x"
+										srcset="{{ second_mobile_image | img_url: '10x' }} 1x, {{ second_mobile_image | img_url: '10x' }} 2x"
+										media="(max-width: 768px)"
+										width="362"
+										height="362"
+									/>
+
+									<source
+										data-srcset="{{ second_mobile_image | img_url: img_width_991 }} 1x, {{ second_mobile_image | img_url: img_width_991_2x }} 2x"
+										srcset="{{ second_mobile_image | img_url: '10x' }} 1x, {{ second_mobile_image | img_url: '10x' }} 2x"
+										media="(max-width: 991px)"
+										width="474"
+										height="474"
+									/>
+
+									<source
+										data-srcset="{{ second_desktop_image | img_url: second_img_width_1440 }} 1x, {{ second_desktop_image | img_url: second_img_width_1440_2x }} 2x"
+										srcset="{{ second_desktop_image | img_url: '10x' }} 1x, {{ second_desktop_image | img_url: '10x' }} 2x"
+										media="(max-width: 1440px)"
+										width="336"
+										height="336"
+									/>
+
+									<img
+										data-srcset="{{ second_desktop_image | img_url: second_img_width_1920 }} 1x, {{ second_desktop_image | img_url: second_img_width_1920_2x }} 2x"
+										srcset="{{ second_desktop_image | img_url: "10x" }} 1x, {{ second_img_width_1920 | img_url: "10x" }} 2x"
+										data-src="{{ second_desktop_image | img_url: second_img_width_1920 }}"
+										src="{{ second_desktop_image | img_url: second_img_width_1920 }}"
+										width="456"
+										height="456"
+										style="{{ img_focal }}"
+										alt="{{ second_desktop_image.alt | escape }}">
+								</picture>
+							{% else %}
+								<picture>
+									<source
+										srcset="{{ second_mobile_image | img_url: img_width_375 }} 1x, {{ second_mobile_image | img_url: img_width_375_2x }} 2x"
+										media="(max-width: 375px)"
+										width="166"
+										height="166"
+									/>
+
+									<source
+										srcset="{{ second_mobile_image | img_url: img_width_420 }} 1x, {{ second_mobile_image | img_url: img_width_420_2x }} 2x"
+										media="(max-width: 420px)"
+										width="188"
+										height="188"
+									/>
+
+									<source
+										srcset="{{ second_mobile_image | img_url: img_width_575 }} 1x, {{ second_mobile_image | img_url: img_width_575_2x }} 2x"
+										media="(max-width: 575px)"
+										width="266"
+										height="266"
+									/>
+
+									<source
+										srcset="{{ second_mobile_image | img_url: img_width_768 }} 1x, {{ second_mobile_image | img_url: img_width_768_2x }} 2x"
+										media="(max-width: 768px)"
+										width="362"
+										height="362"
+									/>
+
+									<source
+										srcset="{{ second_mobile_image | img_url: img_width_991 }} 1x, {{ second_mobile_image | img_url: img_width_991_2x }} 2x"
+										media="(max-width: 991px)"
+										width="474"
+										height="474"
+									/>
+
+									<source
+										srcset="{{ second_desktop_image | img_url: second_img_width_1440 }} 1x, {{ second_desktop_image | img_url: second_img_width_1440_2x }} 2x"
+										media="(max-width: 1440px)"
+										width="456"
+										height="456"
+									/>
+
+									<img
+										srcset="{{ second_desktop_image | img_url: second_img_width_1920 }} 1x, {{ second_desktop_image | img_url: second_img_width_1920_2x }} 2x"
+										src="{{ second_desktop_image | img_url: second_img_width_1920 }}"
+										width="620"
+										height="620"
+										style="{{ img_focal }}"
+										alt="{{ second_desktop_image.alt | escape }}">
+								</picture>
+							{% endif %}
+						</div>
+					</div>
+				{% endif %}
+			{% else %}
+				<div class="image-with-text-new__image">
+					{{ 'image' | placeholder_svg_tag: 'image-with-text__image' }}
+				</div>
+			{% endif %}
+		</div>
+
+		{% if button != blank %}
+			<div class="image-with-text-new__button--mobile">
+				{{- button -}}
+			</div>
+		{% endif %}
+	</div>
+</section>

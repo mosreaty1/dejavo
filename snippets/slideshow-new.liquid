@@ -1,0 +1,1307 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Slideshow (Only settings.design == 'alternate')
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign enable_lazy_load 	       = section.settings.enable_lazy_load -%}
+{%- assign desktop_slide_per_view      = 1 -%}
+{%- assign show_arrows 			       = section.settings.show_arrows -%}
+{%- assign show_pagination 		       = section.settings.show_pagination -%}
+{%- assign show_progress_bar 	       = section.settings.show_progress_bar -%}
+{%- assign enable_loop 			       = section.settings.enable_loop -%}
+{%- assign enable_autoplay 		       = section.settings.enable_autoplay -%}
+{%- assign autoplay_speed 		       = section.settings.autoplay_speed | times: 1000 -%}
+{%- assign animation_speed 		       = section.settings.animation_speed | times: 1000 -%}
+{%- assign animation_type 		       = section.settings.animation_type -%}
+{%- assign play_color 		           = section.settings.play_color -%}
+{%- assign play_background_color       = section.settings.play_background_color -%}
+{%- assign play_hover_color 	       = section.settings.play_hover_color -%}
+{%- assign play_background_hover_color = section.settings.play_background_hover_color -%}
+{%- assign effect 				       = animation_type -%}
+{%- assign parallax 			       = false -%}
+
+{%- if effect == 'parallax' -%}
+	{%- assign effect 	= 'slide' -%}
+	{%- assign parallax = true -%}
+{%- endif -%}
+
+{%- assign height_desktop 			= section.settings.height_desktop | append: "vh" -%}
+{%- assign height_mobile 			= section.settings.height_mobile | append: "vh"  -%}
+{%- assign subtract_header_height	= section.settings.subtract_header_height -%}
+{%- assign background_color 		= section.settings.background_color -%}
+{%- assign progress_bar_color 		= section.settings.progress_bar_color -%}
+{%- assign arrows_color 			= section.settings.arrows_color -%}
+{%- assign pagination_color			= section.settings.pagination_color -%}
+{%- assign slide_width_desktop		= "100vw" -%}
+
+{%- if subtract_header_height -%}
+	{%- assign height_desktop	= "calc(" | append: height_desktop | append: " - var(--header-height-static, calc(40px + ((var(--body-font-size, 16px) * 1.25 / 1.5) * 2) + (var(--body-font-size, 16px) * 1.15))) - var(--header-offset-top-static, calc(28px + (var(--body-font-size) * 0.875 * 1.6))))" -%}
+	{%- assign height_mobile	= "calc(" | append: height_mobile | append: " - var(--header-height-static, calc(40px + ((var(--body-font-size, 16px) * 1.25 / 1.5) * 2) + (var(--body-font-size, 16px) * 1.15))) - var(--header-offset-top-static, calc(28px + (var(--body-font-size) * 0.875 * 1.6))))" -%}
+{%- endif -%}
+
+{%- assign small_width 				= 991 | divided_by: desktop_slide_per_view | round -%}
+{%- assign small_width_retina 		= 1982 | divided_by: desktop_slide_per_view | round -%}
+{%- assign medium_width 			= 1199 | divided_by: desktop_slide_per_view | round -%}
+{%- assign medium_width_retina 		= 2398 | divided_by: desktop_slide_per_view | round -%}
+{%- assign large_width 				= 1500 | divided_by: desktop_slide_per_view | round -%}
+{%- assign large_width_retina 		= 3000 | divided_by: desktop_slide_per_view | round -%}
+{%- assign extra_large_width 		= 1680 | divided_by: desktop_slide_per_view | round -%}
+{%- assign extra_large_width_retina = 3360 | divided_by: desktop_slide_per_view | round -%}
+{%- assign full_hd_width 			= 1920 | divided_by: desktop_slide_per_view | round -%}
+{%- assign full_hd_width_retina 	= 3840 | divided_by: desktop_slide_per_view | round -%}
+
+{%- assign blocks = section.blocks -%}
+
+{%- capture slider_settings -%}
+	{
+		"slidesPerView": 1,
+		"grabCursor": true,
+		"loop": {{ enable_loop -}},
+		"speed": {{ animation_speed -}},
+		"effect": "{{- effect -}}",
+		"parallax": {{ parallax -}},
+		{%- if effect == "creative" %}
+			"creativeEffect": {
+				"prev": {
+					"shadow": true,
+					"translate": ["-100%", 0, -1]
+				},
+				"next": {
+					"translate": ["100%", 0, 0]
+				}
+			},
+		{%- endif -%}
+		{%- if show_arrows %}
+			"navigation": {
+				"nextEl": ".swiper-button-next",
+				"prevEl": ".swiper-button-prev"
+			},
+		{%- endif -%}
+		{% if show_pagination -%}
+			"pagination": {
+				"el": ".swiper-pagination",
+				"clickable": true,
+				{% if blocks.size > 5 -%}
+					"dynamicBullets": true,
+				{%- endif %}
+				"bulletElement": "button"
+			},
+		{%- endif -%}
+		{% if enable_autoplay -%}
+			"autoplay": {
+				"delay": {{- autoplay_speed -}},
+				"disableOnInteraction": false
+			},
+		{%- endif %}
+		"a11y": {
+			"prevSlideMessage": {{ "general.accessibility.slider.prev_slide_message" | t  | json -}},
+			"nextSlideMessage": {{ "general.accessibility.slider.next_slide_message" | t | json -}},
+			"firstSlideMessage": {{ "general.accessibility.slider.first_slide_message" | t | json -}},
+			"lastSlideMessage": {{ "general.accessibility.slider.last_slide_message" | t | json -}},
+			"slideLabelMessage": {{ "general.accessibility.slider.slide_label_message" | t | json -}},
+			"paginationBulletMessage": {{ "general.accessibility.slider.pagination_bullet_message" | t | json }}
+		},
+		"breakpoints": {
+			"768": {
+				"slidesPerView": {{ desktop_slide_per_view }}
+			}
+		}
+	}
+{%- endcapture -%}
+
+{%- capture section_styles  -%}
+	--height-desktop: {{ height_desktop -}}; {{-  -}}
+	--height-mobile: {{ height_mobile -}}; {{-  -}}
+	--background-color: {{ background_color -}}; {{-  -}}
+	--progress-bar-color: {{ progress_bar_color -}}; {{-  -}}
+	--progress-bar-body-color: {{ progress_bar_color | color_modify: 'alpha', 0.1  -}}; {{-  -}}
+	--arrows-color: {{ arrows_color -}}; {{-  -}}
+	--pagination-color: {{ pagination_color -}}; {{-  -}}
+	--play-color: {{ play_color -}}; {{-  -}}
+	--play-background-color: {{ play_background_color -}}; {{-  -}}
+	--play-hover-color: {{ play_hover_color -}}; {{-  -}}
+	--play-background-hover-color: {{ play_background_hover_color -}}; {{-  -}}
+	--slide-width-desktop: {{ slide_width_desktop -}}; {{-  -}}
+	--slide-speed: {{ animation_speed }}ms;
+{%- endcapture -%}
+
+{%- assign slider_classes = 'slideshow-new__slider' -%}
+
+{% if blocks.size > 1 %}
+	{%- assign slider_classes = slider_classes | append: ' swiper' -%}
+{%- endif %}
+
+{%- assign slider_classes = slider_classes | append: ' js-slider' -%}
+
+{%- if blocks.size > 0 -%}
+	{{- 'slideshow-new.build.css' | asset_url | stylesheet_tag -}}
+
+	{%- style -%}
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_mobile -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+		}
+
+		@media screen and (min-width: 768px) {
+			#shopify-section-{{- section.id -}} {
+				padding-top: {{- section.settings.offset_top_desktop -}}px;
+				padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+			}
+		}
+	{%- endstyle -%}
+
+	<section
+		class="slideshow-new js-slideshow js-animate{% if request.visual_preview_mode or section.index == 1 %} animated{% endif %}"
+		id="{{- section.id -}}"
+		style="{{- section_styles -}}"
+	>
+		{% assign first_slide = blocks | first %}
+		<div
+			class="{{- slider_classes -}}"
+			data-current-slide-type="{{ first_slide.type }}"
+			data-arrows="{% if blocks.size > 1 and show_arrows %}show{% else %}hide{% endif %}"
+			data-progress-bar="{% if show_progress_bar and enable_autoplay and blocks.size > 1 %}show{% else %}hide{% endif %}"
+			data-pagination="{% if blocks.size > 1 and show_pagination %}show{% else %}hide{% endif %}"
+		>
+			<div class="slideshow-new__slider-wrapper {% if blocks.size > 1 %} swiper-wrapper{%- endif -%}">
+				{%- for block in blocks -%}
+					{%- assign label 					= block.settings.label -%}
+					{%- assign heading 					= block.settings.heading -%}
+					{%- assign description 				= block.settings.description -%}
+					{%- assign button_text 				= block.settings.button_text -%}
+					{%- assign button_aria_label		= block.settings.button_aria_label -%}
+					{%- assign button_link 				= block.settings.button_link -%}
+					{%- assign open_in_new_tab 			= block.settings.open_in_new_tab -%}
+					{%- assign make_link_full_slide 	= block.settings.make_link_full_slide -%}
+					{%- assign second_button_text       = block.settings.second_button_text -%}
+					{%- assign second_button_aria_label = block.settings.second_button_aria_label -%}
+					{%- assign second_button_link 		= block.settings.second_button_link -%}
+					{%- assign second_open_in_new_tab 	= block.settings.second_open_in_new_tab -%}
+					{%- assign is_button 				= false -%}
+					{%- assign enable_fetch_priority = false -%}
+
+					{% if section.index == 1 and forloop.index > 1 %}
+						{% assign enable_lazy_load = true %}
+					{% endif %}
+
+					{% if section.index == 1 and forloop.index == 1 %}
+						{%- assign enable_fetch_priority = true -%}
+					{% endif %}
+
+					{%- if button_text != blank and button_link != blank -%}
+						{%- assign is_button = true -%}
+					{%- elsif second_button_text != blank and second_button_link != blank -%}
+						{%- assign is_button = true -%}
+					{%- endif -%}
+
+					{%- assign enable_parallax = false -%}
+
+					{%- if parallax -%}
+						{%- unless forloop.last and enable_loop == false and desktop_slide_per_view == "1.16667" -%}
+							{%- assign enable_parallax = true -%}
+						{%- endunless -%}
+					{%- endif -%}
+
+					{%- assign text_alignment_inside_block 			= block.settings.text_alignment_inside_block -%}
+					{%- assign content_alignment                    = block.settings.content_alignment | replace: 'slideshow__', 'slideshow-new__' -%}
+					{%- assign background_color 					= block.settings.background_color -%}
+					{%- assign background_content 					= block.settings.background_content -%}
+					{%- assign label_color 							= block.settings.label_color -%}
+					{%- assign heading_color 						= block.settings.heading_color -%}
+					{%- assign description_color 					= block.settings.description_color -%}
+					{%- assign button_text_color 					= block.settings.button_text_color -%}
+					{%- assign button_background_color 				= block.settings.button_background_color -%}
+					{%- assign button_border_color 					= block.settings.button_border_color -%}
+					{%- assign button_text_color_hover 				= block.settings.button_text_color_hover -%}
+					{%- assign button_background_color_hover 		= block.settings.button_background_color_hover -%}
+					{%- assign button_border_color_hover 			= block.settings.button_border_color_hover -%}
+					{%- assign second_button_text_color 			= block.settings.second_button_text_color -%}
+					{%- assign second_button_text_color_hover 		= block.settings.second_button_text_color_hover -%}
+					{%- assign overlay_color 						= block.settings.overlay_color -%}
+					{%- assign poster_desktop 						= block.settings.poster_desktop -%}
+					{%- assign poster_mobile 						= block.settings.poster_mobile | default: poster_desktop -%}
+					{%- assign block_type 						    = block.type -%}
+					{%- assign extra_classes 						= 'need-animate' -%}
+					{%- if forloop.index == 1 and enable_lazy_load == false -%}
+						{%- assign extra_classes 					= '' -%}
+					{%- endif -%}
+
+
+					{%- capture slide_styles -%}
+						--text-alignment: {{- text_alignment_inside_block | replace: 'left', 'start' | replace: 'right', 'end' -}}; {{-  -}}
+						--background-color: {{ background_color -}}; {{-  -}}
+						--background-content: {{ background_content -}}; {{-  -}}
+						--label-color: {{ label_color -}}; {{-  -}}
+						--heading-color: {{ heading_color -}}; {{-  -}}
+						--description-color: {{ description_color -}}; {{-  -}}
+						--button-text-color: {{ button_text_color -}}; {{-  -}}
+						--button-background-color: {{ button_background_color -}}; {{-  -}}
+						--button-border-color: {{ button_border_color -}}; {{-  -}}
+						--button-text-color-hover: {{ button_text_color_hover -}}; {{-  -}}
+						--button-background-color-hover: {{ button_background_color_hover -}}; {{-  -}}
+						--button-border-color-hover: {{ button_border_color_hover -}}; {{-  -}}
+						--second-button-text-color: {{ second_button_text_color -}}; {{-  -}}
+						--second-button-text-color-hover: {{ second_button_text_color_hover -}}; {{-  -}}
+						--overlay-color: {{ overlay_color -}};
+					{%- endcapture -%}
+
+					<div
+						class="slideshow-new__slide {{ extra_classes }} swiper-slide"
+						style="{{- slide_styles -}}"
+						data-text-alignment="{{- text_alignment_inside_block -}}"
+						data-type="{{ block_type }}"
+					>
+						{%- if effect == 'flip' -%}
+							<div class="swiper-slide-shadow-right"></div>
+							<div class="swiper-slide-shadow-left"></div>
+						{%- elsif effect == 'creative' -%}
+							<div class="swiper-slide-shadow"></div>
+						{%- endif -%}
+
+						{%- if poster_desktop != blank -%}
+							<div class="slideshow-new__slide-poster slideshow-new__slide-poster--mobile js-video-poster-mobile">
+								{%- render "slideshow-slide-new",
+									image_mobile: poster_mobile,
+									image_desktop: poster_desktop,
+									height_mobile: height_mobile,
+									height_desktop: height_desktop,
+									enable_lazy_load: enable_lazy_load,
+									enable_fetch_priority: enable_fetch_priority,
+									small_width: small_width,
+									small_width_retina: small_width_retina,
+									medium_width: medium_width,
+									medium_width_retina: medium_width_retina,
+									large_width: large_width,
+									large_width_retina: large_width_retina,
+									extra_large_width: extra_large_width,
+									extra_large_width_retina: extra_large_width_retina,
+									full_hd_width: full_hd_width,
+									full_hd_width_retina: full_hd_width_retina,
+									extra_classes: extra_classes
+								-%}
+							</div>
+
+							<div class="slideshow-new__slide-poster slideshow-new__slide-poster--desktop js-video-poster-desktop">
+								{%- render "slideshow-slide-new",
+									image_mobile: poster_desktop,
+									image_desktop: poster_desktop,
+									height_mobile: height_mobile,
+									height_desktop: height_desktop,
+									enable_lazy_load: enable_lazy_load,
+									enable_fetch_priority: enable_fetch_priority,
+									small_width: small_width,
+									small_width_retina: small_width_retina,
+									medium_width: medium_width,
+									medium_width_retina: medium_width_retina,
+									large_width: large_width,
+									large_width_retina: large_width_retina,
+									extra_large_width: extra_large_width,
+									extra_large_width_retina: extra_large_width_retina,
+									full_hd_width: full_hd_width,
+									full_hd_width_retina: full_hd_width_retina,
+									extra_classes: extra_classes
+								-%}
+							</div>
+						{%- endif -%}
+
+						{%- case block.type  -%}
+							{% when "image" -%}
+								{%- assign image_desktop 	= block.settings.image_desktop -%}
+								{%- assign image_mobile 	= block.settings.image_mobile | default: image_desktop-%}
+
+								{% if button_link != blank and make_link_full_slide %}
+									<a href="{{ button_link }}"
+									   class="slideshow-new__link-full"
+									   aria-label="{{ button_aria_label }}"
+										{% if open_in_new_tab %}
+											target="_blank"
+											rel="nofollow"
+										{% endif %}
+									></a>
+								{% endif %}
+
+								{%- if image_desktop -%}
+									{%- render "slideshow-slide-new",
+										image_mobile: image_mobile,
+										image_desktop: image_desktop,
+										height_mobile: height_mobile,
+										height_desktop: height_desktop,
+										enable_lazy_load: enable_lazy_load,
+										enable_fetch_priority: enable_fetch_priority,
+										small_width: small_width,
+										small_width_retina: small_width_retina,
+										medium_width: medium_width,
+										medium_width_retina: medium_width_retina,
+										large_width: large_width,
+										large_width_retina: large_width_retina,
+										extra_large_width: extra_large_width,
+										extra_large_width_retina: extra_large_width_retina,
+										full_hd_width: full_hd_width,
+										full_hd_width_retina: full_hd_width_retina,
+										extra_classes: extra_classes
+									-%}
+								{%- else -%}
+									{% assign odd =  forloop.index | modulo: 2 %}
+									{% assign classes = 'slideshow-new__slide-media slideshow-new__slide-media--placeholder ' | append: extra_classes %}
+
+									{%- if odd  == 1 -%}
+										{{- 'lifestyle-1' | placeholder_svg_tag: classes -}}
+									{%- else -%}
+										{{- 'lifestyle-2' | placeholder_svg_tag: classes -}}
+									{%- endif -%}
+								{%- endif -%}
+							{% when "html_video" -%}
+								{%- assign video_desktop		= block.settings.video_desktop -%}
+								{%- assign video_mobile			= block.settings.video_mobile | default: video_desktop -%}
+								{%- assign poster_desktop 		= block.settings.poster_desktop -%}
+								{%- assign poster_mobile 		= block.settings.poster_mobile | default: poster_desktop -%}
+								{%- assign play_type 			= block.settings.autoplay -%}
+								{%- assign show_button 			= true -%}
+								{%- assign autoplay 			= true -%}
+
+								{%- if play_type == "autoplay"  -%}
+									{%- assign show_button	= false -%}
+								{%- endif -%}
+
+								{%- if play_type == "button"  -%}
+									{%- assign autoplay	= false -%}
+								{%- endif -%}
+
+								{% if button_link != blank and make_link_full_slide %}
+									<a href="{{ button_link }}"
+									   class="slideshow-new__link-full"
+									   aria-label="{{ button_aria_label }}"
+										{% if open_in_new_tab %}
+											target="_blank"
+											rel="nofollow"
+										{% endif %}
+									></a>
+								{% endif %}
+
+								{%- if video_desktop != blank -%}
+									<div class="js-videos" data-show-button="{{- show_button -}}">
+										<video
+											class="slideshow-new__slide-media {{ extra_classes }} slideshow-new__slide-media--desktop js-video"
+											data-device="desktop"
+											data-type="html"
+											loop
+											muted
+											playsinline
+											tabindex="-1"
+											aria-hidden="true"
+											data-autoplay="{{- autoplay -}}"
+										>
+											{%- for source in video_desktop.sources -%}
+												{%- if source.mime_type == 'video/mp4' -%}
+													<source src="{{- source.url -}}" type="{{- source.mime_type -}}">
+												{%- endif -%}
+											{%- endfor -%}
+										</video>
+
+										<video
+											class="slideshow-new__slide-media {{ extra_classes }} slideshow-new__slide-media--mobile js-video"
+											data-device="mobile"
+											data-type="html"
+											loop
+											muted
+											playsinline
+											tabindex="-1"
+											aria-hidden="true"
+											data-autoplay="{{- autoplay -}}"
+										>
+											{%- for source in video_mobile.sources -%}
+												{%- if source.mime_type == 'video/mp4' -%}
+													<source src="{{- source.url -}}" type="{{- source.mime_type -}}">
+												{%- endif -%}
+											{%- endfor -%}
+										</video>
+									</div>
+								{%- else -%}
+									{% assign odd =  forloop.index | modulo: 2 %}
+									{% assign classes = 'slideshow-new__slide-media slideshow-new__slide-media--placeholder ' | append: extra_classes %}
+
+									{%- if odd  == 1 -%}
+										{{- 'lifestyle-1' | placeholder_svg_tag: classes -}}
+									{%- else -%}
+										{{- 'lifestyle-2' | placeholder_svg_tag: classes -}}
+									{%- endif -%}
+								{%- endif -%}
+
+							{% when "external_video" -%}
+								{%- assign video_url_desktop 	= block.settings.video_url_desktop -%}
+								{%- assign video_url_mobile 	= block.settings.video_url_mobile | default: video_url_desktop -%}
+								{%- assign play_type 			= block.settings.autoplay -%}
+								{%- assign show_button 			= true -%}
+								{%- assign autoplay 			= true -%}
+
+								{%- if play_type == "autoplay"  -%}
+									{%- assign show_button	= false -%}
+								{%- endif -%}
+
+								{%- if play_type == "button"  -%}
+									{%- assign autoplay	= false -%}
+								{%- endif -%}
+
+								{% if button_link != blank and make_link_full_slide %}
+									<a href="{{ button_link }}"
+									   class="slideshow-new__link-full"
+									   aria-label="{{ button_aria_label }}"
+										{% if open_in_new_tab %}
+											target="_blank"
+											rel="nofollow"
+										{% endif %}
+									></a>
+								{% endif %}
+
+								{%- if video_url_desktop != blank -%}
+									<div class="js-videos" data-show-button="{{- show_button -}}">
+										{%- if video_url_desktop.type == 'youtube' -%}
+											<div
+												class="slideshow-new__slide-media slideshow-new__slide-media--youtube {{ extra_classes }} slideshow-new__slide-media--desktop js-video"
+												data-device="desktop"
+												data-type="{{- video_url_desktop.type -}}"
+												data-autoplay="{{- autoplay -}}"
+											>
+												<div
+													class="js-video-youtube"
+													data-video-id="{{- video_url_desktop.id -}}"
+													tabindex="-1"
+													aria-hidden="true"
+												></div>
+											</div>
+										{%- else -%}
+											<div
+												class="slideshow-new__slide-media slideshow-new__slide-media--vimeo {{ extra_classes }} slideshow-new__slide-media--desktop js-video js-video-vimeo"
+												data-device="desktop"
+												data-video-id="{{- video_url_desktop.id -}}"
+												data-type="{{- video_url_desktop.type -}}"
+												aria-hidden="true"
+												data-autoplay="{{- autoplay -}}"
+											></div>
+										{%- endif -%}
+
+										{%- if video_url_mobile.type == 'youtube' -%}
+											<div
+												class="slideshow-new__slide-media slideshow-new__slide-media--youtube {{ extra_classes }} slideshow-new__slide-media--mobile js-video"
+												data-device="mobile"
+												data-type="{{- video_url_mobile.type -}}"
+												data-autoplay="{{- autoplay -}}"
+											>
+												<div
+													class="js-video-youtube"
+													data-video-id="{{- video_url_mobile.id -}}"
+													tabindex="-1"
+													aria-hidden="true"
+												></div>
+											</div>
+										{%- else -%}
+											<div
+												class="slideshow-new__slide-media slideshow-new__slide-media--vimeo {{ extra_classes }} slideshow-new__slide-media--mobile js-video js-video-vimeo"
+												data-device="mobile"
+												data-video-id="{{- video_url_mobile.id -}}"
+												data-type="{{- video_url_mobile.type -}}"
+												aria-hidden="true"
+												data-autoplay="{{- autoplay -}}"
+											></div>
+										{%- endif -%}
+									</div>
+								{%- elsif poster_desktop == blank -%}
+									{% assign odd =  forloop.index | modulo: 2 %}
+									{% assign classes = 'slideshow-new__slide-media slideshow-new__slide-media--placeholder ' | append: extra_classes %}
+
+									{%- if odd  == 1 -%}
+										{{- 'lifestyle-1' | placeholder_svg_tag: classes -}}
+									{%- else -%}
+										{{- 'lifestyle-2' | placeholder_svg_tag: classes -}}
+									{%- endif -%}
+								{%- endif -%}
+							{% when "three_col" %}
+								{% assign play_type 	= block.settings.autoplay %}
+								{% assign show_button 	= true %}
+								{% assign autoplay 		= true %}
+
+								{% assign media_type_col_1 	= block.settings.media_type_col_1 %}
+								{% assign image_desktop_col_1 = block.settings.image_desktop_col_1 %}
+								{% assign image_mobile_col_1 = block.settings.image_mobile_col_1 | default: image_desktop_col_1 %}
+								{% assign video_desktop_col_1 = block.settings.video_desktop_col_1 %}
+								{% assign video_mobile_col_1 = block.settings.video_mobile_col_1 | default: video_desktop_col_1 %}
+								{% assign video_external_desktop_col_1 = block.settings.video_url_desktop_col_1 %}
+								{% assign video_external_mobile_col_1 = block.settings.video_url_mobile_col_1 | default: video_external_desktop_col_1 %}
+
+								{% assign media_type_col_3 	= block.settings.media_type_col_3 %}
+								{% assign image_desktop_col_3 = block.settings.image_desktop_col_3 %}
+								{% assign image_mobile_col_3 = block.settings.image_mobile_col_3 | default: image_desktop_col_3 %}
+								{% assign video_desktop_col_3 = block.settings.video_desktop_col_3 %}
+								{% assign video_mobile_col_3 = block.settings.video_mobile_col_3 | default: video_desktop_col_3 %}
+								{% assign video_external_desktop_col_3 = block.settings.video_url_desktop_col_3 %}
+								{% assign video_external_mobile_col_3 = block.settings.video_url_mobile_col_3 | default: video_external_desktop_col_3 %}
+
+								{% if play_type == "autoplay"  %}
+									{% assign show_button	= false %}
+								{% endif %}
+
+								{% if play_type == "button"  %}
+									{% assign autoplay	= false %}
+								{% endif %}
+
+								<div class="slideshow-new__three-col">
+									<div class="slideshow-new__three-col-media">
+										<div class="slideshow-new__three-col-media-wrapper">
+										{% if button_link != blank and make_link_full_slide %}
+											<a href="{{ button_link }}"
+											   class="slideshow-new__link-full"
+											   aria-label="{{ button_aria_label }}"
+												{% if open_in_new_tab %}
+													target="_blank"
+													rel="nofollow"
+												{% endif %}
+											></a>
+										{% endif %}
+
+										{% case media_type_col_1 %}
+											{% when "image" %}
+												{% assign slide_classes = extra_classes %}
+												{% if image_desktop_col_1 != blank %}
+													{%- render "slideshow-slide-new",
+														image_mobile: image_mobile_col_1,
+														image_desktop: image_desktop_col_1,
+														height_mobile: height_mobile,
+														height_desktop: height_desktop,
+														enable_lazy_load: enable_lazy_load,
+														enable_fetch_priority: enable_fetch_priority,
+														small_width: small_width,
+														small_width_retina: small_width_retina,
+														medium_width: medium_width,
+														medium_width_retina: medium_width_retina,
+														large_width: large_width,
+														large_width_retina: large_width_retina,
+														extra_large_width: extra_large_width,
+														extra_large_width_retina: extra_large_width_retina,
+														full_hd_width: full_hd_width,
+														full_hd_width_retina: full_hd_width_retina,
+														extra_classes: slide_classes
+													-%}
+												{% else %}
+													{{- 'lifestyle-1' | placeholder_svg_tag: slide_classes -}}
+												{% endif %}
+											{% when "html_video" %}
+												{% if video_desktop_col_1 != blank %}
+													<div class="js-videos" data-show-button="{{- show_button -}}">
+														<video
+															class="slideshow-new__slide-media {{ extra_classes }} slideshow-new__slide-media--desktop js-video"
+															data-device="desktop"
+															data-type="html"
+															loop
+															muted
+															playsinline
+															tabindex="-1"
+															aria-hidden="true"
+															data-autoplay="{{- autoplay -}}"
+														>
+															{%- for source in video_desktop_col_1.sources -%}
+																{%- if source.mime_type == 'video/mp4' -%}
+																	<source src="{{- source.url -}}" type="{{- source.mime_type -}}">
+																{%- endif -%}
+															{%- endfor -%}
+														</video>
+
+														<video
+															class="slideshow-new__slide-media {{ extra_classes }} slideshow-new__slide-media--mobile js-video"
+															data-device="mobile"
+															data-type="html"
+															loop
+															muted
+															playsinline
+															tabindex="-1"
+															aria-hidden="true"
+															data-autoplay="{{- autoplay -}}"
+														>
+															{%- for source in video_mobile_col_1.sources -%}
+																{%- if source.mime_type == 'video/mp4' -%}
+																	<source src="{{- source.url -}}" type="{{- source.mime_type -}}">
+																{%- endif -%}
+															{%- endfor -%}
+														</video>
+													</div>
+												{% endif %}
+											{% when "iframe_video" %}
+												{% if video_external_desktop_col_1 != blank %}
+													<div class="js-videos" data-show-button="{{- show_button -}}">
+														{%- if video_external_desktop_col_1.type == 'youtube' -%}
+															<div
+																class="slideshow-new__slide-media slideshow-new__slide-media--youtube {{ extra_classes }} slideshow-new__slide-media--desktop js-video"
+																data-device="desktop"
+																data-type="{{- video_external_desktop_col_1.type -}}"
+																data-autoplay="{{- autoplay -}}"
+															>
+																<div
+																	class="js-video-youtube"
+																	data-video-id="{{- video_external_desktop_col_1.id -}}"
+																	tabindex="-1"
+																	aria-hidden="true"
+																></div>
+															</div>
+														{%- else -%}
+															<div
+																class="slideshow-new__slide-media slideshow-new__slide-media--vimeo {{ extra_classes }} slideshow-new__slide-media--desktop js-video js-video-vimeo"
+																data-device="desktop"
+																data-video-id="{{- video_external_desktop_col_1.id -}}"
+																data-type="{{- video_external_desktop_col_1.type -}}"
+																aria-hidden="true"
+																data-autoplay="{{- autoplay -}}"
+															></div>
+														{%- endif -%}
+
+														{%- if video_external_mobile_col_1.type == 'youtube' -%}
+															<div
+																class="slideshow-new__slide-media slideshow-new__slide-media--youtube {{ extra_classes }} slideshow-new__slide-media--mobile js-video"
+																data-device="mobile"
+																data-type="{{- video_external_mobile_col_1.type -}}"
+																data-autoplay="{{- autoplay -}}"
+															>
+																<div
+																	class="js-video-youtube"
+																	data-video-id="{{- video_external_mobile_col_1.id -}}"
+																	tabindex="-1"
+																	aria-hidden="true"
+																></div>
+															</div>
+														{%- else -%}
+															<div
+																class="slideshow-new__slide-media slideshow-new__slide-media--vimeo {{ extra_classes }} slideshow-new__slide-media--mobile js-video js-video-vimeo"
+																data-device="mobile"
+																data-video-id="{{- video_external_mobile_col_1.id -}}"
+																data-type="{{- video_external_mobile_col_1.type -}}"
+																aria-hidden="true"
+																data-autoplay="{{- autoplay -}}"
+															></div>
+														{%- endif -%}
+													</div>
+												{% endif %}
+										{% endcase %}
+										</div>
+									</div>
+
+									<div class="slideshow-new__three-col-content">
+										{%- if label != blank -%}
+											<span
+												class="slideshow-new__slide-label need-animate subheading"
+												{%- if enable_parallax -%}
+													data-swiper-parallax="-500"
+												{%- endif -%}
+											>
+												{{- label -}}
+											</span>
+										{%- endif -%}
+
+										{%- if heading != blank -%}
+											<h2
+												class="h1 slideshow-new__slide-heading need-animate"
+												{%- if enable_parallax -%}
+													data-swiper-parallax="-400"
+												{%- endif -%}
+											>
+												{{- heading -}}
+											</h2>
+										{%- endif -%}
+
+										{%- if description != blank -%}
+											<div
+												class="slideshow-new__slide-description need-animate rte-new"
+												{%- if enable_parallax -%}
+													data-swiper-parallax="-300"
+												{%- endif -%}
+											>
+												{{- description -}}
+											</div>
+										{%- endif -%}
+
+										{%- if is_button -%}
+											<div
+												class="slideshow-new__slide-button-wrapper"
+												{% if enable_parallax %}
+													data-swiper-parallax="-200"
+												{% endif %}
+											>
+												{% if button_text != blank and button_link != blank %}
+													<a
+														class="button-circle slideshow-new__slide-button need-animate js-button"
+														href="{{- button_link -}}"
+														{% if button_aria_label != blank %}
+															aria-label="{{- button_aria_label | escape -}}"
+														{% endif %}
+														{% if open_in_new_tab %}
+															target="_blank"
+															rel="nofollow"
+														{% endif %}
+													>
+														<span class="button__text">
+															{{- button_text -}}
+														</span>
+
+														<span class="button-new__icon-container">
+															<span class="button-new__icon-wrapper">
+																{% render "icons-new", icon: "wave", section_id: 'asdasdsa' %}
+															</span>
+														</span>
+													</a>
+												{% endif %}
+
+												{% if second_button_text != blank and second_button_link != blank %}
+													<a
+														class="button-link-new slideshow-new__slide-button need-animate slideshow-new__slide-button--second js-button"
+														href="{{- second_button_link -}}"
+														{% if second_button_aria_label != blank %}
+															aria-label="{{- second_button_aria_label | escape -}}"
+														{% endif %}
+														{% if second_open_in_new_tab %}
+															target="_blank"
+															rel="nofollow"
+														{% endif %}
+													>
+														{{- second_button_text -}}
+
+														<span class="button-link-new__icon-wrapper">
+															<span class="button-link-new__icon">
+																{% render 'icons-new', icon: 'arrow-right' %}
+															</span>
+														</span>
+													</a>
+												{% endif %}
+											</div>
+										{%- endif -%}
+									</div>
+
+									<div class="slideshow-new__three-col-media">
+										<div class="slideshow-new__three-col-media-wrapper">
+										{% if button_link != blank and make_link_full_slide %}
+											<a href="{{ button_link }}"
+											   class="slideshow-new__link-full"
+											   aria-label="{{ button_aria_label }}"
+												{% if open_in_new_tab %}
+													target="_blank"
+													rel="nofollow"
+												{% endif %}
+											></a>
+										{% endif %}
+
+										{% case media_type_col_3 %}
+											{% when "image" %}
+												{% if image_desktop_col_3 != blank %}
+													{%- render "slideshow-slide-new",
+														image_mobile: image_mobile_col_3,
+														image_desktop: image_desktop_col_3,
+														height_mobile: height_mobile,
+														height_desktop: height_desktop,
+														enable_lazy_load: enable_lazy_load,
+														enable_fetch_priority: enable_fetch_priority,
+														small_width: small_width,
+														small_width_retina: small_width_retina,
+														medium_width: medium_width,
+														medium_width_retina: medium_width_retina,
+														large_width: large_width,
+														large_width_retina: large_width_retina,
+														extra_large_width: extra_large_width,
+														extra_large_width_retina: extra_large_width_retina,
+														full_hd_width: full_hd_width,
+														full_hd_width_retina: full_hd_width_retina,
+														extra_classes: extra_classes
+													-%}
+												{% else %}
+													{% assign classes = 'slideshow-new__slide-media slideshow-new__slide-media--placeholder ' | append: extra_classes %}
+													{{- 'lifestyle-1' | placeholder_svg_tag: classes -}}
+												{% endif %}
+											{% when "html_video" %}
+												<div class="js-videos" data-show-button="{{- show_button -}}">
+													<video
+														class="slideshow-new__slide-media {{ extra_classes }} slideshow-new__slide-media--desktop js-video"
+														data-device="desktop"
+														data-type="html"
+														loop
+														muted
+														playsinline
+														tabindex="-1"
+														aria-hidden="true"
+														data-autoplay="{{- autoplay -}}"
+													>
+														{%- for source in video_desktop_col_3.sources -%}
+															{%- if source.mime_type == 'video/mp4' -%}
+																<source src="{{- source.url -}}" type="{{- source.mime_type -}}">
+															{%- endif -%}
+														{%- endfor -%}
+													</video>
+
+													<video
+														class="slideshow-new__slide-media {{ extra_classes }} slideshow-new__slide-media--mobile js-video"
+														data-device="mobile"
+														data-type="html"
+														loop
+														muted
+														playsinline
+														tabindex="-1"
+														aria-hidden="true"
+														data-autoplay="{{- autoplay -}}"
+													>
+														{%- for source in video_mobile_col_3.sources -%}
+															{%- if source.mime_type == 'video/mp4' -%}
+																<source src="{{- source.url -}}" type="{{- source.mime_type -}}">
+															{%- endif -%}
+														{%- endfor -%}
+													</video>
+												</div>
+											{% when "iframe_video" %}
+												{% if video_external_desktop_col_3 != blank %}
+													<div class="js-videos" data-show-button="{{- show_button -}}">
+														{%- if video_external_desktop_col_3.type == 'youtube' -%}
+															<div
+																class="slideshow-new__slide-media slideshow-new__slide-media--youtube {{ extra_classes }} slideshow-new__slide-media--desktop js-video"
+																data-device="desktop"
+																data-type="{{- video_external_desktop_col_3.type -}}"
+																data-autoplay="{{- autoplay -}}"
+															>
+																<div
+																	class="js-video-youtube"
+																	data-video-id="{{- video_external_desktop_col_3.id -}}"
+																	tabindex="-1"
+																	aria-hidden="true"
+																></div>
+															</div>
+														{%- else -%}
+															<div
+																class="slideshow-new__slide-media slideshow-new__slide-media--vimeo {{ extra_classes }} slideshow-new__slide-media--desktop js-video js-video-vimeo"
+																data-device="desktop"
+																data-video-id="{{- video_external_desktop_col_3.id -}}"
+																data-type="{{- video_external_desktop_col_3.type -}}"
+																aria-hidden="true"
+																data-autoplay="{{- autoplay -}}"
+															></div>
+														{%- endif -%}
+
+														{%- if video_external_mobile_col_3.type == 'youtube' -%}
+															<div
+																class="slideshow-new__slide-media slideshow-new__slide-media--youtube {{ extra_classes }} slideshow-new__slide-media--mobile js-video"
+																data-device="mobile"
+																data-type="{{- video_external_mobile_col_3.type -}}"
+																data-autoplay="{{- autoplay -}}"
+															>
+																<div
+																	class="js-video-youtube"
+																	data-video-id="{{- video_external_mobile_col_3.id -}}"
+																	tabindex="-1"
+																	aria-hidden="true"
+																></div>
+															</div>
+														{%- else -%}
+															<div
+																class="slideshow-new__slide-media slideshow-new__slide-media--vimeo {{ extra_classes }} slideshow-new__slide-media--mobile js-video js-video-vimeo"
+																data-device="mobile"
+																data-video-id="{{- video_external_mobile_col_3.id -}}"
+																data-type="{{- video_external_mobile_col_3.type -}}"
+																aria-hidden="true"
+																data-autoplay="{{- autoplay -}}"
+															></div>
+														{%- endif -%}
+													</div>
+												{% endif %}
+										{% endcase %}
+										</div>
+									</div>
+								</div>
+							{% when "two_col" %}
+								{% assign media_position 	= block.settings.media_position %}
+								{% assign media_type 		= block.settings.media_type %}
+								{% assign play_type 		= block.settings.autoplay %}
+								{% assign show_button 		= true %}
+								{% assign autoplay 			= true %}
+
+								{% if play_type == "autoplay"  %}
+									{% assign show_button	= false %}
+								{% endif %}
+
+								{% if play_type == "button"  %}
+									{% assign autoplay	= false %}
+								{% endif %}
+
+								<div class="slideshow-new__two-col {% if media_position == 'right' %}slideshow-new__two-col--reverse{% endif %}">
+									<div class="slideshow-new__two-col-media">
+										{% if button_link != blank and make_link_full_slide %}
+											<a href="{{ button_link }}"
+											   class="slideshow-new__link-full"
+											   aria-label="{{ button_aria_label }}"
+												{% if open_in_new_tab %}
+													target="_blank"
+													rel="nofollow"
+												{% endif %}
+											></a>
+										{% endif %}
+
+										{% case media_type %}
+											{% when "image" %}
+												{%- assign image_desktop 	= block.settings.image_desktop -%}
+												{%- assign image_mobile 	= block.settings.image_mobile | default: image_desktop-%}
+
+												{% if image_desktop != blank %}
+													{%- render "slideshow-slide-new",
+														image_mobile: image_mobile,
+														image_desktop: image_desktop,
+														height_mobile: height_mobile,
+														height_desktop: height_desktop,
+														enable_lazy_load: enable_lazy_load,
+														enable_fetch_priority: enable_fetch_priority,
+														small_width: small_width,
+														small_width_retina: small_width_retina,
+														medium_width: medium_width,
+														medium_width_retina: medium_width_retina,
+														large_width: large_width,
+														large_width_retina: large_width_retina,
+														extra_large_width: extra_large_width,
+														extra_large_width_retina: extra_large_width_retina,
+														full_hd_width: full_hd_width,
+														full_hd_width_retina: full_hd_width_retina,
+														extra_classes: extra_classes
+													-%}
+												{% else %}
+													{% assign classes = 'slideshow-new__slide-media slideshow-new__slide-media--placeholder ' | append: extra_classes %}
+													{{- 'lifestyle-1' | placeholder_svg_tag: classes -}}
+												{% endif %}
+											{% when "html_video" %}
+												{% assign video_desktop = block.settings.video_desktop %}
+												{% assign video_mobile = block.settings.video_mobile | default: video_desktop %}
+
+												{% if video_desktop != blank %}
+													<div class="js-videos" data-show-button="{{- show_button -}}">
+														<video
+															class="slideshow-new__slide-media {{ extra_classes }} slideshow-new__slide-media--desktop js-video"
+															data-device="desktop"
+															data-type="html"
+															loop
+															muted
+															playsinline
+															tabindex="-1"
+															aria-hidden="true"
+															data-autoplay="{{- autoplay -}}"
+														>
+															{%- for source in video_desktop.sources -%}
+																{%- if source.mime_type == 'video/mp4' -%}
+																	<source src="{{- source.url -}}" type="{{- source.mime_type -}}">
+																{%- endif -%}
+															{%- endfor -%}
+														</video>
+
+														<video
+															class="slideshow-new__slide-media {{ extra_classes }} slideshow-new__slide-media--mobile js-video"
+															data-device="mobile"
+															data-type="html"
+															loop
+															muted
+															playsinline
+															tabindex="-1"
+															aria-hidden="true"
+															data-autoplay="{{- autoplay -}}"
+														>
+															{%- for source in video_mobile.sources -%}
+																{%- if source.mime_type == 'video/mp4' -%}
+																	<source src="{{- source.url -}}" type="{{- source.mime_type -}}">
+																{%- endif -%}
+															{%- endfor -%}
+														</video>
+													</div>
+												{% endif %}
+											{% when "iframe_video" %}
+												{% assign video_external_desktop = block.settings.video_url_desktop %}
+												{% assign video_external_mobile = block.settings.video_url_mobile | default: video_external_desktop %}
+
+												{% if video_external_desktop != blank %}
+													<div class="js-videos" data-show-button="{{- show_button -}}">
+														{%- if video_external_desktop.type == 'youtube' -%}
+															<div
+																class="slideshow-new__slide-media slideshow-new__slide-media--youtube {{ extra_classes }} slideshow-new__slide-media--desktop js-video"
+																data-device="desktop"
+																data-type="{{- video_external_desktop.type -}}"
+																data-autoplay="{{- autoplay -}}"
+															>
+																<div
+																	class="js-video-youtube"
+																	data-video-id="{{- video_external_desktop.id -}}"
+																	tabindex="-1"
+																	aria-hidden="true"
+																></div>
+															</div>
+														{%- else -%}
+															<div
+																class="slideshow-new__slide-media slideshow-new__slide-media--vimeo {{ extra_classes }} slideshow-new__slide-media--desktop js-video js-video-vimeo"
+																data-device="desktop"
+																data-video-id="{{- video_external_desktop.id -}}"
+																data-type="{{- video_external_desktop.type -}}"
+																aria-hidden="true"
+																data-autoplay="{{- autoplay -}}"
+															></div>
+														{%- endif -%}
+
+														{%- if video_external_mobile.type == 'youtube' -%}
+															<div
+																class="slideshow-new__slide-media slideshow-new__slide-media--youtube {{ extra_classes }} slideshow-new__slide-media--mobile js-video"
+																data-device="mobile"
+																data-type="{{- video_external_mobile.type -}}"
+																data-autoplay="{{- autoplay -}}"
+															>
+																<div
+																	class="js-video-youtube"
+																	data-video-id="{{- video_external_mobile.id -}}"
+																	tabindex="-1"
+																	aria-hidden="true"
+																></div>
+															</div>
+														{%- else -%}
+															<div
+																class="slideshow-new__slide-media slideshow-new__slide-media--vimeo {{ extra_classes }} slideshow-new__slide-media--mobile js-video js-video-vimeo"
+																data-device="mobile"
+																data-video-id="{{- video_external_mobile.id -}}"
+																data-type="{{- video_external_mobile.type -}}"
+																aria-hidden="true"
+																data-autoplay="{{- autoplay -}}"
+															></div>
+														{%- endif -%}
+													</div>
+												{% endif %}
+										{% endcase %}
+									</div>
+
+									<div class="slideshow-new__two-col-content">
+										{%- if label != blank -%}
+											<span
+												class="slideshow-new__slide-label need-animate subheading"
+													{%- if enable_parallax -%}
+														data-swiper-parallax="-500"
+													{%- endif -%}
+												>
+													{{- label -}}
+												</span>
+										{%- endif -%}
+
+										{%- if heading != blank -%}
+											<h2
+												class="h1 slideshow-new__slide-heading need-animate"
+												{%- if enable_parallax -%}
+													data-swiper-parallax="-400"
+												{%- endif -%}
+											>
+												{{- heading -}}
+											</h2>
+										{%- endif -%}
+
+										{%- if description != blank -%}
+											<div
+												class="slideshow-new__slide-description need-animate rte-new"
+												{%- if enable_parallax -%}
+													data-swiper-parallax="-300"
+												{%- endif -%}
+											>
+												{{- description -}}
+											</div>
+										{%- endif -%}
+
+										{% if button_text != blank and button_link != blank %}
+											<div class="slideshow-new__slide-button-wrapper"
+											{% if enable_parallax %}
+												data-swiper-parallax="-200"
+												{% endif %}>
+												<a
+													class="button-circle slideshow-new__slide-button need-animate js-button"
+													href="{{- button_link -}}"
+													{% if button_aria_label != blank %}
+														aria-label="{{- button_aria_label | escape -}}"
+													{% endif %}
+													{% if open_in_new_tab %}
+														target="_blank"
+														rel="nofollow"
+													{% endif %}
+												>
+													<span class="button__text">
+														{{- button_text -}}
+													</span>
+
+													<span class="button-new__icon-container">
+														<span class="button-new__icon-wrapper">
+															{% render "icons-new", icon: "wave", section_id: 'asdasdsa' %}
+														</span>
+													</span>
+												</a>
+											</div>
+										{% endif %}
+									</div>
+								</div>
+						{%- endcase -%}
+
+						{%- if
+							label != blank
+							or heading != blank
+							or description != blank
+							or is_button != blank
+						-%}
+							{% if block.type != "three_col" and block.type != "two_col" %}
+								<div class="slideshow-new__slide-content {{ content_alignment -}}">
+									<div class="slideshow-new__slide-content-inner">
+										{%- if label != blank -%}
+											<span
+												class="slideshow-new__slide-label need-animate subheading"
+													{%- if enable_parallax -%}
+														data-swiper-parallax="-500"
+													{%- endif -%}
+												>
+													{{- label -}}
+												</span>
+										{%- endif -%}
+
+										{%- if heading != blank -%}
+											<h2
+												class="h1 slideshow-new__slide-heading need-animate"
+												{%- if enable_parallax -%}
+													data-swiper-parallax="-400"
+												{%- endif -%}
+											>
+												{{- heading -}}
+											</h2>
+										{%- endif -%}
+
+										{%- if description != blank -%}
+											<div
+												class="slideshow-new__slide-description need-animate rte-new"
+												{%- if enable_parallax -%}
+													data-swiper-parallax="-300"
+												{%- endif -%}
+											>
+												{{- description -}}
+											</div>
+										{%- endif -%}
+
+										{%- if is_button -%}
+											<div class="slideshow-new__slide-button-wrapper"
+											{% if enable_parallax %}
+												data-swiper-parallax="-200"
+												{% endif %}>
+												{% if button_text != blank and button_link != blank %}
+													<a
+														class="button-circle slideshow-new__slide-button need-animate js-button"
+														href="{{- button_link -}}"
+														{% if button_aria_label != blank %}
+															aria-label="{{- button_aria_label | escape -}}"
+														{% endif %}
+														{% if open_in_new_tab %}
+															target="_blank"
+															rel="nofollow"
+														{% endif %}
+													>
+														<span class="button__text">
+															{{- button_text -}}
+														</span>
+
+														<span class="button-new__icon-container">
+															<span class="button-new__icon-wrapper">
+																{% render "icons-new", icon: "wave", section_id: 'asdasdsa' %}
+															</span>
+														</span>
+													</a>
+												{% endif %}
+
+												{% if second_button_text != blank and second_button_link != blank %}
+													<a
+														class="button-link-new slideshow-new__slide-button need-animate slideshow-new__slide-button--second js-button"
+														href="{{- second_button_link -}}"
+														{% if second_button_aria_label != blank %}
+															aria-label="{{- second_button_aria_label | escape -}}"
+														{% endif %}
+														{% if second_open_in_new_tab %}
+															target="_blank"
+															rel="nofollow"
+														{% endif %}
+													>
+														{{- second_button_text -}}
+
+														<span class="button-link-new__icon-wrapper">
+															<span class="button-link-new__icon">
+																{% render 'icons-new', icon: 'arrow-right' %}
+															</span>
+														</span>
+													</a>
+												{% endif %}
+											</div>
+										{%- endif -%}
+									</div>
+								</div>
+							{% endif %}
+						{%- endif -%}
+					</div>
+				{%- endfor -%}
+			</div>
+
+			{%- if show_progress_bar and enable_autoplay and blocks.size > 1 -%}
+				<div
+					class="slideshow-new__slider-progress-bar-wrapper"
+					aria-hidden="true"
+				>
+					<div
+						class="slideshow-new__slider-progress-bar"
+						style="--width: 0%;"
+					>
+						<span class="slideshow-new__slider-progress-bar-content js-progressbar">
+						</span>
+					</div>
+				</div>
+			{%- endif -%}
+
+			<div class="slideshow-new__slider-video-button-wrapper">
+				<button class="focus-visible-outline slideshow-new__slider-video-button button-new button--play slideshow-new__slider-video-button--play js-video-button-play" aria-label="{{- "general.accessibility.video_play" | t | escape -}}">
+					{% render 'icons-medium', icon: "play" %}
+				</button>
+
+				<button class="focus-visible-outline slideshow-new__slider-video-button button-new button--play slideshow-new__slider-video-button--pause js-video-button-pause"  aria-label="{{- "general.accessibility.video_pause" | t | escape -}}">
+					{%- render "icons-medium", icon: "pause-round" -%}
+				</button>
+			</div>
+
+			{%- if blocks.size > 1 and show_arrows -%}
+				<div class="slideshow-new__button__navigation">
+					<span class="slideshow-new__slider-label js-progress-first-label">
+						{%- if forloop.index < 10 -%}
+							0
+						{%- endif -%}
+						01
+					</span>
+
+					<button class="swiper-button-prev swiper-button-prev-new slideshow-new__button slideshow-new__button--prev">
+						{%- render 'icons-new', icon: 'arrow-left' -%}
+					</button>
+
+					<button class="swiper-button-next swiper-button-next-new slideshow-new__button slideshow-new__button--next">
+						{%- render 'icons-new', icon: 'arrow-right' -%}
+					</button>
+
+					<span class="slideshow-new__slider-label slideshow-new__slider-label--last">
+						{%- if blocks.size < 10 -%}
+							0
+						{%- endif -%}
+
+						{{- blocks.size -}}
+					</span>
+				</div>
+			{%- endif -%}
+
+			{%- if blocks.size > 1 and show_pagination -%}
+				<div class="swiper-pagination slideshow-new__pagination">
+				</div>
+			{%- endif -%}
+		</div>
+
+		{%- if blocks.size > 1 -%}
+			<script class="js-slider-settings" type="application/json">
+						{{- slider_settings -}}
+					</script>
+		{%- endif -%}
+	</section>
+
+	<script src="{{- 'component-swiper-modules.build.min.js' | asset_url -}}" defer></script>
+	<script src="{{- 'component-video.build.min.js' | asset_url -}}" defer></script>
+	<script src="{{- 'section-slideshow.build.min.js' | asset_url -}}" defer></script>
+{%- endif -%}

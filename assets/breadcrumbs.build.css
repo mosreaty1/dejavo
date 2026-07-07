@@ -1,0 +1,153 @@
+.breadcrumb {
+	border-bottom: 1px solid var(--color-border-secondary, #e6e6e6);
+	line-height: 1.375;
+}
+.breadcrumb .breadcrumb__container {
+	overflow-y: hidden;
+	overflow-x: auto;
+	display: flex;
+	max-width: calc(var(--global-container-width) + 40px);
+	margin: 0 auto;
+	padding: 10px 20px;
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+.breadcrumb .breadcrumb__container::-webkit-scrollbar {
+	display: none;
+}
+.breadcrumb .breadcrumb__item,
+.breadcrumb .breadcrumb__separator {
+	color: var(--color-text-secondary, #757575);
+}
+.breadcrumb .breadcrumb__item {
+	white-space: nowrap;
+}
+.breadcrumb .breadcrumb__separator {
+	padding-left: 7px;
+	padding-right: 7px;
+}
+.breadcrumb .breadcrumb__link {
+	opacity: 1;
+	text-decoration: none;
+	color: var(--link-color, #000);
+	white-space: nowrap;
+	transition-duration: var(--timing-short);
+	transition-property: opacity;
+}
+.breadcrumb .breadcrumb__link:focus-visible {
+	opacity: 0.7;
+	outline: 2px solid var(--color-primary-second, #000);
+	outline-offset: 2px;
+}
+@media (-moz-touch-enabled: 0), (hover: hover), (pointer: fine) {
+	.breadcrumb .breadcrumb__link:hover:hover {
+		opacity: 0.7;
+	}
+}
+@media (min-width: 768px) {
+	.breadcrumb .breadcrumb__container {
+		max-width: calc(var(--global-container-width) + 80px);
+		padding: 20px 40px;
+	}
+}
+/* stylelint-disable */
+.breadcrumb-new {
+	border-bottom: 1px solid var(--color-border-secondary, #d2d2d2);
+	line-height: 1.5;
+}
+.breadcrumb-new .breadcrumb__container {
+	overflow-y: hidden;
+	overflow-x: auto;
+	display: flex;
+	max-width: calc(var(--global-container-width) + 40px);
+	margin: 0 auto;
+	padding: 20px;
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+.breadcrumb-new .breadcrumb__container::-webkit-scrollbar {
+	display: none;
+}
+.breadcrumb-new .breadcrumb__item,
+.breadcrumb-new .breadcrumb__separator {
+	color: var(--color-text-primary, #2c2a28);
+}
+.breadcrumb-new .breadcrumb__item {
+	font-weight: 500;
+	white-space: nowrap;
+}
+.breadcrumb-new .breadcrumb__separator {
+	padding-left: 15px;
+	padding-right: 15px;
+}
+.breadcrumb-new .breadcrumb__link {
+	opacity: 1;
+	font-weight: 400;
+	color: var(--link-color, #2c2a28);
+	white-space: nowrap;
+	text-decoration: underline;
+	-webkit-text-decoration-color: transparent;
+	        text-decoration-color: transparent;
+	text-underline-offset: 2px;
+	transition-duration: var(--timing-short);
+	transition-property: color, -webkit-text-decoration-color;
+	transition-property: color, text-decoration-color;
+	transition-property: color, text-decoration-color, -webkit-text-decoration-color;
+}
+.breadcrumb-new .breadcrumb__link:focus-visible {
+	opacity: 0.7;
+	outline: 2px solid var(--color-primary-second, #000);
+	outline-offset: 2px;
+}
+@media (-moz-touch-enabled: 0), (hover: hover), (pointer: fine) {
+	.breadcrumb-new .breadcrumb__link:hover:hover {
+		color: var(--color-text-primary, #2c2a28);
+		-webkit-text-decoration-color: var(--color-text-primary, #2c2a28);
+		        text-decoration-color: var(--color-text-primary, #2c2a28);
+	}
+}
+@media (min-width: 768px) {
+	.breadcrumb-new .breadcrumb__container {
+		max-width: calc(var(--global-container-width) + 80px);
+		padding: 20px 40px;
+	}
+}
+.breadcrumb.breadcrumb--banner,
+.breadcrumb-new.breadcrumb--banner {
+	display: flex;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	padding: 0;
+	z-index: 1;
+}
+.breadcrumb.breadcrumb--banner .breadcrumb__container,
+.breadcrumb-new.breadcrumb--banner .breadcrumb__container {
+	flex-wrap: wrap;
+	justify-content: center;
+	padding: 0;
+	overflow-x: hidden;
+}
+.breadcrumb.breadcrumb--banner .breadcrumb__link,
+.breadcrumb-new.breadcrumb--banner .breadcrumb__link {
+	color: var(--color-background);
+	white-space: unset;
+	word-break: break-word;
+}
+.breadcrumb.breadcrumb--banner .breadcrumb__link:focus-visible,
+.breadcrumb-new.breadcrumb--banner .breadcrumb__link:focus-visible {
+	outline-color: var(--banner-color);
+}
+.breadcrumb.breadcrumb--banner .breadcrumb__item,
+.breadcrumb-new.breadcrumb--banner .breadcrumb__item {
+	white-space: unset;
+	word-break: break-word;
+	color: var(--color-background);
+	opacity: 0.54;
+}
+.breadcrumb.breadcrumb--banner .breadcrumb__separator,
+.breadcrumb-new.breadcrumb--banner .breadcrumb__separator {
+	color: var(--color-background);
+}
+/* stylelint-enable */

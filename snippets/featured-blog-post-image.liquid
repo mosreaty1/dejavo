@@ -1,0 +1,244 @@
+{% comment %}
+	------------------------------------------------------------------------------
+	Snippet: Featured blog new
+	- featured_post: featured_post object (required)
+	- enable_lazy_load: boolean (optional)
+
+	{%- render 'featured-blog-post-image', featured_post: featured_post, enable_lazy_load: enable_lazy_load -%}
+	------------------------------------------------------------------------------
+{% endcomment %}
+
+{%- assign design = settings.design -%}
+
+{%- if design == "alternate" -%}
+	{%- assign size_image_width 	= 854 -%}
+	{%- assign size_image_height 	= 599 -%}
+	{%- assign size_image_width_2x 	= size_image_width |  times: 2 -%}
+	{%- assign size_image_height_2x = size_image_height | times: 2 -%}
+
+	{%- assign size_image_width_1500 		= 689 -%}
+	{%- assign size_image_height_1500 		= 484 -%}
+	{%- assign size_image_width_1500_2x 	= size_image_width_1500 |  times: 2 -%}
+	{%- assign size_image_height_1500_2x 	= size_image_height_1500 | times: 2 -%}
+
+	{%- assign size_image_width_1199 		= 583 -%}
+	{%- assign size_image_height_1199 		= 409 -%}
+	{%- assign size_image_width_1199_2x 	= size_image_width_1199 |  times: 2 -%}
+	{%- assign size_image_height_1199_2x 	= size_image_height_1199 | times: 2 -%}
+
+	{%- assign size_image_width_991 		= 480 -%}
+	{%- assign size_image_height_991 		= size_image_width_991 -%}
+	{%- assign size_image_width_991_2x 		= size_image_width_991 |  times: 2 -%}
+	{%- assign size_image_height_991_2x 	= size_image_height_991 | times: 2 -%}
+
+	{%- assign size_image_width_767 		= 734 -%}
+	{%- assign size_image_height_767 		= size_image_width_767 -%}
+	{%- assign size_image_width_767_2x 		= size_image_width_767 |  times: 2 -%}
+	{%- assign size_image_height_767_2x 	= size_image_height_767 | times: 2 -%}
+
+	{%- assign size_image_width_420 		= 386 -%}
+	{%- assign size_image_height_420 		= size_image_width_420 -%}
+	{%- assign size_image_width_420_2x 		= size_image_width_420 |  times: 2 -%}
+	{%- assign size_image_height_420_2x 	= size_image_height_420 | times: 2 -%}
+
+	{%- assign size_image_width_375 		= 342 -%}
+	{%- assign size_image_height_375 		= size_image_width_375 -%}
+	{%- assign size_image_width_375_2x 		= size_image_width_375 |  times: 2 -%}
+	{%- assign size_image_height_375_2x 	= size_image_height_375 | times: 2 -%}
+{%- else -%}
+	{%- assign size_image_width 	= 959 -%}
+	{%- assign size_image_height 	= 683 -%}
+	{%- assign size_image_width_2x 	= size_image_width |  times: 2 -%}
+	{%- assign size_image_height_2x = size_image_height | times: 2 -%}
+
+	{%- assign size_image_width_1500 		= 749 -%}
+	{%- assign size_image_height_1500 		= 533 -%}
+	{%- assign size_image_width_1500_2x 	= size_image_width_1500 |  times: 2 -%}
+	{%- assign size_image_height_1500_2x 	= size_image_height_1500 | times: 2 -%}
+
+	{%- assign size_image_width_1199 		= 599 -%}
+	{%- assign size_image_height_1199 		= 426 -%}
+	{%- assign size_image_width_1199_2x 	= size_image_width_1199 |  times: 2 -%}
+	{%- assign size_image_height_1199_2x 	= size_image_height_1199 | times: 2 -%}
+
+	{%- assign size_image_width_991 		= 495 -%}
+	{%- assign size_image_height_991 		= 359 -%}
+	{%- assign size_image_width_991_2x 		= size_image_width_991 |  times: 2 -%}
+	{%- assign size_image_height_991_2x 	= size_image_height_991 | times: 2 -%}
+{%- endif -%}
+
+<picture {% if enable_lazy_load %}class="lazy no-js-hidden"{% endif %}>
+	{% if design == "alternate" %}
+		<source
+			{% if enable_lazy_load %}
+				data-srcset="{{ featured_post.image | image_url: width: size_image_width_375, height: size_image_height_375 }} 1x,
+						 	 {{ featured_post.image | image_url: width: size_image_width_375_2x, height: size_image_height_375_2x }} 2x"
+				srcset="{{ featured_post.image | image_url: width: 10, height: 10 }} 1x,
+						{{ featured_post.image | image_url: width: 20, height: 20 }} 2x"
+			{% else %}
+				srcset="{{ featured_post.image | image_url: width: size_image_width_375, height: size_image_height_375 }} 1x,
+						{{ featured_post.image | image_url: width: size_image_width_375_2x, height: size_image_height_375_2x }} 2x"
+			{% endif %}
+			width="{{- size_image_width_375 -}}"
+			height="{{- size_image_height_375 -}}"
+			media="(max-width: 375px)"
+		/>
+
+		<source
+			{% if enable_lazy_load %}
+				data-srcset="{{ featured_post.image | image_url: width: size_image_width_420, height: size_image_height_420 }} 1x,
+							 {{ featured_post.image | image_url: width: size_image_width_420_2x, height: size_image_height_420_2x }} 2x"
+				srcset="{{ featured_post.image | image_url: width: 10, height: 10 }} 1x,
+						{{ featured_post.image | image_url: width: 20, height: 20 }} 2x"
+			{% else %}
+				srcset="{{ featured_post.image | image_url: width: size_image_width_420, height: size_image_height_420 }} 1x,
+						{{ featured_post.image | image_url: width: size_image_width_420_2x, height: size_image_height_420_2x }} 2x"
+			{% endif %}
+			width="{{- size_image_width_420 -}}"
+			height="{{- size_image_height_420 -}}"
+			media="(max-width: 420px)"
+		/>
+
+		<source
+			{% if enable_lazy_load %}
+				data-srcset="{{ featured_post.image | image_url: width: size_image_width_767, height: size_image_height_767 }} 1x,
+							 {{ featured_post.image | image_url: width: size_image_width_767_2x, height: size_image_height_767_2x }} 2x"
+				srcset="{{ featured_post.image | image_url: width: 10, height: 10 }} 1x,
+						{{ featured_post.image | image_url: width: 20, height: 20 }} 2x"
+			{% else %}
+				srcset="{{ featured_post.image | image_url: width: size_image_width_767, height: size_image_height_767 }} 1x,
+						{{ featured_post.image | image_url: width: size_image_width_767_2x, height: size_image_height_767_2x }} 2x"
+			{% endif %}
+			width="{{- size_image_width_767 -}}"
+			height="{{- size_image_height_767 -}}"
+			media="(max-width: 767px)"
+		/>
+	{% endif %}
+
+	<source
+		{% if enable_lazy_load %}
+			data-srcset="{{ featured_post.image | image_url: width: size_image_width_991, height: size_image_height_991 }} 1x,
+						 {{ featured_post.image | image_url: width: size_image_width_991_2x, height: size_image_height_991_2x }} 2x"
+			srcset="{{ featured_post.image | image_url: width: 10, height: 10 }} 1x,
+					{{ featured_post.image | image_url: width: 20, height: 20 }} 2x"
+		{% else %}
+			srcset="{{ featured_post.image | image_url: width: size_image_width_991, height: size_image_height_991 }} 1x,
+					{{ featured_post.image | image_url: width: size_image_width_991_2x, height: size_image_height_991_2x }} 2x"
+		{% endif %}
+		width="{{- size_image_width_991 -}}"
+		height="{{- size_image_height_991 -}}"
+		media="(max-width: 991px)"
+	/>
+
+	<source
+		{% if enable_lazy_load %}
+			data-srcset="{{ featured_post.image | image_url: width: size_image_width_1199, height: size_image_height_1199 }} 1x,
+						 {{ featured_post.image | image_url: width: size_image_width_1199_2x, height: size_image_height_1199_2x }} 2x"
+			srcset="{{ featured_post.image | image_url: width: 10, height: 10 }} 1x,
+					{{ featured_post.image | image_url: width: 20, height: 20 }} 2x"
+		{% else %}
+			srcset="{{ featured_post.image | image_url: width: size_image_width_1199, height: size_image_height_1199 }} 1x,
+					{{ featured_post.image | image_url: width: size_image_width_1199_2x, height: size_image_height_1199_2x }} 2x"
+		{% endif %}
+		width="{{- size_image_width_1199 -}}"
+		height="{{- size_image_height_1199 -}}"
+		media="(max-width: 1199px)"
+	/>
+
+	<source
+		{% if enable_lazy_load %}
+			data-srcset="{{ featured_post.image | image_url: width: size_image_width_1500, height: size_image_height_1500 }} 1x,
+						 {{ featured_post.image | image_url: width: size_image_width_1500_2x, height: size_image_height_1500_2x }} 2x"
+			srcset="{{- featured_post.image | image_url: width: 10, height: 10 }} 1x,
+					{{ featured_post.image | image_url: width: 20, height: 20 }} 2x"
+		{% else %}
+			srcset="{{ featured_post.image | image_url: width: size_image_width_1500, height: size_image_height_1500 }} 1x,
+					{{ featured_post.image | image_url: width: size_image_width_1500_2x, height: size_image_height_1500_2x }} 2x"
+		{% endif %}
+		width="{{- size_image_width_1500 -}}"
+		height="{{- size_image_height_1500 -}}"
+		media="(max-width: 1500px)"
+	/>
+
+	<img
+		class="blog__featured-post-image"
+		{% if enable_lazy_load %}
+			src="{{ featured_post.image | image_url: width: 10, height: 10 }}"
+			srcset="{{ featured_post.image | image_url: width: 10, height: 10 }}"
+			data-src="{{ featured_post.image | image_url: width: size_image_width, height: size_image_height }}"
+			data-srcset="{{ featured_post.image | image_url: width: size_image_width, height: size_image_height }} 1x,
+						 {{ featured_post.image | image_url: width: size_image_width_2x, height: size_image_height_2x }} 2x"
+		{% else %}
+			src="{{ featured_post.image | image_url: width: size_image_width, height: size_image_height }}"
+			srcset="{{ featured_post.image | image_url: width: size_image_width, height: size_image_height }} 1x,
+					{{ featured_post.image | image_url: width: size_image_width_2x, height: size_image_height_2x }} 2x"
+		{% endif %}
+		alt="{{- featured_post.image.alt | escape -}}"
+		width="{{- size_image_width -}}"
+		height="{{- size_image_height -}}"
+	/>
+</picture>
+
+<noscript>
+	<picture>
+		{% if design == "alternate" %}
+			<source
+				srcset="{{ featured_post.image | image_url: width: size_image_width_375, height: size_image_height_375 }} 1x,
+						{{ featured_post.image | image_url: width: size_image_width_375_2x, height: size_image_height_375_2x }} 2x"
+				width="{{- size_image_width_375 -}}"
+				height="{{- size_image_height_375 -}}"
+				media="(max-width: 375px)"
+			/>
+
+			<source
+				srcset="{{ featured_post.image | image_url: width: size_image_width_420, height: size_image_height_420 }} 1x,
+						{{ featured_post.image | image_url: width: size_image_width_420_2x, height: size_image_height_420_2x }} 2x"
+				width="{{- size_image_width_420 -}}"
+				height="{{- size_image_height_420 -}}"
+				media="(max-width: 420px)"
+			/>
+
+			<source
+				srcset="{{ featured_post.image | image_url: width: size_image_width_767, height: size_image_height_767 }} 1x,
+						{{ featured_post.image | image_url: width: size_image_width_767_2x, height: size_image_height_767_2x }} 2x"
+				width="{{- size_image_width_767 -}}"
+				height="{{- size_image_height_767 -}}"
+				media="(max-width: 767px)"
+			/>
+		{% endif %}
+
+		<source
+			srcset="{{ featured_post.image | image_url: width: size_image_width_991, height: size_image_height_991 }} 1x,
+					{{ featured_post.image | image_url: width: size_image_width_991_2x, height: size_image_height_991_2x }} 2x"
+			width="{{- size_image_width_991 -}}"
+			height="{{- size_image_height_991 -}}"
+			media="(max-width: 991px)"
+		/>
+
+		<source
+			srcset="{{ featured_post.image | image_url: width: size_image_width_1199, height: size_image_height_1199 }} 1x,
+					{{ featured_post.image | image_url: width: size_image_width_1199_2x, height: size_image_height_1199_2x }} 2x"
+			width="{{- size_image_width_1199 -}}"
+			height="{{- size_image_height_1199 -}}"
+			media="(max-width: 1199px)"
+		/>
+
+		<source
+			srcset="{{- featured_post.image | image_url: width: size_image_width_1500, height: size_image_height_1500 }} 1x,
+					{{ featured_post.image | image_url: width: size_image_width_1500_2x, height: size_image_height_1500_2x }} 2x"
+			width="{{- size_image_width_1500 -}}"
+			height="{{- size_image_height_1500 -}}"
+			media="(max-width: 1500px)"
+		/>
+
+		<img
+			class="blog__featured-post-image"
+			src="{{ featured_post.image | image_url: width: size_image_width, height: size_image_height }}"
+			srcset="{{ featured_post.image | image_url: width: size_image_width, height: size_image_height }} 1x,
+					{{ featured_post.image | image_url: width: size_image_width_2x, height: size_image_height_2x }} 2x"
+			alt="{{- featured_post.image.alt | escape -}}"
+			width="{{- size_image_width -}}"
+			height="{{- size_image_height -}}"
+		/>
+	</picture>
+</noscript>

@@ -1,0 +1,184 @@
+.swipe {
+	--section-y-padding-desktop: calc(var(--header-height-static, 100px) + 40px);
+	background-color: var(--background-color, #222222);
+}
+.swipe .swipe__container {
+	max-width: var(--global-container-width);
+	margin-left: auto;
+	margin-right: auto;
+	padding: 20px;
+}
+.swipe .swipe__row {
+	display: flex;
+	flex-direction: column;
+}
+.swipe .swipe__column {
+	width: 100%;
+}
+.swipe .swipe__heading {
+	position: relative;
+	overflow: hidden;
+	z-index: 1;
+	display: -webkit-box;
+	width: 100%;
+	margin-bottom: 50px;
+	color: var(--heading-color, #ffffff);
+	-webkit-line-clamp: 4;
+	-webkit-box-orient: vertical;
+}
+.swipe .swipe__content {
+	width: 100%;
+	padding-top: var(--section-padding);
+	padding-bottom: var(--section-padding);
+}
+.swipe .swipe__content-wrapper {
+	position: relative;
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	height: 100%;
+	flex-direction: column;
+}
+.swipe .swipe__content-blocks--desktop {
+	display: none;
+}
+.swipe .swipe__image-with-content-blocks {
+	padding-top: var(--section-padding);
+	padding-bottom: var(--section-padding);
+}
+.swipe .swipe__image-with-content-block {
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+.swipe .swipe__content-block.swipe__content-block--mobile {
+	display: block;
+	margin-bottom: 20px;
+}
+.swipe .swipe__content-block-heading {
+	overflow: hidden;
+	display: -webkit-box;
+	font-family: var(--heading-font-family);
+	font-size: calc(var(--body-font-size) * 0.875);
+	font-weight: 700;
+	word-break: break-word;
+	color: var(--block-heading-color, #ffffff);
+	-webkit-line-clamp: 4;
+	-webkit-box-orient: vertical;
+}
+.swipe .swipe__content-block-text {
+	overflow: hidden;
+	display: -webkit-box;
+	opacity: 0.8;
+	margin-top: 15px;
+	font-family: var(--base-font-family);
+	word-break: break-word;
+	color: var(--block-text-color, #ffffff);
+	-webkit-line-clamp: 6;
+	-webkit-box-orient: vertical;
+}
+.swipe .swipe__image-block-image-container {
+	position: relative;
+	padding-top: 100%;
+}
+.swipe .swipe__image-block-image-container svg {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	width: 100%;
+	height: 100%;
+	-o-object-fit: contain;
+	   object-fit: contain;
+	-o-object-position: center;
+	   object-position: center;
+	background-color: white;
+}
+.swipe .swipe__image-block-image {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	width: 100%;
+	height: 100%;
+	-o-object-fit: cover;
+	   object-fit: cover;
+	-o-object-position: var(--img-desktop-pos);
+	   object-position: var(--img-desktop-pos);
+}
+@media (min-width: 768px) {
+	.swipe .swipe__container {
+		padding: 0;
+	}
+	.swipe .swipe__row {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+	.swipe .swipe__column {
+		width: 50%;
+	}
+	.swipe .swipe__column.swipe__column--content {
+		z-index: 1;
+		display: flex;
+		justify-content: center;
+		-webkit-padding-start: 40px;
+		        padding-inline-start: 40px;
+		-webkit-padding-end: 20px;
+		        padding-inline-end: 20px;
+	}
+	.swipe .swipe__column.swipe__column--images-with-content {
+		-webkit-padding-start: 20px;
+		        padding-inline-start: 20px;
+		-webkit-padding-end: 40px;
+		        padding-inline-end: 40px;
+	}
+	.swipe .swipe__content {
+		position: sticky;
+		top: 0;
+		max-width: 500px;
+		height: 100vh;
+		min-height: 640px;
+		max-height: 1080px;
+		padding-top: var(--section-y-padding-desktop);
+		padding-bottom: var(--section-y-padding-desktop);
+	}
+	.swipe .swipe__image-with-content-blocks {
+		padding-top: var(--section-y-padding-desktop);
+		padding-bottom: var(--section-y-padding-desktop);
+	}
+	.swipe .swipe__content-blocks--desktop {
+		display: block;
+	}
+	.swipe .swipe__image-with-content-block {
+		padding-top: 30px;
+		padding-bottom: 30px;
+	}
+	.swipe .swipe__image-with-content-block:first-child {
+		padding-top: 0;
+	}
+	.swipe .swipe__image-with-content-block:last-child {
+		padding-bottom: 0;
+	}
+	.swipe .swipe__content-block.swipe__content-block--desktop {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		opacity: 0;
+		width: 100%;
+		transition-property: opacity, transform;
+		transition-duration: 0.7s;
+		transition-timing-function: ease;
+	}
+	.swipe .swipe__content-block.swipe__content-block--desktop.active {
+		opacity: 1;
+	}
+	.swipe .swipe__content-block.swipe__content-block--mobile {
+		display: none;
+	}
+	.swipe .swipe__content-block-text {
+		margin-top: 20px;
+	}
+}

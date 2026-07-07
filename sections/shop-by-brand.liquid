@@ -1,0 +1,300 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Shop by brand
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- if section.blocks.size > 0 -%}
+	{% case settings.design %}
+		{% when 'alternate' %}
+			{% render 'shop-by-brand-new', section: section %}
+
+		{% when 'standard' %}
+			{{- 'shop-by-brand.build.css' | asset_url | stylesheet_tag -}}
+
+			{%- style -%}
+				#shopify-section-{{- section.id -}} {
+				padding-top: {{- section.settings.offset_top_mobile -}}px;
+				padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+				}
+
+				@media screen and (min-width: 768px) {
+				#shopify-section-{{- section.id -}} {
+				padding-top: {{- section.settings.offset_top_desktop -}}px;
+				padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+				}
+				}
+			{%- endstyle -%}
+
+			{%- assign label         	= section.settings.label -%}
+			{%- assign heading         	= section.settings.heading -%}
+			{%- assign card_background 	= section.settings.card_background -%}
+			{%- assign full_width 		= section.settings.full_width -%}
+
+			{%- capture section_styles -%}
+				--card-background: {{ card_background }}; {{-  -}}
+			{%- endcapture -%}
+
+			<section
+				class="shop-by-brand"
+				style="{{ section_styles }}"
+			>
+				<div class="shop-by-brand__container {% if full_width == false %}shop-by-brand__container--max-width{% endif %}">
+					{%- if label != blank -%}
+						<p class="shop-by-brand__label text">
+							{{- label -}}
+						</p>
+					{%- endif -%}
+
+					{%- if heading != blank -%}
+						<h2 class="shop-by-brand__heading h2">
+							{{- heading -}}
+						</h2>
+					{%- endif -%}
+
+					<div class="shop-by-brand__items-container">
+						{%- for block in section.blocks -%}
+						{%- assign brand_image = block.settings.brand_image -%}
+						{%- assign brand_link  = block.settings.brand_link -%}
+
+						<div class="shop-by-brand__item-wrapper">
+						{%- if brand_link != blank -%}
+							<a href="{{ brand_link }}" class="shop-by-brand__item focus-visible-outline">
+								{%- else -%}
+								<div class="shop-by-brand__item">
+									{%- endif -%}
+									{%- if brand_image != blank -%}
+										{%- capture img_focal -%}
+											--img-desktop-pos: {{ brand_image.presentation.focal_point }};
+										{%- endcapture -%}
+
+										<picture class="lazy">
+											<source
+												data-srcset="{{ brand_image | img_url: '156x69' }} 1x, {{ brand_image | img_url: '312x138' }} 2x"
+												srcset="{{ brand_image | img_url: '10x' }} 1x, {{ brand_image | img_url: '10x' }} 2x"
+												media="(max-width: 375px)"
+												width="156"
+												height="69"
+											/>
+
+											<source
+												data-srcset="{{ brand_image | img_url: '256x113' }} 1x, {{ brand_image | img_url: '512x226' }} 2x"
+												srcset="{{ brand_image | img_url: '10x' }} 1x, {{ brand_image | img_url: '10x' }} 2x"
+												media="(max-width: 575px)"
+												width="256"
+												height="113"
+											/>
+
+											<source
+												data-srcset="{{ brand_image | img_url: '301x133' }} 1x, {{ brand_image | img_url: '602x266' }} 2x"
+												srcset="{{ brand_image | img_url: '10x' }} 1x, {{ brand_image | img_url: '10x' }} 2x"
+												media="(max-width: 991px)"
+												width="301"
+												height="133"
+											/>
+
+											<source
+												data-srcset="{{ brand_image | img_url: '272x120' }} 1x, {{ brand_image | img_url: '544x240' }} 2x"
+												srcset="{{ brand_image | img_url: '10x' }} 1x, {{ brand_image | img_url: '10x' }} 2x"
+												media="(max-width: 1199px)"
+												width="272"
+												height="120"
+											/>
+
+											<img
+												class="shop-by-brand__item-image"
+												data-srcset="{{ brand_image | img_url: "346x149" }} 1x, {{ brand_image | img_url: "692x298" }} 2x"
+												srcset="{{ brand_image | img_url: "10x" }} 1x, {{ brand_image | img_url: "10x" }} 2x"
+												data-src="{{ brand_image | img_url: "346x149" }}"
+												src="{{ brand_image | img_url: "10x" }}"
+												alt="{{ brand_image.alt }}"
+												width="346"
+												height="149"
+												style="{{ img_focal }}"
+											/>
+										</picture>
+
+										<noscript>
+											<picture>
+												<source
+													srcset="{{ brand_image | img_url: '156x69' }} 1x, {{ brand_image | img_url: '312x138' }} 2x"
+													media="(max-width: 375px)"
+													width="156"
+													height="69"
+												/>
+
+												<source
+													srcset="{{ brand_image | img_url: '256x113' }} 1x, {{ brand_image | img_url: '512x226' }} 2x"
+													media="(max-width: 575px)"
+													width="256"
+													height="113"
+												/>
+
+												<source
+													srcset="{{ brand_image | img_url: '301x133' }} 1x, {{ brand_image | img_url: '602x266' }} 2x"
+													media="(max-width: 991px)"
+													width="301"
+													height="133"
+												/>
+
+												<source
+													srcset="{{ brand_image | img_url: '272x120' }} 1x, {{ brand_image | img_url: '544x240' }} 2x"
+													media="(max-width: 1199px)"
+													width="272"
+													height="120"
+												/>
+
+												<img
+													class="shop-by-brand__item-image"
+													srcset="{{ brand_image | img_url: "346x149" }} 1x, {{ brand_image | img_url: "692x298" }} 2x"
+													src="{{ brand_image | img_url: "346x149" }}"
+													alt="{{ brand_image.alt }}"
+													width="346"
+													height="149"
+													style="{{ img_focal }}"
+												/>
+											</picture>
+										</noscript>
+									{%- else -%}
+										{%- assign odd =  forloop.index | modulo: 2 -%}
+
+										{%- if odd  == 1 -%}
+											{{- "lifestyle-1" | placeholder_svg_tag: "shop-by-brand__item-image" -}}
+										{%- else -%}
+											{{- "lifestyle-2" | placeholder_svg_tag: "shop-by-brand__item-image" -}}
+										{%- endif -%}
+									{%- endif -%}
+									{%- if brand_link != blank -%}
+							</a>
+							{%- else -%}
+						</div>
+						{%- endif -%}
+					</div>
+					{%- endfor -%}
+				</div>
+				</div>
+			</section>
+	{% endcase %}
+{%- endif -%}
+
+{%- schema -%}
+{
+	"name": "Shop by brand",
+	"disabled_on": {
+		"groups": ["header", "footer"]
+	},
+	"settings": [
+		{
+			"type": "text",
+			"id": "label",
+			"label": "Label"
+		},
+		{
+			"type": "text",
+			"id": "heading",
+			"label": "Heading",
+			"default": "SHOP BY BRAND"
+		},
+		{
+			"type": "color",
+			"id": "card_background",
+			"label": "Card background",
+			"default": "#fff"
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "checkbox",
+			"id": "full_width",
+			"label": "Make full width",
+			"default": true,
+			"info": "If unchecked - container width will be set based on the group 'Layout' settings in the Theme settings."
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 0
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 0
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 0
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 0
+		}
+	],
+	"blocks": [
+		{
+			"name": "Brand",
+			"type": "brand",
+			"settings": [
+				{
+					"type": "image_picker",
+					"id": "brand_image",
+					"label": "Image",
+					"info": "692 x 692px recommended"
+				},
+				{
+					"type": "url",
+					"id": "brand_link",
+					"label": "Image link"
+				}
+			]
+		}
+	],
+	"presets": [
+		{
+			"name": "Shop by brand",
+			"settings": {},
+			"blocks": [
+				{
+					"type": "brand"
+				},
+				{
+					"type": "brand"
+				},
+				{
+					"type": "brand"
+				},
+				{
+					"type": "brand"
+				},
+				{
+					"type": "brand"
+				}
+			]
+		}
+	]
+}
+{%- endschema -%}
+

@@ -1,0 +1,119 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Featured collection new
+	Render an alternative layout for the "Featured collection" section
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{{- 'featured-collection-new.build.css' | asset_url | stylesheet_tag -}}
+
+{%- assign label = section.settings.label -%}
+{%- assign heading = section.settings.heading -%}
+{%- assign layout = section.settings.layout -%}
+{%- assign collection = section.settings.collection -%}
+{%- assign products = collection.products -%}
+{%- assign link_url = section.settings.link_url -%}
+{%- assign link_text = section.settings.link_text -%}
+{%- assign button_style = section.settings.button_style -%}
+{%- assign full_width = section.settings.full_width -%}
+{%- assign link_aria_label_text = section.settings.link_aria_label_text -%}
+
+{% if link_url != blank %}
+	{% assign button_link = link_url %}
+{% else %}
+	{% assign button_link = collection.url %}
+{% endif %}
+
+<section
+	class="featured-collection-new js-animate {% if request.visual_preview_mode or section.index == 1 %}animated{% endif %} need-animate">
+	<div
+		class="featured-collection-new__container {% if full_width %}featured-collection-new__container--full-width{% endif %}">
+		<div class="featured-collection-new__heading-wrapper">
+			{%- if label != blank -%}
+				<p class="subheading">
+					{{- label -}}
+				</p>
+			{%- endif -%}
+
+			{%- if heading != blank -%}
+				<h2 class="h2">
+					{{- heading -}}
+				</h2>
+			{%- endif -%}
+		</div>
+
+		<div
+			class="featured-collection-new__grid">
+			{%- if collection != blank and products.size > 0 -%}
+				{%- for product in products limit: layout -%}
+					{% assign is_lazy = true %}
+
+					{% if section.index == 1 and forloop.index < 4 %}
+						{% assign is_lazy = false %}
+					{% endif %}
+
+					{% assign cycle_position = forloop.index | modulo: 10 %}
+
+					<div
+						class="featured-collection-new__item featured-collection-new__item--desktop">
+						{%- if cycle_position == 3 or cycle_position == 6 -%}
+							{%- render 'product-card-new', product: product, size: 825, big_card: true, is_lazy: is_lazy -%}
+						{%- else -%}
+							{%- render 'product-card-new', product: product, size: 398, is_lazy: is_lazy -%}
+						{%- endif -%}
+					</div>
+
+					<div
+						class="featured-collection-new__item featured-collection-new__item--mobile">
+						{%- if forloop.index == 1 -%}
+							{%- render 'product-card-new', product: product, tablet_size: 735, mobile_size: 388, big_card: true, is_lazy: is_lazy -%}
+						{%- else -%}
+							{%- render 'product-card-new', product: product, tablet_size: 362, mobile_size: 188, is_lazy: is_lazy -%}
+						{%- endif -%}
+					</div>
+				{%- endfor -%}
+			{%- else -%}
+				{%- for i in (1..layout) -%}
+					{% assign cycle_position = forloop.index | modulo: 10 %}
+
+					<div
+						class="featured-collection-new__item featured-collection-new__item--desktop">
+						{%- if cycle_position == 3 or cycle_position == 6 -%}
+							{%- render 'product-card-new', big_card: true -%}
+						{% else %}
+							{%- render 'product-card-new' -%}
+						{% endif %}
+					</div>
+
+					<div
+						class="featured-collection-new__item featured-collection-new__item--mobile">
+						{%- if forloop.index == 1 -%}
+							{%- render 'product-card-new', big_card: true -%}
+						{% else %}
+							{%- render 'product-card-new' -%}
+						{% endif %}
+					</div>
+				{%- endfor -%}
+			{%- endif -%}
+		</div>
+
+		{%- if link_text != blank and button_link != blank -%}
+			<div class="featured-collection-new__link-wrapper">
+				<a href="{{ button_link }}"
+				   class="{% if button_style == 'circle' %}button-circle{% else %}button button--{{- button_style }}{% endif %} focus-visible-outline">
+					<span class="button__text">
+						{{ link_text }}
+					</span>
+
+					{% if button_style == 'circle' %}
+						<span class="button-new__icon-container">
+							<span class="button-new__icon-wrapper">
+								{% render "icons-new", icon: "wave" %}
+							</span>
+						</span>
+					{% endif %}
+				</a>
+			</div>
+		{%- endif -%}
+	</div>
+</section>

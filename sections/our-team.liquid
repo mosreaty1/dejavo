@@ -1,0 +1,393 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Our team
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign heading 			= section.settings.heading -%}
+{%- assign label 			= section.settings.label -%}
+{%- assign cards_alignment 	= section.settings.cards_alignment -%}
+{%- assign show_border 		= section.settings.show_border -%}
+{%- assign border_color 	= section.settings.border_color -%}
+{%- assign full_width 		= section.settings.full_width -%}
+{%- assign image_crop 	    = section.settings.image_crop -%}
+
+{%- capture cards -%}
+	{%- for block in section.blocks -%}
+		{%- assign image = block.settings.image -%}
+		{%- assign name  = block.settings.name -%}
+		{%- assign role  = block.settings.role -%}
+
+		<div class="our-team__card {% unless show_border %}our-team__card--no-border{% endunless %} {% unless section.blocks.size > 1 %}our-team__card--single{% endunless %} swiper-slide js-person-card"
+			 role="group"
+		>
+			<div class="our-team__card-image-container">
+				{%- if image != blank -%}
+					{%- capture img_focal -%}
+						--img-desktop-pos: {{ image.presentation.focal_point }};
+					{%- endcapture -%}
+
+					<picture class="lazy">
+						<source
+							data-srcset="{{ image | img_url: '278x322', crop: image_crop }} 1x, {{ image | img_url: '556x644', crop: image_crop }} 2x"
+							srcset="{{ image | img_url: '10x' }} 1x, {{ image | img_url: '10x' }} 2x"
+							media="(max-width: 375px)"
+							width="278"
+							height="322"
+						/>
+
+						<source
+							data-srcset="{{ image | img_url: '447x519', crop: image_crop }} 1x, {{ image | img_url: '894x1038', crop: image_crop }} 2x"
+							srcset="{{ image | img_url: '10x' }} 1x, {{ image | img_url: '10x' }} 2x"
+							media="(max-width: 575px)"
+							width="447"
+							height="519"
+						/>
+
+						<source
+							data-srcset="{{ image | img_url: '610x708', crop: image_crop }} 1x, {{ image | img_url: '1220x1416', crop: image_crop }} 2x"
+							srcset="{{ image | img_url: '10x' }} 1x, {{ image | img_url: '10x' }} 2x"
+							media="(max-width: 767px)"
+							width="610"
+							height="708"
+						/>
+
+						<source
+							data-srcset="{{ image | img_url: '446x517', crop: image_crop }} 1x, {{ image | img_url: '892x1034', crop: image_crop }} 2x"
+							srcset="{{ image | img_url: '10x' }} 1x, {{ image | img_url: '10x' }} 2x"
+							media="(max-width: 991px)"
+							width="446"
+							height="517"
+						/>
+
+						<img
+							class="our-team__card-image"
+							data-srcset="{{ image | img_url: "420x488", crop: image_crop }} 1x, {{ image | img_url: "840x976", crop: image_crop }} 2x"
+							srcset="{{ image | img_url: "10x" }} 1x, {{ image | img_url: "10x" }} 2x"
+							data-src="{{ image | img_url: "420x488", crop: image_crop }}"
+							src="{{ image | img_url: "10x" }}"
+							alt="{{ image.alt }}"
+							width="430"
+							height="499"
+							style="{{ img_focal }}"
+						/>
+					</picture>
+
+					<noscript>
+						<picture>
+							<source
+								srcset="{{ image | img_url: '278x322', crop: image_crop }} 1x, {{ image | img_url: '556x644', crop: image_crop }} 2x"
+								media="(max-width: 375px)"
+								width="278"
+								height="322"
+							/>
+
+							<source
+								srcset="{{ image | img_url: '447x519', crop: image_crop }} 1x, {{ image | img_url: '894x1038', crop: image_crop }} 2x"
+								media="(max-width: 575px)"
+								width="447"
+								height="519"
+							/>
+
+							<source
+								srcset="{{ image | img_url: '610x708', crop: image_crop }} 1x, {{ image | img_url: '1220x1416', crop: image_crop }} 2x"
+								media="(max-width: 767px)"
+								width="610"
+								height="708"
+							/>
+
+							<source
+								srcset="{{ image | img_url: '446x517', crop: image_crop }} 1x, {{ image | img_url: '892x1034', crop: image_crop }} 2x"
+								media="(max-width: 991px)"
+								width="446"
+								height="517"
+							/>
+
+							<img
+								class="our-team__card-image"
+								srcset="{{ image | img_url: "420x488", crop: image_crop }} 1x, {{ image | img_url: "840x976", crop: image_crop }} 2x"
+								src="{{ image | img_url: "420x488", crop: image_crop }}"
+								alt="{{ image.alt }}"
+								width="430"
+								height="499"
+								style="{{ img_focal }}"
+							/>
+						</picture>
+					</noscript>
+				{%- else -%}
+					{%- assign odd =  forloop.index | modulo: 2 -%}
+
+					{%- if odd  == 1 -%}
+						{{- 'lifestyle-1' | placeholder_svg_tag: 'our-team__card-image' -}}
+					{%- else -%}
+						{{- 'lifestyle-2' | placeholder_svg_tag: 'our-team__card-image' -}}
+					{%- endif -%}
+				{%- endif -%}
+			</div>
+
+			<div class="our-team__card-text-content">
+				{%- if name != blank -%}
+					<h3 class="h3 our-team__name">
+						{{ name }}
+					</h3>
+				{%- endif -%}
+
+				{%- if role != blank -%}
+					<p class="text our-team__role">
+						{{ role }}
+					</p>
+				{%- endif -%}
+			</div>
+		</div>
+	{%- endfor -%}
+{%- endcapture -%}
+
+{%- if cards != blank -%}
+	{{- 'our-team.build.css' | asset_url | stylesheet_tag -}}
+
+	{%- style -%}
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_mobile -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+		}
+
+		@media screen and (min-width: 768px) {
+			#shopify-section-{{- section.id -}} {
+				padding-top: {{- section.settings.offset_top_desktop -}}px;
+				padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+			}
+		}
+	{%- endstyle -%}
+
+	{%- capture section_styles -%}
+		--cards-alignment: {{ cards_alignment }}; {{-  -}}
+		--border-color: {{ border_color }};
+	{%- endcapture -%}
+
+	{% if settings.design == 'alternate' %}
+		{% render 'our-team-new' %}
+	{% else %}
+		<section class="our-team" style="{{ section_styles }}">
+			<div class="our-team__container {% if full_width == false %}our-team__container--max-width{% endif %}">
+				{%- if label != blank -%}
+					<div class="our-team__label">
+						{{- label -}}
+					</div>
+				{%- endif -%}
+
+				{%- if heading != blank -%}
+					<h2 class="h2 our-team__heading">
+						{{- heading -}}
+					</h2>
+				{%- endif -%}
+
+				<div class="our-team__cards-container js-animate">
+					<div class="our-team__cards-wrapper">
+						{{- cards -}}
+					</div>
+				</div>
+
+				<div
+					class="our-team__cards-container our-team__cards-container--mobile swiper-container js-animate js-cards-container"
+					data-js-carousel="container"
+					id="carousel-{{- section.id -}}"
+				>
+					<div class="our-team__cards-wrapper swiper-wrapper">
+						{{- cards -}}
+					</div>
+
+					<div class="our-team__pagination js-our-team-pagination"></div>
+				</div>
+			</div>
+		</section>
+	{% endif %}
+
+	<script src="{{- 'our-team-slider.build.min.js' | asset_url -}}" defer></script>
+{%- endif -%}
+
+{%- schema -%}
+	{
+		"name": "Our team",
+		"disabled_on": {
+			"groups": ["header", "footer"]
+		},
+		"settings": [
+			{
+				"id": "heading",
+				"type": "text",
+				"label": "Heading",
+				"default": "Our team"
+			},
+			{
+				"id": "label",
+				"type": "text",
+				"label": "Label"
+			},
+			{
+				"id": "image_crop",
+				"type": "select",
+				"options": [
+					{
+						"value": "top",
+						"label": "Top"
+					},
+					{
+						"value": "center",
+						"label": "Center"
+					},
+					{
+						"value": "bottom",
+						"label": "Bottom"
+					}
+				],
+				"label": "Image crop",
+				"default": "center",
+				"info": "The setting allows you to specify which part of the image to show if the specified dimensions result in an aspect ratio that differs from the original"
+			},
+			{
+				"id": "cards_alignment",
+				"type": "select",
+				"label": "Cards alignment",
+				"info": "Only desktop. The setting is used for standard design.",
+				"options": [
+					{
+						"value": "flex-start",
+						"label": "Left"
+					},
+					{
+						"value": "center",
+						"label": "Center"
+					}
+				],
+				"default": "flex-start"
+			},
+			{
+				"type": "checkbox",
+				"id": "show_border",
+				"label": "Show borders",
+				"default": true,
+				"info": "Works with a 'Standard' design."
+			},
+			{
+				"type": "color",
+				"id": "border_color",
+				"label": "Border color",
+				"default": "#e6e6e6",
+				"info": "Works with a 'Standard' design."
+			},
+			{
+				"type": "header",
+				"content": "Layout"
+			},
+			{
+				"type": "checkbox",
+				"id": "full_width",
+				"label": "Make full width",
+				"default": true,
+				"info": "If unchecked - container width will be set based on the group 'Layout' settings in the Theme settings."
+			},
+			{
+				"type": "range",
+				"id": "offset_top_desktop",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Desktop offset top",
+				"default": 60
+			},
+			{
+				"type": "range",
+				"id": "offset_bottom_desktop",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Desktop offset bottom",
+				"default": 60
+			},
+			{
+				"type": "range",
+				"id": "offset_top_mobile",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Mobile offset top",
+				"default": 30
+			},
+			{
+				"type": "range",
+				"id": "offset_bottom_mobile",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Mobile offset bottom",
+				"default": 30
+			}
+		],
+		"blocks": [
+			{
+				"type": "card",
+				"name": "Card",
+				"settings": [
+					{
+						"id": "image",
+						"type": "image_picker",
+						"label": "Image",
+						"info": "1220 x 1416px recommended"
+					},
+					{
+						"id": "name",
+						"type": "text",
+						"label": "Name",
+						"default": "Name team member"
+					},
+					{
+						"id": "role",
+						"type": "text",
+						"label": "Role",
+						"default": "Role team member"
+					}
+				]
+			}
+		],
+		"presets": [
+			{
+				"name": "Our team",
+				"settings": {},
+				"blocks": [
+					{
+						"type": "card",
+						"settings": {
+							"name": "Name of 1st team member",
+							"role": "Role of 1st team member"
+						}
+					},
+					{
+						"type": "card",
+						"settings": {
+							"name": "Name of 2nd team member",
+							"role": "Role of 2nd team member"
+						}
+					},
+					{
+						"type": "card",
+						"settings": {
+							"name": "Name of 3rd team member",
+							"role": "Role of 3rd team member"
+						}
+					},
+					{
+						"type": "card",
+						"settings": {
+							"name": "Name of 4th team member",
+							"role": "Role of 4th team member"
+						}
+					}
+				]
+			}
+		]
+	}
+{%- endschema -%}

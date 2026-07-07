@@ -1,0 +1,478 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Search
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{%- assign label 						= section.settings.label -%}
+{%- assign paginate_by 					= section.settings.paginate_by -%}
+{%- assign pagination_type 				= section.settings.pagination_type -%}
+{%- assign search_articles 				= section.settings.search_articles -%}
+{%- assign search_pages    				= section.settings.search_pages -%}
+{%- assign show_color_swatch_in_filters = section.settings.show_color_swatch_in_filters -%}
+{%- assign enable_cards_indent 			= section.settings.enable_cards_indent -%}
+{%- assign filters_type 				= section.settings.filters_type -%}
+{%- assign border_color 				= section.settings.border_color -%}
+{%- assign article_show_borders 	    = settings.article_card_show_borders -%}
+{%- assign article_border_color 	   	= settings.article_card_border_color -%}
+{%- assign show_border 					= section.settings.show_border -%}
+{%- assign full_width 					= section.settings.full_width -%}
+{%- assign design 						= settings.design -%}
+{%- assign enable_accents_spot 			= settings.enable_accents_spot -%}
+
+{%- if design == "alternate" -%}
+	{%- assign enable_cards_indent = true -%}
+{%- endif -%}
+
+{%- if design == "standard" -%}
+	{%- capture section_styles -%}
+			--border-color: {{ border_color }};
+	{%- endcapture -%}
+{%- endif -%}
+
+{%- capture search_type_values -%}
+	product
+	{%- if search_articles -%},article{%- endif -%}
+	{%- if search_pages -%},page{%- endif -%}
+{%- endcapture -%}
+
+{%- capture search_empty_title -%}
+	{%- capture search_empty_title_classes -%}
+		h2 search__title search__title--empty js-template-empty-title
+		{% if search.results.size > 0 %} is-hidden {% endif %}
+	{%- endcapture -%}
+
+	{% capture search_empty_title_aria_hidden %}
+		{% if search.results.size > 0 %} aria-hidden="true" {% else %} aria-hidden="false" {% endif %}
+	{% endcapture %}
+
+	<h2 class="{{- search_empty_title_classes | strip_newlines -}}" {{ search_empty_title_aria_hidden }}>
+		{{- 'general.search.no_results' | t -}}
+	</h2>
+{%- endcapture -%}
+
+{%- capture search_body_classes -%}
+	{% if design == "standard" %}
+		{% if full_width == false %} search__body--max-width{% endif %}
+		{% if filters_type == 'sidebar' %} search__body--with-sidebar{% endif %}
+	{% endif %}
+{%- endcapture -%}
+
+{%- if design == "alternate" -%}
+	{{- 'search-new.build.css' | asset_url | stylesheet_tag -}}
+{%- else -%}
+	{{- 'search.build.css' | asset_url | stylesheet_tag -}}
+{%- endif -%}
+
+<section class="{% if design == "alternate" %}search-new{% if enable_accents_spot %} search--accent-spot{% endif %}{% else %}search{% endif %} {% if filters_type == 'sidebar' and search.results.size > 0 %}search--with-sidebar{% endif %} js-search" id="{{- section.id -}}" style="{{ section_styles }}">
+	{%- if design == "alternate" -%}
+		<div class="search__container{% if full_width == false %} search-container--max-width{% endif %}">
+	{%- endif -%}
+			<div class="search__header">
+				<div class="search__header-row">
+					<div class="search__header-col">
+						<div class="search__header-col-box-text">
+							{%- if label != blank -%}
+								<div class="search__label{% if design == "alternate" %} subheading{% endif %}">
+									{{- label -}}
+								</div>
+							{%- endif -%}
+
+							<h1 class="{% if design == "alternate" %}h2{% else %}h1{% endif %} search__title">
+								{{- 'general.search.heading.other' | t -}}
+							</h1>
+
+							{%- if design == "alternate" -%}
+								{{- search_empty_title -}}
+							{%- endif -%}
+
+							{%- if search.performed -%}
+								<p class="text search__description js-search-result-counter">
+									{%- if search.results.size == 1 -%}
+										{{- 'general.search.results_with_count.one' | t: count: search.results_count, terms: search.terms -}}
+									{%- else -%}
+										{{- 'general.search.results_with_count.other' | t: count: search.results_count, terms: search.terms -}}
+									{%- endif -%}
+								</p>
+							{%- endif -%}
+
+							<form class="search__form" action="{{ routes.search_url }}" method="get" role="search">
+								<div class="input-wrapper search__input-wrapper">
+							<span class="input__search-icon-wrapper" aria-hidden="true">
+								{%- if design == "alternate" -%}
+									{%- render 'icons-new', icon: 'search' -%}
+								{%- else -%}
+									{%- render 'icons-medium', icon: 'search' -%}
+								{%- endif -%}
+							</span>
+
+									<input
+										class="input search__input"
+										type="search"
+										id="Search-form-input"
+										placeholder="{{- 'general.search.search_input_placeholder' | t -}}"
+										name="q"
+										value="{{ search.terms | escape }}"
+										autocomplete="off"
+										autocapitalize="off"
+										spellcheck="false"
+										required
+									>
+
+									{%- if desigin == "standrd" -%}
+										<label class="input-label" for="Search-form-input">
+											{{- "general.search.search_input_placeholder" | t -}}
+										</label>
+									{%- endif -%}
+								</div>
+
+								{%- if design == "alternate" -%}
+									<button
+										class="button-circle search__button"
+										type="submit"
+										aria-label="{{- 'general.search.search_submit_button' | t | escape -}}"
+									>
+							<span class="button__text">
+								{{- 'general.search.search_submit_button' | t -}}
+							</span>
+
+										<span class="button-new__icon-container">
+								<span class="button-new__icon-wrapper">
+									{% render "icons-new", icon: "wave" %}
+								</span>
+							</span>
+									</button>
+								{%- else -%}
+									<button
+										class="button button--secondary search__button"
+										type="submit"
+										aria-label="{{- 'general.search.search_submit_button' | t | escape -}}"
+									>
+										{{- 'general.search.search_submit_button' | t -}}
+									</button>
+								{%- endif -%}
+
+								<input name="options[prefix]" type="hidden" value="last">
+								<input type="hidden" name="type" value="{{- search_type_values -}}" />
+							</form>
+						</div>
+					</div>
+
+					{%- if search.performed and search.sort_options.size > 0 and filters_type == 'drawer' -%}
+						<div class="search__header-col search__header-col--filter">
+							{%- if design == "alternate" -%}
+								{%- render 'product-filters-and-sort-new',
+									product_list: search,
+									show_swatches: show_color_swatch_in_filters
+								-%}
+							{%- else -%}
+								{%- render 'product-filters-and-sort',
+									product_list: search,
+									show_swatches: show_color_swatch_in_filters
+								-%}
+							{%- endif -%}
+						</div>
+					{%- endif -%}
+				</div>
+			</div>
+
+			{%- if search.performed -%}
+				<div class="search__body {{ search_body_classes }}">
+					{%- if search.performed and filters_type == 'sidebar' -%}
+						<div class="collection__sidebar {{ search.results.size }}">
+							{%- if design == "alternate" -%}
+								{%- render 'product-filters-and-sort-new',
+									product_list: search,
+									show_swatches: show_color_swatch_in_filters,
+									extra_class: 'product-filters--sidebar'
+								-%}
+							{%- else -%}
+								{%- render 'product-filters-and-sort',
+									product_list: search,
+									show_swatches: show_color_swatch_in_filters,
+									extra_class: 'product-filters--sidebar'
+								-%}
+							{%- endif -%}
+						</div>
+					{%- endif -%}
+
+					{%- if design == "standard" -%}
+						{{- search_empty_title -}}
+					{%- endif -%}
+
+					{%- paginate search.results by paginate_by -%}
+						<div class="search__grid {% if enable_cards_indent %}search__grid--indent{% endif %} js-grid-wrapper" aria-busy="true">
+							{%- for item in search.results -%}
+								{%- if design == "alternate" and item.object_type == "article" and article_show_borders -%}
+									{%- assign show_border = true -%}
+									{%- capture search_item_styles -%}
+										--border-color: {{- article_border_color -}};
+									{%- endcapture -%}
+								{%- elsif design == "alternate" -%}
+									{%- assign show_border = false -%}
+								{%- endif -%}
+
+								<div class="search__item {% unless show_border %}search__item--no-border{% endunless %}"
+									 style="{{- search_item_styles -}}"
+								>
+									{%- case item.object_type -%}
+										{%- when 'product' %}
+											{%- if design == "alternate" -%}
+												{%- render 'product-card-new', product: item, size: 450 -%}
+											{%- else -%}
+												{%- render 'product-card', product: item, size: 360 -%}
+											{%- endif -%}
+										{%- when 'article' -%}
+											{%- if design == "alternate" -%}
+												{%- render 'article-card-new', article: item -%}
+											{%- else -%}
+												{%- render 'article-card', article: item -%}
+											{%- endif -%}
+										{%- when 'page' -%}
+											{%- render 'page-card', page: item -%}
+									{%- endcase -%}
+								</div>
+							{%- endfor -%}
+						</div>
+
+						{%- case pagination_type -%}
+							{%- when 'pagination' -%}
+								{%- capture search_pagination_classes -%}
+									search__pagination-wrapper js-pagination
+									{% unless paginate.pages > 1 %} is-hidden {% endunless %}
+								{%- endcapture -%}
+
+								<div class="{{- search_pagination_classes | strip_newlines -}}">
+									{%- if paginate.pages > 1 -%}
+										{%- if design == "alternate" -%}
+											{%- render 'pagination-new', paginate: paginate -%}
+										{%- else -%}
+											{%- render 'pagination', paginate: paginate -%}
+										{%- endif -%}
+									{%- endif -%}
+								</div>
+							{%- when 'infinite_scroll' -%}
+								{%- capture search_infinite_scroll_classes -%}
+									search__infinite-scroll no-js-hidden js-infinite-scroll
+									{% unless paginate.next.url %} is-hidden {% endunless %}
+								{%- endcapture -%}
+
+								<div class="{{- search_infinite_scroll_classes | strip_newlines -}}"
+									{%- if paginate.next.url -%}
+										data-next-url="{{- paginate.next.url -}}"
+									{%- else -%}
+										data-next-url=""
+									{%- endif -%}
+								></div>
+							{%- else -%}
+								{%- capture search_lazy_load_button_classes -%}
+									search__load-more-button js-lazy-load {{- -}}
+									{% if design == "alternate" %} button-new button--primary {% else %} button button--secondary {% endif %} {{- -}}
+									{% unless paginate.next.url %} is-hidden {%- endunless -%}
+								{%- endcapture -%}
+
+								<div class="search__lazy-load-button-wrapper no-js-hidden">
+									<button
+										class="{{- search_lazy_load_button_classes | strip_newlines -}}"
+										{% if paginate.next.url %}
+											data-next-url="{{- paginate.next.url -}}"
+										{% else %}
+											data-next-url=""
+										{% endif %}
+										aria-label="{{- 'general.pagination.lazy_load_aria' | t: items: 'products' | escape -}}"
+									>
+										{{- 'general.pagination.lazy_load' | t -}}
+									</button>
+								</div>
+						{%- endcase -%}
+
+						{%- unless pagination_type == 'pagination' -%}
+							<noscript>
+								<div class="search__pagination-wrapper">
+									{%- if paginate.pages > 1 -%}
+										{%- if design == "alternate" -%}
+											{%- render 'pagination-new', paginate: paginate -%}
+										{%- else -%}
+											{%- render 'pagination', paginate: paginate -%}
+										{%- endif -%}
+									{%- endif -%}
+								</div>
+							</noscript>
+						{%- endunless -%}
+					{%- endpaginate -%}
+				</div>
+			{%- endif -%}
+	{%- if design == "alternate" -%}
+		</div>
+	{%- endif -%}
+</section>
+
+<script src="{{- 'component-product-filters.build.min.js' | asset_url -}}" defer></script>
+<script src="{{- 'search-template.build.min.js' | asset_url -}}" defer></script>
+
+{%- schema -%}
+{
+	"name": "Search",
+	"settings": [
+		{
+			"type": "text",
+			"id": "label",
+			"label": "Label"
+		},
+		{
+			"type": "checkbox",
+			"id": "search_articles",
+			"label": "Enable search by articles",
+			"default": true
+		},
+		{
+			"type": "checkbox",
+			"id": "search_pages",
+			"label": "Enable search by pages",
+			"default": true
+		},
+		{
+			"type": "checkbox",
+			"id": "show_color_swatch_in_filters",
+			"label": "Show color swatch in filters",
+			"default": false
+		},
+		{
+			"type": "checkbox",
+			"id": "enable_cards_indent",
+			"label": "Enable cards indent",
+			"default": false,
+			"info": "The setting is used for standard design."
+		},
+		{
+			"type": "select",
+			"id": "filters_type",
+			"label": "Filters type",
+			"options": [
+				{
+					"value": "drawer",
+					"label": "Drawer"
+				},
+				{
+					"value": "sidebar",
+					"label": "Sidebar"
+				}
+			],
+			"default": "drawer",
+			"info": "Used only for desktop"
+		},
+		{
+			"type": "range",
+			"id": "paginate_by",
+			"min": 12,
+			"max": 48,
+			"step": 4,
+			"label": "Paginate by",
+			"default": 16
+		},
+		{
+			"type": "select",
+			"id": "pagination_type",
+			"label": "Pagination type",
+			"options": [
+				{
+					"value": "pagination",
+					"label": "Pagination"
+				},
+				{
+					"value": "lazy_load",
+					"label": "Load more"
+				},
+				{
+					"value": "infinite_scroll",
+					"label": "Infinite scrolling"
+				}
+			],
+			"default": "pagination"
+		},
+		{
+			"type": "header",
+			"content": "Grid"
+		},
+		{
+			"type": "checkbox",
+			"id": "show_border",
+			"label": "Show borders",
+			"default": true,
+			"info": "The setting is used for standard design."
+		},
+		{
+			"type": "color",
+			"id": "border_color",
+			"label": "Border color",
+			"info": "The setting is used for standard design.",
+			"default": "#e6e6e6"
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "checkbox",
+			"id": "full_width",
+			"label": "Make grid full width",
+			"default": true,
+			"info": "If unchecked - container width will be set based on the group 'Layout' settings in the Theme settings."
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 60
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 60
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 30
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 30
+		}
+	]
+}
+{%- endschema -%}

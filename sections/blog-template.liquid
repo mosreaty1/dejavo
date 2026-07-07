@@ -1,0 +1,556 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Blog template
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{%- assign label        		  	  = section.settings.label -%}
+{%- assign paginate_by        		  = section.settings.paginate_by -%}
+{%- assign pagination_type    		  = section.settings.pagination_type -%}
+{%- assign lazy_load_button_type      = section.settings.lazy_load_button_type -%}
+{%- assign show_filter_by_tag 		  = section.settings.show_filter_by_tag -%}
+{%- assign featured_post      		  = section.settings.featured_post -%}
+{%- assign featured_post_bg   		  = section.settings.featured_post_bg -%}
+{%- assign enable_lazy_load   		  = section.settings.enable_lazy_load -%}
+{%- assign featured_post_border_color = section.settings.featured_post_border_color -%}
+{%- assign featured_post_text_color   = section.settings.featured_post_text_color -%}
+{%- assign featured_post_date_color   = section.settings.featured_post_date_color -%}
+{%- assign featured_post_show_border  = section.settings.featured_show_border -%}
+{%- assign featured_blog_button_type  = section.settings.featured_blog_button_type -%}
+{%- assign btn_text_aria_label        = section.settings.btn_text_aria_label -%}
+{%- assign full_width 				  = section.settings.full_width -%}
+
+{%- assign show_date 		   = settings.show_date -%}
+{%- assign show_author 		   = settings.show_author -%}
+{%- assign show_tag 		   = settings.show_tag -%}
+{%- assign is_strip_title      = settings.is_strip_title -%}
+{%- assign is_strip_content    = settings.is_strip_content -%}
+{%- assign show_comments_count = settings.show_comments_count -%}
+{%- assign show_borders 	   = settings.article_card_show_borders -%}
+{%- assign border_color 	   = settings.article_card_border_color -%}
+{%- assign design 	   		   = settings.design -%}
+{%- assign enable_accents_spot = settings.enable_accents_spot -%}
+
+{%- if show_filter_by_tag and blog.all_tags.size > 0 -%}
+	{%- capture filter_items -%}
+		{%- for tag in blog.all_tags -%}
+			<li class="blog__filters-item">
+				{%- capture blog_filters_link_classes -%}
+					focus-visible-outline blog__filters-link js-filter-link {{-  -}}
+					{% if current_tags contains tag %} is-active {%- endif -%}
+				{%- endcapture -%}
+
+				<a
+					class="{{- blog_filters_link_classes | strip_newlines -}}"
+					href="{{- blog.url -}}/tagged/{{- tag | handleize -}}"
+				>
+					{{- tag -}}
+				</a>
+			</li>
+		{%- endfor -%}
+	{%- endcapture -%}
+{%- endif -%}
+
+{%- if filter_items != blank -%}
+	{%- capture blog_filters -%}
+		<div class="blog__filters js-filter">
+			<ul class="blog__filters-list">
+				<li class="blog__filters-item">
+					{%- capture blog_filters_link_reset_classes -%}
+						text blog__filters-link blog__filters-link--reset js-filter-reset {{-  -}}
+						{% if current_tags == blank %} is-active {%- endif -%}
+					{%- endcapture -%}
+
+					<a class="{{- blog_filters_link_reset_classes | strip_newlines -}}"
+					   href="{{- blog.url -}}"
+					   {% unless current_tags %}
+						   tabindex="-1"
+					   {% endunless %}
+					>
+						{{- 'blogs.article.view_all' | t -}}
+					</a>
+				</li>
+
+				{{- filter_items -}}
+			</ul>
+		</div>
+	{%- endcapture -%}
+{%- endif -%}
+
+{%- if featured_post != blank -%}
+	{%- capture featured_post_styles -%}
+		--featured-post-bg: {{ featured_post_bg | default: 'transparent' }}; {{-  -}}
+		--featured-post-border-color: {{ featured_post_border_color }}; {{-  -}}
+		--featured-post-text-color: {{ featured_post_text_color }}; {{-  -}}
+		--featured-post-date-color: {{ featured_post_date_color }};
+	{%- endcapture -%}
+
+	{%- capture featured_blog_post_info -%}
+		{%- if show_date or show_author or show_tag or show_comments_count -%}
+			<ul class="blog__featured-post-info">
+				{%- if show_date -%}
+					<li class="blog__featured-post-info-label">
+						<span class="visually-hidden">
+							{{- 'blogs.article.published_at' | t -}}
+						</span>
+
+						{{- featured_post.published_at | time_tag: format: 'date' -}}
+					</li>
+				{%- endif -%}
+
+				{%- if show_author and featured_post.author != blank -%}
+					<li class="blog__featured-post-info-label">
+						<span class="visually-hidden">
+							{{- 'blogs.article.author' | t -}}
+						</span>
+
+						{{- featured_post.author -}}
+					</li>
+				{%- endif -%}
+
+				{%- if show_tag and tag != blank -%}
+					<li class="blog__featured-post-info-label">
+						<span class="visually-hidden">
+							{{- 'blogs.article.tag' | t -}}
+						</span>
+
+						{{- tag -}}
+					</li>
+				{%- endif -%}
+
+				{%- if show_comments_count -%}
+					<li class="blog__featured-post-info-label">
+						<span class="visually-hidden">
+							{{- 'blogs.article.comments_count' | t -}}
+						</span>
+
+						{%- if design == "alternate" -%}
+							{%- if featured_post.comments_count != blank -%}
+								{{- 'blogs.article.comments' | t: count: featured_post.comments_count -}}
+							{%- elsif featured_post == blank -%}
+								{{- 'blogs.article.comments' | t: count: 0 -}}
+							{%- endif -%}
+						{%- else -%}
+							{%- render 'icons-social', icon: 'comments' -%}
+
+							{{- featured_post.comments_count -}}
+						{%- endif -%}
+					</li>
+				{%- endif -%}
+			</ul>
+		{%- endif -%}
+	{%- endcapture -%}
+
+	{%- capture featured_blog_post_text_content -%}
+		<div class="blog__featured-post-col">
+			<div class="blog__featured-post-col-container js-animate">
+				{%- if design == "standard" -%}
+					{{- featured_blog_post_info -}}
+				{%- endif -%}
+
+				<h2 class="{% if design == "standard" %}h2 {% endif %}blog__featured-post-title{% if is_strip_title %} blog__featured-post-title--clipped{%- endif -%}">
+					{{- featured_post.title -}}
+				</h2>
+
+				{%- if design == "alternate" -%}
+					{{- featured_blog_post_info -}}
+				{%- endif -%}
+
+				{%- capture featured_post_description_classes -%}
+					blog__featured-post-description {{-  -}}
+					{% if is_strip_content %} blog__featured-post-description--clipped {%- endif -%}
+				{%- endcapture -%}
+
+				{%- if featured_post.excerpt_or_content != blank -%}
+					<p class="{{- featured_post_description_classes | strip_newlines -}}">
+						{{- featured_post.excerpt_or_content | strip_html -}}
+					</p>
+				{%- endif -%}
+
+				{%- if design == "alternate" -%}
+					<a
+						class="focus-visible-outline blog__featured-post-button"
+						href="{{- featured_post.url -}}"
+						aria-label="{{- 'blogs.article.learn_more_link_aria' | t: title: featured_post.title | escape -}}"
+					>
+					<span class="blog__featured-post-button-text">
+						{{- 'blogs.article.learn_more' | t -}}
+					</span>
+
+						{%- render 'icons-new', icon: 'arrow-right' -%}
+					</a>
+				{%- else -%}
+					<a
+						class="button button--{{- featured_blog_button_type }} blog__featured-post-button"
+						href="{{- featured_post.url -}}"
+						aria-label="{{- 'blogs.article.learn_more_link_aria' | t: title: featured_post.title | escape -}}"
+					>
+						{{- 'blogs.article.learn_more' | t -}}
+					</a>
+				{%- endif -%}
+			</div>
+		</div>
+	{%- endcapture -%}
+
+	{%- capture featured_blog_post_block -%}
+		<div class="blog__featured-post{% if design == "standard" %} blog__featured-post--desktop{% endif %}{% unless featured_post_show_border %} blog__featured-post--no-border{% endunless %}"
+			 style="{{ featured_post_styles }}"
+		>
+			<div class="blog__featured-post-row">
+				{%- if design == "alternate" -%}
+					{{ featured_blog_post_text_content }}
+				{%- endif -%}
+
+				<div class="blog__featured-post-col blog__featured-post-col--image">
+					{%- if featured_post.image != blank -%}
+						<a href="{{- featured_post.url -}}" class="focus-visible-outline blog__featured-post-image-wrapper js-animate">
+							{%- render "featured-blog-post-image",
+								featured_post: featured_post,
+								enable_lazy_load: enable_lazy_load
+							-%}
+						</a>
+					{%- else -%}
+						<a class="blog__featured-post-image-wrapper blog__featured-post-image-wrapper--svg" href="{{- featured_post.url -}}">
+							{{- 'image' | placeholder_svg_tag: 'blog__featured-post-image' -}}
+						</a>
+					{%- endif -%}
+				</div>
+
+				{%- if design == "standard" -%}
+					{{ featured_blog_post_text_content }}
+				{%- endif -%}
+			</div>
+		</div>
+
+		{%- if design == "standard" -%}
+			<div class="blog__featured-post blog__featured-post--mobile {% unless featured_post_show_border %}blog__featured-post--no-border{% endunless %}" style="{{ featured_post_styles }}">
+				{%- render 'article-card', article: featured_post -%}
+			</div>
+		{%- endif -%}
+	{%- endcapture -%}
+{%- endif -%}
+
+{%- capture section_styles -%}
+	--border-color: {{ border_color }};
+{%- endcapture -%}
+
+{%- if design == "alternate" -%}
+	{{- 'blog-new.build.css' | asset_url | stylesheet_tag -}}
+
+	{% assign section_class = "blog-new" %}
+{%- else -%}
+	{{- 'blog.build.css' | asset_url | stylesheet_tag -}}
+
+	{% assign section_class = "blog" %}
+{%- endif -%}
+
+<section class="{{ section_class }}  js-blog" id="{{- section.id -}}" style="{{ section_styles }}">
+	<div class="blog__container {% if full_width %}blog__container--full-width{% endif %}{% if design == "alternate" and enable_accents_spot %} blog__container--accent-spot{% endif %}">
+		<div class="blog__header">
+			{%- if label != blank -%}
+				<div class="blog__label{% if design == "alternate" %} subheading{% endif %}">
+					{{- label -}}
+				</div>
+			{%- endif -%}
+
+			<h1 class="blog__title{% if design == "alternate" %} h2{% if featured_post == blank %} blog__title--no-featured-post{% endif %}{% else %} h1{% endif %}">
+				{{- blog.title -}}
+			</h1>
+		</div>
+
+		{%- if blog.articles.size > 0 -%}
+		{%- paginate blog.articles by paginate_by -%}
+
+			{%- if design == "standard" and blog_filters != blank -%}
+				{{- blog_filters -}}
+			{%- endif -%}
+
+			{%- if featured_blog_post_block != blank -%}
+				{{- featured_blog_post_block -}}
+			{%- endif -%}
+
+			{%- if design == "alternate" and blog_filters != blank -%}
+				{{- blog_filters -}}
+			{%- endif -%}
+
+			<div class="blog__row js-blog-grid" aria-busy="false">
+				{%- for article in blog.articles -%}
+					{%- capture blog_col_classes -%}
+						blog__col {% if featured_post != blank and featured_post_show_border == true %} blog__col--no-top-border {%- endif -%} {% unless show_borders %} blog__col--no-border{% endunless %}
+					{%- endcapture -%}
+
+					<div class="{{- blog_col_classes | strip_newlines -}}">
+						{%- if design == "alternate" -%}
+							{%- render 'article-card-new', article: article, layout: 'big' -%}
+						{%- else -%}
+							{%- render 'article-card', article: article, layout: 'big' -%}
+						{%- endif -%}
+					</div>
+				{%- endfor -%}
+			</div>
+
+		{%- if pagination_type == 'pagination' -%}
+			<div class="blog__pagination-wrapper js-pagination">
+				{%- if paginate.pages > 1 -%}
+					{%- if design == "alternate" -%}
+						{%- render 'pagination-new', paginate: paginate -%}
+					{%- else -%}
+						{%- render 'pagination', paginate: paginate -%}
+					{%- endif -%}
+				{%- endif -%}
+			</div>
+		{%- elsif pagination_type == "infinite_scroll" -%}
+			{%- capture blog_infinite_scroll_classes -%}
+				blog__infinite-scroll no-js-hidden js-infinite-scroll {{-  -}}
+				{% unless paginate.next.url %} is-hidden {%- endunless -%}
+			{% endcapture %}
+
+			<div class="{{- blog_infinite_scroll_classes | strip_newlines -}}"
+				{%- if paginate.next.url -%}
+					data-next-url="{{- paginate.next.url -}}"
+				{%- else -%}
+					data-next-url=""
+				{%- endif -%}
+			></div>
+		{%- else -%}
+			{% capture blog_lazy_load_classes %}
+				{% if design == "alternate" %}button-new{% else %}button{% endif %} button--{{- lazy_load_button_type }} blog__lazy-load-button js-lazy-load {{-  -}}
+				{% unless paginate.next.url %} is-hidden {%- endunless -%}
+			{% endcapture %}
+
+			<div class="blog__lazy-load-button-wrapper no-js-hidden">
+				<button class="{{- blog_lazy_load_classes | strip_newlines -}}"
+					{%- if paginate.next.url -%}
+						data-next-url="{{- paginate.next.url -}}"
+					{%- else -%}
+						data-next-url=""
+					{%- endif -%}
+				>
+					{{- 'blogs.general.lazy_load_button' | t -}}
+				</button>
+			</div>
+		{%- endif -%}
+
+			{%- unless pagination_type == 'pagination' -%}
+				<noscript>
+					<div class="blog__pagination-wrapper">
+						{%- if paginate.pages > 1 -%}
+							{%- if design == "alternate" -%}
+								{%- render 'pagination-new', paginate: paginate -%}
+							{%- else -%}
+								{%- render 'pagination', paginate: paginate -%}
+							{%- endif -%}
+						{%- endif -%}
+					</div>
+				</noscript>
+			{%- endunless -%}
+
+			<script src="{{- 'blog-template.build.min.js' | asset_url -}}" defer></script>
+		{%- endpaginate -%}
+		{%- else -%}
+			{%- if featured_blog_post_block != blank -%}
+				{{- featured_blog_post_block -}}
+			{%- endif -%}
+
+			<h2 class="h2 blog__title blog__title--empty">
+				{{- 'blogs.general.empty_blog' | t -}}
+			</h2>
+		{%- endif -%}
+	</div>
+</section>
+
+{%- schema -%}
+{
+	"name": "Blog",
+	"settings": [
+		{
+			"type": "text",
+			"id": "label",
+			"label": "Label"
+		},
+		{
+			"type": "range",
+			"id": "paginate_by",
+			"min": 6,
+			"max": 24,
+			"step": 1,
+			"label": "Paginate by",
+			"default": 9
+		},
+		{
+			"type": "select",
+			"id": "pagination_type",
+			"label": "Pagination type",
+			"options": [
+				{
+					"value": "pagination",
+					"label": "Pagination"
+				},
+				{
+					"value": "infinite_scroll",
+					"label": "Infinite scroll"
+				},
+				{
+					"value": "lazy_load",
+					"label": "Load more"
+				}
+			],
+			"default": "pagination"
+		},
+		{
+			"type": "select",
+			"id": "lazy_load_button_type",
+			"label": "Load more button type",
+			"options": [
+				{
+					"value": "primary",
+					"label": "Primary"
+				},
+				{
+					"value": "secondary",
+					"label": "Secondary"
+				}
+			],
+			"default": "secondary"
+		},
+		{
+			"type": "checkbox",
+			"id": "show_filter_by_tag",
+			"label": "Show filter by tag",
+			"default": true
+		},
+		{
+			"type": "header",
+			"content": "Featured blog post"
+		},
+		{
+			"type": "article",
+			"id": "featured_post",
+			"label": "Blog post"
+		},
+		{
+			"type": "color",
+			"id": "featured_post_bg",
+			"label": "Background color"
+		},
+		{
+			"type": "color",
+			"id": "featured_post_border_color",
+			"label": "Border color",
+			"default": "#e6e6e6"
+		},
+		{
+			"type": "color",
+			"id": "featured_post_text_color",
+			"label": "Text color",
+			"default": "#000000"
+		},
+		{
+			"type": "color",
+			"id": "featured_post_date_color",
+			"label": "Date color",
+			"default": "#757575"
+		},
+		{
+			"type": "checkbox",
+			"id": "featured_show_border",
+			"label": "Show borders",
+			"default": true
+		},
+		{
+			"type": "checkbox",
+			"id": "enable_lazy_load",
+			"label": "Enable image lazy load",
+			"default": false
+		},
+		{
+			"type": "select",
+			"id": "featured_blog_button_type",
+			"label": "Button type",
+			"options": [
+				{
+					"value": "primary",
+					"label": "Primary"
+				},
+				{
+					"value": "secondary",
+					"label": "Secondary"
+				}
+			],
+			"default": "primary",
+			"info": "The setting is used for standard design."
+		},
+		{
+			"id": "btn_text_aria_label",
+			"type": "text",
+			"label": "Button aria-label",
+			"info": "Need for good accessibility, e.g. 'All news about...'. [Learn more](https://utdweb.team/shopify-themes/gain/manual#section-blog-template)"
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "checkbox",
+			"id": "full_width",
+			"label": "Make full width",
+			"default": true,
+			"info": "If unchecked - container width will be set based on the group 'Layout' settings in the Theme settings."
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 60
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 60
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 30
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 30
+		}
+	]
+}
+{%- endschema -%}

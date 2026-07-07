@@ -1,0 +1,64 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Product notify me button
+------------------------------------------------------------------------------
+{% endcomment %}
+
+
+{%- assign notify_me_button_label = block.settings.notify_me_button_label -%}
+{%- assign notify_me_button_icon = block.settings.notify_me_button_icon -%}
+{%- assign notify_me_button_icon_alt = block.settings.notify_me_button_icon.alt -%}
+{%- assign notify_me_form_heading = block.settings.notify_me_form_heading -%}
+{%- assign notify_me_form_email_placeholder = block.settings.notify_me_form_email_placeholder -%}
+{%- assign notify_me_form_submit_button_label = block.settings.notify_me_form_submit_button_label -%}
+{%- assign notify_me_form_success_message = block.settings.notify_me_form_success_message -%}
+{%- assign close_modal = 'general.accessibility.close_modal' | t -%}
+{%- assign product_notify_me_message = 'products.product.product_notify_me_message' | t -%}
+{%- assign id = section.id -%}
+
+{%- if notify_me_button_label != blank and
+	   notify_me_form_email_placeholder != blank and
+	   notify_me_form_submit_button_label != blank and
+	   notify_me_form_success_message != blank and
+	   notify_me_form_heading != blank and
+	   product_notify_me_message != blank and
+	   close_modal != blank
+-%}
+
+	{%- assign variant_available = product.selected_or_first_available_variant.available -%}
+
+	{% if design == 'alternate' %}
+		{% assign button_class = 'product-notify-me-button-new button-link-simple focus-visible-outline js-notify-me-button' %}
+	{% else %}
+		{% assign button_class = 'product-notify-me-button button-link focus-visible-outline js-notify-me-button' %}
+	{% endif %}
+
+	{% if variant_available %}
+		{% assign button_class = button_class | append: " is-hidden" %}
+	{% endif %}
+
+	<div class="product-form__button-link-container js-notify-me-button-wrapper {% if variant_available %}is-hidden{% endif %}">
+		<button class="{{ button_class }}"
+				type="button"
+				data-target="ProductNotifyMePopup-{{- id -}}"
+				data-js-toggle="ProductNotifyMePopup-{{- id -}}"
+
+		>
+			{%- if notify_me_button_icon != blank -%}
+				{%- capture img_focal -%}
+					--img-desktop-pos: {{ notify_me_button_icon.presentation.focal_point }};
+				{%- endcapture -%}
+
+				<img class="{% if design == 'alternate' %}button-link-simple__icon{% else %}button-link__icon{% endif %}"
+					 src="{{ notify_me_button_icon | image_url: width: 20, height: 20 }}"
+					 srcset="{{ notify_me_button_icon | image_url: width: 20, height: 20 }} 1x,
+						 {{ notify_me_button_icon | image_url: width: 40, height: 40 }} 2x"
+					 style="{{ img_focal }}"
+					 alt="{{ notify_me_button_icon_alt }}"
+				>
+			{%- endif -%}
+
+			{{ notify_me_button_label }}
+		</button>
+	</div>
+{%- endif -%}

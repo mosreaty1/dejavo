@@ -1,0 +1,84 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Product Complementary
+------------------------------------------------------------------------------
+{% endcomment %}
+{% comment %}
+	Description variables
+{% endcomment %}
+{%- assign heading = block.settings.heading -%}
+
+{% if design == 'alternate' %}
+	{{- 'product-complementary-new.build.css' | asset_url | stylesheet_tag -}}
+{% else %}
+	{{- 'product-complementary.build.css' | asset_url | stylesheet_tag -}}
+{% endif %}
+
+<div class="{% if design == 'alternate' %}complementary-products-new{% else %}complementary-products{% endif %} no-js-hidden is-hidden js-complementary-products"
+	 data-url="{{- routes.product_recommendations_url -}}?section_id={{- section.id -}}&product_id={{- product.id -}}&intent=complementary"
+	 data-design="{{ design }}"
+>
+	{%- if recommendations.performed and recommendations.products_count > 0 -%}
+		<div class="complementary-products-content js-complementary-products-content">
+			{%- if heading != blank or recommendations.products_count > 2  -%}
+				<div class="complementary-products__header">
+					{%- if heading != blank -%}
+						<h2 class="complementary-products__heading {% if design == 'alternate' %}h6{% else %}h4{% endif %}">
+							{{- heading -}}
+						</h2>
+					{%- endif -%}
+
+					{% if recommendations.products_count > 2 -%}
+						<div class="complementary-products__controls">
+							<button
+								class="{% if design == 'alternate' %}swiper-button-prev-new{% else %}swiper-button-prev{% endif %} focus-visible-outline complementary-products__control complementary-products__control--prev js-complementary-products-slider-prev focus-visible-outline"
+								type="button"
+								aria-label="{{- 'general.accessibility.slider.prev_slide_message' | t | escape -}}"
+							>
+								{% if design == 'alternate' %}
+									{%- render 'icons-new', icon: 'arrow-left' -%}
+								{% else %}
+									{% render 'icons-small', icon: 'arrow-left' %}
+								{% endif %}
+							</button>
+
+							<button
+								class="{% if design == 'alternate' %}swiper-button-next-new{% else %}swiper-button-next{% endif %} focus-visible-outline complementary-products__control complementary-products__control--next js-complementary-products-slider-next focus-visible-outline"
+								type="button"
+								aria-label="{{- 'general.accessibility.slider.next_slide_message' | t | escape -}}"
+							>
+								{% if design == 'alternate' %}
+									{%- render 'icons-new', icon: 'arrow-right' -%}
+								{% else %}
+									{% render 'icons-small', icon: 'arrow-right' %}
+								{% endif %}
+							</button>
+						</div>
+					{%- endif -%}
+				</div>
+			{%- endif -%}
+
+			<div class="complementary-products-content-slider {% if recommendations.products_count > 2 -%}swiper{% endif %}">
+				<div class="complementary-products__slider-wrapper {% if recommendations.products_count > 2 -%}swiper-wrapper{% endif %}">
+					{%- for product in recommendations.products -%}
+						<div class="complementary-products__slider-slide {% if recommendations.products_count > 2 -%}swiper-slide{%- endif -%}">
+							{% if design == 'alternate' %}
+								{%- render 'product-card-new', product: product -%}
+							{% else %}
+								{%- render 'product-card', product: product -%}
+							{% endif %}
+						</div>
+					{%- endfor -%}
+				</div>
+
+				{%- if design == 'alternate' -%}
+					<div class="swiper-pagination complementary-products__pagination js-complementary-pagination"></div>
+				{%- endif -%}
+			</div>
+		</div>
+	{% else %}
+		<div class="complementary-products-content js-complementary-products-content"></div>
+
+		<script src="{{- 'component-product-complementary.build.min.js' | asset_url -}}" defer></script>
+	{%- endif -%}
+</div>

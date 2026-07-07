@@ -1,0 +1,423 @@
+{%- assign design = settings.design -%}
+
+{%- if design == 'standard' -%}
+	{%- if section.blocks.size > 0 -%}
+		{{- 'story-telling.build.css' | asset_url | stylesheet_tag -}}
+
+		{%- style -%}
+			#shopify-section-{{- section.id -}} {
+				padding-top: {{- section.settings.offset_top_mobile -}}px;
+				padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+			}
+
+			@media screen and (min-width: 768px) {
+				#shopify-section-{{- section.id -}} {
+					padding-top: {{- section.settings.offset_top_desktop -}}px;
+					padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+				}
+			}
+		{%- endstyle -%}
+
+		{%- capture tabs -%}
+			<div class="story-telling__tabs-wrapper">
+				<div class="story-telling__tabs js-story-telling-tabs is-active" data-new-design="false">
+					{%- for block in section.blocks -%}
+						{% assign tab_heading = block.settings.tab_heading | default: 'Tab' %}
+
+						<button
+							class="story-telling__tab-button focus-visible-outline js-story-telling-tab-button{% if forloop.first %} story-telling__tab-button--active{% endif %}"
+							data-index="{{- forloop.index -}}"
+						>
+							{{- tab_heading -}}
+						</button>
+					{%- endfor -%}
+				</div>
+			</div>
+		{%- endcapture -%}
+
+		{%- assign full_width = section.settings.full_width -%}
+
+		<section
+			class="story-telling js-animate {% if request.visual_preview_mode or section.index == 1 %}animated{% endif %} js-story-telling">
+			<div class="story-telling__container {% if full_width == false %}story-telling__container--max-width{% endif %}">
+				<div class="story-telling__content-wrapper">
+					{%- for block in section.blocks -%}
+						{%- assign image_desktop     = block.settings.image_desktop -%}
+						{%- assign image_mobile      = block.settings.image_mobile | default: image_desktop -%}
+						{%- assign image_position    = block.settings.image_position -%}
+						{%- assign text_alignment    = block.settings.text_alignment -%}
+						{%- assign heading           = block.settings.heading -%}
+						{%- assign subheading        = block.settings.subheading -%}
+						{%- assign text              = block.settings.text -%}
+						{%- assign button_text       = block.settings.button_text -%}
+						{%- assign button_aria_label = block.settings.button_aria_label -%}
+						{%- assign button_link       = block.settings.button_link -%}
+
+						{%- assign overlay                       = section.settings.overlay -%}
+						{%- assign background_color              = block.settings.background_color -%}
+						{%- assign text_color                    = block.settings.text_color -%}
+						{%- assign button_label_color            = block.settings.button_label_color -%}
+						{%- assign button_background_color       = block.settings.button_background_color -%}
+						{%- assign button_border_color           = block.settings.button_border_color -%}
+						{%- assign button_label_hover_color      = block.settings.button_label_hover_color -%}
+						{%- assign button_background_hover_color = block.settings.button_background_hover_color -%}
+						{%- assign button_border_hover_color     = block.settings.button_border_hover_color -%}
+
+						{%- assign is_lazy = true -%}
+
+						{% if section.index == 1 and forloop.index == 1 %}
+							{%- assign is_lazy = false -%}
+						{% endif %}
+
+						{%- capture block_css_variables -%}
+							--overlay: {{ overlay }}%;
+							--text-alignment: {{ text_alignment | replace: "left", "start" | replace: "right", "end" }};
+							--background-color: {{ background_color }};
+							--text-color: {{ text_color }};
+							--button-label-color: {{ button_label_color }};
+							--button-background-color: {{ button_background_color }};
+							--button-border-color: {{ button_border_color }};
+							--button-label-hover-color: {{ button_label_hover_color }};
+							--button-background-hover-color: {{ button_background_hover_color }};
+							--button-border-hover-color: {{ button_border_hover_color }};
+						{%- endcapture -%}
+
+						<div
+							class="story-telling__item {% if forloop.first %}story-telling__item--visible {% endif %}js-story-telling-slide"
+							style="{{ block_css_variables }}"
+							data-index="{{- forloop.index -}}"
+						>
+							{%- if image_position == 'left' -%}
+								{%- render 'story-telling-image',
+									image_desktop: image_desktop,
+									image_mobile: image_mobile,
+									is_lazy: is_lazy
+								-%}
+							{%- endif -%}
+
+							{%- if heading != blank or subheading != blank or text != blank -%}
+								<div class="story-telling__item-text-content-wrapper">
+									<div class="story-telling__item-text-content">
+										{%- if subheading != blank -%}
+											<p class="story-telling__item-subheading">
+												{{- subheading -}}
+											</p>
+										{%- endif -%}
+
+										{%- if heading != blank -%}
+											<p class="story-telling__item-heading h2">
+												{{- heading -}}
+											</p>
+										{%- endif -%}
+
+										{%- if text != blank -%}
+											<div class="story-telling__item-text section-rte">
+												{{- text -}}
+											</div>
+										{%- endif -%}
+
+										{%- if button_text != blank and button_link != blank -%}
+											<a
+												href="{{ button_link }}"
+												class="story-telling__item-link button focus-visible-outline"
+												{% if button_aria_label != blank -%}
+													aria-label="{{- button_aria_label | escape -}}"
+												{%- endif -%}
+											>
+												{{- button_text -}}
+											</a>
+										{%- endif -%}
+									</div>
+								</div>
+							{%- endif -%}
+
+							{%- if image_position == 'right' -%}
+								{%- render 'story-telling-image',
+									image_desktop: image_desktop,
+									image_mobile: image_mobile,
+									is_lazy: is_lazy
+								-%}
+							{%- endif -%}
+						</div>
+					{%- endfor -%}
+				</div>
+
+				{{- tabs -}}
+			</div>
+		</section>
+
+		<script src="{{- 'section-story-telling.build.min.js' | asset_url -}}" defer></script>
+	{%- endif -%}
+{%- elsif design == 'alternate' -%}
+	{%- render 'story-telling-new', section: section -%}
+{%- endif -%}
+
+{%- schema -%}
+{
+	"name": "Story telling",
+	"disabled_on": {
+		"groups": ["header", "footer"]
+	},
+	"max_blocks": 7,
+	"settings": [
+		{
+			"type": "range",
+			"id": "overlay",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "%",
+			"label": "Overlay opacity",
+			"info": "The setting is used for standard design on mobile.",
+			"default": 65
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "checkbox",
+			"id": "full_width",
+			"label": "Make full width",
+			"default": true,
+			"info": "If unchecked - container width will be set based on the group 'Layout' settings in the Theme settings."
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 50
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 50
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 25
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 25
+		}
+	],
+	"blocks": [
+		{
+			"name": "Content",
+			"type": "content",
+			"settings": [
+				{
+					"type": "text",
+					"id": "tab_heading",
+					"label": "Tab heading"
+				},
+				{
+					"type": "image_picker",
+					"id": "image_desktop",
+					"label": "Image desktop",
+					"info": "1920 x 1280px recommended"
+				},
+				{
+					"type": "image_picker",
+					"id": "image_mobile",
+					"label": "Image mobile",
+					"info": "1534 x 1534px recommended"
+				},
+				{
+					"type": "select",
+					"id": "image_position",
+					"label": "Image position",
+					"options": [
+						{
+							"value": "left",
+							"label": "Left"
+						},
+						{
+							"value": "right",
+							"label": "Right"
+						}
+					],
+					"default": "left"
+				},
+				{
+					"type": "select",
+					"id": "text_alignment",
+					"label": "Text alignment",
+					"options": [
+						{
+							"value": "left",
+							"label": "Left"
+						},
+						{
+							"value": "center",
+							"label": "Center"
+						},
+						{
+							"value": "right",
+							"label": "Right"
+						}
+					],
+					"default": "left"
+				},
+				{
+					"type": "text",
+					"id": "heading",
+					"label": "Heading"
+				},
+				{
+					"type": "textarea",
+					"id": "subheading",
+					"label": "Subheading"
+				},
+				{
+					"type": "richtext",
+					"id": "text",
+					"label": "Text"
+				},
+				{
+					"type": "text",
+					"id": "button_text",
+					"label": "Button label"
+				},
+				{
+					"type": "text",
+					"id": "button_aria_label",
+					"label": "Button aria-label"
+				},
+				{
+					"type": "url",
+					"id": "button_link",
+					"label": "Button link"
+				},
+				{
+					"type": "header",
+					"content": "Colors",
+					"info": "These settings are used for standard design."
+				},
+				{
+					"type": "color_background",
+					"id": "background_color",
+					"label": "Background",
+					"default": "#ffffff"
+				},
+				{
+					"type": "color",
+					"id": "text_color",
+					"label": "Text",
+					"default": "#000000"
+				},
+				{
+					"type": "color",
+					"id": "button_label_color",
+					"label": "Button label",
+					"default": "#ffffff"
+				},
+				{
+					"type": "color",
+					"id": "button_background_color",
+					"label": "Button background",
+					"default": "#000000"
+				},
+				{
+					"type": "color",
+					"id": "button_border_color",
+					"label": "Button border",
+					"default": "#000000"
+				},
+				{
+					"type": "color",
+					"id": "button_label_hover_color",
+					"label": "Button label (hover)",
+					"default": "#000000"
+				},
+				{
+					"type": "color",
+					"id": "button_background_hover_color",
+					"label": "Button background (hover)",
+					"default": "#ffffff"
+				},
+				{
+					"type": "color",
+					"id": "button_border_hover_color",
+					"label": "Button border (hover)",
+					"default": "#000000"
+				}
+			]
+		}
+	],
+	"presets": [
+		{
+			"name": "Story telling",
+			"settings": {},
+			"blocks": [
+				{
+					"type": "content",
+					"settings": {
+						"tab_heading": "Tab 1",
+						"heading": "Heading 1",
+						"subheading": "Subheading 1",
+						"text": "<p>Combine an image with text to highlight a specific product, collection, or blog post of your choice. Enhance the content by including information on its availability, style, or possibly a review.</p>",
+						"button_text": "See more",
+						"button_link": "/"
+					}
+				},
+				{
+					"type": "content",
+					"settings": {
+						"tab_heading": "Tab 2",
+						"heading": "Heading 2",
+						"subheading": "Subheading 2",
+						"text": "<p>Combine an image with text to highlight a specific product, collection, or blog post of your choice. Enhance the content by including information on its availability, style, or possibly a review.</p>",
+						"button_text": "See more",
+						"button_link": "/"
+					}
+				},
+				{
+					"type": "content",
+					"settings": {
+						"tab_heading": "Tab 3",
+						"heading": "Heading 3",
+						"subheading": "Subheading 3",
+						"text": "<p>Combine an image with text to highlight a specific product, collection, or blog post of your choice. Enhance the content by including information on its availability, style, or possibly a review.</p>",
+						"button_text": "See more",
+						"button_link": "/"
+					}
+				},
+				{
+					"type": "content",
+					"settings": {
+						"tab_heading": "Tab 4",
+						"heading": "Heading 4",
+						"subheading": "Subheading 4",
+						"text": "<p>Combine an image with text to highlight a specific product, collection, or blog post of your choice. Enhance the content by including information on its availability, style, or possibly a review.</p>",
+						"button_text": "See more",
+						"button_link": "/"
+					}
+				}
+			]
+		}
+	]
+}
+{%- endschema -%}

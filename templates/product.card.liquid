@@ -1,0 +1,7 @@
+{%- layout none -%}
+{% case settings.design %}
+	{% when 'alternate' %}
+		{%- render 'product-card-new', product: product, size: 540 -%}
+	{% when 'standard' %}
+		{%- render 'product-card', product: product, size: 640 -%}
+{% endcase %}

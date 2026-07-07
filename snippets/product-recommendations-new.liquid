@@ -1,0 +1,194 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Snippet: Product recommendations new
+	This snippet displays an alternative view for the Product recommendations section
+
+	{% render 'product-recommendations-new', section: section %}
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{{- 'product-recommendations-new.build.css' | asset_url | stylesheet_tag -}}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{%- assign recommendations_label_default	= "sections.product_recommendations.recommendations_heading" | t  -%}
+{%- assign recently_viewed_label_default 	= "sections.product_recommendations.recently_viewed_heading" | t  -%}
+
+{%- assign recommendations_label 	= section.settings.heading | default: recommendations_label_default -%}
+{%- assign subheading 				= section.settings.subheading -%}
+{%- assign layout     				= section.settings.layout -%}
+{%- assign limit      				= section.settings.products_to_show -%}
+{%- assign enable_cards_indent      = section.settings.enable_cards_indent -%}
+{%- assign full_width 				= section.settings.full_width -%}
+{%- assign show_recently_viewed 	= section.settings.show_recently_viewed -%}
+{%- assign recently_viewed_label 	= section.settings.recently_viewed_label | default: recently_viewed_label_default -%}
+{%- assign recently_viewed_limit	= section.settings.recently_viewed_limit -%}
+
+
+{%- assign collection_handle = section.settings.collection -%}
+{%- assign collection = collections[collection_handle] -%}
+
+{%- assign product_list = collection.products -%}
+
+{%- assign enable_shopify_recommendations = section.settings.enable_shopify_recommendations -%}
+
+{%- capture product_recommendations_row_wrapper_classes -%}
+	product-recommendations__row-wrapper swiper js-product-recommendations-row-wrapper js-featured-content-slider js-featured-content-scrollable-wrapper
+{%- endcapture -%}
+
+{%- capture product_recommendations_row_classes -%}
+	product-recommendations__row swiper-wrapper {{-  -}}
+{%- endcapture -%}
+
+{%- capture section_offset_variables -%}
+	--product-recommendations-desktop-offset-top: {{- section.settings.offset_top_desktop -}}px;
+	--product-recommendations-desktop-offset-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+	--product-recommendations-mobile-offset-top: {{- section.settings.offset_top_mobile -}}px;
+	--product-recommendations-mobile-offset-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+{%- endcapture -%}
+
+<section
+	class="product-recommendations-new is-loading js-product-recommendations js-animate{% if request.visual_preview_mode or section.index == 1 %} animated {% endif %}"
+	id="{{- section.id -}}"
+	style="{{- section_offset_variables -}}"
+	data-product-id="{{- product.id -}}"
+	data-limit="{{- limit -}}"
+	data-alternate-design
+	{% if enable_shopify_recommendations %}
+		data-product-recommendations
+	{% endif %}
+	{% if show_recently_viewed %}
+		data-product-viewed-limit="{{- recently_viewed_limit -}}"
+		data-layout="{{- layout -}}"
+	{% endif %}
+	{% if enable_cards_indent %}
+		data-cards-indent
+	{% endif %}
+>
+	<div class="product-recommendations__container {% if full_width == false %} product-recommendations__container--max-width{% endif %}">
+		<div class="product-recommendations__header">
+			<div class="product-recommendations__text-content">
+				{%- if subheading != blank -%}
+					<div class="product-recommendations__subheading subheading need-animate">
+						{{- subheading -}}
+					</div>
+				{%- endif -%}
+
+				<h2 class="product-recommendations__heading product-recommendations__heading--recommendations need-animate">
+					{{- recommendations_label -}}
+				</h2>
+
+				{%- if show_recently_viewed -%}
+					<h2 class="product-recommendations__heading product-recommendations__heading--recently-viewed need-animate">
+						{{- recently_viewed_label -}}
+					</h2>
+				{%- endif -%}
+			</div>
+
+			{%- if show_recently_viewed -%}
+				<div class="product-recommendations__tab-buttons-container need-animate">
+					<div class="product-recommendations__tab-buttons-wrapper js-product-recommendations--buttons-wrapper">
+						<div class="product-recommendations__tab-buttons">
+							<button class="h2 product-recommendations__tab-button focus-visible-outline is-active js-product-recommendations-tab-button" data-index="1">
+								{{- recommendations_label -}}
+							</button>
+
+							<button class="h2 product-recommendations__tab-button focus-visible-outline js-product-recommendations-viewed-label js-product-recommendations-tab-button" data-index="2">
+								{{- recently_viewed_label -}}
+							</button>
+						</div>
+					</div>
+				</div>
+			{%- endif -%}
+		</div>
+
+
+		<div class="{% if enable_cards_indent %}product-recommendations__content{% endif %} js-product-recommendations-content need-animate">
+			<div class="{{- product_recommendations_row_wrapper_classes | strip_newlines }} is-active {% if show_recently_viewed %}js-product-recommendations-tab-content{%- endif -%}" {% if show_recently_viewed %}data-index="1"{%- endif -%}>
+				<div class="{{- product_recommendations_row_classes | strip_newlines -}}">
+					{%- capture slides -%}
+						{%- assign image_size        = 550 -%}
+						{%- assign image_size_tablet = 362 -%}
+						{%- assign image_size_mobile = 188 -%}
+
+						{%- if layout == 'alternative' -%}
+							{%- assign image_size = 405 -%}
+						{%- endif -%}
+
+						{%- if enable_shopify_recommendations -%}
+							{%- if recommendations.products_count > 0 -%}
+								{%- for product in recommendations.products limit: limit -%}
+									<div class="product-recommendations__col swiper-slide product-recommendations__col--{{- layout }} js-product-recommendations-col">
+										{%- render
+											'product-card-new',
+											product: product,
+											size: image_size,
+											tablet_size: image_size_tablet,
+											mobile_size: image_size_mobile
+										-%}
+
+										<div class="product-recommendations__preloader-wrapper" aria-hidden="true">
+											<div class="product-recommendations__preloader"></div>
+										</div>
+									</div>
+								{%- endfor -%}
+							{%- endif -%}
+						{%- elsif product_list != blank and product_list.count > 0 -%}
+							{%- for product in product_list limit: limit -%}
+								<div class="product-recommendations__col swiper-slide product-recommendations__col--{{- layout -}}">
+									{%- render
+										'product-card-new',
+										product: product,
+										size: image_size,
+										tablet_size: image_size_tablet,
+										mobile_size: image_size_mobile
+									-%}
+								</div>
+							{%- endfor -%}
+						{%- endif -%}
+					{%- endcapture -%}
+
+					{%- if slides != "" -%}
+						{{- slides -}}
+					{%- else -%}
+						{%- for i in (1..limit) -%}
+							<div class="product-recommendations__col swiper-slide product-recommendations__col--{{- layout -}}">
+								{%- render 'product-card-new', product: nil -%}
+
+								{%- if enable_shopify_recommendations -%}
+									<div class="product-recommendations__preloader-wrapper" aria-hidden="true">
+										<div class="product-recommendations__preloader"></div>
+									</div>
+								{%- endif -%}
+							</div>
+						{%- endfor -%}
+					{%- endif -%}
+				</div>
+
+				<div class="product-recommendations__slider-pagination js-featured-content-slider-pagination"></div>
+			</div>
+
+			<div class="{{- product_recommendations_row_wrapper_classes | strip_newlines }} js-product-recommendations-tab-content" data-index="2">
+				<div class="{{- product_recommendations_row_classes | strip_newlines }} js-product-recommendations-viewed-content">
+				</div>
+
+				<div class="product-recommendations__slider-pagination js-featured-content-slider-pagination"></div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<script src="{{- 'component-featured-content-slider.build.min.js' | asset_url -}}" defer></script>
+<script src="{{- 'section-product-recommendations.build.min.js' | asset_url -}}" defer></script>

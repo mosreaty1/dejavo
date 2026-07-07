@@ -1,0 +1,218 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: List collections
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign label 				= section.settings.label -%}
+{%- assign heading 				= section.settings.heading -%}
+{%- assign text 				= section.settings.text -%}
+{%- assign text_position 		= section.settings.text_position -%}
+{%- assign paginate_by 			= section.settings.paginate_by -%}
+{%- assign full_width 			= section.settings.full_width -%}
+{%- assign show_products_count 	= section.settings.show_products_count -%}
+{%- assign design 				= settings.design -%}
+
+{%- if collections.size > 0 -%}
+	{%- capture collections_grid -%}
+		{%- paginate collections by paginate_by -%}
+			<div class="list-collections__row">
+				{%- for collection in collections -%}
+					<div class="list-collections__col">
+						{%- render 'collection-card', collection: collection, is_show_products_count: show_products_count -%}
+					</div>
+				{%- endfor -%}
+			</div>
+
+			{%- if paginate.pages > 1 -%}
+				<div class="list-collections__pagination-wrapper">
+					{%- render 'pagination', paginate: paginate -%}
+				</div>
+			{%- endif -%}
+		{%- endpaginate -%}
+	{%- endcapture -%}
+{%- endif -%}
+
+{%- if collections_grid != blank -%}
+	{%- capture list_collections -%}
+		<div class="list-collections__container {% if full_width %}list-collections__container--full-width{% endif %}">
+			{%- if label != blank -%}
+				<div class="list-collections__label">
+					{{- label -}}
+				</div>
+			{%- endif -%}
+
+			{%- if heading != blank -%}
+				<h1 class="h1 list-collections__heading">
+					{{- heading -}}
+				</h1>
+			{%- endif -%}
+
+			{%- if text != blank -%}
+				<div class="list-collections__text section-rte">
+					{{- text -}}
+				</div>
+			{%- endif -%}
+
+			{%- if collections_grid != blank -%}
+				{{- collections_grid -}}
+			{%- endif -%}
+		</div>
+	{%- endcapture -%}
+{%- endif -%}
+
+{%- if list_collections != blank -%}
+	{%- style -%}
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_mobile -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+		}
+
+		@media screen and (min-width: 768px) {
+			#shopify-section-{{- section.id -}} {
+				padding-top: {{- section.settings.offset_top_desktop -}}px;
+				padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+			}
+		}
+	{%- endstyle -%}
+
+	{%- if design == "alternate" -%}
+		{% render "list-collections-template-new", section: section -%}
+	{%- else -%}
+		{{- 'list-collections.build.css' | asset_url | stylesheet_tag -}}
+
+		<section class="list-collections">
+			{{- list_collections -}}
+		</section>
+	{%- endif -%}
+{%- endif -%}
+
+{%- schema -%}
+{
+	"name": "List collections",
+	"settings": [
+		{
+			"type": "text",
+			"id": "label",
+			"label": "Label"
+		},
+		{
+			"type": "text",
+			"id": "heading",
+			"label": "Heading",
+			"default": "All collections"
+		},
+		{
+			"type": "richtext",
+			"id": "text",
+			"label": "Text"
+		},
+		{
+			"type": "select",
+			"id": "text_position",
+			"label": "Text position",
+			"options": [
+				{
+					"value": "under_the_image",
+					"label": "Under the image"
+				},
+				{
+					"value": "inside_the_image",
+					"label": "Inside the image"
+				}
+			],
+			"default": "under_the_image",
+			"info": "The setting is used for alternative design."
+		},
+		{
+			"type": "range",
+			"id": "paginate_by",
+			"min": 6,
+			"max": 24,
+			"step": 1,
+			"label": "Paginate by",
+			"default": 12
+		},
+		{
+			"type": "checkbox",
+			"id": "show_products_count",
+			"label": "Show products count",
+			"default": false
+		},
+		{
+			"type": "header",
+			"content": "Colors"
+		},
+		{
+			"type": "color_background",
+			"id": "color_overlay",
+			"label": "Overlay",
+			"default": "rgba(44, 42, 40, 0.75)",
+			"info": "The color of the text to be used with the 'Inside the image' text position"
+		},
+		{
+			"type": "color",
+			"id": "inside_the_image_text",
+			"label": "Inside the image text",
+			"default": "#F7F2EC"
+		},
+		{
+			"type": "color",
+			"id": "inside_the_image_text_hover",
+			"label": "Inside the image text hover",
+			"default": "#000000"
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "checkbox",
+			"id": "full_width",
+			"label": "Make full width",
+			"default": true,
+			"info": "If unchecked - container width will be set based on the group 'Layout' settings in the Theme settings."
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 60
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 60
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 30
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 60
+		}
+	]
+}
+{%- endschema -%}

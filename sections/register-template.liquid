@@ -1,0 +1,339 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Register template
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{{- "account-entrance.build.css" | asset_url | stylesheet_tag -}}
+
+{%- assign desktop_image 	   = section.settings.desktop_image -%}
+{%- assign mobile_image  	   = section.settings.mobile_image | default: desktop_image -%}
+{%- assign label 		 	   = section.settings.label -%}
+{%- assign enable_accents_spot = settings.enable_accents_spot -%}
+
+{%- capture img_focal -%}
+	--img-desktop-pos: {{- desktop_image.presentation.focal_point -}};
+	--img-mob-pos: {{- mobile_image.presentation.focal_point -}};
+{%- endcapture -%}
+
+{%- assign is_alternate = false -%}
+
+{%- if settings.design == 'alternate' -%}
+	{%- assign is_alternate = true -%}
+{%- endif -%}
+
+{%- capture have_account_content -%}
+	<div class="account-entrance__create">
+		<span class="account-entrance__new-customer">
+			{{- "customer.register.have_account" | t -}}
+		</span>
+
+		<a
+			class="account-entrance__link"
+			href="{{- routes.account_login_url -}}"
+			aria-label="{{- 'customer.register.sign_in_aria_label' | t | escape -}}"
+		>
+			{{- "customer.register.sign_in" | t -}}
+		</a>
+	</div>
+{%- endcapture -%}
+
+{%- capture account_entrance_container -%}
+	<div class="account-entrance__container">
+		{%- form "create_customer", class: "account-entrance__form" -%}
+			{% if label != blank %}
+				<h2 class="subheading account-entrance__label">{{ label }}</h2>
+			{% endif %}
+
+			<h1 class="account-entrance__heading">
+				{{- "customer.register.title" | t -}}
+			</h1>
+
+			{%- if form.errors -%}
+				<h2 class="account-entrance__error-title h3" tabindex="-1" autofocus>
+					<span class="visually-hidden">{{ 'general.accessibility.error' | t }}</span>
+
+					{{ 'general.accessibility.form_error_title' | t }}
+				</h2>
+
+				{{- form.errors | default_errors -}}
+			{%- endif -%}
+
+			<p class="visually-hidden account-entrance__errors js-password-not-match">
+				{{- "customer.register.password_not_match" | t -}}
+			</p>
+
+			<div class="account-entrance__inputs">
+				<div class="input-wrapper account-entrance__input-wrapper">
+					<input
+						class="input account-entrance__input"
+						id="FirstName"
+						name="customer[first_name]"
+						type="text"
+						{%- if form.first_name -%} value="{{- form.first_name -}}" {%- endif %}
+						placeholder="{{- 'customer.register.first_name' | t -}}"
+						aria-label="{{- 'customer.register.first_name_aria_label' | t | escape -}}"
+						required
+					/>
+
+					<label class="input-label" for="FirstName">
+						{{- "customer.register.first_name" | t -}}
+					</label>
+				</div>
+
+				<div class="input-wrapper account-entrance__input-wrapper">
+					<input
+						class="input account-entrance__input"
+						id="LastName"
+						name="customer[last_name]"
+						type="text"
+						aria-label="{{- 'customer.register.last_name_aria_label' | t | escape -}}"
+						placeholder="{{- 'customer.register.last_name' | t -}}"
+						{% if form.last_name %} value="{{- form.last_name -}}" {% endif %}
+					/>
+
+					<label class="input-label" for="LastName">
+						{{- "customer.register.last_name" | t -}}
+					</label>
+				</div>
+
+				<div class="input-wrapper account-entrance__input-wrapper">
+					<input
+						class="input account-entrance__input"
+						id="Email"
+						name="customer[email]"
+						type="email"
+						aria-label="{{- 'customer.register.email_aria_label' | t | escape -}}"
+						{% if form.email %} value="{{- form.email -}}" {% endif %}
+						placeholder="{{- 'customer.register.email' | t -}}"
+						autocomplete="off"
+						autocapitalize="off"
+						required
+					/>
+
+					<label class="input-label" for="Email">
+						{{- "customer.register.email" | t -}}
+					</label>
+				</div>
+
+				<div class="input-wrapper account-entrance__input-wrapper">
+					<input
+						class="input account-entrance__input"
+						id="CreatePassword"
+						type="password"
+						name="customer[password]"
+						placeholder="{{- 'customer.register.password' | t -}}"
+						aria-label="{{- 'customer.register.password_aria_label' | t | escape -}}"
+						required
+					/>
+
+					<label class="input-label" for="CreatePassword">
+						{{- "customer.register.password" | t -}}
+					</label>
+				</div>
+			</div>
+
+			{% if is_alternate %}
+				{{ have_account_content }}
+			{% endif %}
+
+			{% if is_alternate %}
+				<button type="submit" class="button-circle account-entrance__button">
+					<span class="button__text">
+						{{- 'customer.register.submit' | t -}}
+					</span>
+
+					<span class="button-new__icon-container">
+						<span class="button-new__icon-wrapper">
+							{% render "icons-new", icon: "wave" %}
+						</span>
+					</span>
+				</button>
+			{% else %}
+				<input
+					class="button account-entrance__button button--secondary"
+					type="submit"
+					value="{{- 'customer.register.submit' | t | upcase -}}"
+					aria-label="{{- 'customer.register.submit_aria_label' | t | escape -}}"
+				/>
+			{% endif %}
+
+			{% unless is_alternate %}
+				{{ have_account_content }}
+			{% endunless %}
+		{%- endform -%}
+	</div>
+{%- endcapture -%}
+
+{% assign width_1920 = '1920x' %}
+{% assign width_1920_2x = '3840x' %}
+
+{% assign width_1440 = '1440x' %}
+{% assign width_1440_2x = '2880x' %}
+
+{% assign width_991 = '991x' %}
+{% assign width_991_2x = '1982x' %}
+
+{% assign width_767 = '767x' %}
+{% assign width_767_2x = '1534x' %}
+
+{% assign width_575 = '575x' %}
+{% assign width_575_2x = '1150x' %}
+
+{% assign width_375 = '375x' %}
+{% assign width_375_2x = '750x' %}
+
+{% if is_alternate %}
+	{% assign width_1920 = '854x' %}
+	{% assign width_1920_2x = '1708x' %}
+
+	{% assign width_1440 = '614x' %}
+	{% assign width_1440_2x = '1228x' %}
+
+	{% assign width_991 = '728x' %}
+	{% assign width_991_2x = '1456x' %}
+
+	{% assign width_767 = width_991 %}
+	{% assign width_767_2x = width_991_2x %}
+
+	{% assign width_575 = '541x' %}
+	{% assign width_575_2x = '1082x' %}
+
+	{% assign width_375 = '341x' %}
+	{% assign width_375_2x = '682x' %}
+{% endif %}
+
+{%- capture account_entrance_content -%}
+	{%- if desktop_image != blank -%}
+		<div class="account-entrance__grid-row">
+			<div class="account-entrance__grid-column account-entrance__grid-column--main">
+				{{- account_entrance_container -}}
+			</div>
+
+			<div class="account-entrance__grid-column account-entrance__grid-column--image">
+				<picture>
+					<source
+						srcset="{{ mobile_image | img_url: width_375 }} 1x, {{ mobile_image | img_url: width_375_2x }} 2x"
+						media="(max-width: 375px)"
+					/>
+
+					<source
+						srcset="{{ mobile_image | img_url: width_575 }} 1x, {{ mobile_image | img_url: width_575_2x }} 2x"
+						media="(max-width: 575px)"
+					/>
+
+					<source
+						srcset="{{ mobile_image | img_url: width_767 }} 1x, {{ mobile_image | img_url: width_767_2x }} 2x"
+						media="(max-width: 767px)"
+					/>
+
+					<source
+						srcset="{{ desktop_image | img_url: width_991 }} 1x, {{ desktop_image | img_url: width_991_2x }} 2x"
+						media="(max-width: 991px)"
+					/>
+
+					<source
+						srcset="{{ desktop_image | img_url: width_1440 }} 1x, {{ desktop_image | img_url: width_1440_2x }} 2x"
+						media="(max-width: 1440px)"
+					/>
+
+					<img
+						srcset="{{ desktop_image | img_url: width_1920 }} 1x, {{ desktop_image | img_url: width_1920_2x }} 2x"
+						src="{{- desktop_image | img_url: width_1920 -}}"
+						alt="{{- desktop_image.alt -}}"
+						class="account-entrance__image"
+						style="{{- img_focal -}}"
+					/>
+				</picture>
+			</div>
+		</div>
+	{%- else -%}
+		{{- account_entrance_container -}}
+	{%- endif -%}
+{%- endcapture -%}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+<section
+	class="{% unless is_alternate %}account-entrance{% else %}account-entrance-new {% if desktop_image != blank %}account-entrance-new--full-width{% endif %} {% if enable_accents_spot %} account-entrance-new--accent-spot{% endif %}{% endunless %}">
+	{{- account_entrance_content -}}
+</section>
+
+{% schema %}
+{
+	"name": "Register template",
+	"settings": [
+		{
+			"type": "text",
+			"id": "label",
+			"label": "Label"
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "image_picker",
+			"id": "desktop_image",
+			"label": "Image desktop"
+		},
+		{
+			"type": "image_picker",
+			"id": "mobile_image",
+			"label": "Image mobile"
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 60
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 60
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 30
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 30
+		}
+	]
+}
+{%- endschema -%}

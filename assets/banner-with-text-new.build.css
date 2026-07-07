@@ -1,0 +1,199 @@
+.banner-with-text-new {
+	position: relative;
+	overflow: hidden;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	max-width: calc(100% - 32px);
+	width: 100%;
+	margin: 0 auto;
+	background: var(--background-color);
+	min-height: 173.334vw;
+	border-bottom-left-radius: 80px;
+	border-top-right-radius: 80px;
+}
+.banner-with-text-new::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: var(--layer-flat);
+	opacity: var(--overlay-opacity);
+	width: 100%;
+	height: 100%;
+	background-color: var(--overlay-color);
+}
+.banner-with-text-new::after {
+	content: "";
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	z-index: 1;
+	width: calc(100% - var(--image-border-indent-mobile) * 2);
+	height: calc(100% - var(--image-border-indent-mobile) * 2);
+	border: var(--image-border-width) solid var(--image-border-color);
+	border-bottom-left-radius: 78px;
+	border-top-right-radius: 78px;
+	transform: translate(-50%, -50%);
+}
+.banner-with-text-new.need-animate::after {
+	opacity: 0;
+	transition-property: opacity;
+	transition-duration: var(--animate-time);
+	transition-delay: 0.8s;
+}
+.banner-with-text-new .banner-with-text__image {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: var(--layer-base);
+	opacity: 0;
+	width: 100%;
+	height: 100%;
+	-o-object-fit: cover;
+	   object-fit: cover;
+	-o-object-position: var(--img-mob-pos);
+	   object-position: var(--img-mob-pos);
+}
+.banner-with-text-new .banner-with-text__image.animated {
+	opacity: 1;
+	transition-property: opacity;
+	transition-duration: var(--animate-time);
+}
+html.no-js .banner-with-text-new .banner-with-text__image {
+	opacity: 1;
+}
+.banner-with-text-new .banner-with-text__content-container {
+	position: relative;
+	z-index: var(--layer-raised);
+	opacity: 0;
+	width: 100%;
+	margin: 0 auto;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: calc(var(--image-border-indent-mobile) + 17px);
+	padding-right: calc(var(--image-border-indent-mobile) + 17px);
+	max-width: 920px;
+}
+html.no-js .banner-with-text-new .banner-with-text__content-container {
+	opacity: 1;
+}
+.banner-with-text-new .banner-with-text__content-container.need-animate {
+	opacity: 0;
+	transition-property: opacity;
+	transition-duration: var(--animate-time);
+	transition-delay: 1.2s;
+}
+.banner-with-text-new .banner-with-text__text-content {
+	font-size: calc(var(--body-font-size) * 0.875);
+	line-height: 1.5;
+	text-align: center;
+}
+.banner-with-text-new .banner-with-text__text-content a {
+	color: var(--text-color);
+}
+.banner-with-text-new .banner-with-text__text-content a:focus-visible {
+	outline: 2px solid var(--text-color);
+}
+.banner-with-text-new .banner-with-text__text-content ul {
+	line-height: 1.6;
+}
+.banner-with-text-new .banner-with-text__text-content * {
+	color: var(--text-color);
+}
+.banner-with-text-new .banner-with-text__heading {
+	line-height: 1.4;
+	letter-spacing: 0.05em;
+	text-align: center;
+	color: var(--text-color);
+}
+.banner-with-text-new .banner-with-text__heading + .banner-with-text__text-content {
+	margin-top: 30px;
+}
+.banner-with-text-new .banner-with-text__label {
+	line-height: 0.8;
+	text-align: center;
+	color: var(--text-color);
+	word-break: break-word;
+}
+.banner-with-text-new .banner-with-text__label + .banner-with-text__heading, .banner-with-text-new .banner-with-text__label + .banner-with-text__text-content {
+	margin-top: 10px;
+}
+.banner-with-text-new.animated .banner-with-text__content-container.need-animate {
+	opacity: 1;
+}
+.banner-with-text-new.animated.need-animate::after {
+	opacity: 1;
+}
+@media (min-width: 576px) {
+	.banner-with-text-new {
+		min-height: 80vw;
+	}
+	.banner-with-text-new .banner-with-text__label + .banner-with-text__heading, .banner-with-text-new .banner-with-text__label + .banner-with-text__text-content {
+		margin-top: 10px;
+	}
+}
+@media (min-width: 768px) {
+	.banner-with-text-new {
+		min-height: 70vw;
+	}
+	.banner-with-text-new .banner-with-text__image {
+		-o-object-position: var(--img-desktop-pos);
+		   object-position: var(--img-desktop-pos);
+	}
+}
+@media (min-width: 992px) {
+	.banner-with-text-new {
+		border-bottom-left-radius: 300px;
+		border-top-right-radius: 300px;
+	}
+	.banner-with-text-new::after {
+		width: calc(100% - var(--image-border-indent-desktop) * 2);
+		height: calc(100% - var(--image-border-indent-desktop) * 2);
+		border-bottom-left-radius: 285px;
+		border-top-right-radius: 285px;
+	}
+	.banner-with-text-new .banner-with-text__text-content {
+		font-size: var(--body-font-size);
+	}
+	.banner-with-text-new .banner-with-text__content-container {
+		padding-left: 40px;
+		padding-right: 40px;
+	}
+	.banner-with-text-new .banner-with-text__content-container.banner-with-text__content-container--left {
+		-webkit-margin-start: 210px;
+		        margin-inline-start: 210px;
+		max-width: 630px;
+	}
+	.banner-with-text-new .banner-with-text__content-container.banner-with-text__content-container--left .banner-with-text__label,
+	.banner-with-text-new .banner-with-text__content-container.banner-with-text__content-container--left .banner-with-text__heading,
+	.banner-with-text-new .banner-with-text__content-container.banner-with-text__content-container--left .banner-with-text__text-content {
+		text-align: start;
+	}
+	.banner-with-text-new .banner-with-text__content-container.banner-with-text__content-container--center .banner-with-text__label,
+	.banner-with-text-new .banner-with-text__content-container.banner-with-text__content-container--center .banner-with-text__heading,
+	.banner-with-text-new .banner-with-text__content-container.banner-with-text__content-container--center .banner-with-text__text-content {
+		text-align: center;
+	}
+	.banner-with-text-new .banner-with-text__content-container.banner-with-text__content-container--right {
+		-webkit-margin-end: 210px;
+		        margin-inline-end: 210px;
+		max-width: 630px;
+	}
+	.banner-with-text-new .banner-with-text__content-container.banner-with-text__content-container--right .banner-with-text__label,
+	.banner-with-text-new .banner-with-text__content-container.banner-with-text__content-container--right .banner-with-text__heading,
+	.banner-with-text-new .banner-with-text__content-container.banner-with-text__content-container--right .banner-with-text__text-content {
+		text-align: start;
+	}
+}
+@media (min-width: 1200px) {
+	.banner-with-text-new {
+		min-height: 46.875vw;
+		max-width: calc(100% - 120px);
+	}
+}
+@media (min-width: 1920px) {
+	.banner-with-text-new {
+		max-width: calc(100% - 210px);
+	}
+}

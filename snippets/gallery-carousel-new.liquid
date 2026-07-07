@@ -1,0 +1,95 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Gallery carousel new
+	- products: Section object (required)
+
+	Usage:
+	{%- render 'gallery-carousel-new', section: section -%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{{- "gallery-carousel-new.build.css" | asset_url | stylesheet_tag -}}
+
+{%- assign label         	 	= section.settings.label -%}
+{%- assign heading           	= section.settings.heading -%}
+{%- assign enable_arrows     	= section.settings.enable_arrows -%}
+{%- assign enable_autoplay   	= section.settings.enable_autoplay -%}
+{%- assign autoplay_speed    	= section.settings.autoplay_speed -%}
+{%- assign image_aspect_ratio   = section.settings.image_aspect_ratio -%}
+{%- assign image_crop   		= section.settings.image_crop -%}
+{%- assign enable_accents_spot 	= settings.enable_accents_spot -%}
+
+{%- assign is_slider_button  	= false -%}
+{%- assign is_header  			= false -%}
+
+{%- if section.blocks.size > 2 and enable_arrows -%}
+	{%- assign is_slider_button = true -%}
+{%- endif -%}
+
+{%- if label != blank or heading != blank -%}
+	{%- assign is_header = true -%}
+{%- endif -%}
+
+{%- capture animated_classes -%}
+	js-animate{% if request.visual_preview_mode or section.index == 1 %} animated{% endif %}
+{%-endcapture-%}
+
+<section class="gallery-carousel-new js-gallery-carousel{% if enable_accents_spot %} gallery-carousel-new--accent-spot{% endif %}" id="gallery-carousel--{{ section.id }}">
+	{%- if is_header or is_slider_button -%}
+		<div class="gallery-carousel-new__header {{ animated_classes }}">
+			{%- if label != blank -%}
+				<div class="gallery-carousel-new__label subheading need-animate">
+					{{- label -}}
+				</div>
+			{%- endif -%}
+
+			{%- if heading != blank -%}
+				<h2 class="gallery-carousel-new__heading h2 need-animate">
+					{{- heading -}}
+				</h2>
+			{%- endif -%}
+
+			{%- if is_slider_button -%}
+				<div class="gallery-carousel-new__wrapper-button">
+					<button class="swiper-button-prev swiper-button-prev-new gallery-carousel-new__button">
+						{%- render 'icons-new', icon: 'arrow-left' -%}
+					</button>
+
+					<button class="swiper-button-next swiper-button-next-new gallery-carousel-new__button">
+						{%- render 'icons-new', icon: 'arrow-right' -%}
+					</button>
+				</div>
+			{%- endif -%}
+		</div>
+	{%- endif -%}
+
+	<div class="gallery-carousel-new__slider {{ animated_classes }}">
+		<div class="gallery-carousel-new__items-container swiper need-animate js-gallery-carousel-container"
+			 {%- if enable_autoplay -%}
+				data-autoplay-speed="{{ autoplay_speed | times: 1000 }}"
+			 {%- endif -%}
+		>
+			<div class="gallery-carousel-new__items-wrapper{% if is_header == false and section.blocks.size < 3 %} gallery-carousel-new__items-wrapper--centered{% endif %} swiper-wrapper">
+				{%- for block in section.blocks -%}
+					{%- assign image 			 = block.settings.image -%}
+					{%- assign link  			 = block.settings.link -%}
+					{%- assign is_lazy 			 = true -%}
+
+					{% if section.index == 1 or forloop.index > 1 %}
+						{% assign is_lazy = false %}
+					{% endif %}
+
+					{% render 'gallery-carousel-slide-new',
+						image: image,
+						link: link,
+						image_aspect_ratio: image_aspect_ratio,
+						image_crop: image_crop,
+						is_lazy: is_lazy
+					%}
+				{%- endfor -%}
+			</div>
+
+			<div class="swiper-pagination gallery-carousel-new__pagination"></div>
+		</div>
+	</div>
+</section>

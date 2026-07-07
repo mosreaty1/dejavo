@@ -1,0 +1,87 @@
+.filter-list-new {
+	max-height: 395px;
+	display: flex;
+	flex-direction: column;
+	padding-bottom: 20px;
+	overflow-y: auto;
+}
+.filter-list-new .filter-list__item {
+	position: relative;
+	margin-bottom: 15px;
+}
+.filter-list-new .filter-list__item:last-child {
+	margin-bottom: 0;
+}
+.filter-list-new .filter-list__input-label {
+	-webkit-padding-start: 37px;
+	        padding-inline-start: 37px;
+	line-height: 1.375;
+}
+.filter-list-new .filter-list__input-label::before {
+	background-color: var(--swatch-color);
+	background-image: var(--swatch-image);
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+.filter-list-new .filter-list__input-label.filter-list__input-label--swatch {
+	-webkit-padding-start: 0;
+	        padding-inline-start: 0;
+}
+.filter-list-new .filter-list__input-label.filter-list__input-label--swatch::before, .filter-list-new .filter-list__input-label.filter-list__input-label--swatch::after {
+	display: none;
+}
+.filter-list-new .filter-list__input-label.filter-list__input-label--swatch .checkbox__label-box {
+	position: relative;
+	display: inline-block;
+	width: 34px;
+	height: 34px;
+	-webkit-margin-end: 15px;
+	        margin-inline-end: 15px;
+	border: 1px solid var(--color-border-thirdly);
+	background-color: var(--swatch-color, var(--color-accent));
+	background-image: var(--swatch-image);
+	background-repeat: no-repeat;
+	background-size: cover;
+	vertical-align: middle;
+	flex-shrink: 0;
+	border-radius: 50%;
+}
+.filter-list-new .filter-list__checkbox {
+	-webkit-tap-highlight-color: transparent;
+}
+.filter-list-new .filter-list__checkbox:checked + .filter-list__input-label::before {
+	background-color: var(--swatch-color, var(--color-text-secondary));
+	background-image: var(--swatch-image);
+}
+.filter-list-new .filter-list__checkbox:checked + .filter-list__input-label.filter-list__input-label--swatch .checkbox__label-box {
+	border-color: var(--color-text-primary);
+}
+.filter-list-new .filter-list__checkbox:focus-visible + .filter-list__input-label.filter-list__input-label--swatch .checkbox__label-box {
+	outline: 2px solid var(--color-border-secondary);
+	outline-offset: 2px;
+}
+@media (max-width: 1199.98px) {
+	.filter-list-new {
+		max-height: 439px;
+	}
+	.filter-list-new .filter-list__input-label {
+		-webkit-padding-start: 35px;
+		        padding-inline-start: 35px;
+		font-size: calc(var(--body-font-size) * 0.875);
+		line-height: 1.429;
+	}
+	.filter-list-new .filter-list__input-label::before {
+		width: 20px;
+		height: 20px;
+	}
+	.filter-list-new .filter-list__input-label::after {
+		top: 6px;
+		left: 4px;
+		width: 12px;
+		height: 5px;
+	}
+	.filter-list-new .filter-list__input-label.filter-list__input-label--swatch .checkbox__label-box {
+		width: 24px;
+		height: 24px;
+	}
+}

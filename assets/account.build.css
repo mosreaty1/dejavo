@@ -1,0 +1,580 @@
+.account .account__container {
+	max-width: 1480px;
+	margin: 0 auto;
+	padding: 0 20px;
+}
+.account .account__heading {
+	margin-bottom: 38px;
+	line-height: 1.463;
+	letter-spacing: 0.02em;
+	text-align: center;
+}
+.account .account__label {
+	font-size: 14px;
+}
+.account .account__label + .account__heading {
+	margin-top: 0.8rem;
+}
+.account .account__subheading {
+	margin-bottom: 19px;
+	font-size: calc(var(--body-font-size) * 1.5);
+	font-weight: 600;
+	line-height: 1.375;
+	letter-spacing: 0.02em;
+}
+.account .account__row {
+	display: flex;
+	flex-wrap: wrap;
+	margin: 0 -20px;
+}
+.account .account__orders-none {
+	color: rgba(0, 0, 0, 0.5);
+}
+.account .account__full-name,
+.account .account__mail,
+.account .account__address,
+.account .account__link,
+.account .account__orders-none {
+	line-height: 1.625;
+	letter-spacing: 0.02em;
+}
+.account .account__col {
+	width: 100%;
+}
+.account .account__col.account__col--details {
+	margin-bottom: 38px;
+	padding: 0 20px;
+}
+.account .account__col.account__col--orders .account__subheading,
+.account .account__col.account__col--orders .account__orders-none {
+	-webkit-padding-start: 20px;
+	        padding-inline-start: 20px;
+}
+.account .account__col .pagination {
+	display: flex;
+	justify-content: center;
+	margin-top: 40px;
+}
+.account .account__links {
+	display: flex;
+	flex-direction: column;
+}
+.account .account__full-name,
+.account .account__mail {
+	margin-bottom: 7px;
+}
+.account .account__address {
+	margin-bottom: 16px;
+}
+.account .account__link {
+	position: relative;
+	display: inline-block;
+	width: -moz-max-content;
+	width: max-content;
+	text-decoration: unset;
+}
+.account .account__link + .account__link {
+	margin-top: 16px;
+}
+.account .account__link::after {
+	content: "";
+	position: absolute;
+	bottom: 6px;
+	left: 0;
+	width: 100%;
+	height: 1px;
+	background-color: currentColor;
+	transform: scaleX(100%);
+	transition-timing-function: var(--easing-ease);
+	transition-duration: var(--timing-short);
+	transition-property: transform;
+}
+.account .account__link:focus-visible {
+	outline: 2px solid var(--color-text-primary);
+}
+@media (-moz-touch-enabled: 0), (hover: hover), (pointer: fine) {
+	.account .account__link:hover::after {
+		transform: scaleX(0);
+	}
+}
+.account .account__orders {
+	border-top: 1px solid var(--color-border-secondary);
+}
+.account .account__header {
+	display: none;
+}
+.account .account__header-col {
+	width: 20%;
+	padding: 10px 15px;
+	font-size: calc(var(--body-font-size) * 0.875);
+	line-height: 1.571;
+	text-align: start;
+	color: var(--color-primary-third);
+}
+.account .account__header-col.account__header-col--number {
+	width: 19.8%;
+	-webkit-padding-start: 30px;
+	        padding-inline-start: 30px;
+}
+.account .account__header-col.account__header-col--status {
+	-webkit-padding-start: 37px;
+	        padding-inline-start: 37px;
+}
+.account .account__header-col.account__header-col--quantity {
+	-webkit-padding-start: 31px;
+	        padding-inline-start: 31px;
+}
+.account .account__header-col.account__header-col--total {
+	-webkit-padding-start: 29px;
+	        padding-inline-start: 29px;
+}
+.account .account__icon {
+	position: absolute;
+	top: 20px;
+	inset-inline-end: 20px;
+	transform: none;
+	transition-property: opacity, visibility;
+	transition-duration: 0.3s;
+	transition-timing-function: ease-in-out;
+}
+.account .account__icon svg {
+	color: var(--color-text-primary);
+}
+.account .account__icon svg path {
+	fill: currentColor;
+}
+.account .account__icon.account__icon--minus {
+	visibility: hidden;
+	opacity: 0;
+	margin-top: 3px;
+}
+.account .account__icon.account__icon--minus svg {
+	height: 14px;
+	vertical-align: middle;
+}
+.account .account__icon.account__icon--plus {
+	visibility: visible;
+	opacity: 1;
+}
+.account .account__content-wrapper .accordion__content {
+	background-color: var(--color-background-darken);
+}
+.account .account__content-wrapper.is-active .accordion__content {
+	border-bottom: 1px solid var(--color-border-secondary);
+}
+.account .account__content-wrapper.is-active .account__icon svg {
+	transform: none;
+}
+.account .account__content-wrapper.is-active .account__icon.account__icon--minus {
+	visibility: visible;
+	opacity: 1;
+}
+.account .account__content-wrapper.is-active .account__icon.account__icon--plus {
+	visibility: hidden;
+	opacity: 0;
+}
+.account .account__content {
+	position: relative;
+	flex-direction: column;
+	padding: 20px;
+	border-bottom: 1px solid var(--color-border-secondary);
+	transition-property: opacity;
+	transition-duration: 0.3s;
+	transition-timing-function: ease-in-out;
+}
+.account .account__content:focus-visible {
+	outline: 2px solid var(--color-text-primary);
+}
+@media (-moz-touch-enabled: 0), (hover: hover), (pointer: fine) {
+	.account .account__content:hover {
+		opacity: 0.7;
+	}
+}
+.account .account__order-detail {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-end;
+	align-items: center;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	border-bottom: 1px solid var(--color-border-secondary);
+	color: var(--color-primary-third);
+}
+.account .account__order-detail-properties {
+	margin-top: 8px;
+}
+.account .account__order-detail-properties li {
+	display: flex;
+	align-items: center;
+}
+.account .account__order-detail-properties li .icon {
+	min-width: 12px;
+	width: 12px;
+	min-height: 12px;
+	height: 12px;
+	-webkit-margin-end: 5px;
+	        margin-inline-end: 5px;
+}
+.account .account__order-detail-properties li + li {
+	margin-top: 5px;
+}
+.account .account__content-col {
+	display: flex;
+	width: 100%;
+	padding: 0;
+	font-size: var(--body-font-size);
+	font-weight: 600;
+	line-height: 1.375;
+	text-align: start;
+	color: var(--color-text-primary);
+	pointer-events: none;
+}
+.account .account__content-col .account__content-col-heading.account__content-col-heading--mobile {
+	width: 30%;
+	-webkit-padding-end: 10px;
+	        padding-inline-end: 10px;
+	font-size: calc(var(--body-font-size) * 0.875);
+	font-weight: 400;
+	line-height: 1.571;
+	color: var(--color-primary-third);
+}
+.account .account__content-col.account__content-col--number {
+	width: 100%;
+	margin-bottom: 10px;
+	-webkit-padding-start: 0;
+	        padding-inline-start: 0;
+	font-size: calc(var(--body-font-size) * 1.125);
+	line-height: 1.611;
+}
+.account .account__content-col.account__content-col--number .account__content-col-heading {
+	font-size: calc(var(--body-font-size) * 1.125);
+	font-weight: 600;
+	line-height: 1.611;
+	color: var(--color-text-primary);
+}
+.account .account__content-col.account__content-col--number p {
+	font-size: calc(var(--body-font-size) * 1.125);
+	line-height: 1.611;
+}
+.account .account__content-col.account__content-col--status {
+	-webkit-padding-start: 0;
+	        padding-inline-start: 0;
+}
+.account .account__content-col.account__content-col--quantity {
+	-webkit-padding-start: 0;
+	        padding-inline-start: 0;
+}
+.account .account__content-col.account__content-col--total {
+	-webkit-padding-start: 0;
+	        padding-inline-start: 0;
+}
+.account .account__content-col.account__content-col--date, .account .account__content-col.account__content-col--quantity, .account .account__content-col.account__content-col--total {
+	display: none;
+}
+.account .account__accordion-content {
+	padding-bottom: 20px;
+	-webkit-padding-start: 19px;
+	        padding-inline-start: 19px;
+	-webkit-padding-end: 21px;
+	        padding-inline-end: 21px;
+}
+.account .account__order-detail-col {
+	width: 30%;
+	-webkit-padding-end: 0;
+	        padding-inline-end: 0;
+}
+.account .account__order-detail-col p:first-child {
+	margin-bottom: 12px;
+}
+.account .account__order-detail-col.account__order-detail-col--product {
+	width: 70%;
+}
+.account .account__order-detail-value {
+	font-size: calc(var(--body-font-size) * 0.875);
+	font-weight: 600;
+	color: var(--color-text-primary);
+}
+.account .account__order-detail-label {
+	font-size: calc(var(--body-font-size) * 0.875);
+	font-weight: 400;
+}
+.account .account__order-detail-prices {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	width: 70%;
+	margin-top: 20px;
+	font-weight: 600;
+}
+.account .account__order-detail-prices .account__order-detail-col {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	-webkit-padding-end: 0;
+	        padding-inline-end: 0;
+	text-align: center;
+}
+.account .account__order-detail-prices .account__order-detail-col + .account__order-detail-col {
+	padding-top: 10px;
+}
+.account .account__order-detail-prices .account__order-detail-col:last-child {
+	-webkit-padding-end: 0;
+	        padding-inline-end: 0;
+}
+.account .account__order-address,
+.account .account__order-subtotal {
+	display: flex;
+}
+.account .account__order-address {
+	margin-top: 20px;
+	margin-bottom: 22px;
+}
+.account .account__order-address-value,
+.account .account__order-subtotal-value {
+	-webkit-padding-start: 5px;
+	        padding-inline-start: 5px;
+	font-size: var(--body-font-size);
+	font-weight: 600;
+	line-height: 1.375;
+}
+.account .account__order-address-heading,
+.account .account__order-subtotal-heading {
+	width: -moz-min-content;
+	width: min-content;
+	-webkit-padding-end: 5px;
+	        padding-inline-end: 5px;
+	font-size: var(--body-font-size);
+	font-weight: 400;
+	line-height: 1.375;
+	letter-spacing: 0.02em;
+}
+.account .account__order-view {
+	margin-top: 22px;
+	text-align: end;
+}
+.account .account__order-address-separator {
+	flex-grow: 1;
+	width: 20%;
+	border-bottom: 1px dashed var(--color-border-secondary);
+}
+.account .account__accordion-info .account__content-col + .account__content-col {
+	padding-top: 10px;
+}
+.account .account__accordion-info.account__accordion-info--mobile {
+	padding-top: 20px;
+	padding-bottom: 20px;
+	border-bottom: 1px solid var(--color-border-secondary);
+}
+@media (min-width: 481px) {
+	.account .account__order-detail-col {
+		width: 20%;
+	}
+	.account .account__order-detail-col.account__order-detail-col--product {
+		width: 80%;
+	}
+	.account .account__order-detail-prices {
+		width: 80%;
+	}
+	.account .account__content-col .account__content-col-heading.account__content-col-heading--mobile {
+		width: 20%;
+	}
+}
+@media (min-width: 768px) {
+	.account .accordion__control {
+		justify-content: start;
+	}
+	.account .account__accordion-info.account__accordion-info--mobile {
+		display: none;
+	}
+	.account .account__order-address-heading,
+	.account .account__order-subtotal-heading {
+		width: auto;
+	}
+	.account .account__order-address-separator {
+		width: auto;
+	}
+	.account .account__order-detail {
+		flex-wrap: nowrap;
+		padding-bottom: 15px;
+		border-bottom: none;
+	}
+	.account .account__order-detail + .account__order-detail {
+		border-top: 1px solid var(--color-border-secondary);
+	}
+	.account .account__order-address {
+		margin-top: 35px;
+	}
+	.account .account__col {
+		padding: 0 20px;
+	}
+	.account .account__col.account__col--orders .account__subheading,
+	.account .account__col.account__col--orders .account__orders-none {
+		-webkit-padding-start: 0;
+		        padding-inline-start: 0;
+	}
+	.account .account__content {
+		flex-direction: row;
+		padding: 0;
+	}
+	.account .account__orders {
+		border: 1px solid var(--color-border-secondary);
+		border-bottom: none;
+	}
+	.account .account__header {
+		display: flex;
+		border-bottom: 1px solid var(--color-border-secondary);
+	}
+	.account .account__icon {
+		top: 50%;
+		transform: translateY(-50%);
+	}
+	.account .account__content-col {
+		width: 18%;
+		padding: 23px 15px;
+	}
+	.account .account__content-col + .account__content-col {
+		display: block;
+	}
+	.account .account__content-col.account__content-col--number p {
+		font-size: var(--body-font-size);
+		line-height: 1.375;
+	}
+	.account .account__content-col.account__content-col--number {
+		width: 19.8%;
+		margin-bottom: 0;
+		-webkit-padding-start: 20px;
+		        padding-inline-start: 20px;
+		font-size: var(--body-font-size);
+		line-height: 1.375;
+	}
+	.account .account__content-col.account__content-col--status {
+		-webkit-padding-start: 20px;
+		        padding-inline-start: 20px;
+	}
+	.account .account__content-col.account__content-col--quantity {
+		-webkit-padding-start: 20px;
+		        padding-inline-start: 20px;
+	}
+	.account .account__content-col.account__content-col--total {
+		-webkit-padding-start: 20px;
+		        padding-inline-start: 20px;
+	}
+	.account .account__content-col-heading.account__content-col-heading--mobile {
+		display: none;
+	}
+	.account .account__accordion-content {
+		padding-bottom: 40px;
+		-webkit-padding-start: 30px;
+		        padding-inline-start: 30px;
+		-webkit-padding-end: 30px;
+		        padding-inline-end: 30px;
+	}
+	.account .account__order-detail-col {
+		-webkit-padding-end: 20px;
+		        padding-inline-end: 20px;
+	}
+	.account .account__order-detail-col.account__order-detail-col--product {
+		width: 33%;
+		-webkit-margin-end: auto;
+		        margin-inline-end: auto;
+		-webkit-padding-start: 0;
+		        padding-inline-start: 0;
+	}
+	.account .account__order-detail-prices {
+		flex-wrap: nowrap;
+		width: 50%;
+		margin-top: 0;
+	}
+	.account .account__order-detail-prices .account__order-detail-col {
+		display: block;
+		width: 22%;
+	}
+	.account .account__order-detail-prices .account__order-detail-col + .account__order-detail-col {
+		padding-top: 0;
+	}
+	.account .account__header-col {
+		width: 18%;
+	}
+	.account .account__header-col.account__header-col--number {
+		-webkit-padding-start: 20px;
+		        padding-inline-start: 20px;
+	}
+	.account .account__header-col.account__header-col--status {
+		-webkit-padding-start: 20px;
+		        padding-inline-start: 20px;
+	}
+	.account .account__header-col.account__header-col--quantity {
+		-webkit-padding-start: 20px;
+		        padding-inline-start: 20px;
+	}
+	.account .account__header-col.account__header-col--total {
+		-webkit-padding-start: 20px;
+		        padding-inline-start: 20px;
+	}
+}
+@media (min-width: 992px) {
+	.account .account__heading {
+		margin-bottom: 57px;
+		text-align: start;
+	}
+	.account .account__subheading {
+		margin-bottom: 20px;
+	}
+	.account .account__address {
+		margin-bottom: 30px;
+	}
+	.account .account__col.account__col--details {
+		width: 27%;
+	}
+	.account .account__col.account__col--orders {
+		width: 73%;
+	}
+}
+@media (min-width: 1200px) {
+	.account .account__icon {
+		inset-inline-end: 29px;
+	}
+	.account .accordion__control {
+		justify-content: space-between;
+	}
+	.account .account__content-col {
+		width: 20%;
+		padding: 23px 15px;
+	}
+	.account .account__content-col.account__content-col--number {
+		width: 19.8%;
+		-webkit-padding-start: 30px;
+		        padding-inline-start: 30px;
+	}
+	.account .account__content-col.account__content-col--status {
+		-webkit-padding-start: 37px;
+		        padding-inline-start: 37px;
+	}
+	.account .account__content-col.account__content-col--quantity {
+		-webkit-padding-start: 50px;
+		        padding-inline-start: 50px;
+	}
+	.account .account__content-col.account__content-col--total {
+		-webkit-padding-start: 26px;
+		        padding-inline-start: 26px;
+	}
+	.account .account__header-col {
+		width: 20%;
+	}
+	.account .account__header-col.account__header-col--number {
+		-webkit-padding-start: 30px;
+		        padding-inline-start: 30px;
+	}
+	.account .account__header-col.account__header-col--status {
+		-webkit-padding-start: 37px;
+		        padding-inline-start: 37px;
+	}
+	.account .account__header-col.account__header-col--quantity {
+		-webkit-padding-start: 31px;
+		        padding-inline-start: 31px;
+	}
+	.account .account__header-col.account__header-col--total {
+		-webkit-padding-start: 29px;
+		        padding-inline-start: 29px;
+	}
+}

@@ -1,0 +1,39 @@
+{
+	"sections": {
+		"default-page": {
+			"type": "default-page-template",
+			"settings": {
+				"offset_bottom_desktop": 10,
+				"offset_bottom_mobile": 15
+			}
+		},
+		"store-location-1": {
+			"type": "store-location",
+			"settings": {
+				"first_button_text": "First button",
+				"first_button_link": "/",
+				"first_button_style": "primary",
+				"second_button_text": "Second button",
+				"second_button_link": "/",
+				"second_button_style": "secondary"
+			}
+		},
+		"store-location-2": {
+			"type": "store-location",
+			"settings": {
+				"reverse_content": true,
+				"first_button_text": "First button",
+				"first_button_link": "/",
+				"first_button_style": "primary",
+				"second_button_text": "Second button",
+				"second_button_link": "/",
+				"second_button_style": "secondary"
+			}
+		}
+	},
+	"order": [
+		"default-page",
+		"store-location-1",
+		"store-location-2"
+	]
+}

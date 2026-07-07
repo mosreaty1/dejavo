@@ -1,0 +1,450 @@
+{% comment %}
+	------------------------------------------------------------------------------
+	Section: Article template
+	------------------------------------------------------------------------------
+{% endcomment %}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{%- if settings.design == 'alternate' -%}
+	{%- render "article-template-new", section: section, article: article -%}
+{%- else -%}
+	{% assign banner_type               = section.settings.banner_type %}
+	{% assign banner_text_color         = section.settings.banner_text_color %}
+	{% assign overlay                   = section.settings.overlay %}
+	{% assign color_comment_background	= section.settings.color_comment_background %}
+	{% assign show_date               	= section.settings.show_date %}
+	{% assign show_author               = section.settings.show_author %}
+	{% assign show_tag                  = section.settings.show_tag %}
+	{% assign show_socials              = section.settings.show_socials %}
+
+	{% assign show_related              = section.settings.show_related %}
+	{% assign label                     = section.settings.label %}
+	{% assign heading                   = section.settings.heading %}
+	{% assign show_back_to_blog_btn     = section.settings.show_back_to_blog_btn %}
+	{% assign button_style              = section.settings.button_style %}
+
+	{% assign is_show_author 	= false %}
+	{% assign is_show_tag 		= false %}
+
+	{% if show_author and article.author != blank %}
+		{% assign is_show_author = true %}
+	{% endif %}
+
+	{% if show_tag and article.tags != blank %}
+		{% assign is_show_tag = true %}
+	{% endif %}
+
+	{%- capture section_styles -%}
+		--overlay-opacity: {{- overlay -}}%; {{-  -}}
+		--color-comment-background: {{- color_comment_background -}}; {{-  -}}
+		--banner-text-color: {{- banner_text_color -}};
+	{%- endcapture -%}
+
+	<link rel="stylesheet" href="{{ 'article.build.css' | asset_url }}">
+	<div class="article">
+		<section
+			class="article-banner {% if article.image != blank and banner_type == 'full' %}article-banner--{{ banner_type }}{% endif %}"
+			style="{{ section_styles }}"
+		>
+			<div class="article-banner__heading-block {% if article.image != blank and banner_type == 'full' %}article-banner__heading-block--float js-animate{% endif %}">
+				<h1 class="article-banner__heading">
+					{{ article.title }}
+				</h1>
+
+				{% if show_date or is_show_author or is_show_tag %}
+					<div class="article-banner__subheading">
+						{% if show_date %}
+							<span class="article-banner__date">
+							<span class="visually-hidden">{{ "blogs.article.published_at" | t }}</span>
+							{{ article.published_at | date: format: 'abbreviated_date' }}
+						</span>
+
+							{% if is_show_author or is_show_tag %}
+								<span class="article-banner__separator" aria-hidden="true">|</span>
+							{% endif %}
+						{% endif %}
+
+						{% if is_show_author %}
+							<span>
+							<span class="visually-hidden">{{- 'blogs.article.author' | t -}}</span>
+
+							{{ article.author }}
+						</span>
+
+							{% if is_show_tag %}
+								<span class="article-banner__separator" aria-hidden="true">|</span>
+							{% endif %}
+						{% endif %}
+
+						{% if is_show_tag %}
+							<span>
+							<span class="visually-hidden">{{- 'blogs.article.tag' | t -}}</span>
+								{{ article.tags | first }}
+							</span>
+						{% endif %}
+					</div>
+				{% endif %}
+			</div>
+
+			{% if article.image != blank %}
+				<div class="article-banner__image-container">
+					<div class="article-banner__image-overlay"></div>
+
+					<picture>
+						<source
+							srcset="{{ article.image | img_url: "375x" }} 1x, {{ article.image | img_url: "750x" }} 2x"
+							media="(max-width: 375px)"
+						/>
+
+						<source
+							srcset="{{ article.image | img_url: "575x" }} 1x, {{ article.image | img_url: "1150x" }} 2x"
+							media="(max-width: 575px)"
+						/>
+
+						<source
+							srcset="{{ article.image | img_url: "767x" }} 1x, {{ article.image | img_url: "1534x" }} 2x"
+							media="(max-width: 767px)"
+						/>
+
+						<source
+							srcset="{{ article.image | img_url: "991x" }} 1x, {{ article.image | img_url: "1982x" }} 2x"
+							media="(max-width: 991px)"
+						/>
+
+						<source
+							srcset="{{ article.image | img_url: "1440x" }} 1x, {{ article.image | img_url: "2880x" }} 2x"
+							media="(max-width: 1440px)"
+						/>
+
+						<img
+							srcset="{{ article.image | img_url: "1920x" }} 1x, {{ article.image | img_url: "3840x" }} 2x"
+							src="{{ article.image | img_url: "10px" }}"
+							alt="{{ article.image.alt }}"
+							class="article-banner__image js-animate"
+						/>
+					</picture>
+				</div>
+			{% endif %}
+		</section>
+
+		<section class="article-main" style="{{ section_styles }}">
+			<div class="article-main__header">
+				<a href="{{ blog.url }}" class="article-main__blog-link">
+					{% render 'icons-small', icon: 'arrow-left' %}
+
+					{{ 'blogs.article.back_to_blog' | t: title: blog.title }}
+				</a>
+
+				{% if article.comments_enabled? %}
+					<span class="article-main__comments-info">
+						<span class="visually-hidden">
+							{{- 'blogs.article.comments_count' | t -}}
+						</span>
+
+						{% render 'icons-small', icon: 'conversation' %}
+
+						{{ article.comments_count }}
+					</span>
+				{% endif %}
+			</div>
+
+			{% if article.content != blank %}
+				<div class="article-main__rte">
+					<div class="rte-new">
+						{% if article.content contains '<slider>' %}
+							<script src="{{- 'component-rte-slider.build.min.js' | asset_url -}}" defer></script>
+						{% endif %}
+
+						{{ article.content }}
+					</div>
+				</div>
+			{% endif %}
+
+			{% if show_socials %}
+				<div class="article-main__socials">
+					<span class="article-main__socials-title">
+						{{ 'blogs.article.share' | t }}
+					</span>
+
+					{% render 'socials-share' %}
+				</div>
+			{% endif %}
+		</section>
+
+		{% render 'comment-form', section_styles: section_styles %}
+	</div>
+
+	{% if show_related %}
+		<div class="article-related">
+			{% render 'related-articles',
+				current_article_id: article.id,
+				blog: blog,
+				label: label,
+				heading: heading,
+				show_back_to_blog_btn: show_back_to_blog_btn,
+				button_style: button_style
+			%}
+		</div>
+	{% endif %}
+{%- endif -%}
+
+<script type="application/ld+json">
+  {{ article | structured_data }}
+</script>
+
+{% schema %}
+	{
+		"name": "Article main",
+		"settings": [
+			{
+				"type": "header",
+				"content": "Banner"
+			},
+			{
+				"type": "select",
+				"id": "banner_type",
+				"label": "Banner type",
+				"options": [
+					{
+						"label": "Full width",
+						"value": "full"
+					},
+					{
+						"label": "Container",
+						"value": "container"
+					}
+				],
+				"default": "full"
+			},
+			{
+				"type": "color",
+				"id": "banner_text_color",
+				"label": "Banner text color",
+				"default": "#fff",
+				"info": "Used with \"Banner type: Full width\""
+			},
+			{
+				"type": "range",
+				"id": "overlay",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "%",
+				"label": "Overlay opacity",
+				"default": 50
+			},
+			{
+				"type": "header",
+				"content": "Banner button",
+				"info": "This settings is used for alternative design."
+			},
+			{
+				"type": "select",
+				"id": "banner_button_style",
+				"label": "Button style",
+				"options": [
+					{
+						"value": "rectangle",
+						"label": "Rectangle"
+					},
+					{
+						"value": "circle",
+						"label": "Circle"
+					}
+				],
+				"default": "circle"
+			},
+			{
+				"type": "color",
+				"id": "button_text_color",
+				"label": "Text",
+				"default": "#fff"
+			},
+			{
+				"type": "color",
+				"id": "button_background_color",
+				"label": "Background",
+				"default": "#000"
+			},
+			{
+				"type": "color",
+				"id": "button_border_color",
+				"label": "Border",
+				"default": "#000"
+			},
+			{
+				"type": "color",
+				"id": "button_outer_border_color",
+				"label": "Outer border",
+				"default": "#000"
+			},
+			{
+				"type": "color",
+				"id": "button_text_color_hover",
+				"label": "Text (hover)",
+				"default": "#000"
+			},
+			{
+				"type": "color",
+				"id": "button_background_color_hover",
+				"label": "Background (hover)",
+				"default": "#fff"
+			},
+			{
+				"type": "color",
+				"id": "button_border_color_hover",
+				"label": "Border (hover)",
+				"default": "#000"
+			},
+			{
+				"type": "color",
+				"id": "button_outer_border_color_hover",
+				"label": "Outer border (hover)",
+				"default": "#000"
+			},
+			{
+				"type": "header",
+				"content": "Main"
+			},
+			{
+				"type": "checkbox",
+				"id": "show_date",
+				"default": true,
+				"label": "Show date"
+			},
+			{
+				"type": "checkbox",
+				"id": "show_author",
+				"default": true,
+				"label": "Show author"
+			},
+			{
+				"type": "checkbox",
+				"id": "show_tag",
+				"default": true,
+				"label": "Show tag",
+				"info": "Shows only the first blog tag"
+			},
+			{
+				"type": "checkbox",
+				"id": "show_socials",
+				"default": true,
+				"label": "Show socials"
+			},
+			{
+				"type": "header",
+				"content": "Related Articles"
+			},
+			{
+				"type": "checkbox",
+				"id": "show_related",
+				"default": true,
+				"label": "Show"
+			},
+			{
+				"type": "text",
+				"id": "label",
+				"label": "Label"
+			},
+			{
+				"type": "text",
+				"id": "heading",
+				"label": "Heading"
+			},
+			{
+				"type": "checkbox",
+				"id": "show_back_to_blog_btn",
+				"default": true,
+				"label": "Show blog button"
+			},
+			{
+				"type": "select",
+				"id": "button_style",
+				"label": "Button style",
+				"options": [
+					{
+						"value": "primary",
+						"label": "Primary"
+					},
+					{
+						"value": "secondary",
+						"label": "Secondary"
+					},
+					{
+						"value": "circle",
+						"label": "Circle"
+					}
+				],
+				"default": "primary",
+				"info": "Circle button appears with an alternate design."
+			},
+			{
+				"type": "header",
+				"content": "Layout"
+			},
+			{
+				"type": "range",
+				"id": "offset_top_desktop",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Desktop offset top",
+				"default": 0
+			},
+			{
+				"type": "range",
+				"id": "offset_bottom_desktop",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Desktop offset bottom",
+				"default": 40
+			},
+			{
+				"type": "range",
+				"id": "offset_top_mobile",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Mobile offset top",
+				"default": 0
+			},
+			{
+				"type": "range",
+				"id": "offset_bottom_mobile",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Mobile offset bottom",
+				"default": 40
+			},
+			{
+				"type": "header",
+				"content": "Colors"
+			},
+			{
+				"type": "color",
+				"id": "color_comment_background",
+				"label": "Comment background",
+				"default": "#F9F9F9"
+			}
+		]
+	}
+{% endschema %}

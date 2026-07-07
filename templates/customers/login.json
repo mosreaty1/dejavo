@@ -1,0 +1,12 @@
+{
+	"sections": {
+		"login": {
+			"type": "login-template",
+			"settings": {
+			}
+		}
+	},
+	"order": [
+		"login"
+	]
+}

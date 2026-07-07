@@ -1,0 +1,376 @@
+{% assign title 			= section.settings.title %}
+{% assign label 			= section.settings.label %}
+{% assign link_text 		= section.settings.link_text %}
+{% assign link_url 			= section.settings.link_url %}
+{% assign load_more_text 	= section.settings.load_more_text %}
+{% assign events_to_show 	= section.settings.events_to_show %}
+{% assign show_border 		= section.settings.show_border %}
+
+{% assign show_load_more_button = false %}
+
+{% if load_more_text != blank and section.blocks.size > events_to_show %}
+	{% assign show_load_more_button = true %}
+{% endif %}
+
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{% if settings.design == 'alternate' %}
+	{% render 'events-calendar-new' %}
+{% else %}
+	{{- 'events-calendar.build.css' | asset_url | stylesheet_tag -}}
+
+	<section class="events-calendar js-events-calendar">
+		{% assign show_link = false %}
+
+		{% if link_text != blank and link_url != blank %}
+			{% assign show_link = true %}
+		{% endif %}
+
+		{% if title != blank or label != blank or show_link %}
+			<div class="events-calendar__header">
+				{% if title != blank or label != blank %}
+					<div class="event-calendar__header-wrapper">
+						{% if label != blank %}
+							<div class="events-calendar__label">
+								{{- label -}}
+							</div>
+						{% endif %}
+
+						{% if title != blank %}
+							<h2 class="events-calendar__title h2">{{ title }}</h2>
+						{% endif %}
+					</div>
+				{% endif %}
+
+				{% if show_link %}
+					<a href="{{ link_url }}" class="button-link focus-visible-outline">{{ link_text }}</a>
+				{% endif %}
+			</div>
+		{% endif %}
+
+		{% if section.blocks.size > 0 %}
+			<ul class="events-calendar__list">
+				{% for block in section.blocks %}
+					{% assign event_image 		= block.settings.image %}
+					{% assign event_title 		= block.settings.title %}
+					{% assign event_text 		= block.settings.text %}
+					{% assign event_link_text 	= block.settings.link_text %}
+					{% assign event_link_url 	= block.settings.link_url %}
+					{% assign event_button_text = block.settings.button_text %}
+					{% assign event_button_url 	= block.settings.button_url %}
+					{% assign event_date 		= block.settings.event_date %}
+					{% assign event_date_month 	= block.settings.event_date_month %}
+					{% assign event_time 		= block.settings.event_time %}
+
+					{% assign show_event_date = false %}
+					{% assign show_event_link = false %}
+					{% assign show_event_button = false %}
+
+					{% if event_date != blank or event_date_month != blank %}
+						{% assign show_event_date = true %}
+					{% endif %}
+
+					{% if event_link_text != blank and event_link_url != blank %}
+						{% assign show_event_link = true %}
+					{% endif %}
+
+					{% if event_button_text != blank and event_button_url != blank %}
+						{% assign show_event_button = true %}
+					{% endif %}
+
+					{% if show_load_more_button and forloop.index > events_to_show %}
+						{% assign hide_class = "is-hidden js-events-calendar-item" %}
+					{% endif %}
+
+					<li class="events-calendar__item {% if show_border %}events-calendar__item--border{% endif %} {{ hide_class }}">
+						{% if event_image != blank %}
+							<div class="events-calendar__item-media">
+								<picture class="events-calendar__item-image-wrapper lazy">
+									<source srcset="{{ event_image | image_url: width: 10 }}"
+											data-srcset="{{ event_image | image_url: width: 410 }} 1x, {{ event_image | image_url: width: 820 }} 2x"
+											media="(max-width: 450px)">
+
+									<source srcset="{{ event_image | image_url: width: 10 }}"
+											data-srcset="{{ event_image | image_url: width: 728 }} 1x, {{ event_image | image_url: width: 1456 }} 2x"
+											media="(max-width: 767px)">
+
+									<img class="events-calendar__item-image"
+										 src="{{ event_image | image_url: width: 10 }}"
+										 data-src="{{ event_image | image_url: width: 300 }}"
+										 data-srcset="{{ event_image | image_url: width: 300 }} 1x, {{ event_image | image_url: width: 600 }} 2x"
+										 alt="{{ event_image.alt | escape }}"
+										 style="--img-pos: {{ event_image.presentation.focal_point }};"
+									>
+								</picture>
+
+								{% if show_event_date %}
+									<div class="events-calendar__item-date-block">
+										{% if event_date != blank %}
+											<span class="events-calendar__item-date-day">{{ event_date }}</span>
+										{% endif %}
+
+										{%- if event_date_month != blank -%}
+											{{- event_date_month -}}
+										{%- endif -%}
+									</div>
+								{% endif %}
+							</div>
+						{% elsif show_event_date %}
+							<div class="events-calendar__item-date-block events-calendar__item-date-block--single">
+								{% if event_date != blank %}
+									<span class="events-calendar__item-date-day">{{ event_date }}</span>
+								{% endif %}
+
+								{%- if event_date_month != blank -%}
+									{{- event_date_month -}}
+								{%- endif -%}
+							</div>
+						{% endif %}
+
+						<div class="events-calendar__item-content">
+							<div class="events-calendar__item-header">
+								{% if event_title != blank %}
+									<h3 class="events-calendar__item-title h3">{{ event_title }}</h3>
+								{% endif %}
+
+								{% if event_time != blank %}
+									<div class="events-calendar__item-time">
+										{{ event_time }}
+									</div>
+								{% endif %}
+							</div>
+
+							{% if event_text != blank %}
+								<div class="events-calendar__item-text section-rte">
+									{{ event_text }}
+								</div>
+							{% endif %}
+
+							{% if show_event_link or show_event_button %}
+								<div class="events-calendar__item-links">
+									{% if show_event_link %}
+										<a href="{{ event_link_url }}" class="button-link focus-visible-outline">{{ event_link_text }}</a>
+									{% endif %}
+
+									{% if show_event_button %}
+										<a href="{{ event_button_url }}" class="button-link focus-visible-outline">
+										<span class="button-link__icon">
+											{% render 'icons-medium', icon: 'event-location' %}
+										</span>
+
+											{{ event_button_text }}
+										</a>
+									{% endif %}
+								</div>
+							{% endif %}
+
+						</div>
+					</li>
+				{% endfor %}
+			</ul>
+
+			{% if show_load_more_button %}
+				<div class="events-calendar__load-more-wrapper">
+					<button class="button button--primary js-events-calendar-load-more">{{ load_more_text }}</button>
+				</div>
+			{% endif %}
+		{% endif %}
+	</section>
+{% endif %}
+
+<script src="{{- 'section-events-calendar.build.min.js' | asset_url -}}" defer></script>
+
+{% schema %}
+{
+	"name": "Events calendar",
+	"disabled_on": {
+		"groups": ["header", "footer"]
+	},
+	"settings": [
+		{
+			"type": "text",
+			"id": "title",
+			"label": "Heading",
+			"default": "Events"
+		},
+		{
+			"type": "text",
+			"id": "label",
+			"label": "Label"
+		},
+		{
+			"type": "text",
+			"id": "link_text",
+			"label": "Link label",
+			"default": "View all"
+		},
+		{
+			"type": "url",
+			"id": "link_url",
+			"label": "Link url"
+		},
+		{
+			"type": "text",
+			"id": "load_more_text",
+			"label": "Load more button label",
+			"default": "Load more",
+			"info": "Leave empty - to show all events."
+		},
+		{
+			"type": "range",
+			"id": "events_to_show",
+			"label": "Counts of events to show",
+			"min": 3,
+			"max": 10,
+			"step": 1,
+			"default": 3
+		},
+		{
+			"type": "checkbox",
+			"id": "show_border",
+			"label": "Show border bottom",
+			"default": true,
+			"info": "Added border bottom for the events blocks. Works with a standard design"
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 60
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 60
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 30
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 30
+		}
+	],
+	"blocks": [
+		{
+			"name": "Event",
+			"type": "event",
+			"settings": [
+				{
+					"type": "image_picker",
+					"id": "image",
+					"label": "Image",
+					"info": "2912 x 2184px recommended"
+				},
+				{
+					"type": "text",
+					"id": "title",
+					"label": "Heading",
+					"default": "Event name"
+				},
+				{
+					"type": "richtext",
+					"id": "text",
+					"label": "Text",
+					"default": "<p>Some information about the event, it' time, location, schedule etc...</p>"
+				},
+				{
+					"type": "text",
+					"id": "link_text",
+					"label": "Link label",
+					"default": "Read more"
+				},
+				{
+					"type": "url",
+					"id": "link_url",
+					"label": "Link url"
+				},
+				{
+					"type": "text",
+					"id": "button_text",
+					"label": "Link location label",
+					"default": "Event location"
+				},
+				{
+					"type": "url",
+					"id": "button_url",
+					"label": "Link location url"
+				},
+				{
+					"type": "text",
+					"id": "event_date",
+					"label": "Start day",
+					"default": "01"
+				},
+				{
+					"type": "text",
+					"id": "event_date_month",
+					"label": "Start month",
+					"default": "Jan"
+				},
+				{
+					"type": "text",
+					"id": "event_time",
+					"label": "Start time",
+					"default": "10PM"
+				}
+			]
+		}
+	],
+	"presets": [
+		{
+			"name": "Events calendar",
+			"blocks": [
+				{
+					"type": "event"
+				},
+				{
+					"type": "event"
+				},
+				{
+					"type": "event"
+				}
+			]
+		}
+	]
+}
+{% endschema %}

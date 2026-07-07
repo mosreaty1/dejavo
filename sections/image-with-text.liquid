@@ -1,0 +1,382 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Image with text
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign image_position        	= section.settings.image_position -%}
+{%- assign text_alignment        	= section.settings.text_alignment -%}
+{%- assign first_desktop_image      = section.settings.first_desktop_image -%}
+{%- assign first_mobile_image       = section.settings.first_mobile_image | default: first_desktop_image -%}
+{%- assign second_desktop_image     = section.settings.second_desktop_image -%}
+{%- assign second_mobile_image      = section.settings.second_mobile_image | default: second_desktop_image -%}
+{%- assign heading               	= section.settings.heading -%}
+{%- assign subheading               = section.settings.subheading -%}
+{%- assign text_content          	= section.settings.text_content -%}
+{%- assign button_label          	= section.settings.button_label -%}
+{%- assign button_aria_label     	= section.settings.button_aria_label -%}
+{%- assign button_url            	= section.settings.button_url -%}
+{%- assign button_style          	= section.settings.button_style -%}
+{%- assign is_show_border_top    	= section.settings.is_show_border_top -%}
+{%- assign is_show_border_bottom 	= section.settings.is_show_border_bottom -%}
+{%- assign border_color 		 	= section.settings.border_color -%}
+{%- assign full_width 		 		= section.settings.full_width -%}
+
+{%- capture section_styles -%}
+	--text-alignment: {{ text_alignment | replace: "left", "start" | replace: "right", "end" }};
+	--content-flex-direction: {% if image_position == "right" %}row{% else %}row-reverse{% endif %};
+	--content-flex-direction-rtl: {% if image_position == "right" %}row-reverse{% else %}row{% endif %};
+	--border-top-value: {% if is_show_border_top %}1px solid {{ border_color }} {% else %}none{% endif %};
+	--border-bottom-value: {% if is_show_border_bottom %}1px solid {{ border_color }} {% else %}none{% endif %};
+{%- endcapture -%}
+
+{% capture button %}
+	{%- if button_label != blank and button_url != blank -%}
+		<a
+			href="{{- button_url -}}"
+			{%- if button_aria_label != blank -%}aria-label="{{- button_aria_label | escape -}}"{%- endif -%}
+			class="{% if button_style == 'circle' and settings.design == 'alternate' %}button-circle{% endif %} image-with-text__button {% if settings.design == 'alternate' %}button-new{% else %}button{% endif %} button--{% if button_style == 'circle' and settings.design == 'standard' %}primary{% else %}{{- button_style -}}{% endif %}">
+			<span class="button__text {{ design }}">
+				{{- button_label -}}
+			</span>
+
+			{% if button_style == 'circle' and settings.design == 'alternate' %}
+				<span class="button-new__icon-container">
+					<span class="button-new__icon-wrapper">
+						{% render "icons-new", icon: "wave" %}
+					</span>
+				</span>
+			{% endif %}
+		</a>
+	{%- endif -%}
+{% endcapture %}
+
+{%- capture content -%}
+	<div class="image-with-text__content-wrapper">
+		<div class="image-with-text__content">
+			{%- if heading != blank -%}
+				<h2 class="h2 image-with-text__heading">
+					{{- heading -}}
+				</h2>
+			{%- endif -%}
+
+			{% if subheading != blank %}
+				<p class="image-with-text__subheading">{{ subheading }}</p>
+			{% endif %}
+
+			{%- if text_content != blank -%}
+				<div class="image-with-text__text-content section-rte">
+					{{- text_content -}}
+				</div>
+			{%- endif -%}
+
+			{{ button }}
+		</div>
+	</div>
+{%- endcapture -%}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 992px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{% assign is_lazy = true %}
+
+{% if section.index == 1 %}
+	{% assign is_lazy = false %}
+{% endif %}
+
+{%- if settings.design == 'alternate' -%}
+	{% render 'image-with-text-new',
+		subheading: subheading,
+		heading: heading,
+		text_content: text_content,
+		button: button,
+		first_desktop_image: first_desktop_image,
+		second_desktop_image: second_desktop_image,
+		first_mobile_image: first_mobile_image,
+		second_mobile_image: second_mobile_image,
+		styles: section_styles,
+		is_lazy: is_lazy,
+		full_width: full_width
+	%}
+{% else %}
+	{{- 'image-with-text.build.css' | asset_url | stylesheet_tag -}}
+
+	<section
+		class="image-with-text js-animate{% if request.visual_preview_mode or section.index == 1 %} animated{% endif %}"
+		style="{{ section_styles }}">
+		<div
+			class="image-with-text__container {% if full_width == false %}image-with-text__container--max-width{% endif %}">
+			{%- if image_position == 'left' -%}
+				<div class="image-with-text__image-container">
+					{% render 'image-with-text-image',
+						desktop_image: first_desktop_image,
+						mobile_image: first_mobile_image,
+						is_lazy: is_lazy
+					%}
+
+					{% if second_desktop_image != blank %}
+						{% render 'image-with-text-image',
+							desktop_image: second_desktop_image,
+							mobile_image: second_mobile_image,
+							is_lazy: is_lazy
+						%}
+					{% endif %}
+				</div>
+
+				{{- content -}}
+			{%- else -%}
+				<div class="image-with-text__image-container image-with-text__image-container--mobile">
+					{% render 'image-with-text-image',
+						desktop_image: first_desktop_image,
+						mobile_image: first_mobile_image,
+						is_lazy: is_lazy
+					%}
+
+					{% if second_desktop_image != blank %}
+						{% render 'image-with-text-image',
+							desktop_image: second_desktop_image,
+							mobile_image: second_mobile_image,
+							is_lazy: is_lazy
+						%}
+					{% endif %}
+				</div>
+
+				{{- content -}}
+
+				<div class="image-with-text__image-container">
+					{% render 'image-with-text-image',
+						desktop_image: first_desktop_image,
+						mobile_image: first_mobile_image,
+						is_lazy: is_lazy
+					%}
+
+					{% if second_desktop_image != blank %}
+						{% render 'image-with-text-image',
+							desktop_image: second_desktop_image,
+							mobile_image: second_mobile_image,
+							is_lazy: is_lazy
+						%}
+					{% endif %}
+				</div>
+			{%- endif -%}
+		</div>
+	</section>
+{%- endif -%}
+
+{%- schema -%}
+	{
+		"name": "Image with text",
+		"disabled_on": {
+			"groups": ["header", "footer"]
+		},
+		"settings": [
+			{
+				"id": "image_position",
+				"type": "select",
+				"label": "Image position",
+				"options": [
+					{
+						"value": "left",
+						"label": "Left"
+					},
+					{
+						"value": "right",
+						"label": "Right"
+					}
+				],
+				"default": "left"
+			},
+			{
+				"id": "text_alignment",
+				"type": "select",
+				"label": "Text alignment",
+				"options": [
+					{
+						"value": "left",
+						"label": "Left"
+					},
+					{
+						"value": "center",
+						"label": "Center"
+					},
+					{
+						"value": "right",
+						"label": "Right"
+					}
+				],
+				"default": "left"
+			},
+			{
+				"id": "first_desktop_image",
+				"type": "image_picker",
+				"label": "First image desktop",
+				"info": "1680 x 1680px recommended"
+			},
+			{
+				"id": "first_mobile_image",
+				"type": "image_picker",
+				"label": "First image mobile",
+				"info": "1982 x 1982px recommended"
+			},
+			{
+				"id": "second_desktop_image",
+				"type": "image_picker",
+				"label": "Second image desktop",
+				"info": "1680 x 1680px recommended"
+			},
+			{
+				"id": "second_mobile_image",
+				"type": "image_picker",
+				"label": "Second image mobile",
+				"info": "1982 x 1982px recommended"
+			},
+			{
+				"id": "heading",
+				"type": "text",
+				"label": "Heading"
+			},
+			{
+				"id": "subheading",
+				"type": "textarea",
+				"label": "Subheading"
+			},
+			{
+				"id": "text_content",
+				"type": "richtext",
+				"label": "Text"
+			},
+			{
+				"id": "button_label",
+				"type": "text",
+				"label": "Button label"
+			},
+			{
+				"id": "button_aria_label",
+				"type": "text",
+				"label": "Button aria-label",
+				"info": "Need for good accessibility, e.g. 'All news about...'. [Learn more](https://utdweb.team/shopify-themes/gain/manual#section-image-with-text)"
+			},
+			{
+				"id": "button_url",
+				"type": "url",
+				"label": "Button link"
+			},
+			{
+				"id": "button_style",
+				"type": "select",
+				"label": "Button style",
+				"options": [
+					{
+						"value": "primary",
+						"label": "Primary"
+					},
+					{
+						"value": "secondary",
+						"label": "Secondary"
+					},
+					{
+						"value": "circle",
+						"label": "Circle"
+					}
+				],
+				"info": "Circle button appears with an alternate design",
+				"default": "primary"
+			},
+			{
+				"id": "is_show_border_top",
+				"type": "checkbox",
+				"label": "Show border-top",
+				"default": false,
+				"info": "Only desktop and works with a standard design"
+			},
+			{
+				"id": "is_show_border_bottom",
+				"type": "checkbox",
+				"label": "Show border-bottom",
+				"default": false,
+				"info": "Only desktop and works with a standard design"
+			},
+			{
+				"type": "color",
+				"id": "border_color",
+				"label": "Border color",
+				"default": "#e6e6e6"
+			},
+			{
+				"type": "header",
+				"content": "Layout"
+			},
+			{
+				"type": "checkbox",
+				"id": "full_width",
+				"label": "Make full width",
+				"default": true,
+				"info": "If unchecked - container width will be set based on the group 'Layout' settings in the Theme settings."
+			},
+			{
+				"type": "range",
+				"id": "offset_top_desktop",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Desktop offset top",
+				"default": 0
+			},
+			{
+				"type": "range",
+				"id": "offset_bottom_desktop",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Desktop offset bottom",
+				"default": 0
+			},
+			{
+				"type": "range",
+				"id": "offset_top_mobile",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Mobile offset top",
+				"default": 0
+			},
+			{
+				"type": "range",
+				"id": "offset_bottom_mobile",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Mobile offset bottom",
+				"default": 60
+			}
+		],
+		"presets": [
+			{
+				"name": "Image with text",
+				"settings": {
+					"heading": "Text heading",
+					"subheading": "Subheading",
+					"text_content": "<p>Combine an image with text to highlight a specific product, collection, or blog post of your choice. Enhance the content by including information on its availability, style, or possibly a review.</p>",
+					"button_label": "Button label",
+					"button_aria_label": "Button label",
+					"button_url": "/"
+				}
+			}
+		]
+	}
+{%- endschema -%}

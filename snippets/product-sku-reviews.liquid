@@ -1,0 +1,29 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Product SKU and Reviews
+------------------------------------------------------------------------------
+{% endcomment %}
+{% if block.settings.show_sku %}
+	{% assign sku = product.selected_or_first_available_variant.sku | strip %}
+	{% assign preset_sku = '000000' %}
+
+	{% if is_preset %}
+		{% assign sku = preset_sku %}
+	{% endif %}
+
+	<div class="{% if design == 'alternate' %}product-sku-reviews-new{% else %}product-sku-reviews{% endif %} {% if sku == blank %}is-hidden{% endif %} js-product-sku-wrapper">
+		{% assign sku_text = block.settings.sku_text
+			| replace: '%SKU%', sku
+			| replace: '%sku%', sku
+		%}
+
+		<div
+			class="product-sku-reviews__sku js-product-sku"
+			data-sku-text="{{- block.settings.sku_text -}}"
+		>
+			{%- if sku and sku != '' -%}
+				{{- sku_text -}}
+			{%- endif -%}
+		</div>
+	</div>
+{% endif %}

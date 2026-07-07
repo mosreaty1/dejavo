@@ -1,0 +1,319 @@
+{{- 'collection-list-new.build.css' | asset_url | stylesheet_tag -}}
+
+{%- assign label 				= section.settings.label -%}
+{%- assign title 				= section.settings.heading -%}
+{%- assign link_url 			= section.settings.link_url -%}
+{%- assign link_text 			= section.settings.link_text -%}
+{%- assign link_aria_label_text = section.settings.link_aria_label_text -%}
+{%- assign text_alignment 		= section.settings.text_alignment -%}
+{%- assign button_style 		= section.settings.button_style -%}
+{%- assign aspect_ratio 		= section.settings.aspect_ratio -%}
+{%- assign text_position 		= section.settings.text_position -%}
+{%- assign image_crop 			= section.settings.image_crop -%}
+{%- assign show_products_count 	= section.settings.show_products_count -%}
+{%- assign color_overlay 		= section.settings.color_overlay | default: 'transparent' -%}
+{%- assign color_overlay_alpha  = color_overlay | color_extract: 'alpha' -%}
+{%- assign inside_the_image_text 		= section.settings.inside_the_image_text -%}
+{%- assign inside_the_image_text_hover 	= section.settings.inside_the_image_text_hover -%}
+{%- assign full_width 			= section.settings.full_width -%}
+
+{%- assign min = 1 -%}
+{%- assign max = 6 -%}
+{%- assign diff = max | minus: min -%}
+
+{%- if aspect_ratio == "square" -%}
+	{%- assign image_class = "collection-list-new__image-wrapper--square" -%}
+{%- elsif aspect_ratio == "landscape" %}
+	{%- assign image_class = "collection-list-new__image-wrapper--landscape" -%}
+{%- else -%}
+	{%- assign image_class = "collection-list-new__image-wrapper--portrait" -%}
+{%- endif -%}
+
+{%- capture animated_classes -%}
+	js-animate {%
+	if request.visual_preview_mode or section.index == 1 %}animated{% endif %}
+{%- endcapture -%}
+
+{%- capture styles -%}
+	--text-alignment: {{ text_alignment }};
+	--color-overlay-desktop: {% if color_overlay_alpha == 0.0 %} {{ color_overlay }} {% else %} {{ color_overlay | color_modify: 'alpha', 0.75 }} {% endif %};
+	--color-overlay-mobile: {% if color_overlay_alpha == 0.0 %} {{ color_overlay }} {% else %} {{ color_overlay | color_modify: 'alpha', 0.8 }} {% endif %};
+	--inside-the-image-text: {{ inside_the_image_text }};
+	--inside-the-image-text-count: {{ inside_the_image_text | color_mix: '#adadad', 50 }};
+	--inside-the-image-text-hover: {{ inside_the_image_text_hover }};
+	--inside-the-image-text-count-hover: {{ inside_the_image_text_hover | color_mix: '#aca8a2', 50 }};
+{%- endcapture -%}
+
+<section class="collection-list-new{% if full_width == false %} collection-list-new--container{% endif %} js-collection-list"
+		 style="{{- styles -}}"
+>
+	{%- if label != blank or title != blank -%}
+		<div class="collection-list-new__header {{ animated_classes }}">
+			{%- if label != blank -%}
+				<div class="collection-list-new__label need-animate subheading">
+					{{- label -}}
+				</div>
+			{%- endif -%}
+
+			{%- if title != blank -%}
+				<h2 class="collection-list-new__title need-animate h2">
+					{{- title -}}
+				</h2>
+			{%- endif -%}
+		</div>
+	{%- endif -%}
+
+	<div
+		class="collection-list-new__slider swiper {% if section.blocks.size > 1 %}js-featured-content-slider{% endif %}">
+		<div
+			class="collection-list-new__row swiper-wrapper {% if section.blocks.size < 4 %}collection-list-new__row--center{% endif %}{% if text_position == "under_the_image" %} collection-list-new__card--under-the-image{% endif %}">
+			{%- if section.blocks.size > 0 -%}
+				{%- assign delay_step = 0 -%}
+
+				{%- for block in section.blocks -%}
+					{%- assign collection 	= block.settings.collection -%}
+					{%- assign image 		= block.settings.image | default: collection.featured_image -%}
+					{%- assign is_lazy 		= true -%}
+					{%- assign delay_step 	= delay_step | plus: 0.4 -%}
+
+					{%- if section.index == 1 and forloop.index == 1 -%}
+						{%- assign is_lazy = false -%}
+					{%- endif -%}
+
+					{%- assign size_image_width 		= 428 -%}
+					{%- assign size_image_height 		= 739 -%}
+					{%- assign size_image_width_2x 		= size_image_width | times: 2 -%}
+					{%- assign size_image_height_2x 	= size_image_height | times: 2 -%}
+
+					{%- assign size_image_width_1500 		= 345 -%}
+					{%- assign size_image_height_1500 		= 596 -%}
+					{%- assign size_image_width_1500_2x 	= size_image_width_1500 | times: 2 -%}
+					{%- assign size_image_height_1500_2x 	= size_image_height_1500 | times: 2 -%}
+
+					{%- assign size_image_width_991 		= 480 -%}
+					{%- assign size_image_height_991 		= 829 -%}
+					{%- assign size_image_width_991_2x 		= size_image_width_991 | times: 2 -%}
+					{%- assign size_image_height_991_2x 	= size_image_height_991 | times: 2 -%}
+
+					{%- assign size_image_width_767 		= 735 -%}
+					{%- assign size_image_height_767 		= 1066 -%}
+					{%- assign size_image_width_767_2x 		= size_image_width_767 | times: 2 -%}
+					{%- assign size_image_height_767_2x 	= size_image_height_767 | times: 2 -%}
+
+					{%- assign size_image_width_420 		= 338 -%}
+					{%- assign size_image_height_420 		= 564 -%}
+					{%- assign size_image_width_420_2x 		= size_image_width_767 | times: 2 -%}
+					{%- assign size_image_height_420_2x 	= size_image_height_767 | times: 2 -%}
+
+					{%- assign size_image_width_375 		= 343 -%}
+					{%- assign size_image_height_375 		= 497 -%}
+					{%- assign size_image_width_375_2x 		= size_image_width_767 | times: 2 -%}
+					{%- assign size_image_height_375_2x 	= size_image_height_767 | times: 2 -%}
+
+					{%- if section.settings.aspect_ratio == "landscape" -%}
+						{%- assign size_image_height 		= 300 -%}
+						{%- assign size_image_height_2x 	= size_image_height | times: 2 -%}
+
+						{%- assign size_image_height_1500 		= 242 -%}
+						{%- assign size_image_height_1500_2x 	= size_image_height_1500 | times: 2 -%}
+
+						{%- assign size_image_height_991 		= 336 -%}
+						{%- assign size_image_height_991_2x 	= size_image_height_991 | times: 2 -%}
+
+						{%- assign size_image_height_767 		= 536 -%}
+						{%- assign size_image_height_767_2x 	= size_image_height_767 | times: 2 -%}
+
+						{%- assign size_image_height_420 		= 283 -%}
+						{%- assign size_image_height_420_2x 	= size_image_height_767 | times: 2 -%}
+
+						{%- assign size_image_height_375 		= 250 -%}
+						{%- assign size_image_height_375_2x 	= size_image_height_767 | times: 2 -%}
+					{%- elsif section.settings.aspect_ratio == "square" -%}
+						{%- assign size_image_height 		= size_image_width -%}
+						{%- assign size_image_height_2x 	= size_image_height | times: 2 -%}
+
+						{%- assign size_image_height_1500 		= size_image_width_1500 -%}
+						{%- assign size_image_height_1500_2x 	= size_image_height_1500 | times: 2 -%}
+
+						{%- assign size_image_height_991 		= size_image_width_991 -%}
+						{%- assign size_image_height_991_2x 	= size_image_height_991 | times: 2 -%}
+
+						{%- assign size_image_height_767 		= size_image_width_767 -%}
+						{%- assign size_image_height_767_2x 	= size_image_height_767 | times: 2 -%}
+
+						{%- assign size_image_height_420 		= size_image_width_420 -%}
+						{%- assign size_image_height_420_2x 	= size_image_height_767 | times: 2 -%}
+
+						{%- assign size_image_height_375 		= size_image_width_375 -%}
+						{%- assign size_image_height_375_2x 	= size_image_height_767 | times: 2 -%}
+					{%- endif -%}
+
+					{% if block.settings.image != blank %}
+						{%- capture img_focal -%}
+							--img-desktop-pos: {{ block.settings.image.presentation.focal_point }};
+						{%- endcapture -%}
+					{% endif %}
+
+					<div class="collection-list-new__col swiper-slide">
+						<a{% if collection == blank %} role="link" aria-disabled="true"{% else %} href="{{ collection.url }}"{% endif %}
+							class="focus-visible-outline collection-list-new__card {% if text_position == "inside_the_image" %} collection-list-new__card--inside-the-image{% endif %}{% if aspect_ratio == "portrait" %} collection-list-new__card--portrait{% endif %} {{ animated_classes }}"
+							{% if collection %}
+								aria-label="{{- 'collections.general.collection_card_link_aria_label' | t: title: collection.title | escape -}}"
+							{% endif %}
+							style="--delay-step: {{ delay_step }}s;"
+						>
+							<div class="collection-list-new__image-wrapper {{ image_class }}">
+								{%- if image != blank -%}
+									<picture class="collection-list-new__image-inner need-animate{% if is_lazy %} lazy{% endif %}">
+										<source
+											{% if is_lazy %}
+												data-srcset="{{ image | image_url: width: size_image_width_375, height: size_image_height_375, crop: image_crop }} 1x,
+														 	 {{ image | image_url: width: size_image_width_375_2x, height: size_image_height_375_2x, crop: image_crop }} 2x"
+												srcset="{{ image | image_url: width: 10, height: 10 }} 1x,
+														{{ image | image_url: width: 20, height: 20 }} 2x"
+											{% else %}
+												srcset="{{ image | image_url: width: size_image_width_375, height: size_image_height_375, crop: image_crop }} 1x,
+														{{ image | image_url: width: size_image_width_375_2x, height: size_image_height_375_2x, crop: image_crop }} 2x"
+											{% endif %}
+											media="(max-width: 375px)"
+											width="{{- size_image_width_375 -}}"
+											height="{{- size_image_height_375 -}}"
+										>
+
+										<source
+											{% if is_lazy %}
+												data-srcset="{{ image | image_url: width: size_image_width_420, height: size_image_height_420, crop: image_crop }} 1x,
+														 	 {{ image | image_url: width: size_image_width_420_2x, height: size_image_height_420_2x, crop: image_crop }} 2x"
+												srcset="{{ image | image_url: width: 10, height: 10 }} 1x,
+														{{ image | image_url: width: 20, height: 20 }} 2x"
+											{% else %}
+												srcset="{{ image | image_url: width: size_image_width_420, height: size_image_height_420, crop: image_crop }} 1x,
+														{{ image | image_url: width: size_image_width_420_2x, height: size_image_height_420_2x, crop: image_crop }} 2x"
+											{% endif %}
+											media="(max-width: 420px)"
+											width="{{- size_image_width_420 -}}"
+											height="{{- size_image_height_420 -}}"
+										>
+
+										<source
+											{% if is_lazy %}
+												data-srcset="{{ image | image_url: width: size_image_width_767, height: size_image_height_767, crop: image_crop }} 1x,
+														 	 {{ image | image_url: width: size_image_width_767_2x, height: size_image_height_767_2x, crop: image_crop }} 2x"
+												srcset="{{ image | image_url: width: 10, height: 10 }} 1x,
+														{{ image | image_url: width: 20, height: 20 }} 2x"
+											{% else %}
+												srcset="{{ image | image_url: width: size_image_width_767, height: size_image_height_767, crop: image_crop }} 1x,
+														{{ image | image_url: width: size_image_width_767_2x, height: size_image_height_767_2x, crop: image_crop }} 2x"
+											{% endif %}
+											media="(max-width: 767px)"
+											width="{{- size_image_width_767 -}}"
+											height="{{- size_image_height_767 -}}"
+										>
+
+										<source
+											{% if is_lazy %}
+												data-srcset="{{ image | image_url: width: size_image_width_991, height: size_image_height_991, crop: image_crop }} 1x,
+														 	 {{ image | image_url: width: size_image_width_991_2x, height: size_image_height_991_2x, crop: image_crop }} 2x"
+												srcset="{{ image | image_url: width: 10, height: 10 }} 1x,
+														{{ image | image_url: width: 20, height: 20 }} 2x"
+											{% else %}
+												srcset="{{ image | image_url: width: size_image_width_991, height: size_image_height_991, crop: image_crop }} 1x,
+														{{ image | image_url: width: size_image_width_991_2x, height: size_image_height_991_2x, crop: image_crop }} 2x"
+											{% endif %}
+											media="(max-width: 991px)"
+											width="{{- size_image_width_991 -}}"
+											height="{{- size_image_height_991 -}}"
+										>
+
+										<source
+											{% if is_lazy %}
+												data-srcset="{{ image | image_url: width: size_image_width_1500, height: size_image_height_1500, crop: image_crop }} 1x,
+														 	 {{ image | image_url: width: size_image_width_1500_2x, height: size_image_height_1500_2x, crop: image_crop }} 2x"
+												srcset="{{ image | image_url: width: 10, height: 10 }} 1x,
+														{{ image | image_url: width: 20, height: 20 }} 2x"
+											{% else %}
+												srcset="{{ image | image_url: width: size_image_width_1500, height: size_image_height_1500, crop: image_crop }} 1x,
+														{{ image | image_url: width: size_image_width_1500_2x, height: size_image_height_1500_2x, crop: image_crop }} 2x"
+											{% endif %}
+											media="(max-width: 1500px)"
+											width="{{- size_image_width_1500 -}}"
+											height="{{- size_image_height_1500 -}}"
+										>
+
+										<img class="collection-list-new__image"
+											{% if is_lazy %}
+												data-src="{{ image | image_url: width: size_image_width, height: size_image_height, crop: image_crop }}"
+												data-srcset="{{ image | image_url: width: size_image_width, height: size_image_height, crop: image_crop }} 1x,
+														 	 {{ image | image_url: width: size_image_width_2x, height: size_image_height_2x, crop: image_crop }} 2x"
+												src="{{ image | image_url: width: 10, height: 10 }}"
+												srcset="{{ image | image_url: width: 20, height: 20 }}"
+											{% else %}
+												src="{{ image | image_url: width: size_image_width, height: size_image_height, crop: image_crop }}"
+												srcset="{{ image | image_url: width: size_image_width, height: size_image_height, crop: image_crop }} 1x,
+														{{ image | image_url: width: size_image_width_2x, height: size_image_height_2x, crop: image_crop }} 2x"
+											{% endif %}
+											 alt="{{ image.alt | escape }}"
+											{% if img_focal != blank %}
+												style="{{ img_focal }}"
+											{% endif %}
+											 width="{{- size_image_width -}}"
+											 height="{{- size_image_height -}}"
+										>
+									</picture>
+								{%- else -%}
+									{%- assign random_number = "now" | date: "%N" | modulo: diff | plus: min -%}
+									{%- assign placeholder_svg_name = 'collection-' | append: random_number -%}
+
+									<div class="collection-list-new__image-inner need-animate">
+										{{- placeholder_svg_name | placeholder_svg_tag: 'collection-list-new__image collection-list-new__image--placeholder' -}}
+									</div>
+								{%- endif -%}
+							</div>
+
+							<div class="collection-list-new__card-title need-animate {% if aspect_ratio == "landscape" %} collection-list-new__card-title--landscape{% endif %}" aria-hidden="true">
+								<span class="need-animate">
+									{%- if collection == blank -%}
+										{{ 'sections.collection_list.card_title' | t }}
+									{%- else -%}
+										{{- collection.title -}}
+									{%- endif -%}
+								</span>
+							</div>
+
+							{%- if show_products_count -%}
+								{%- assign one_product_label = 'sections.collection_list.one_product' | t -%}
+								{%- assign many_product_label = 'sections.collection_list.many_products' | t -%}
+
+								<div class="collection-list-new__card-count need-animate">
+									<span class="need-animate">
+										{%- if collection == blank -%}
+											0 {{ many_product_label }}
+										{%- else -%}
+											{{ collection.all_products_count }} {{ collection.all_products_count | pluralize: one_product_label, many_product_label }}
+										{%- endif -%}
+									</span>
+								</div>
+							{%- endif -%}
+						</a>
+					</div>
+				{%- endfor -%}
+			{%- endif -%}
+		</div>
+
+		{%- if section.blocks.size > 1 -%}
+			<div class="collection-list-new__pagination swiper-pagination js-featured-content-slider-pagination"></div>
+		{%- endif -%}
+	</div>
+
+	{%- if link_text != blank and link_url != blank -%}
+		<div class="collection-list-new__link-wrapper {{ animated_classes }}">
+			<a
+				class="focus-visible-outline button-new button--{{- button_style }} collection-list-new__link"
+				href="{{- link_url -}}"
+				aria-label="{{- link_aria_label_text | escape -}}"
+			>
+				{{- link_text -}}
+			</a>
+		</div>
+	{%- endif -%}
+</section>

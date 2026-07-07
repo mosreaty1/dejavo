@@ -1,0 +1,170 @@
+{% comment %}
+  ------------------------------------------------------------------------------
+  Snippet: PDP drawer
+  ------------------------------
+  Require:
+   - content
+   - title
+   - toggle_id
+  Optional:
+   - footer_content
+   - class_container
+   - class_header
+   - class_body
+   - class_footer
+   - class_close
+  ------------------------------
+  Example:
+	{% include 'product-form-drawer',
+		title: page.title,
+		content: page.content,
+		toggle_id: 'pageDrawer'
+	%}
+  ------------------------------------------------------------------------------
+{% endcomment %}
+{% if title != blank and content != blank and toggle_id != blank %}
+	{% assign a11y_title = title | camelcase | append: 'Drawer' %}
+
+	{% assign design = settings.design %}
+
+	<div
+		id="{{- toggle_id -}}"
+		class="drawer {% if design == 'alternate' %}drawer--new{% endif %} product-form-drawer {{ class_container }}"
+		role="dialog"
+		aria-labelledby="{{- a11y_title -}}"
+	>
+		<div class="drawer__header {{ class_header }}">
+			<h2 class="drawer__title" id="{{- a11y_title -}}">
+				{{- title -}}
+			</h2>
+
+			{%- if full_width_mode == true -%}
+				<button
+					class="drawer__full-width"
+					data-target="{{- toggle_id -}}"
+					data-js-full-width="{{- toggle_id -}}"
+					aria-label="{{- 'general.accessibility.full_width' | t | escape -}}"
+				>
+					{% if design == 'alternate' %}
+						{% render 'icons-new', icon: 'zoom-up' %}
+					{% else %}
+						{%- render 'icons-small', icon: 'full-witdh' -%}
+					{% endif %}
+				</button>
+			{%- endif -%}
+
+			<button
+				class="drawer__close {{ class_close }}"
+				data-target="{{- toggle_id -}}"
+				data-js-toggle="{{- toggle_id -}}"
+				aria-label="{{ 'general.accessibility.close' | t | escape }}"
+			>
+				{% if design == 'alternate' %}
+					{%- render 'icons-new', icon: 'close' -%}
+				{% else %}
+					{% render 'icons-small', icon: 'close' %}
+				{% endif %}
+			</button>
+		</div>
+
+		<div class="drawer__body {% if design == 'alternate' %}rte-new{% else %}rte{% endif %} {{ class_body }}" data-tabs-container>
+			{% if toggle_id contains 'productSizeGuideDrawer' %}
+				{% assign size_guide_model_img = product.metafields.custom.size_guide_model_image %}
+				{% assign size_guide_model_info = product.metafields.custom.size_guide_model_info %}
+				{% assign general_tab_name = tab_general_name | default: 'Dimensions' %}
+				{% assign model_tab_name = tab_model_name | default: 'Parameters of the model in the photo' %}
+
+				{% if size_guide_model_img != blank or size_guide_model_info != blank %}
+					<div class="drawer__tabs">
+						<button class="drawer__tabs-button js-tab-button active"
+								data-tab="size-guide-general-{{ toggle_id }}"
+								aria-expanded="true"
+								aria-controls="size-guide-general-{{ toggle_id }}"
+						>
+							<span class="drawer__tabs-button-text">{{ general_tab_name }}</span>
+						</button>
+
+						<button class="drawer__tabs-button js-tab-button"
+								data-tab="size-guide-model-{{ toggle_id }}"
+								aria-expanded="false"
+								aria-controls="size-guide-model-{{ toggle_id }}"
+						>
+							<span class="drawer__tabs-button-text">{{ model_tab_name }}</span>
+						</button>
+					</div>
+
+					<div id="size-guide-general-{{ toggle_id }}"
+						 class="drawer__tab-content active"
+						 data-tab-content="size-guide-general-{{ toggle_id }}"
+					>
+						{% if content contains '<slider>' %}
+							<script src="{{- 'component-rte-slider.build.min.js' | asset_url -}}" defer></script>
+						{% endif %}
+						{{- content -}}
+					</div>
+
+					<div id="size-guide-model-{{ toggle_id }}"
+						 class="drawer__tab-content"
+						 data-tab-content="size-guide-model-{{ toggle_id }}"
+					>
+						<div class="size-model">
+							{% if size_guide_model_img != blank %}
+								<div class="size-model__image-wrapper {% if size_guide_model_info == blank %}size-model__image-wrapper--full{% endif %}">
+									<picture class="lazy">
+										{% if size_guide_model_info != blank %}
+											{% assign desktop = 440 %}
+											{% assign desktopx2 = 880 %}
+										{% else %}
+											{% assign desktop = 880 %}
+											{% assign desktopx2 = 1760 %}
+										{% endif %}
+
+										<source data-srcset="{{ size_guide_model_img | image_url: width: 316 }} 1x,
+															 {{ size_guide_model_img | image_url: width: 632 }} 2x"
+
+												srcset="{{ size_guide_model_img | image_url: width: 10 }} 1x,
+															 {{ size_guide_model_img | image_url: width: 10 }} 2x"
+
+												media="(max-width: 360px)"
+										>
+
+										<source data-srcset="{{ size_guide_model_img | image_url: width: 336 }} 1x,
+															 {{ size_guide_model_img | image_url: width: 672 }} 2x"
+
+												srcset="{{ size_guide_model_img | image_url: width: 10 }} 1x,
+															 {{ size_guide_model_img | image_url: width: 10 }} 2x"
+
+												media="(max-width: 380px)"
+										>
+
+										<img class="size-model__image"
+											 src="{{ size_guide_model_img | image_url: width: 10 }}"
+											 data-src="{{ size_guide_model_img | image_url: width: desktop }}"
+											 data-srcset="{{ size_guide_model_img | image_url: width: desktop }} 1x,
+												 {{ size_guide_model_img | image_url: width: desktopx2 }} 2x"
+											 alt="{{ size_guide_model_img.alt }}"
+										>
+									</picture>
+								</div>
+							{% endif %}
+
+							{% if size_guide_model_info != blank %}
+								<div class="size-model__info">{{ size_guide_model_info | newline_to_br }}</div>
+							{% endif %}
+						</div>
+					</div>
+				{% else %}
+					{{- content -}}
+				{% endif %}
+			{% else %}
+				{{- content -}}
+			{% endif %}
+		</div>
+
+		{% if footer_content != blank %}
+			<div class="drawer__footer {{ class_footer }}">
+				{{- footer_content -}}
+			</div>
+		{% endif %}
+	</div>
+{% endif %}

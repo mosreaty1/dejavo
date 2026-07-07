@@ -1,0 +1,376 @@
+{% if section.index == 1 %}
+	{{- 'carousel.build.css' | asset_url | stylesheet_tag -}}
+{% endif %}
+
+{{- 'product-banner-new.build.css' | asset_url | stylesheet_tag -}}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 992px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{%- assign blocks							= section.blocks -%}
+{%- assign is_lazy							= section.settings.is_lazy -%}
+{%- assign label							= section.settings.label -%}
+{%- assign heading							= section.settings.heading -%}
+{%- assign text								= section.settings.text -%}
+{%- assign overlay_opacity          		= section.settings.overlay_opacity | divided_by: 100.0 -%}
+{%- assign arrows_color						= section.settings.arrows_color -%}
+{%- assign arrows_color_background			= section.settings.arrows_color_background -%}
+{%- assign pagination_color					= section.settings.pagination_color -%}
+{%- assign pagination_active_color			= section.settings.pagination_active_color -%}
+{%- assign overlay_color					= section.settings.overlay_color -%}
+{%- assign label_color						= section.settings.label_color -%}
+{%- assign heading_color					= section.settings.heading_color -%}
+{%- assign text_color						= section.settings.text_color -%}
+{%- assign button_label 					= section.settings.button_label -%}
+{%- assign button_link 						= section.settings.button_link -%}
+{%- assign button_style 					= section.settings.button_style -%}
+{%- assign section_background				= section.settings.section_background -%}
+{%- assign button_text_color 				= section.settings.button_text_color -%}
+{%- assign button_background_color 			= section.settings.button_background_color -%}
+{%- assign button_border_color 				= section.settings.button_border_color -%}
+{%- assign button_outer_border_color 		= section.settings.button_outer_border_color -%}
+{%- assign button_text_color_hover 			= section.settings.button_text_color_hover -%}
+{%- assign button_background_color_hover 	= section.settings.button_background_color_hover -%}
+{%- assign button_border_color_hover 		= section.settings.button_border_color_hover -%}
+{%- assign button_outer_border_color_hover 	= section.settings.button_outer_border_color_hover -%}
+{%- assign delay_step 						= 0 -%}
+
+{%- capture section_styles -%}
+	--arrows-color: {{ arrows_color -}}; {{-  -}}
+	--arrows-color-background: {{ arrows_color_background -}}; {{-  -}}
+	--pagination-color: {{ pagination_color -}}; {{-  -}}
+	--pagination-active-color: {{ pagination_active_color -}}; {{-  -}}
+	--overlay-color: {{ overlay_color | color_modify: "alpha", overlay_opacity -}}; {{-  -}}
+	--label-color: {{ label_color -}}; {{-  -}}
+	--heading-color: {{ heading_color -}}; {{-  -}}
+	--text-color: {{ text_color -}}; {{-  -}}
+	--section-background: {{ section_background -}}; {{-  -}}
+	{%- if button_style == 'circle' -%}
+		--button-circle-text-color: {{- button_text_color -}};
+		--button-circle-background-color: {{- button_background_color -}};
+		--button-circle-border-color: {{- button_border_color -}};
+		--button-circle-outer-border-color: {{- button_outer_border_color -}};
+		--button-circle-text-color-hover: {{- button_text_color_hover -}};
+		--button-circle-background-color-hover: {{- button_background_color_hover -}};
+		--button-circle-border-color-hover: {{- button_border_color_hover -}};
+		--button-circle-outer-border-color-hover: {{- button_outer_border_color_hover -}};
+	{%- elsif button_style == 'base' -%}
+		--button-text-color-primary: {{- button_text_color -}};
+		--button-background-color-primary: {{- button_background_color -}};
+		--button-border-color-primary: {{- button_border_color -}};
+		--button-outer-border-color-primary: {{- button_outer_border_color -}};
+		--button-text-color-primary-hover: {{- button_text_color_hover -}};
+		--button-background-color-primary-hover: {{- button_background_color_hover -}};
+		--button-border-color-primary-hover: {{- button_border_color_hover -}};
+		--button-outer-border-color-primary-hover: {{- button_outer_border_color_hover -}};
+	{%- endif -%}
+
+{%- endcapture -%}
+
+<section class="product-banner-new js-product-banner js-animate {% if request.visual_preview_mode or section.index == 1 %}animated{% endif %}" style="{{- section_styles -}}">
+	<div class="product-banner__container">
+		<div class="swiper product-banner__media-slider-wrapper js-product-banner-thumbs-slider">
+			<div class="swiper-wrapper product-banner__media-slider">
+				{%- for block in blocks -%}
+					<div class="swiper-slide js-product-banner-thumbs-slide">
+						{%- assign image_desktop	= block.settings.image_desktop -%}
+						{%- assign image_mobile		= block.settings.image_mobile | default: image_desktop -%}
+						{%- assign video_desktop	= block.settings.video_desktop -%}
+						{%- assign video_mobile		= block.settings.video_mobile | default: video_desktop -%}
+
+						<div class="product-banner__media-slider-overlay"></div>
+
+						{%- if video_desktop != blank -%}
+							<video
+								class="product-banner__slide-media product-banner__slide-media--desktop js-product-banner-video {% if forloop.index == 1 %}need-animate{% endif %}"
+								loop
+								muted
+								playsinline
+								tabindex="-1"
+								aria-hidden="true"
+								style="--delay-duration: {{- delay_step | append: "s" -}};"
+							>
+								{%- for source in video_desktop.sources -%}
+									{%- if source.mime_type == 'video/mp4' -%}
+										<source src="{{- source.url -}}" type="{{- source.mime_type -}}">
+									{%- endif -%}
+								{%- endfor -%}
+							</video>
+
+							<video
+								class="product-banner__slide-media product-banner__slide-media--mobile js-product-banner-video {% if forloop.index == 1 %}need-animate{% endif %}"
+								loop
+								muted
+								playsinline
+								tabindex="-1"
+								aria-hidden="true"
+								style="--delay-duration: {{- delay_step | append: "s" -}};"
+							>
+								{%- for source in video_mobile.sources -%}
+									{%- if source.mime_type == 'video/mp4' -%}
+										<source src="{{- source.url -}}" type="{{- source.mime_type -}}">
+									{%- endif -%}
+								{%- endfor -%}
+							</video>
+						{%- elsif image_desktop != blank -%}
+							{%- capture img_focal -%}
+								--img-desktop-pos: {{ image_desktop.presentation.focal_point }}; --img-mob-pos: {{ image_mobile.presentation.focal_point }};
+							{%- endcapture -%}
+
+							{%- if is_lazy -%}
+								<picture class="lazy">
+									<source
+										data-srcset="{{ image_mobile | img_url: "375x" }} 1x, {{ image_mobile | img_url: "750x" }} 2x"
+										srcset="{{ image_mobile | img_url: "10x" }} 1x, {{ image_mobile | img_url: "10x" }} 2x"
+										media="(max-width: 375px)"
+									/>
+
+									<source
+										data-srcset="{{ image_mobile | img_url: "420x" }} 1x, {{ image_mobile | img_url: "840x" }} 2x"
+										srcset="{{ image_mobile | img_url: "10x" }} 1x, {{ image_mobile | img_url: "10x" }} 2x"
+										media="(max-width: 420px)"
+									/>
+
+									<source
+										data-srcset="{{ image_mobile | img_url: "575x" }} 1x, {{ image_mobile | img_url: "1150x" }} 2x"
+										srcset="{{ image_mobile | img_url: "10x" }} 1x, {{ image_mobile | img_url: "10x" }} 2x"
+										media="(max-width: 575px)"
+									/>
+
+									<source
+										data-srcset="{{ image_mobile | img_url: "767x" }} 1x, {{ image_mobile | img_url: "1534x" }} 2x"
+										srcset="{{ image_mobile | img_url: "10x" }} 1x, {{ image_mobile | img_url: "10x" }} 2x"
+										media="(max-width: 767px)"
+									/>
+
+									<source
+										data-srcset="{{ image_desktop | img_url: "991x" }} 1x, {{ image_desktop | img_url: "1982x" }} 2x"
+										srcset="{{ image_desktop | img_url: "10x" }} 1x, {{ image_desktop | img_url: "10x" }} 2x"
+										media="(max-width: 991px)"
+									/>
+
+									<source
+										data-srcset="{{ image_desktop | img_url: "1440x" }} 1x, {{ image_desktop | img_url: "2880x" }} 2x"
+										srcset="{{ image_desktop | img_url: "10x" }} 1x, {{ image_desktop | img_url: "10x" }} 2x"
+										media="(max-width: 1440px)"
+									/>
+
+									<img
+										data-srcset="{{ image_desktop | img_url: "1920x" }} 1x, {{ image_desktop | img_url: "3840x" }} 2x"
+										srcset="{{ image_desktop | img_url: "10x" }} 1x, {{ image_desktop | img_url: "10x" }} 2x"
+										data-src="{{- image_desktop | img_url: "1920x" -}}"
+										src="{{ image_desktop | img_url: "10x" }}"
+										alt="{{ image_desktop.alt }}"
+										class="product-banner__slide-media product-banner__slide-media--image {% if forloop.index == 1 %}need-animate{% endif %}"
+										style="{{ img_focal }} --delay-duration: {{- delay_step | append: "s" -}};"
+									/>
+								</picture>
+							{%- else -%}
+								<picture>
+									<source
+										srcset="{{ image_mobile | img_url: "375x" }} 1x, {{ image_mobile | img_url: "750x" }} 2x"
+										media="(max-width: 375px)"
+									/>
+
+									<source
+										srcset="{{ image_mobile | img_url: "420x" }} 1x, {{ image_mobile | img_url: "840x" }} 2x"
+										media="(max-width: 420px)"
+									/>
+
+									<source
+										srcset="{{ image_mobile | img_url: "575x" }} 1x, {{ image_mobile | img_url: "1150x" }} 2x"
+										media="(max-width: 575px)"
+									/>
+
+									<source
+										srcset="{{ image_mobile | img_url: "767x" }} 1x, {{ image_mobile | img_url: "1534x" }} 2x"
+										media="(max-width: 767px)"
+									/>
+
+									<source
+										srcset="{{ image_desktop | img_url: "991x" }} 1x, {{ image_desktop | img_url: "1982x" }} 2x"
+										media="(max-width: 991px)"
+									/>
+
+									<source
+										srcset="{{ image_desktop | img_url: "1440x" }} 1x, {{ image_desktop | img_url: "2880x" }} 2x"
+										media="(max-width: 1440px)"
+									/>
+
+									<img
+										srcset="{{ image_desktop | img_url: "1920x" }} 1x, {{ image_desktop | img_url: "3840x" }} 2x"
+										src="{{- image_desktop | img_url: "1920x" -}}"
+										alt="{{ image_desktop.alt }}"
+										class="product-banner__slide-media product-banner__slide-media--image {% if forloop.index == 1 %}need-animate{% endif %}"
+										style="{{ img_focal }} --delay-duration: {{- delay_step | append: "s" -}};"
+										{% if section.index == 1 %}
+											fetchpriority="high"
+										{% endif %}
+									/>
+								</picture>
+							{%- endif -%}
+						{%- else -%}
+							{% assign odd =  forloop.index | modulo: 2 %}
+
+							<div class="product-banner__slide-media {% if forloop.index == 1 %}need-animate{% endif %}"
+								 style="--delay-duration: {{- delay_step | append: "s" -}};"
+							>
+								{%- if odd  == 1 -%}
+									{{- 'lifestyle-1' | placeholder_svg_tag: 'product-banner__slide-media' -}}
+								{%- else -%}
+									{{- 'lifestyle-2' | placeholder_svg_tag: 'product-banner__slide-media' -}}
+								{%- endif -%}
+							</div>
+						{%- endif -%}
+					</div>
+				{%- endfor -%}
+			</div>
+		</div>
+
+		<div class="product-banner__content">
+			{%- assign show_text_content = false -%}
+
+			{%- if label != blank or heading != blank or text != blank -%}
+				{%- assign show_text_content = true -%}
+			{%- endif -%}
+
+			{%- if show_text_content == false -%}
+				{%- assign content_wrapper_class = 'product-banner__content-wrapper--desktop' -%}
+			{%- endif -%}
+
+			<div class="product-banner__content-wrapper {{ content_wrapper_class -}}">
+				{%- if show_text_content == true -%}
+					<div class="product-banner__text-wrapper">
+						<div class="product-banner__text-header">
+							{%- if label != blank -%}
+								{%- assign delay_step = delay_step | plus: 0.25 -%}
+
+								<span class="subheading product-banner__label need-animate"
+									  style="--delay-duration: {{- delay_step | append: "s" -}};"
+								>
+									{{- label -}}
+								</span>
+							{%- endif -%}
+
+							{%- if heading != blank -%}
+								{%- assign delay_step = delay_step | plus: 0.25 -%}
+
+								<h2 class="product-banner__heading need-animate"
+									style="--delay-duration: {{- delay_step | append: "s" -}};"
+								>
+									{{- heading -}}
+								</h2>
+							{%- endif -%}
+						</div>
+
+						{%- if text != blank -%}
+							{%- assign delay_step = delay_step | plus: 0.25 -%}
+
+							<p class="product-banner__text rte-new need-animate"
+							   style="--delay-duration: {{- delay_step | append: "s" -}};"
+							>
+								{{- text -}}
+							</p>
+						{%- endif -%}
+
+						{%- if button_label != blank and button_link != blank -%}
+							{%- assign delay_step = delay_step | plus: 0.25 -%}
+
+							<div class="product-banner__button-container need-animate"
+								 style="--delay-duration: {{- delay_step | append: "s" -}};"
+							>
+								{%- if button_style == 'circle' -%}
+									<a class="button-circle product-banner__button" href="{{- button_link -}}">
+										<span class="button__text">
+											{{- button_label -}}
+										</span>
+
+										<span class="button-new__icon-container">
+											<span class="button-new__icon-wrapper">
+												{% render "icons-new", icon: "wave", section_id: 'sdsasfasf' %}
+											</span>
+										</span>
+									</a>
+								{%- elsif button_style == 'base' -%}
+									<a href="{{- button_link -}}" class="button-new button--primary product-banner__button">
+										{{- button_label -}}
+									</a>
+								{%- endif -%}
+							</div>
+						{%- endif -%}
+					</div>
+				{%- endif -%}
+
+				{%- if blocks.size > 1 -%}
+					{%- assign delay_step = delay_step | plus: 0.25 -%}
+
+					<div class="product-banner__products-slider-ui js-product-banner-slider-ui need-animate"
+						 style="--delay-duration: {{- delay_step | append: "s" -}};"
+					>
+						<button
+							class="swiper-button-prev-new product-banner__slider-button product-banner__slider-button--prev js-product-banner-slider-button-prev"
+							type="button"
+							aria-label="{{ "general.accessibility.slider.prev_slide_message" | t | escape -}}"
+						>
+							{%- render 'icons-new', icon: 'arrow-left' -%}
+						</button>
+
+						<button
+							class="swiper-button-next-new product-banner__slider-button product-banner__slider-button--next js-product-banner-slider-button-next"
+							type="button"
+							aria-label="{{ "general.accessibility.slider.next_slide_message" | t | escape -}}"
+						>
+							{%- render 'icons-new', icon: 'arrow-right' -%}
+						</button>
+					</div>
+				{%- endif -%}
+			</div>
+
+			{%- if blocks.size > 1 -%}
+				{%- assign delay_step_desktop = delay_step | plus: 0.25 -%}
+				{%- assign delay_step_mobile = delay_step -%}
+			{%- else -%}
+				{%- assign delay_step_desktop = delay_step | plus: 0.25 -%}
+				{%- assign delay_step_mobile = delay_step_desktop -%}
+			{%- endif -%}
+
+			<div class="product-banner__products-slider-container"
+			>
+				<div class="swiper product-banner__products-slider-wrapper js-product-banner-slider need-animate"
+					 data-slides-count="{{ blocks.size }}"
+					 style="--delay-duration-desktop: {{- delay_step_desktop | append: "s" -}}; --delay-duration-mobile: {{- delay_step_mobile | append: "s" -}};"
+				>
+					<div class="swiper-wrapper product-banner__products-slider">
+						{%- for block in blocks -%}
+							{%- assign product = block.settings.product -%}
+
+							<div class="swiper-slide product-banner__products-slide">
+								{%- render 'product-card-new', product: product, size: 414, is_lazy: is_lazy -%}
+							</div>
+						{%- endfor -%}
+					</div>
+				</div>
+
+				{%- if blocks.size > 1 -%}
+					<div class="swiper-pagination product-banner__pagination js-product-banner-pagination need-animate"
+						 style="--delay-duration-desktop: {{- delay_step_desktop | append: "s" -}}; --delay-duration-mobile: {{- delay_step_mobile | append: "s" -}};"
+					></div>
+				{%- endif -%}
+			</div>
+		</div>
+	</div>
+
+	<script src="{{- 'component-swiper-modules.build.min.js' | asset_url -}}" defer></script>
+	<script src="{{- 'section-product-banner.build.min.js' | asset_url -}}" defer></script>
+</section>

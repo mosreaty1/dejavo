@@ -1,0 +1,135 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Shop the look (Only settings.design == 'alternate')
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign title			  	= section.settings.title -%}
+{%- assign label			  	= section.settings.label -%}
+{%- assign image			  	= section.settings.image -%}
+{%- assign is_lazy			  	= section.settings.is_lazy -%}
+{%- assign image_position	  	= section.settings.image_position -%}
+{%- assign image_crop	  		= section.settings.image_crop -%}
+{%- assign point_color			= section.settings.point_color -%}
+{%- assign point_bg_color		= section.settings.point_bg_color -%}
+{%- assign image_background		= section.settings.image_background -%}
+{%- assign is_point_animated	= section.settings.is_point_animated -%}
+{%- assign blocks				= section.blocks -%}
+
+{{- 'shop-the-look-new.build.css' | asset_url | stylesheet_tag -}}
+
+<section class="shop-the-look-new js-shop-the-look js-animate {% if request.visual_preview_mode or section.index == 1 %}animated{% endif %}">
+	{% if label != blank %}
+		<h3 class="shop-the-look__subtitle subheading need-animate">{{ label }}</h3>
+	{% endif %}
+
+	{% if title != blank %}
+		<h2 class="shop-the-look__title h2 need-animate">{{ title }}</h2>
+	{% endif %}
+
+	<div class="shop-the-look__container{% if image_position == 'left' %} shop-the-look__container--ltr{% else %} shop-the-look__container--rtl{% endif %}">
+		{%- capture slider -%}
+			<div class="swiper shop-the-look__products-container need-animate js-shop-the-look-slider">
+				<div class="swiper-wrapper shop-the-look__products">
+					{%- for block in blocks -%}
+						{%- assign product = block.settings.product -%}
+
+						<div
+							class="swiper-slide shop-the-look__product js-shop-the-look-slide"
+							data-product-index="{{- forloop.index0 -}}"
+						>
+							{%- render "product-card-new", product: product, is_lazy: is_lazy, size: 646, tablet_size: 382, mobile_size: 238 -%}
+						</div>
+					{%- endfor -%}
+				</div>
+
+				<div class="shop-the-look__slider-buttons js-shop-the-look-arrows-desktop">
+					{%- if image_position == 'right' -%}
+						<button
+							class="swiper-button-prev-new shop-the-look__slider-button shop-the-look__slider-button-prev-rtl js-shop-the-look-slider-button-prev"
+							type="button"
+							aria-label="{{ "general.accessibility.slider.prev_slide_message" | t  | escape -}}"
+						>
+							{%- render 'icons-new', icon: 'arrow-left' -%}
+						</button>
+
+						<button
+							class="swiper-button-next-new shop-the-look__slider-button shop-the-look__slider-button-next-rtl js-shop-the-look-slider-button-next"
+							type="button"
+							aria-label="{{ "general.accessibility.slider.next_slide_message" | t | escape -}}"
+						>
+							{%- render 'icons-new', icon: 'arrow-right' -%}
+						</button>
+					{%- else -%}
+						<button
+							class="swiper-button-prev-new shop-the-look__slider-button shop-the-look__slider-button-prev-ltr js-shop-the-look-slider-button-prev"
+							type="button"
+							aria-label="{{ "general.accessibility.slider.prev_slide_message" | t  | escape -}}"
+						>
+							{%- render 'icons-new', icon: 'arrow-left' -%}
+						</button>
+
+						<button
+							class="swiper-button-next-new shop-the-look__slider-button shop-the-look__slider-button-next-ltr js-shop-the-look-slider-button-next"
+							type="button"
+							aria-label="{{ "general.accessibility.slider.next_slide_message" | t | escape -}}"
+						>
+							{%- render 'icons-new', icon: 'arrow-right' -%}
+						</button>
+					{%- endif -%}
+				</div>
+			</div>
+		{%- endcapture -%}
+
+		{%- if image_position == 'right' -%}
+			{{- slider -}}
+		{%- endif -%}
+
+		<div
+			class="shop-the-look__image-wrapper need-animate"
+			style="--shop-the-look-img-bg: {{ image_background }};"
+		>
+			{%- render "shop-the-look-image-new", image: image, is_lazy: true, image_crop: image_crop -%}
+
+			{% assign delay_step = 0.5 %}
+
+			{%- for block in blocks -%}
+				{%- assign point_position_top = block.settings.point_position_top -%}
+				{%- assign point_position_left = block.settings.point_position_left -%}
+				{%- assign product = block.settings.product -%}
+
+				{%- capture point_classes -%}
+					shop-the-look__point need-animate{% if is_point_animated == true %} shop-the-look__point--animated{% endif %} js-shop-the-look-point{% if forloop.index0 == 0 %} is-active{%- endif -%}
+				{%- endcapture -%}
+
+				<button
+					class="{{- point_classes -}}"
+					style="transition-delay: {{ delay_step }}s; --point-position-top: {{ point_position_top -}}%; --point-position-left: {{ point_position_left -}}%; --point-color: {{ point_color -}}; --point-background: {{ point_bg_color -}}"
+					data-point-index="{{- forloop.index0 -}}"
+					aria-label="{{- 'sections.shop_the_look.point_button' | t : title: product.title | escape -}}"
+					{% if forloop.index0 == 0 %}
+					tabindex="-1"
+					{% else %}
+					tabindex="0"
+					{%- endif %}
+				>
+					{%- render 'icons-new', icon: 'point-button' -%}
+
+					{%- render 'icons-new', icon: 'point-button-active' -%}
+				</button>
+
+				{% assign delay_step = delay_step | plus: 0.4 %}
+			{%- endfor -%}
+		</div>
+
+		{%- if image_position == 'right' -%}
+			<div class="swiper shop-the-look__slider-buttons js-shop-the-look-arrows-mobile"></div>
+		{%- endif -%}
+
+		{%- if image_position == 'left' -%}
+			{{- slider -}}
+		{%- endif -%}
+	</div>
+</section>
+
+<script src="{{- 'shop-the-look-new.build.min.js' | asset_url -}}" defer></script>

@@ -1,0 +1,8 @@
+.apps-section {
+	max-width: calc(var(--global-container-width) + 40px);
+	margin: 0 auto;
+	padding: 0 20px;
+}
+.apps-section.apps-section--full-width {
+	max-width: 100%;
+}

@@ -1,0 +1,151 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Ticker
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{% case settings.design %}
+	{% when 'alternate' %}
+		{% render 'ticker-new' %}
+	{% when 'standard' %}
+		{{- 'ticker.build.css' | asset_url | stylesheet_tag -}}
+
+		{%- style -%}
+			#shopify-section-{{- section.id -}} {
+				padding-top: {{- section.settings.offset_top_mobile -}}px;
+				padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+			}
+
+			@media screen and (min-width: 768px) {
+				#shopify-section-{{- section.id -}} {
+					padding-top: {{- section.settings.offset_top_desktop -}}px;
+					padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+				}
+			}
+		{%- endstyle -%}
+
+		{%- assign text                   = section.settings.text -%}
+		{%- assign desktop_movement_speed = section.settings.desktop_movement_speed -%}
+		{%- assign mobile_movement_speed  = section.settings.mobile_movement_speed -%}
+		{%- assign text_color             = section.settings.text_color -%}
+		{%- assign section_background     = section.settings.section_background -%}
+
+		{%- capture ticker_styles -%}
+			--text-color: {{ text_color }};
+			--section-background: {{ section_background }};
+			--desktop-movement-speed: {{ desktop_movement_speed }}s;
+			--mobile-movement-speed: {{ mobile_movement_speed }}s;
+		{%- endcapture -%}
+
+		<section
+			class="ticker js-ticker-container is-loading"
+			style="{{- ticker_styles -}}"
+		>
+			<div class="ticker__items js-ticker-content-container">
+				{{- text -}}
+			</div>
+		</section>
+
+		<script src="{{- 'section-ticker.build.min.js' | asset_url -}}" defer></script>
+{% endcase %}
+
+{% schema %}
+	{
+		"name": "Ticker",
+		"disabled_on": {
+			"groups": ["header", "footer"]
+		},
+		"settings": [
+			{
+				"type": "richtext",
+				"id": "text",
+				"label": "Text",
+				"default": "<p>Text in the ticker</p><p>Text in the ticker</p><p>Text in the ticker</p>",
+				"info": "Use Enter to split text into sentences."
+			},
+			{
+				"type": "range",
+				"id": "desktop_movement_speed",
+				"label": "Movement speed (desktop)",
+				"min": 4,
+				"max": 100,
+				"unit": "s",
+				"default": 20
+			},
+			{
+				"type": "range",
+				"id": "mobile_movement_speed",
+				"label": "Movement speed (mobile)",
+				"min": 4,
+				"max": 100,
+				"unit": "s",
+				"default": 35
+			},
+			{
+				"type": "header",
+				"content": "Colors"
+			},
+			{
+				"type": "color_background",
+				"id": "section_background",
+				"label": "Background",
+				"default": "#1B1B1B"
+			},
+			{
+				"type": "color",
+				"id": "text_color",
+				"label": "Text",
+				"default": "#ffffff"
+			},
+			{
+				"type": "header",
+				"content": "Layout"
+			},
+			{
+				"type": "range",
+				"id": "offset_top_desktop",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Desktop offset top",
+				"default": 0
+			},
+			{
+				"type": "range",
+				"id": "offset_bottom_desktop",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Desktop offset bottom",
+				"default": 0
+			},
+			{
+				"type": "range",
+				"id": "offset_top_mobile",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Mobile offset top",
+				"default": 0
+			},
+			{
+				"type": "range",
+				"id": "offset_bottom_mobile",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Mobile offset bottom",
+				"default": 0
+			}
+		],
+		"presets": [
+			{
+				"name": "Ticker"
+			}
+		]
+	}
+{% endschema %}

@@ -1,0 +1,191 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Store location (Only for settings.design == 'alternate')
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{{- "store-location-new.build.css" | asset_url | stylesheet_tag -}}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{% assign reverse_content 		= section.settings.reverse_content %}
+{% assign title 				= section.settings.title %}
+{% assign subtitle 				= section.settings.subtitle %}
+{% assign address_title 		= section.settings.address_title %}
+{% assign address_text 			= section.settings.address_text %}
+{% assign schedule_title 		= section.settings.schedule_title %}
+{% assign schedule_text 		= section.settings.schedule_text %}
+{% assign phone_title 			= section.settings.phone_title %}
+{% assign phone_text 			= section.settings.phone_text %}
+{% assign email_title 			= section.settings.email_title %}
+{% assign email_text 			= section.settings.email_text %}
+{% assign text_alignment 		= section.settings.text_alignment %}
+{% assign first_button_text 	= section.settings.first_button_text %}
+{% assign first_button_link 	= section.settings.first_button_link %}
+{% assign first_button_style 	= section.settings.first_button_style %}
+{% assign second_button_text 	= section.settings.second_button_text %}
+{% assign second_button_link 	= section.settings.second_button_link %}
+{% assign second_button_style 	= section.settings.second_button_style %}
+{% assign store_image 			= section.settings.store_image %}
+{% assign google_map_api_key 	= section.settings.google_map_api_key %}
+{% assign map_query 			= section.settings.map_query %}
+{% assign full_width 			= section.settings.full_width %}
+
+<section class="store-location-new"
+		 style="--text-alignment: {{ text_alignment }};"
+>
+	<div class="store-location-new__container {% if full_width == false %}store-location-new__container--max-width{% endif %} {% if reverse_content %}store-location-new__container--reverse{% endif %} js-animate{% if request.visual_preview_mode or section.index == 1 %} animated{% endif %}">
+		<div class="store-location-new__header store-location-new__desktop-hidden">
+			{% if subtitle != blank %}
+				<p class="store-location-new__subtitle need-animate subheading">{{ subtitle }}</p>
+			{% endif %}
+
+			{% if title != blank %}
+				<h2 class="store-location-new__title need-animate h2">{{ title }}</h2>
+			{% endif %}
+		</div>
+
+		<div class="store-location-new__media">
+			{%- capture img_focal -%}
+				--img-desktop-pos: {{ store_image.presentation.focal_point }};
+			{%- endcapture -%}
+
+			<div class="store-location-new__media-wrapper">
+				{%- if google_map_api_key != blank and map_query != blank -%}
+					<iframe
+						class="store-location-new__map"
+						width="100%"
+						height="100%"
+						frameborder="0" style="border:0"
+						referrerpolicy="no-referrer-when-downgrade"
+						src="https://www.google.com/maps/embed/v1/place?key={{- google_map_api_key -}}&q={{- map_query -}}"
+						allowfullscreen>
+					</iframe>
+				{%- elsif store_image != blank -%}
+					<picture class="lazy">
+						<source data-srcset="{{ store_image | image_url: width: 368, height: 258 }} 1x,
+											{{ store_image | image_url: width: 736, height: 516 }} 2x"
+						        srcset="{{ store_image | image_url: width: 10 }} 1x"
+						        media="(max-width: 400px)">
+
+						<source data-srcset="{{ store_image | image_url: width: 735, height: 515 }} 1x,
+											{{ store_image | image_url: width: 1470, height: 1030 }} 2x"
+						        srcset="{{ store_image | image_url: width: 10 }} 1x"
+						        media="(max-width: 767px)">
+
+						<source data-srcset="{{ store_image | image_url: width: 927, height: 649 }} 1x,
+											{{ store_image | image_url: width: 1854, height: 1298 }} 2x"
+						        srcset="{{ store_image | image_url: width: 10 }} 1x"
+						        media="(max-width: 991px)">
+
+						<source data-srcset="{{ store_image | image_url: width: 1071, height: 750 }} 1x,
+											{{ store_image | image_url: width: 2142, height: 1500 }} 2x"
+						        srcset="{{ store_image | image_url: width: 10 }} 1x"
+						        media="(max-width: 1199px)">
+
+						<source data-srcset="{{ store_image | image_url: width: 630, height: 450 }} 1x,
+											{{ store_image | image_url: width: 1260, height: 900 }} 2x"
+						        srcset="{{ store_image | image_url: width: 10 }} 1x"
+						        media="(max-width: 1500px)">
+
+						<img class="store-location-new__image need-animate"
+						     src="{{ store_image | image_url: width: 10 }}"
+						     data-src="{{ store_image | image_url: width: 840, height: 600 }}"
+						     data-srcset="{{ store_image | image_url: width: 840, height: 600 }} 1x, {{ store_image | image_url: width: 1680, height: 1200 }} 2x"
+						     alt="{{ store_image.alt | escape }}"
+						     style="{{ img_focal }}"
+						>
+					</picture>
+				{%- else -%}
+					{{- 'lifestyle-1' | placeholder_svg_tag: 'store-location-new__image need-animate' -}}
+				{%- endif -%}
+			</div>
+		</div>
+
+		<div class="store-location-new__content">
+			{% if subtitle != blank %}
+				<p class="store-location-new__subtitle need-animate subheading store-location-new__mobile-hidden">{{ subtitle }}</p>
+			{% endif %}
+
+			{% if title != blank %}
+				<h2 class="store-location-new__title need-animate h2 store-location-new__mobile-hidden">{{ title }}</h2>
+			{% endif %}
+
+			{% if address_title != blank or address_text != blank %}
+				<div class="store-location-new__item need-animate">
+					{% if address_title != blank %}
+						<h3 class="store-location-new__content-title">{{ address_title }}</h3>
+					{% endif %}
+
+					{% if address_text != blank %}
+						<div class="section-rte store-location-new__content-rte">{{ address_text }}</div>
+					{% endif %}
+				</div>
+			{% endif %}
+
+			{% if schedule_title != blank or schedule_text != blank %}
+				<div class="store-location-new__item need-animate">
+					{% if schedule_title != blank %}
+						<h3 class="store-location-new__content-title">{{ schedule_title }}</h3>
+					{% endif %}
+
+					{% if schedule_text != blank %}
+						<div class="section-rte store-location-new__content-rte">{{ schedule_text }}</div>
+					{% endif %}
+				</div>
+			{% endif %}
+
+			{% if phone_title != blank or phone_text != blank %}
+				<div class="store-location-new__item need-animate">
+					{% if phone_title != blank %}
+						<h3 class="store-location-new__content-title">{{ phone_title }}</h3>
+					{% endif %}
+
+					{% if phone_text != blank %}
+						<div class="section-rte store-location-new__content-rte">{{ phone_text }}</div>
+					{% endif %}
+				</div>
+			{% endif %}
+
+			{% if email_title != blank or email_text != blank %}
+				<div class="store-location-new__item need-animate">
+					{% if email_title != blank %}
+						<h3 class="store-location-new__content-title">{{ email_title }}</h3>
+					{% endif %}
+
+					{% if email_text != blank %}
+						<div class="section-rte store-location-new__content-rte">{{ email_text }}</div>
+					{% endif %}
+				</div>
+			{% endif %}
+
+			{% if first_button_text != blank and first_button_link != blank or second_button_text != blank and second_button_link != blank %}
+				<div class="store-location-new__buttons need-animate">
+					{% if first_button_text != blank and first_button_link != blank %}
+						<a href="{{ first_button_link }}" class="store-location-new__button button-new button--{{ first_button_style }}">
+							{{- first_button_text -}}
+						</a>
+					{% endif %}
+
+					{% if second_button_text != blank and second_button_link != blank %}
+						<a href="{{ second_button_link }}" class="store-location-new__button button-new button--{{ second_button_style }}">
+							{{- second_button_text -}}
+						</a>
+					{% endif %}
+				</div>
+			{% endif %}
+		</div>
+	</div>
+</section>

@@ -1,0 +1,350 @@
+{% assign enable_accents_spot 		= settings.enable_accents_spot %}
+{% assign subtitle 					= section.settings.subtitle %}
+{% assign title 					= section.settings.title %}
+{% assign text 						= section.settings.text %}
+{% assign cards_per_row 			= section.settings.cards_per_row %}
+{% assign center_cards_on_desktop 	= section.settings.center_cards_on_desktop %}
+{% assign full_width 				= section.settings.full_width 	%}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{{ 'cards-grid-new.build.css' | asset_url | stylesheet_tag }}
+
+{% assign delay_step_header = 0 %}
+
+<section class="cards-grid-new {% if full_width %}cards-grid-new--full-width{% endif %} {% if enable_accents_spot == true %}cards-grid-new--accent-spot{% endif %}">
+	<div class="cards-grid__container">
+		{% if subtitle != blank or title != blank or text != blank %}
+			<div class="cards-grid__header js-animate {% if request.visual_preview_mode or section.index == 1 %}animated{% endif %}">
+				{%- if subtitle != blank -%}
+					{% assign delay_step_header = delay_step_header | plus: 0.25 %}
+
+					<p class="cards-grid__subtitle subheading need-animate" style="--delay-duration-header: {{- delay_step_header | append: "s" -}};">
+						{{ subtitle }}
+					</p>
+				{%- endif -%}
+
+				{% if title != blank %}
+					{% assign delay_step_header = delay_step_header | plus: 0.25 %}
+
+					<h2 class="cards-grid__title h2 need-animate" style="--delay-duration-header: {{- delay_step_header | append: "s" -}};">
+						{{ section.settings.title }}
+					</h2>
+				{% endif %}
+
+				{% if text != blank %}
+					{% assign delay_step_header = delay_step_header | plus: 0.25 %}
+
+					<div class="cards-grid__text rte-new need-animate" style="--delay-duration-header: {{- delay_step_header | append: "s" -}};">
+						{{ text }}
+					</div>
+				{% endif %}
+			</div>
+		{% endif %}
+
+		{% assign delay_step_grid = 0 %}
+
+		{% if section.blocks.size > 0 %}
+			{%- capture row_class -%}
+				{% if section.blocks.size == 1 %}cards-grid__row--center-one{% endif %} {{-  -}}
+				{% if section.blocks.size <= 2 %}cards-grid__row--center-two{% endif %} {{-  -}}
+				{% if center_cards_on_desktop %}cards-grid__row--center-desktop{% endif %} {{-  -}}
+			{%- endcapture -%}
+
+			<div class="cards-grid__row {{ row_class -}} js-animate {% if request.visual_preview_mode or section.index == 1 %}animated{% endif %}">
+				{% for block in section.blocks %}
+					{% assign image 	= block.settings.image %}
+					{% assign title 	= block.settings.title %}
+					{% assign text 		= block.settings.text %}
+					{% assign link_url 	= block.settings.link_url %}
+
+					{% if section.blocks.size == 1 %}
+						{% assign cards_per_row = "1" %}
+					{% endif %}
+
+					{% assign index = forloop.index0 %}
+
+					{% assign delay_step_grid = delay_step_grid | plus: 0.25 %}
+
+					{% case cards_per_row %}
+						{% when "1" %}
+							{% assign image_width_991 = 472 %}
+							{% assign sm_item_shape = 'cards-grid__item--sm-shape-2' %}
+						{% else %}
+							{% assign column_index = index | modulo: 4 %}
+
+							{% case column_index %}
+							{% when 0 or 3 %}
+								{% assign sm_item_shape = 'cards-grid__item--sm-shape-1' %}
+								{% assign image_width_991 = 309 %}
+							{% when 1 or 2 %}
+								{% assign sm_item_shape = 'cards-grid__item--sm-shape-2' %}
+								{% assign image_width_991 = 472 %}
+							{% endcase %}
+
+							{% assign column_index_animation = index | modulo: 2 %}
+
+							{% if column_index_animation == 0 %}
+								{% assign delay_step_grid_sm = 0 | plus: 0.25 %}
+							{% else %}
+								{% assign delay_step_grid_sm = delay_step_grid_sm | plus: 0.25 %}
+							{% endif %}
+					{% endcase %}
+
+					{% case cards_per_row %}
+						{% when "1" %}
+							{% assign column_type = '1' %}
+							{% assign image_width_1199 = 560 %}
+							{% assign image_width = 840 %}
+							{% assign delay_step_grid_md = 0 | plus: 0.25 %}
+						{% when "2" %}
+							{% assign column_index = index | modulo: 4 %}
+
+							{% case column_index %}
+								{% when 0 or 3 %}
+									{% assign column_type = '1' %}
+									{% assign image_width_1199 = 377 %}
+									{% assign image_width = 550 %}
+								{% when 1 or 2 %}
+									{% assign column_type = '2' %}
+									{% assign image_width_1199 = 576 %}
+									{% assign image_width = 840 %}
+							{% endcase %}
+
+							{% assign column_index_animation = index | modulo: 2 %}
+
+							{% if column_index_animation == 0 %}
+								{% assign delay_step_grid_md = 0 | plus: 0.25 %}
+							{% else %}
+								{% assign delay_step_grid_md = delay_step_grid_md | plus: 0.25 %}
+							{% endif %}
+						{% when "3" %}
+							{% assign column_index = index | modulo: 3 %}
+
+							{% case column_index %}
+								{% when 0 %}
+									{% assign column_type = '1' %}
+									{% assign image_width_1199 = 280 %}
+									{% assign image_width = 405 %}
+									{% assign md_item_shape = 'cards-grid__item--md-shape-1' %}
+								{% when 1 %}
+									{% assign column_type = '2' %}
+									{% assign image_width_1199 = 477 %}
+									{% assign image_width = 695 %}
+									{% assign md_item_shape = 'cards-grid__item--md-shape-2' %}
+								{% when 2 %}
+									{% assign column_type = '3' %}
+									{% assign image_width_1199 = 379 %}
+									{% assign image_width = 550 %}
+									{% assign md_item_shape = 'cards-grid__item--md-shape-3' %}
+							{% endcase %}
+
+							{% assign column_index_animation = index | modulo: 3 %}
+
+							{% if column_index_animation == 0 %}
+								{% assign delay_step_grid_md = 0 | plus: 0.25 %}
+							{% else %}
+								{% assign delay_step_grid_md = delay_step_grid_md | plus: 0.25 %}
+							{% endif %}
+						{% when "4" %}
+							{% assign column_index = index | modulo: 8 %}
+
+							{% case column_index %}
+								{% when 0 or 7 %}
+									{% assign column_type = '1' %}
+									{% assign image_width_1199 = 182 %}
+									{% assign image_width = 260 %}
+									{% assign md_item_shape = 'cards-grid__item--md-shape-1' %}
+								{% when 1 or 6 %}
+									{% assign column_type = '2' %}
+									{% assign image_width_1199 = 477 %}
+									{% assign image_width = 695 %}
+									{% assign md_item_shape = 'cards-grid__item--md-shape-2' %}
+								{% when 2 or 5 %}
+									{% assign column_type = '3' %}
+									{% assign image_width_1199 = 280 %}
+									{% assign image_width = 405 %}
+									{% assign md_item_shape = 'cards-grid__item--md-shape-3' %}
+								{% when 3 or 4 %}
+									{% assign column_type = '4' %}
+									{% assign image_width_1199 = 182 %}
+									{% assign image_width = 260 %}
+									{% assign md_item_shape = 'cards-grid__item--md-shape-1' %}
+							{% endcase %}
+
+						{% assign column_index_animation = index | modulo: 4 %}
+
+						{% if column_index_animation == 0 %}
+							{% assign delay_step_grid_md = 0 | plus: 0.25 %}
+						{% else %}
+							{% assign delay_step_grid_md = delay_step_grid_md | plus: 0.25 %}
+						{% endif %}
+					{% endcase %}
+
+					{% assign image_width_420 = 254 %}
+					{% assign image_width_575 = 402 %}
+					{% assign image_width_767 = 294 %}
+
+					{% assign image_width_420_x2 	= image_width_420 | times: 2 %}
+					{% assign image_width_575_x2 	= image_width_575 | times: 2 %}
+					{% assign image_width_767_x2 	= image_width_767 | times: 2 %}
+					{% assign image_width_991_x2	= image_width_991 | times: 2 %}
+					{% assign image_width_1199_x2 	= image_width_1199 | times: 2 %}
+					{% assign image_width_x2 		= image_width | times: 2 %}
+
+					{% assign is_lazy 	= false %}
+					{% assign cards_per_row_int = cards_per_row | plus: 0 %}
+
+					{% if section.index > 1 %}
+						{% assign is_lazy = true %}
+					{% elsif section.index == 1 and forloop.index > cards_per_row_int %}
+						{% assign is_lazy = true %}
+					{% endif %}
+
+					<div class="cards-grid__column cards-grid__column--md-type-{{- cards_per_row -}}-{{- column_type }} js-animate {% if request.visual_preview_mode or section.index == 1 %}animated{% endif %}">
+						<div
+							class="cards-grid__item {{ sm_item_shape }} {{ md_item_shape }} need-animate"
+							style="--delay-duration-grid: {{- delay_step_grid | append: "s" -}}; --delay-duration-grid-sm: {{- delay_step_grid_sm | append: "s" -}}; --delay-duration-grid-md: {{- delay_step_grid_md | append: "s" -}};"
+						>
+							{% if image != blank %}
+								{%- capture img_focal -%}
+									--img-desktop-pos: {{ image.presentation.focal_point }};
+								{%- endcapture -%}
+
+								{% capture image_element %}
+									<picture {% if is_lazy %}class="lazy"{% endif %}>
+										{% if is_lazy %}
+											<source srcset="{{ image | image_url: width: 10 }}"
+													data-srcset="{{ image | image_url: width: image_width_420 }} 1x,
+															{{ image | image_url: width: image_width_420_x2 }} 2x"
+													media="(max-width: 420px)"
+											>
+
+											<source srcset="{{ image | image_url: width: 10 }}"
+													data-srcset="{{ image | image_url: width: image_width_575 }} 1x,
+															{{ image | image_url: width: image_width_575_x2 }} 2x"
+													media="(max-width: 575px)"
+											>
+
+											<source srcset="{{ image | image_url: width: 10 }}"
+													data-srcset="{{ image | image_url: width: image_width_767 }} 1x,
+															{{ image | image_url: width: image_width_767_x2 }} 2x"
+													media="(max-width: 767px)"
+											>
+
+											<source srcset="{{ image | image_url: width: 10 }}"
+													data-srcset="{{ image | image_url: width: image_width_991 }} 1x,
+															{{ image | image_url: width: image_width_991_x2 }} 2x"
+													media="(max-width: 991px)"
+											>
+
+											<source srcset="{{ image | image_url: width: 10 }}"
+													data-srcset="{{ image | image_url: width: image_width_1199 }} 1x,
+															{{ image | image_url: width: image_width_1199_x2 }} 2x"
+													media="(max-width: 1199px)"
+											>
+
+											<img class="cards-grid__item-image"
+												 src="{{ image | image_url: width: 10 }}"
+												 data-src="{{ image | image_url: width: image_width }}"
+												 data-srcset="{{ image | image_url: width: image_width }} 1x,
+												{{ image | image_url: width: image_width_x2 }} 2x"
+												 alt="{{ image.alt | escape }}"
+												{% if img_focal != blank %}
+													style="{{ img_focal }}"
+												{% endif %}
+											>
+										{% else %}
+											<source srcset="{{ image | image_url: width: image_width_420 }} 1x,
+															{{ image | image_url: width: image_width_420_x2 }} 2x"
+													media="(max-width: 420px)"
+											>
+
+											<source srcset="{{ image | image_url: width: image_width_575 }} 1x,
+															{{ image | image_url: width: image_width_575_x2 }} 2x"
+													media="(max-width: 575px)"
+											>
+
+											<source srcset="{{ image | image_url: width: image_width_767 }} 1x,
+															{{ image | image_url: width: image_width_767_x2 }} 2x"
+													media="(max-width: 767px)"
+											>
+
+											<source srcset="{{ image | image_url: width: image_width_991 }} 1x,
+															{{ image | image_url: width: image_width_991_x2 }} 2x"
+													media="(max-width: 991px)"
+											>
+
+											<source srcset="{{ image | image_url: width: image_width_1199 }} 1x,
+															{{ image | image_url: width: image_width_1199_x2 }} 2x"
+													media="(max-width: 1199px)"
+											>
+
+											<img class="cards-grid__item-image"
+												 src="{{ image | image_url: width: image_width }}"
+												 srcset="{{ image | image_url: width: image_width }} 1x,
+												{{ image | image_url: width: image_width_x2 }} 2x"
+												 alt="{{ image.alt | escape }}"
+												{% if img_focal != blank %}
+													style="{{ img_focal }}"
+												{% endif %}
+												{% if section.index == 1 and forloop.index < 3 %}
+													fetchpriority="high"
+												{% endif %}
+											>
+										{% endif %}
+									</picture>
+								{% endcapture %}
+
+								{% if link_url != blank %}
+									<a href="{{ link_url }}"
+									   class="cards-grid__item-image-wrapper cards-grid__item-image-wrapper--hover focus-visible-outline"
+										{% if title != blank %}
+											aria-label="{{- title | escape -}}"
+										{% endif %}
+									>
+										{{ image_element }}
+									</a>
+								{% else %}
+									<div class="cards-grid__item-image-wrapper">
+										{{ image_element }}
+									</div>
+								{% endif %}
+							{% else %}
+								<div class="cards-grid__item-image-wrapper cards-grid__item-image-wrapper--placeholder">
+									{{- 'image' | placeholder_svg_tag: 'cards-grid__item-image' -}}
+								</div>
+							{% endif %}
+
+							{% if title != blank %}
+								<h3 class="cards-grid__item-title h4">
+									{% if link_url != blank %}
+										<a href="{{ link_url }}" class="cards-grid__item-link-title focus-visible-outline">{{ title }}</a>
+									{% else %}
+										{{- title -}}
+									{% endif %}
+								</h3>
+							{% endif %}
+
+							{% if text != blank %}
+								<div class="cards-grid__item-text rte-new">{{ text }}</div>
+							{% endif %}
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+	</div>
+</section>

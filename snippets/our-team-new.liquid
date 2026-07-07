@@ -1,0 +1,170 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Our team new
+	This snippet will output alternate design of the section
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{{- 'our-team-new.build.css' | asset_url | stylesheet_tag -}}
+
+{% assign heading = section.settings.heading %}
+{% assign label = section.settings.label %}
+{% assign image_crop = section.settings.image_crop %}
+{% assign full_width = section.settings.full_width %}
+
+{% capture cards %}
+	{%- for block in section.blocks -%}
+		{%- assign image = block.settings.image -%}
+		{%- assign name = block.settings.name -%}
+		{%- assign role = block.settings.role -%}
+		{%- assign index = forloop.index -%}
+		{%- assign moduloIndex = index | modulo: 4 -%}
+
+		{% assign width_1920 = "294x294" %}
+		{% assign width_1920_2x = "588x588" %}
+
+		{% assign width_1440 = "192x192" %}
+		{% assign width_1440_2x = "384x384" %}
+
+		{% assign width_991 = "466x466" %}
+		{% assign width_991_2x = "932x932" %}
+
+		{% assign width_767 = "353x353" %}
+		{% assign width_767_2x = "706x706" %}
+
+		{% assign width_575 = "535x535" %}
+		{% assign width_575_2x = "1070x1070" %}
+
+		{% assign width_420 = "380x380" %}
+		{% assign width_420_2x = "760x760" %}
+
+		{% assign width_375 = "335x335" %}
+		{% assign width_375_2x = "670x670" %}
+
+		{% if moduloIndex == 1 %}
+			{% assign width_1920 = "452x452" %}
+			{% assign width_1920_2x = "904x904" %}
+
+			{% assign width_1440 = "310x310" %}
+			{% assign width_1440_2x = "620x620" %}
+		{% endif %}
+
+		{% if name != blank and role != blank %}
+			<div class="our-team-new__card need-animate swiper-slide js-person-card" style="--index: {{ index }}">
+				<div class="our-team-new__image-wrapper">
+					{% if image != blank %}
+						{%- capture img_focal -%}
+							--img-desktop-pos: {{ image.presentation.focal_point }};
+						{%- endcapture -%}
+
+						<picture class="lazy">
+							<source
+								data-srcset="{{ image | img_url: width_375, crop: image_crop }} 1x, {{ image | img_url: width_375_2x, crop: image_crop }} 2x"
+								srcset="{{ image | img_url: "10x", crop: image_crop }} 1x, {{ image | img_url: "10x", crop: image_crop }} 2x"
+								media="(max-width: 375px)"
+							/>
+
+							<source
+								data-srcset="{{ image | img_url: width_420, crop: image_crop }} 1x, {{ image | img_url: width_420_2x, crop: image_crop }} 2x"
+								srcset="{{ image | img_url: "10x", crop: image_crop }} 1x, {{ image | img_url: "10x", crop: image_crop }} 2x"
+								media="(max-width: 420px)"
+							/>
+
+							<source
+								data-srcset="{{ image | img_url: width_575, crop: image_crop }} 1x, {{ image | img_url: width_575_2x, crop: image_crop }} 2x"
+								srcset="{{ image | img_url: "10x", crop: image_crop }} 1x, {{ image | img_url: "10x", crop: image_crop }} 2x"
+								media="(max-width: 575px)"
+							/>
+
+							<source
+								data-srcset="{{ image | img_url: width_767, crop: image_crop }} 1x, {{ image | img_url: width_767_2x, crop: image_crop }} 2x"
+								srcset="{{ image | img_url: "10x", crop: image_crop }} 1x, {{ image | img_url: "10x", crop: image_crop }} 2x"
+								media="(max-width: 767px)"
+							/>
+
+							<source
+								data-srcset="{{ image | img_url: width_991, crop: image_crop }} 1x, {{ image | img_url: width_991_2x, crop: image_crop }} 2x"
+								srcset="{{ image | img_url: "10x", crop: image_crop }} 1x, {{ image | img_url: "10x", crop: image_crop }} 2x"
+								media="(max-width: 991px)"
+							/>
+
+							<source
+								data-srcset="{{ image | img_url: width_1440, crop: image_crop }} 1x, {{ image | img_url: width_1440_2x, crop: image_crop }} 2x"
+								srcset="{{ image | img_url: "10x", crop: image_crop }} 1x, {{ image | img_url: "10x", crop: image_crop }} 2x"
+								media="(max-width: 1440px)"
+							/>
+
+							<img class="our-team-new__image"
+								 data-srcset="{{ image | img_url: width_1920, crop: image_crop }} 1x, {{ image | img_url: width_1920_2x, crop: image_crop }} 2x"
+								 srcset="{{ image | img_url: "10x", crop: image_crop }} 1x, {{ image | img_url: "10x", crop: image_crop }} 2x"
+								 data-src="{{- image | img_url: width_1920, crop: image_crop -}}"
+								 src="{{ image | img_url: "10x", crop: image_crop }}"
+								 style="{{ img_focal }}"
+								 alt="{{ image.alt | escape }}"
+							>
+						</picture>
+					{% else %}
+						{%- assign odd = forloop.index | modulo: 2 -%}
+
+						{%- if odd == 1 -%}
+							{{- 'lifestyle-1' | placeholder_svg_tag: 'our-team-new__image' -}}
+						{%- else -%}
+							{{- 'lifestyle-2' | placeholder_svg_tag: 'our-team-new__image' -}}
+						{%- endif -%}
+					{% endif %}
+				</div>
+
+				{% if name != blank or role != blank %}
+					<div class="our-team-new__card-info">
+						{% if name != blank %}
+							<div class="h5 our-team-new__name">
+								{{ name }}
+							</div>
+						{% endif %}
+
+						{% if role != blank %}
+							<div class="our-team-new__role rte-new">
+								{{ role }}
+							</div>
+						{% endif %}
+					</div>
+				{% endif %}
+			</div>
+		{% endif %}
+	{%- endfor -%}
+{% endcapture %}
+
+<section
+	class="our-team-new js-animate{% if request.visual_preview_mode or section.index == 1 %} animated{% endif %} js-our-team-section"
+	data-is-alternate="true">
+	<div class="our-team-new__container {% if full_width == false %}our-team-new__container--max-width{% endif %}">
+		<div class="our-team-new__heading-wrapper">
+			{%- if label != blank -%}
+				<div class="subheading our-team-new__subheading">
+					{{- label -}}
+				</div>
+			{%- endif -%}
+
+			{%- if heading != blank -%}
+				<h2 class="h2">
+					{{- heading -}}
+				</h2>
+			{%- endif -%}
+		</div>
+
+		<div class="our-team-new__cards-container">
+			<div class="our-team-new__cards-wrapper">
+				{{ cards }}
+			</div>
+		</div>
+
+		<div
+			class="our-team-new__cards-container our-team-new__cards-container--mobile swiper js-cards-container">
+			<div class="swiper-wrapper">
+				{{ cards }}
+			</div>
+
+			<div class="our-team-new__pagination swiper-pagination js-our-team-pagination"></div>
+		</div>
+	</div>
+</section>

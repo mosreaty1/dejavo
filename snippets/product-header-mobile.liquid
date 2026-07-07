@@ -1,0 +1,21 @@
+{%- assign design = settings.design -%}
+
+<div
+	class="product-form product-form--mobile-container js-product-form-mobile"
+	data-form-id="product_form_{{- product.id -}}"
+>
+	{% for block in blocks  %}
+		{% case block.type %}
+			{% when 'badges' %}
+				{% include 'product-badges', design: design %}
+			{% when 'vendor' %}
+				{% include 'product-vendor', design: design %}
+			{% when 'title' %}
+				{% include 'product-title', design: design %}
+			{% when 'sku_reviews' %}
+				{% include 'product-sku-reviews', design: design %}
+			{% else %}
+				{% continue %}
+		{% endcase %}
+	{% endfor %}
+</div>

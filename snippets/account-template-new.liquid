@@ -1,0 +1,649 @@
+{{- "account-new.build.css" | asset_url | stylesheet_tag -}}
+
+{% assign label = section.settings.label %}
+
+<section class="account-new">
+	{% if settings.enable_accents_spot %}
+		<div class="account-new__ellipse-aspect-ratio">
+			<div class="account-new__ellipse"></div>
+		</div>
+	{% endif %}
+
+	<div class="account-new__heading-wrapper account-new__container">
+		{% if label != blank %}
+			<p class="account-new__label subheading">
+				{{- label -}}
+			</p>
+		{% endif %}
+
+		<h1 class="h2">
+			{{- "customer.account.title" | t -}}
+		</h1>
+	</div>
+
+	<div class="account-new__cols-wrapper account-new__heading-cols-wrapper">
+		<div class="account-new__titles-bar account-new__container">
+			<h2 class="account-new__details-col account-new__col-heading h4">
+				{{- "customer.account.details" | t -}}:
+			</h2>
+
+			<h2 class="account-new__history-col account-new__col-heading h4">
+				{{- "customer.orders.title" | t -}}:
+			</h2>
+		</div>
+	</div>
+
+	<div class="account-new__cols-wrapper account-new__accordion-wrapper account-new__container">
+		<div class="account-new__details-wrapper account-new__details-col">
+			<div class="account-new__info-container">
+				<div class="account-new__info-item">
+					<span class="account-new__info-item-name">
+						{{- "customer.addresses.name" | t -}}
+					</span>
+
+					<p class="h6">
+						{{- customer.default_address.first_name -}} {{- customer.default_address.last_name -}}
+					</p>
+				</div>
+
+				<div class="account-new__info-item">
+					<span class="account-new__info-item-name">
+						{{- "customer.login.email" | t -}}
+					</span>
+
+					<p class="h6">{{- customer.email -}}</p>
+				</div>
+
+				<div class="account-new__info-item">
+					<span class="account-new__info-item-name">
+						{{- "customer.addresses.country" | t -}}
+					</span>
+
+					<p class="h6">{{- customer.default_address.country -}}</p>
+				</div>
+			</div>
+
+			<div class="account-new__other-buttons">
+				<a href="{{- routes.account_addresses_url -}}" class="button-link-new">
+					{{ "customer.account.view_addresses" | t }} ({{ customer.addresses_count }})
+
+					<span class="button-link-new__icon-wrapper">
+						<span class="button-link-new__icon">
+							{% render 'icons-new', icon: 'arrow-right' %}
+						</span>
+					</span>
+				</a>
+
+				<a href="{{- routes.account_logout_url -}}" class="button-link-new">
+					{{- "layout.customer.log_out" | t -}}
+
+					<span class="button-link-new__icon-wrapper">
+						<span class="button-link-new__icon">
+							{% render 'icons-new', icon: 'arrow-right' %}
+						</span>
+					</span>
+				</a>
+			</div>
+		</div>
+
+		<div class="account-new__heading-cols-wrapper account-new__heading-cols--mobile">
+			<h2 class="account-new__col-heading h4">
+				{{- "customer.orders.title" | t -}}:
+			</h2>
+		</div>
+
+		<div class="account-new__history-col">
+			{%- paginate customer.orders by 20 -%}
+				{%- if customer.orders.size != 0 -%}
+					<ul class="js-accordion-container">
+						<div class="account-new__header" aria-hidden="true">
+							<span class="account-new__content-col-heading account-new__col-1 h6">
+								{{- "customer.orders.order_number" | t -}}
+							</span>
+
+							<span class="account-new__content-col-heading account-new__col-2 h6">
+								{{- "customer.orders.date" | t -}}
+							</span>
+
+							<span
+								class="account-new__content-col-heading account-new__col-3 h6">
+								{{- "customer.orders.payment_status" | t -}}
+							</span>
+
+							<span
+								class="account-new__content-col-heading account-new__col-4 h6">
+								{{- "customer.orders.quantity" | t -}}
+							</span>
+
+							<span
+								class="account-new__content-col-heading account-new__col-5 h6">
+								{{- "customer.orders.total" | t -}}
+							</span>
+						</div>
+
+						{%- for order in customer.orders -%}
+							<li class="account-new__accordion">
+								<div class="accordion__item account-new__content-wrapper js-accordion-item">
+									<button
+										class="accordion__control account-new__content js-accordion-control"
+										type="button"
+										aria-expanded="false"
+										aria-controls="{{- order.id -}}"
+										aria-label="{{ 'customer.orders.show_order' | t | escape }} {{- order.name -}}"
+									>
+										<div
+											class="account-new__accordion-text-wrapper account-new__accordion-text-wrapper--desktop">
+											<div
+												class="account-new__content-col account-new__col-1"
+												aria-hidden="true">
+												<div
+													class="account-new__content-col-heading account-new__content-col-heading--mobile h6">
+													{{- "customer.orders.order_number" | t -}}:
+												</div>
+
+												<div
+													class="account-new__content-col-text">{{- order.name | split: "#" -}}</div>
+											</div>
+
+											<div
+												class="account-new__content-col account-new__col-2"
+												aria-hidden="true">
+												<div
+													class="account-new__content-col-heading account-new__content-col-heading--mobile h6">
+													{{- "customer.orders.date" | t -}}:
+												</div>
+
+												<div
+													class="account-new__content-col-text">{{- order.created_at | date: '%d.%m.%Y' -}}</div>
+											</div>
+
+											<div
+												class="account-new__content-col account-new__col-3"
+												aria-hidden="true">
+												<div
+													class="account-new__content-col-heading account-new__content-col-heading--mobile h6">
+													{{- "customer.orders.payment_status" | t -}}:
+												</div>
+
+												<div
+													class="account-new__content-col-text">{{- order.financial_status_label -}}</div>
+											</div>
+
+											<div
+												class="account-new__content-col account-new__col-4"
+												aria-hidden="true">
+												<div
+													class="account-new__content-col-heading account-new__content-col-heading--mobile h6">
+													{{- "customer.orders.quantity" | t -}}:
+												</div>
+
+												<div
+													class="account-new__content-col-text">{{- order.item_count -}}</div>
+											</div>
+
+											<div
+												class="account-new__content-col  account-new__col-5"
+												aria-hidden="true">
+												<div
+													class="account-new__content-col-heading account-new__content-col-heading--mobile h6">
+													{{- "customer.orders.total" | t -}}:
+												</div>
+
+												<div
+													class="account-new__content-col-text">{{- order.total_net_amount | money -}}</div>
+											</div>
+
+											<span class="account-new__icon" aria-hidden="true">
+												{%- render "icons-small", icon: "arrow-down" -%}
+											</span>
+										</div>
+
+										<div
+											class="account-new__accordion-text-wrapper account-new__accordion-text-wrapper--mobile">
+											<div class="account-new__accordion-split-text-wrapper">
+												<div
+													class="account-new__content-col account-new__col-1"
+													aria-hidden="true">
+													<div
+														class="account-new__content-col-heading account-new__content-col-heading--mobile h6">
+														{{- "customer.orders.order_number" | t -}}:
+													</div>
+
+													<div
+														class="account-new__content-col-text">{{- order.name | split: "#" -}}</div>
+												</div>
+
+												<div
+													class="account-new__content-col account-new__col-2"
+													aria-hidden="true">
+													<div
+														class="account-new__content-col-heading account-new__content-col-heading--mobile h6">
+														{{- "customer.orders.date" | t -}}:
+													</div>
+
+													<div
+														class="account-new__content-col-text">{{- order.created_at | date: '%d.%m.%Y' -}}</div>
+												</div>
+											</div>
+
+											<span class="account-new__icon" aria-hidden="true">
+												{%- render "icons-small", icon: "arrow-down" -%}
+											</span>
+										</div>
+									</button>
+
+									<div
+										class="accordion__content accordion__content--animate account-new__accordion-content-wrapper js-accordion-content"
+										id="{{- order.id -}}"
+										style="height: 0"
+									>
+										<div
+											class="account-new__accordion-split-text-wrapper">
+											<div
+												class="account-new__content-col account-new__col-3"
+												aria-hidden="true">
+												<div
+													class="account-new__content-col-heading account-new__content-col-heading--mobile h6">
+													{{- "customer.orders.payment_status" | t -}}:
+												</div>
+
+												<div
+													class="account-new__content-col-text">{{- order.financial_status_label -}}</div>
+											</div>
+
+											<div
+												class="account-new__content-col account-new__col-4"
+												aria-hidden="true">
+												<div
+													class="account-new__content-col-heading account-new__content-col-heading--mobile h6">
+													{{- "customer.orders.quantity" | t -}}:
+												</div>
+
+												<div
+													class="account-new__content-col-text">{{- order.item_count -}}</div>
+											</div>
+
+											<div
+												class="account-new__content-col  account-new__col-5"
+												aria-hidden="true">
+												<div
+													class="account-new__content-col-heading account-new__content-col-heading--mobile h6">
+													{{- "customer.orders.total" | t -}}:
+												</div>
+
+												<div
+													class="account-new__content-col-text">{{- order.total_net_amount | money -}}</div>
+											</div>
+										</div>
+
+										<div class="account-new__accordion-content js-accordion-inner">
+											<div class="visually-hidden">
+												<p>
+													{{ "customer.orders.order_number" | t }}
+													{{ order.name | split: "#" }}
+												</p>
+
+												<p>
+													{{ "customer.orders.date" | t }}
+													{{ order.created_at | date: '%d.%m.%Y' }}
+												</p>
+
+												<p>
+													{{ "customer.orders.payment_status" | t }}
+													{{ order.financial_status_label }}
+												</p>
+
+												<p>
+													{{ "customer.orders.quantity" | t }}
+													{{ order.item_count }}
+												</p>
+
+												<p>
+													{{ "customer.orders.total" | t }}
+													{{ order.total_price | money }}
+												</p>
+											</div>
+
+											<div class="account-new__order-details-wrapper">
+												{%- for line_item in order.line_items -%}
+													<div class="account-new__order-detail">
+														<div
+															class="account-new__order-detail-col account-new__order-detail-col--product">
+															{% if line_item.image != blank %}
+																{% assign item_image = line_item.image %}
+															{% else %}
+																{% assign item_image = settings.product_default_image %}
+															{% endif %}
+
+															<picture class="account-new__image-wrapper">
+																<source
+																	srcset="{{ item_image | img_url: '176x' }} 1x, {{ item_image | img_url: '352x' }} 2x"
+																	media="(max-width: 767px)"
+																	width="176"
+																	height="220"
+																/>
+
+																<source
+																	srcset="{{ item_image | img_url: '230x' }} 1x, {{ item_image | img_url: '460x' }} 2x"
+																	media="(max-width: 991px)"
+																	width="230"
+																	height="288"
+																/>
+
+																<source
+																	srcset="{{ item_image | img_url: '153x' }} 1x, {{ item_image | img_url: '306x' }} 2x"
+																	media="(max-width: 1600px)"
+																	width="153"
+																	height="178"
+																/>
+
+																<img
+																	class="account-new__image"
+																	src="{{- item_image | img_url: '178x' -}}"
+																	srcset="{{ item_image | img_url: '178x' }} 1x, {{ item_image | img_url: '356x' }} 2x"
+																	alt="{{- item_image.alt -}}"
+																	width="178"
+																	height="208"
+																/>
+															</picture>
+
+															<div class="account-new__product-info-wrapper">
+																<p class="h6">{{- line_item.product.title -}}</p>
+
+																{%- unless line_item.product.has_only_default_variant -%}
+																	<p class="account-new__product-info">{{- line_item.variant.title -}}</p>
+																{%- endunless -%}
+
+																{%- assign property_size = line_item.properties | size -%}
+
+																{%- unless line_item.selling_plan_allocation == nil and property_size == 0 -%}
+																	<ul class="account-new__order-detail-properties">
+																		{%- unless line_item.selling_plan_allocation == nil -%}
+																			<li>
+																				{{- line_item.selling_plan_allocation.selling_plan.name -}}
+																			</li>
+																		{%- endunless -%}
+
+																		{%- if property_size != 0 -%}
+																			{%- for property in line_item.properties -%}
+																				{% assign property_first_char = property.first | slice: 0 %}
+
+																				{%- if property.last != blank and property_first_char != '_' -%}
+																					<li>
+																						{{- property.first -}}:&nbsp;
+
+																						{%- if property.last contains '/uploads/' -%}
+																							<a href="{{ property.last }}">{{ property.last | split: '/' | last }}</a>
+																						{%- else -%}
+																							{{- property.last -}}
+																						{%- endif -%}
+																					</li>
+																				{%- endif -%}
+																			{%- endfor -%}
+																		{%- endif -%}
+																	</ul>
+																{%- endunless -%}
+
+																{%- if line_item.line_level_discount_allocations != blank -%}
+																	<ul class="account-new__order-detail-properties"
+																		role="list"
+																		aria-label="{{ 'customer.order.discount' | t | escape }}">
+																		{%- for discount_allocation in line_item.line_level_discount_allocations -%}
+																			<li>
+																				{% render 'icons-small', icon: 'discount' %} {{- discount_allocation.discount_application.title }}
+																				(-{{ discount_allocation.amount | money -}}
+																				)
+																			</li>
+																		{%- endfor -%}
+																	</ul>
+																{%- endif -%}
+
+																<div class="account-new__product-info--mobile">
+																	<div class="account-new__order-detail-col">
+																		<p class="account-new__order-detail-label h6">
+																			{{- "customer.order.price" | t -}}:
+																		</p>
+
+																		<div class="account-new__order-detail-value">
+																			{%- if line_item.original_price != line_item.final_price or line_item.unit_price_measurement -%}
+																				<dl>
+																					{%- if line_item.original_price != line_item.final_price -%}
+																						<dt>
+																				<span
+																					class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span>
+																						</dt>
+																						<dd class="regular-price">
+																							<s>{{ line_item.original_price | money }}</s>
+																						</dd>
+																						<dt>
+																				<span
+																					class="visually-hidden">{{ 'products.product.price.sale_price' | t }}</span>
+																						</dt>
+																						<dd>
+																							<span>{{ line_item.final_price | money }}</span>
+																						</dd>
+																					{%- else -%}
+																						<dt>
+																				<span
+																					class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span>
+																						</dt>
+																						<dd>
+																							{{ line_item.original_price | money }}
+																						</dd>
+																					{%- endif -%}
+																					{% if line_item.unit_price_measurement %}
+																						<dt>
+																				<span
+																					class="visually-hidden">{{ 'products.product.price.unit_price' | t }}</span>
+																						</dt>
+																						<dd>
+																							<small>
+																								{{ line_item.unit_price | money }}
+
+																								<span
+																									aria-hidden="true">/</span>
+
+																								{%- if line_item.unit_price_measurement.reference_value != 1 -%}
+																									{{- line_item.unit_price_measurement.reference_value -}}
+																								{%- endif -%}
+
+																								{{ line_item.unit_price_measurement.reference_unit }}
+																							</small>
+																						</dd>
+																					{% endif %}
+																				</dl>
+																			{%- else -%}
+																				<span>{{ line_item.final_price | money }}</span>
+																			{%- endif -%}
+																		</div>
+																	</div>
+
+																	<div class="account-new__order-detail-col">
+																		<p class="h6">
+																			{{- "customer.order.quantity" | t -}}:
+																		</p>
+
+																		<p class="account-new__order-detail-value">
+																			{{- line_item.quantity -}}
+																		</p>
+																	</div>
+
+																	<div class="account-new__order-detail-col">
+																		<p class="h6">
+																			{{- "customer.order.total" | t -}}:
+																		</p>
+
+																		<p class="account-new__order-detail-value">
+																			{%- if line_item.original_line_price != line_item.final_line_price -%}
+																		<dl>
+																			<dt>
+																	<span
+																		class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span>
+																			</dt>
+																			<dd class="regular-price">
+																				<s>{{ line_item.original_line_price | money }}</s>
+																			</dd>
+																			<dt>
+																	<span
+																		class="visually-hidden">{{ 'products.product.price.sale_price' | t }}</span>
+																			</dt>
+																			<dd>
+																				<span>{{ line_item.final_line_price | money }}</span>
+																			</dd>
+																		</dl>
+																		{%- else -%}
+																			{{ line_item.original_line_price | money }}
+																		{%- endif -%}
+																		</p>
+																	</div>
+																</div>
+															</div>
+														</div>
+
+														<div class="account-new__order-detail-prices">
+															<div class="account-new__order-detail-col">
+																<div class="account-new__order-detail-value">
+																	{%- if line_item.original_price != line_item.final_price or line_item.unit_price_measurement -%}
+																		<dl>
+																			{%- if line_item.original_price != line_item.final_price -%}
+																				<dt>
+																				<span
+																					class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span>
+																				</dt>
+																				<dd class="regular-price">
+																					<s>{{ line_item.original_price | money }}</s>
+																				</dd>
+																				<dt>
+																				<span
+																					class="visually-hidden">{{ 'products.product.price.sale_price' | t }}</span>
+																				</dt>
+																				<dd>
+																					<span>{{ line_item.final_price | money }}</span>
+																				</dd>
+																			{%- else -%}
+																				<dt>
+																				<span
+																					class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span>
+																				</dt>
+																				<dd>
+																					{{ line_item.original_price | money }}
+																				</dd>
+																			{%- endif -%}
+																			{% if line_item.unit_price_measurement %}
+																				<dt>
+																				<span
+																					class="visually-hidden">{{ 'products.product.price.unit_price' | t }}</span>
+																				</dt>
+																				<dd>
+																					<small>
+																						{{ line_item.unit_price | money }}
+
+																						<span
+																							aria-hidden="true">/</span>
+
+																						{%- if line_item.unit_price_measurement.reference_value != 1 -%}
+																							{{- line_item.unit_price_measurement.reference_value -}}
+																						{%- endif -%}
+
+																						{{ line_item.unit_price_measurement.reference_unit }}
+																					</small>
+																				</dd>
+																			{% endif %}
+																		</dl>
+																	{%- else -%}
+																		<span>{{ line_item.final_price | money }}</span>
+																	{%- endif -%}
+																</div>
+
+																<p class="account-new__order-detail-label">
+																	({{- "customer.order.price" | t -}})
+																</p>
+															</div>
+
+															<div class="account-new__order-detail-col">
+																<p class="account-new__order-detail-value">
+																	{{- line_item.quantity -}}
+																</p>
+															</div>
+
+															<div class="account-new__order-detail-col">
+																<p class="account-new__order-detail-value">
+																	{%- if line_item.original_line_price != line_item.final_line_price -%}
+																<dl>
+																	<dt>
+																	<span
+																		class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span>
+																	</dt>
+																	<dd class="regular-price">
+																		<s>{{ line_item.original_line_price | money }}</s>
+																	</dd>
+																	<dt>
+																	<span
+																		class="visually-hidden">{{ 'products.product.price.sale_price' | t }}</span>
+																	</dt>
+																	<dd>
+																		<span>{{ line_item.final_line_price | money }}</span>
+																	</dd>
+																</dl>
+																{%- else -%}
+																	{{ line_item.original_line_price | money }}
+																{%- endif -%}
+																</p>
+															</div>
+														</div>
+													</div>
+												{%- endfor -%}
+											</div>
+
+											{%- if order.shipping_address.summary != blank -%}
+												<div class="account-new__order-address">
+													<span class="h6">
+														{{- "customer.order.shipping_address" | t -}}
+													</span>
+
+													<span class="account-new__order-address-value">
+														{{- order.shipping_address.summary -}}
+													</span>
+												</div>
+											{%- endif -%}
+
+											<div class="account-new__order-subtotal h6">
+												<span>
+													{{- "customer.order.total" | t -}}
+												</span>
+
+												<span class="h4">
+													{{- order.total_net_amount | money -}}
+												</span>
+											</div>
+
+											<div class="account-new__order-view">
+												<a href="{{ order.customer_url }}" class="button-link-new">
+													{{- "customer.order.view_order" | t -}}
+												</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</li>
+						{%- endfor -%}
+					</ul>
+				{%- else -%}
+					<p class="account-new__orders-none">
+						{{- "customer.orders.none" | t -}}
+					</p>
+				{%- endif -%}
+
+				{%- if paginate.pages > 1 -%}
+					{%- render "pagination", paginate: paginate -%}
+				{%- endif -%}
+			{%- endpaginate -%}
+		</div>
+	</div>
+
+	{% if settings.enable_accents_spot %}
+		<div class="account-new__ellipse-aspect-ratio">
+			<div class="account-new__ellipse"></div>
+		</div>
+	{% endif %}
+</section>

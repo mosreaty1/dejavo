@@ -1,0 +1,149 @@
+{% assign cookie_time 	= settings.promo_banner_cookie_time %}
+{% assign title 		= settings.promo_banner_title  %}
+{% assign subtitle		= settings.promo_banner_subtitle %}
+{% assign button_text 	= settings.promo_banner_button_text %}
+{% assign link 			= settings.promo_banner_link %}
+{% assign image			= settings.promo_banner_image %}
+{% assign products_list	= settings.promo_banner_product_list %}
+{% assign show_shadow 	= settings.promo_banner_show_shadow %}
+
+{% assign banner_bg 				= settings.promo_banner_background %}
+{% assign banner_text_color 		= settings.promo_banner_text %}
+{% assign button_bg 				= settings.promo_banner_button_background_color %}
+{% assign button_color 				= settings.promo_banner_button_text_color %}
+{% assign button_border_color 		= settings.promo_banner_button_border_color %}
+{% assign button_bg_hover 			= settings.promo_banner_button_background_hover_color %}
+{% assign button_color_hover 		= settings.promo_banner_button_text_hover_color %}
+{% assign button_border_color_hover = settings.promo_banner_button_border_hover_color %}
+
+{% assign link_aria_label 			= 'promo_banner.open_link' | t %}
+
+{% if title != blank %}
+	{% assign link_aria_label = title %}
+{% endif %}
+
+{{ 'promotion-banner.build.css' | asset_url | stylesheet_tag }}
+
+{% capture styles %}
+	--banner-bg: {{ banner_bg }}; {{-  -}}
+	--button-text-color: {{ banner_text_color }}; {{-  -}}
+	--button-bg: {{ button_bg }}; {{-  -}}
+	--button-color: {{ button_color }}; {{-  -}}
+	--button-border-color: {{ button_border_color }}; {{-  -}}
+	--button-bg-hover: {{ button_bg_hover }}; {{-  -}}
+	--button-color-hover: {{ button_color_hover }}; {{-  -}}
+	--button-border-color-hover: {{ button_border_color_hover }}; {{-  -}}
+{% endcapture %}
+
+<div id="promotion-banner"
+	 class="promotion-banner{% if image == blank %} promotion-banner--no-image{% endif %}{% if show_shadow %} promotion-banner--shadow{% endif %} js-promotion-banner"
+	 style="{{ styles }}"
+	 data-cookie-time="{{- cookie_time -}}"
+>
+	<div class="promotion-banner__inner">
+		{% if image != blank %}
+			{%- capture img_focal -%}
+				--img-desktop-pos: {{ image.presentation.focal_point }};
+			{%- endcapture -%}
+
+			<picture class="lazy">
+				<img class="promotion-banner__image"
+					 src="{{ image | image_url: width: 10, height: 10 }}"
+					 data-src="{{ image | image_url: width: 280, height: 280 }}"
+					 data-srcset="{{ image | image_url: width: 280, height: 280 }} 1x, {{ image | image_url: width: 560, height: 560 }} 2x"
+					 alt="{{ image.alt }}"
+					 style="{{ img_focal }}"
+				>
+			</picture>
+		{% endif %}
+
+		<div class="promotion-banner__content">
+			{% if title != blank %}
+				<h2 class="promotion-banner__title h4">{{ title }}</h2>
+			{% endif %}
+
+			{% if subtitle != blank %}
+				<p>{{ subtitle }}</p>
+			{% endif %}
+
+			{% if products_list.count > 0 or link != blank %}
+				{% if button_text != blank %}
+					<a href="{{ link }}"
+					   class="promotion-banner__button"
+						{% if products_list.count > 0 %}
+							aria-expanded="false"
+							aria-controls="promotion-products-popup"
+							data-target="promotion-products-popup"
+							data-js-toggle="promotion-products-popup-toggle"
+						{% endif %}
+					>
+						{{- button_text -}}
+					</a>
+				{% else %}
+					<a href="{{ link }}"
+					   class="promotion-banner__link-wrapper"
+						{% if products_list.count > 0 %}
+							aria-expanded="false"
+							aria-controls="promotion-products-popup"
+							data-target="promotion-products-popup"
+							data-js-toggle="promotion-products-popup-toggle"
+						{% endif %}
+						{% if link != blank %}
+							aria-label="{{ link_aria_label }}"
+						{% elsif products_list.count > 0 %}
+							aria-label="{{ 'promo_banner.open_popup' | t }}"
+						{% endif %}
+					></a>
+				{% endif %}
+			{% endif %}
+		</div>
+	</div>
+
+	<button
+		class="promotion-banner__close-button js-promotion-banner-close-button"
+		aria-label="{{ "general.accessibility.close" | t }}"
+	>
+		{%- render 'icons-small', icon: 'close' -%}
+	</button>
+</div>
+
+{% if products_list.count > 0 %}
+	<div id="promotion-products-popup"
+		 class="promotion-products-popup modal"
+		 aria-modal="true"
+		 role="dialog"
+	>
+		<div class="modal__header">
+			{% if title != blank %}
+				<h2 class="promotion-products-popup__title h2">{{ title }}</h2>
+			{% endif %}
+
+			<button
+				class="promotion-products-popup__close-button focus-visible-outline"
+				data-target="promotion-products-popup"
+				aria-label="{{ "general.accessibility.close" | t }}"
+				data-js-toggle="promotion-products-popup-toggle"
+			>
+				{% render 'icons-small', icon: 'close' %}
+			</button>
+		</div>
+
+		<div class="modal__body">
+			<div class="promotion-products-popup__container">
+				{% for product in products_list %}
+					<div class="promotion-products-popup__product-col">
+						{% render 'product-card', product: product, size: 460, is_lazy: true %}
+					</div>
+				{% endfor %}
+			</div>
+
+			{% if link != blank and button_text != blank %}
+				<div class="promotion-products-popup__button-wrapper">
+					<a href="{{ link }}" class="button button--primary">{{ button_text }}</a>
+				</div>
+			{% endif %}
+		</div>
+	</div>
+{% endif %}
+
+<script src="{{- 'section-promotion-banner.build.min.js' | asset_url -}}" defer></script>

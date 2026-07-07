@@ -1,0 +1,237 @@
+{% if section.blocks.size > 0 %}
+	{{- 'events-calendar-new.build.css' | asset_url | stylesheet_tag -}}
+
+	{% assign load_more_text = section.settings.load_more_text %}
+	{% assign events_to_show = section.settings.events_to_show %}
+	{% assign link_text = section.settings.link_text %}
+	{% assign link_url = section.settings.link_url %}
+	{% assign title = section.settings.title %}
+	{% assign label = section.settings.label %}
+
+	{% assign show_load_more_button = false %}
+
+	{% if load_more_text != blank and section.blocks.size > events_to_show %}
+		{% assign show_load_more_button = true %}
+	{% endif %}
+
+	{% assign show_link = false %}
+
+	{% if link_text != blank and link_url != blank %}
+		{% assign show_link = true %}
+	{% endif %}
+
+	<section
+		class="events-calendar-new js-events-calendar js-animate {% if request.visual_preview_mode or section.index == 1 %}animated{% endif %} need-animate">
+		<div class="events-calendar-new__header">
+			<div class="events-calendar-new__title-wrapper">
+				{% if label != blank %}
+					<div class="subheading">{{ label }}</div>
+				{% endif %}
+
+				{% if title != blank %}
+					<h2 class="h2">{{ title }}</h2>
+				{% endif %}
+			</div>
+
+			{% if show_link %}
+				<a href="{{ link_url }}"
+				   class="button-link-new focus-visible-outline">
+					{{ link_text }}
+
+					<span
+						class="button-link-new__icon-wrapper">
+						<span class="button-link-new__icon">
+							{% render 'icons-new', icon: 'arrow-right' %}
+						</span>
+					</span>
+				</a>
+			{% endif %}
+		</div>
+
+		<ul class="events-calendar-new__grid">
+			{% for block in section.blocks %}
+				{% assign event_image = block.settings.image %}
+				{% assign event_title = block.settings.title %}
+				{% assign event_text = block.settings.text %}
+				{% assign event_link_text = block.settings.link_text %}
+				{% assign event_link_url = block.settings.link_url %}
+				{% assign event_button_text = block.settings.button_text %}
+				{% assign event_button_url = block.settings.button_url %}
+				{% assign event_date = block.settings.event_date %}
+				{% assign event_date_month = block.settings.event_date_month %}
+				{% assign event_time = block.settings.event_time %}
+
+				{% assign show_event_date = false %}
+				{% assign show_event_link = false %}
+				{% assign show_event_button = false %}
+
+				{% if event_date != blank or event_date_month != blank %}
+					{% assign show_event_date = true %}
+				{% endif %}
+
+				{% if event_link_text != blank and event_link_url != blank %}
+					{% assign show_event_link = true %}
+				{% endif %}
+
+				{% if event_button_text != blank and event_button_url != blank %}
+					{% assign show_event_button = true %}
+				{% endif %}
+
+				{% if show_load_more_button and forloop.index > events_to_show %}
+					{% assign hide_class = "is-hidden js-events-calendar-item" %}
+				{% endif %}
+
+				<li class="events-calendar-new__item {% if event_image == blank %}events-calendar-new__item--without-image{% endif %} {{ hide_class }}">
+					{% if event_image != blank %}
+						<div class="events-calendar-new__item-media">
+							{% assign aspect_ratio = event_image.aspect_ratio %}
+
+							<picture class="lazy">
+								<source srcset="{{ event_image | image_url: width: 10 }}"
+								        data-srcset="
+							                {%- if aspect_ratio < 1 -%}
+							                    {{ event_image | image_url: width: 314 }} 1x, {{ event_image | image_url: width: 628 }} 2x
+							                {%- else -%}
+							                    {{ event_image | image_url: height: 314 }} 1x, {{ event_image | image_url: height: 628 }} 2x
+							                {%- endif -%}
+                                        "
+								        media="(max-width: 380px)">
+
+								<source srcset="{{ event_image | image_url: width: 10 }}"
+								        data-srcset="
+							                {%- if aspect_ratio < 1 -%}
+							                    {{ event_image | image_url: width: 354 }} 1x, {{ event_image | image_url: width: 708 }} 2x
+							                {%- else -%}
+							                    {{ event_image | image_url: height: 354 }} 1x, {{ event_image | image_url: height: 708 }} 2x
+							                {%- endif -%}
+							            "
+								        media="(max-width: 420px)">
+
+								<source srcset="{{ event_image | image_url: width: 10 }}"
+								        data-srcset="
+							                {%- if aspect_ratio < 1 -%}
+							                    {{ event_image | image_url: width: 701 }} 1x, {{ event_image | image_url: width: 1402 }} 2x
+							                {%- else -%}
+							                    {{ event_image | image_url: height: 701 }} 1x, {{ event_image | image_url: height: 1402 }} 2x
+							                {%- endif -%}
+							            "
+								        media="(max-width: 767px)">
+
+								<source srcset="{{ event_image | image_url: width: 10 }}"
+								        data-srcset="
+							                {%- if aspect_ratio < 1 -%}
+							                    {{ event_image | image_url: width: 535 }} 1x, {{ event_image | image_url: width: 1070 }} 2x
+							                {%- else -%}
+							                    {{ event_image | image_url: height: 535 }} 1x, {{ event_image | image_url: height: 1070 }} 2x
+							                {%- endif -%}
+							            "
+								        media="(max-width: 1199px)">
+
+								<img class="events-calendar-new__item-image"
+								     src="{{ event_image | image_url: width: 10 }}"
+								     srcset="{{ event_image | image_url: width: 10 }} x1, {{ event_image | image_url: width: 10 }} 2x"
+								     data-src="
+							            {%- if aspect_ratio < 1 -%}
+							                {{ event_image | image_url: width: 284 }}
+							            {%- else -%}
+							                {{ event_image | image_url: height: 367 }}
+							            {%- endif -%}
+							         "
+								     data-srcset="
+							            {%- if aspect_ratio < 1 -%}
+							                {{ event_image | image_url: width: 284 }} 1x, {{ event_image | image_url: width: 568 }} 2x
+							            {%- else -%}
+							                {{ event_image | image_url: height: 367 }} 1x, {{ event_image | image_url: height: 734 }} 2x
+							            {%- endif -%}
+							         "
+								     alt="{{ event_image.alt | escape }}"
+								     style="--img-pos: {{ event_image.presentation.focal_point }};"
+								>
+							</picture>
+						</div>
+					{% endif %}
+
+					<div class="events-calendar-new__item-content">
+						<div class="events-calendar-new__item-text-wrapper">
+							{% if event_title != blank %}
+								<h3 class="events-calendar-new__item-title h5">{{ event_title }}</h3>
+							{% endif %}
+
+							{% if event_text != blank %}
+								<div class="events-calendar-new__item-text rte-new">
+									{{ event_text }}
+								</div>
+							{% endif %}
+						</div>
+
+						<div class="events-calendar-new__item-time-wrapper">
+							{% if show_event_date %}
+								<div class="events-calendar-new__item-date-block">
+									{% if event_date != blank %}
+										{{ event_date }}
+									{% endif %}
+
+									{%- if event_date_month != blank -%}
+										{{- event_date_month -}}
+									{%- endif -%}
+								</div>
+							{% endif %}
+
+							{% if event_time != blank %}
+								<div class="events-calendar-new__item-date-block">
+									{{ event_time }}
+								</div>
+							{% endif %}
+						</div>
+
+						{% if show_event_link or show_event_button %}
+							<div class="events-calendar-new__item-links">
+								{% if show_event_link %}
+									<a href="{{ event_link_url }}"
+									   class="button-link-new focus-visible-outline">
+										{{ event_link_text }}
+
+										<span
+											class="button-link-new__icon-wrapper">
+											<span class="button-link-new__icon">
+												{% render 'icons-new', icon: 'arrow-right' %}
+											</span>
+										</span>
+									</a>
+								{% endif %}
+
+								{% if show_event_button %}
+									<a href="{{ event_button_url }}" class="button-link-new focus-visible-outline">
+										{{ event_button_text }}
+
+										<span
+											class="button-link-new__icon-wrapper">
+											<span class="button-link-new__icon">
+												{% render 'icons-new', icon: 'arrow-right' %}
+											</span>
+										</span>
+									</a>
+								{% endif %}
+							</div>
+						{% endif %}
+					</div>
+				</li>
+			{% endfor %}
+		</ul>
+
+		{% if show_load_more_button %}
+			<button type="button"
+					class="button-circle events-calendar-new__load-more-button js-events-calendar-load-more">
+				<span class="button__text">
+					{{ load_more_text }}
+				</span>
+
+				<span class="button-new__icon-container">
+					<span class="button-new__icon-wrapper">
+						{% render "icons-new", icon: "wave", section_id: 'sdsasfasf' %}
+					</span>
+				</span>
+			</button>
+		{% endif %}
+	</section>
+{% endif %}

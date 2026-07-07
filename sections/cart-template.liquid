@@ -1,0 +1,564 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Cart template
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign design = settings.design -%}
+
+{%- if design == 'standard' -%}
+	{{- 'cart.build.css' | asset_url | stylesheet_tag -}}
+{%- elsif design == 'alternate' -%}
+	{{- 'cart-new.build.css' | asset_url | stylesheet_tag -}}
+{%- endif -%}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{%- capture default_heading -%}
+	{{- "cart.general.title" | t -}}
+{%- endcapture -%}
+
+{%- assign label                    = section.settings.label -%}
+{%- assign heading 					= section.settings.heading | default: default_heading -%}
+{%- assign show_gift_wrap_button 	= section.settings.show_gift_wrap_button -%}
+
+{%- capture subtotal -%}
+	{%- if cart.cart_level_discount_applications.size > 0 -%}
+		<div class="cart-template__savings">
+			<div class="cart-template__subtotal cart-template__subtotal--savings">
+				<span class="cart-template__subtotal-label {% if design == 'alternate' %}h6{% endif %}">
+					{{- 'cart.general.savings' | t | append: ':' -}}
+				</span>
+
+				<span class="cart-template__subtotal-value cart-template__subtotal-value--save {% if design == 'alternate' %}h4{% endif %}">
+					{{- cart.total_discount | money | prepend: '-' -}}
+				</span>
+			</div>
+
+			<ul class="discounts discounts--right cart-template__discounts" role="list"
+				aria-label="{{- 'customer.order.discount' | t | escape -}}">
+				{%- for discount in cart.cart_level_discount_applications -%}
+					<li class="discounts__item">
+						{% render 'icons-small', icon: 'discount' %}
+
+						{{ discount.title }}
+						(-{{ discount.total_allocated_amount | money }})
+					</li>
+				{%- endfor -%}
+			</ul>
+		</div>
+	{%- endif -%}
+
+	<p class="cart-template__subtotal">
+		<span class="cart-template__subtotal-label {% if design == 'alternate' %}h6{% endif %}">
+			{{- 'cart.general.subtotal' | t | append: ':' -}}
+		</span>
+
+		<span class="cart-template__subtotal-value {% if design == 'alternate' %}h4{% endif %}">
+			{{- cart.total_price | money -}}
+		</span>
+	</p>
+{%- endcapture -%}
+
+{%- capture blocks -%}
+	{%- for block in section.blocks -%}
+		{% if block.type == "@app" %}
+			{%- render block -%}
+		{% endif %}
+	{%- endfor -%}
+{%- endcapture -%}
+
+{%- capture custom_liquid_block  -%}
+	{%- for block in section.blocks -%}
+		{%- case block.type -%}
+			{%- when 'custom_liquid' -%}
+				{{ block.settings.custom_liquid }}
+		{%- endcase -%}
+	{%- endfor -%}
+{%- endcapture -%}
+
+{%- capture summary -%}
+	<div class="cart-template__summary">
+		{%- assign contains_free_shipping = false -%}
+		{%- for block in section.blocks -%}
+			{%- case block.type -%}
+				{%- when 'shipping' -%}
+					{%- assign contains_free_shipping = true -%}
+					{%- assign amount = block.settings.amount -%}
+					{%- assign message = block.settings.message -%}
+					{%- assign congratulatory_message = block.settings.congratulatory_message -%}
+					{%- assign congratulatory_image = block.settings.icon -%}
+
+					{%- capture shipping_content -%}
+						{%- if amount != nil and message != nil and congratulatory_message != nil -%}
+							{%- assign cart_total = cart.total_price -%}
+							{%- assign amount_cents = amount | abs | times: 100.0 -%}
+							{%- assign percentage = cart_total | divided_by: amount_cents | times: 100 -%}
+
+							{%- capture styles -%}
+								--shipping-bar-progress-value: {{ percentage -}}%;
+							{%- endcapture -%}
+
+							{%- capture icon -%}
+								{%- if congratulatory_image != blank -%}
+									{%- capture img_focal -%}
+										--img-desktop-pos: {{ congratulatory_image.presentation.focal_point }};
+									{%- endcapture -%}
+
+									<img
+										class="cart-template__shipping-image"
+										srcset="{{ congratulatory_image | img_url: "20x" }} 1x, {{ congratulatory_image | img_url: "40x" }} 2x"
+										src="{{- congratulatory_image | img_url: "40x" -}}"
+										alt="{{- congratulatory_image.alt -}}"
+										style="{{ img_focal }}"
+									/>
+								{%- endif -%}
+							{%- endcapture -%}
+
+							<div
+								class="cart-template__shipping js-cart-shipping"
+								style="{{- styles -}}"
+								data-amount-cents="{{ amount_cents }}"
+								data-cart-total="{{ cart_total }}"
+								data-amount-message="{{ message | escape }}"
+								data-success-message="{{ congratulatory_message | escape }}"
+							>
+								<div
+									class="cart-template__shipping-content cart-template__shipping-content--row">
+									<p class="cart-template__shipping-label">
+										{%- if icon != '' -%}
+											<span
+												class="cart-template__shipping-icon js-cart-shipping-icon is-hidden">
+												{{- icon -}}
+											</span>
+										{%- endif -%}
+
+										<span class="js-cart-shipping-amount-msg"></span>
+									</p>
+
+									<div class="cart-template__shipping-content">
+										<div
+											class="cart-template__shipping-progress js-cart-shipping-progress-bar">
+											<span
+												class="visually-hidden js-shipping-bar-progress-hidden-text">
+												{{- 'cart.shipping_bar.progress' | t: value: percentage -}}
+											</span>
+										</div>
+									</div>
+
+									{{- subtotal -}}
+								</div>
+							</div>
+						{%- endif -%}
+					{%- endcapture -%}
+
+					{%- if shipping_content != '' -%}
+						<div class="cart-template__section cart-template__section--shipping">
+							{%- assign shipping_included = true -%}
+
+							{{- shipping_content -}}
+						</div>
+					{%- endif -%}
+			{%- endcase -%}
+		{%- endfor -%}
+
+		{% unless contains_free_shipping %}
+			<div class="cart-template__totals">
+				{%- if cart.cart_level_discount_applications.size > 0 -%}
+					<div class="cart-template__totals-row">
+						<h2 class="cart-template__totals-label {% if design == 'alternate' %}h6{% endif %}">
+							{{- 'cart.general.savings' | t | append: ':' -}}
+						</h2>
+
+						<p class="cart-template__totals-value cart-template__totals-value--save {% if design == 'alternate' %}h4{% endif %}">
+							{{- cart.total_discount | money | prepend: '-' -}}
+						</p>
+					</div>
+
+					<ul class="discounts discounts--right cart-template__discounts" role="list"
+						aria-label="{{- 'customer.order.discount' | t | escape -}}">
+						{%- for discount in cart.cart_level_discount_applications -%}
+							<li class="discounts__item cart-template__discount-item">
+								{% render 'icons-small', icon: 'discount' %}
+
+								{{ discount.title }}
+								(-{{ discount.total_allocated_amount | money }})
+							</li>
+						{%- endfor -%}
+					</ul>
+				{%- endif -%}
+
+				<div class="cart-template__totals-row">
+					<h2 class="cart-template__totals-label {% if design == 'alternate' %}h6{% endif %}">
+						{{- 'cart.general.subtotal' | t | append: ':' -}}
+					</h2>
+
+					<p class="cart-template__totals-value {% if design == 'alternate' %}h4{% endif %}">
+						{{- cart.total_price | money -}}
+					</p>
+				</div>
+			</div>
+		{% endunless %}
+	</div>
+{%- endcapture -%}
+
+{%- capture added_blocks -%}
+	{%- if blocks != '' or custom_liquid_block != blank -%}
+		<div class="cart-template__blocks">
+			{% if blocks != '' %}
+				{{- blocks -}}
+			{% endif %}
+
+			{% if custom_liquid_block != blank %}
+				{{ custom_liquid_block }}
+			{% endif %}
+		</div>
+	{%- endif -%}
+{%- endcapture -%}
+
+{%- capture footer -%}
+	{%- render 'cart-footer',
+		section: section,
+		show_gift_button: show_gift_wrap_button,
+		alternate_design_summary: summary,
+		note_accordion: true
+	-%}
+{%- endcapture -%}
+
+{% liquid
+	assign discount_codes = cart.cart_level_discount_applications | where: 'type', 'discount_code' | map: 'title'
+	for item in cart.items
+		for allocation in item.line_level_discount_allocations
+			if allocation.discount_application.type == 'discount_code'
+				assign discount_codes = item.line_level_discount_allocations | slice: forloop.index0 | map: 'discount_application' | map: 'title' | concat: discount_codes
+			endif
+		endfor
+	endfor
+
+	assign discount_codes = discount_codes | uniq
+%}
+
+<section
+	class="{% if design == 'standard' %}cart-template{% else %}cart-template-new{% endif %}{% if cart.empty? %} is-empty{% endif %}"
+	data-section-id="{{- section.id -}}"
+	data-section-type="cart-template"
+>
+	{% if settings.enable_accents_spot %}
+		<div class="cart-template__ellipse-aspect-ratio">
+			<div class="cart-template__ellipse"></div>
+		</div>
+	{% endif %}
+
+	<div class="cart-template__container js-cart-container">
+		<div class="cart-template__content js-cart-content">
+			{%- if cart.empty? -%}
+				{%- render 'cart-empty' -%}
+			{%- else -%}
+				{%- if label != blank -%}
+					<div class="cart-template__label subheading">
+						{{- label -}}
+					</div>
+				{%- endif -%}
+
+				<h1 class="{% if design == 'standard' -%}h1{% else %}h2{% endif %} cart-template__title">
+					{{- heading -}}
+				</h1>
+
+				<div class="cart-template__items">
+					<div class="cart-items">
+						<form action="{{- routes.cart_url -}}" id="cart-{{- section.id -}}" class="cart-items__form" method="post">
+							<div class="cart-items__head">
+								<div class="h6 cart-items__col cart-items__col--main">
+									{{- 'cart.label.product' | t -}}
+								</div>
+
+								<div class="h6 cart-items__col cart-items__col--centralize">
+									{{- 'cart.label.price' | t -}}
+								</div>
+
+								<div class="h6 cart-items__col cart-items__col--centralize cart-items__col--quantity">
+									{{- 'cart.label.quantity' | t -}}
+								</div>
+
+								<div class="h6 cart-items__col cart-items__col--centralize cart-items__col--summary">
+									{{- 'cart.label.total' | t -}}
+								</div>
+
+								<div class="h6 cart-items__col cart-items__col--actions"></div>
+							</div>
+
+							<div class="cart-items__body">
+								{%- render 'cart-items'  -%}
+							</div>
+						</form>
+					</div>
+				</div>
+
+				{%- if settings.show_cart_discounts -%}
+					<div
+						class="cart-template__discount accordion js-cart-discount-accordion-container js-accordion-container">
+						<div class="cart-template__accordion-item accordion__item js-accordion-item">
+							<button
+								class="cart-template__discount-form-label cart-template__accordion-control accordion__control js-accordion-control"
+								aria-controls="cart-template-discounts"
+								aria-expanded="false"
+							>
+								<span class="cart-template__discount-form-label-text">
+									{{- "cart.general.discount_accordion_button" | t -}}
+								</span>
+
+
+								{%- if design == 'standard' -%}
+									<span
+										class="cart-template__discount-form-icon cart-template__discount-form-icon-plus">
+									{%- render 'icons-small', icon: 'plus' -%}
+								</span>
+
+									<span
+										class="cart-template__discount-form-icon cart-template__discount-form-icon-minus">
+									{%- render 'icons-small', icon: 'minus' -%}
+								</span>
+								{%- elsif design == 'alternate' -%}
+									<span class="cart-template__discount-form-icon">
+									{%- render "icons-new", icon: "arrow-down" -%}
+								</span>
+								{%- endif -%}
+							</button>
+
+							<div
+								class="cart-template__accordion-content accordion__content accordion__content--animate js-accordion-content"
+								id="cart-template-discounts"
+							>
+								<div class="js-accordion-inner">
+									<form class="cart-template__discount-form js-cart-discount-form" novalidate>
+										<div class="input-wrapper cart-template__discount-form-input-wrapper">
+											<label class="visually-hidden" for="cart-discount">
+												{{- "cart.general.discount" | t -}}
+											</label>
+
+											<input
+												class="input cart-template__discount-form-form-input"
+												type="text"
+												id="cart-discount"
+												name="discount"
+												placeholder="{{- 'cart.general.discount_placeholder' | t -}}"
+											/>
+										</div>
+
+										<button
+											class="button button--secondary cart-template__discount-form-button js-cart-discount-apply-button"
+											type="submit"
+										>
+											{{- "cart.general.apply_discount" | t -}}
+										</button>
+									</form>
+
+									<div
+										class="cart-template__discount-form-error js-cart-discount-error is-hidden"
+										role="alert"
+									>
+										<span class="cart-template__discount-form-error-icon-wrapper">
+											{% render 'icons-small', icon: 'error' %}
+										</span>
+
+										<span class="cart-template__discount-form-error-text js-cart-discount-error-code is-hidden">
+											{{ 'cart.general.discount_code_error' | t }}
+										</span>
+
+										<small class="cart-template__discount-form-error-text js-cart-discount-error-shipping is-hidden">
+											{{ 'cart.general.shipping_discount_error' | t }}
+										</small>
+									</div>
+
+									{%- if discount_codes.size > 0 -%}
+										<ul class="cart-template__discount-codes">
+											{% for discount_code in discount_codes %}
+												<li
+													class="cart-template__discount-pill js-cart-discount-pill"
+													data-discount-code="{{ discount_code }}"
+													aria-label="{{ 'cart.general.discount_applied' | t: code: discount_code }}"
+												>
+													<p class="cart-template__discount-pill-code">
+														{{ discount_code }}
+													</p>
+
+													<button
+														class="cart-template__discount-pill-remove js-cart-discount-pill-remove"
+														type="button"
+														aria-label="{{ 'cart.general.remove_discount' | t: code: discount_code }}"
+													>
+														{% render 'icons-small', icon: 'close' %}
+													</button>
+												</li>
+											{% endfor %}
+										</ul>
+									{%- endif -%}
+								</div>
+							</div>
+						</div>
+					</div>
+				{%- endif -%}
+
+				{% if design == 'standard' %}
+					{{- summary -}}
+				{% else %}
+					{{- added_blocks -}}
+
+					{% if footer != '' %}
+						<div class="cart-template__footer">
+							{{- footer -}}
+						</div>
+					{% endif %}
+				{% endif %}
+			{%- endif -%}
+		</div>
+
+		{% if design == 'standard' %}
+			{{ added_blocks }}
+
+			{%- if footer != '' -%}
+				<div class="cart-template__footer">
+					{{- footer -}}
+				</div>
+			{%- endif -%}
+		{% endif %}
+	</div>
+
+	{%- render "preloader" -%}
+</section>
+
+<script src="{{- 'cart-template.build.min.js' | asset_url -}}" defer></script>
+
+{% schema %}
+{
+	"name": "Cart",
+	"settings": [
+		{
+			"type": "header",
+			"content": "Cart settings"
+		},
+		{
+			"type": "text",
+			"id": "label",
+			"label": "Label"
+		},
+		{
+			"type": "text",
+			"id": "heading",
+			"label": "Heading",
+			"default": "Shopping cart"
+		},
+		{
+			"type": "checkbox",
+			"id": "show_gift_wrap_button",
+			"label": "Show gift wrap button",
+			"default": false
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 60
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 60
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 30
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 30
+		}
+	],
+	"blocks": [
+		{
+			"type": "@app"
+		},
+		{
+			"name": "Custom liquid",
+			"type": "custom_liquid",
+			"settings": [
+			{
+				"type": "liquid",
+				"id": "custom_liquid",
+				"label": "Custom liquid",
+				"info": "Simple custom liquid"
+			}
+			]
+		},
+		{
+			"name": "Shipping bar",
+			"type": "shipping",
+			"limit": 1,
+			"settings": [
+				{
+					"type": "number",
+					"id": "amount",
+					"label": "Free shipping amount",
+					"default": 100
+				},
+				{
+					"type": "textarea",
+					"id": "message",
+					"label": "Shipping message",
+					"default": "You are only {amount} away from free shipping",
+					"info": "The pattern {amount} will be replaced with the remaining amount"
+				},
+				{
+					"type": "textarea",
+					"id": "congratulatory_message",
+					"label": "Shipping congratulatory message",
+					"default": "You got free shipping"
+				},
+				{
+					"type": "image_picker",
+					"id": "icon",
+					"label": "Congratulatory icon",
+					"info": "40 x 40px recommended"
+				}
+			]
+		}
+	]
+}
+{% endschema %}

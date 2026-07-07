@@ -1,0 +1,16 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Product Vendor
+------------------------------------------------------------------------------
+{% endcomment %}
+{% assign preset_vendor = 'Product vendor' %}
+{% assign vendor = product.vendor %}
+{% if is_preset %}
+	{% assign vendor = preset_vendor %}
+{% endif %}
+
+{% if product.vendor != blank or is_preset %}
+	<div class="{% if design == 'alternate' %}product-vendor-new subheading{% else %}product-vendor{% endif %}">
+		{{- vendor -}}
+	</div>
+{% endif %}

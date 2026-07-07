@@ -1,0 +1,255 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Featured blog
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{%- assign blog 				= section.settings.blog -%}
+{%- assign label 				= section.settings.label -%}
+{%- assign heading 				= section.settings.heading -%}
+{%- assign link_url 			= section.settings.link_url -%}
+{%- assign link_text 			= section.settings.link_text -%}
+{%- assign link_aria_label_text = section.settings.link_aria_label_text -%}
+{%- assign button_style 		= section.settings.button_style -%}
+{%- assign show_borders 	   	= settings.article_card_show_borders -%}
+{%- assign border_color 	   	= settings.article_card_border_color -%}
+{%- assign full_width 	   		= section.settings.full_width -%}
+{%- assign design 	   			= settings.design -%}
+
+{%- capture section_styles -%}
+	--border-color: {{ border_color }};
+{%- endcapture -%}
+
+{%- capture blog_posts -%}
+	{%- capture featured_blog_row_wrapper_classes -%}
+		featured-blog__row-wrapper swiper {{-  -}}
+		{% if blog.articles.size > 1 or blog == blank %} js-featured-content-slider {%- endif -%}
+	{%- endcapture -%}
+
+	<div class="{{- featured_blog_row_wrapper_classes | strip_newlines -}}">
+		<div class="featured-blog__row swiper-wrapper">
+			{%- if blog and blog.articles.size > 0 -%}
+				{%- for article in blog.articles limit: 3 -%}
+					<div class="featured-blog__col {% unless show_borders %}featured-blog__col--no-border{% endunless %} swiper-slide js-animate">
+						{%- render 'article-card', article: article -%}
+					</div>
+				{%- endfor -%}
+			{%- else -%}
+				{%- for i in (1..3) -%}
+					<div class="featured-blog__col swiper-slide js-animate">
+						{%- render 'article-card', article: blank -%}
+					</div>
+				{%- endfor -%}
+			{%- endif -%}
+		</div>
+
+		{%- if blog.articles.size > 1 or blog == blank -%}
+			<div class="featured-blog__slider-pagination js-featured-content-slider-pagination"></div>
+		{%- endif -%}
+	</div>
+{%- endcapture -%}
+
+{%- capture featured_blog -%}
+	{%- if label != blank -%}
+		<p class="text featured-blog__label">
+			{{- label -}}
+		</p>
+	{%- endif -%}
+
+	{%- if heading != blank -%}
+		<h2 class="featured-blog__heading">
+			{{- heading -}}
+		</h2>
+	{%- endif -%}
+
+	{{- blog_posts -}}
+
+	{%- if link_text != blank -%}
+		<div class="featured-blog__link-wrapper js-animate">
+			<a
+				class="focus-visible-outline button button--{% if button_style == "circle" %}primary{% else %}{{- button_style }}{% endif %} featured-blog__link"
+				href="{{- blog.url -}}"
+				aria-label="{{- link_aria_label_text | escape -}}"
+			>
+				{{- link_text -}}
+			</a>
+		</div>
+	{%- endif -%}
+{%- endcapture -%}
+
+{%- capture slider_accessibility_settings -%}
+	{
+		"a11y": {
+			"prevSlideMessage": {{ "general.accessibility.slider.prev_slide_message" | t | json -}},
+			"nextSlideMessage": {{ "general.accessibility.slider.next_slide_message" | t | json -}},
+			"firstSlideMessage": {{ "general.accessibility.slider.first_slide_message" | t | json -}},
+			"lastSlideMessage": {{ "general.accessibility.slider.last_slide_message" | t | json -}},
+			"slideLabelMessage": {{ "general.accessibility.slider.slide_label_message" | t | json -}},
+			"paginationBulletMessage": {{ "general.accessibility.slider.pagination_bullet_message" | t | json }}
+		}
+	}
+{%- endcapture -%}
+
+{%- capture old_layout -%}
+	{{- 'featured-blog.build.css' | asset_url | stylesheet_tag -}}
+
+	<section class="featured-blog js-featured-blog" id="{{- section.id -}}" style="{{ section_styles }}">
+		<div class="featured-blog__container {% if full_width %}featured-blog__container--full{% endif %}">
+			{{- featured_blog -}}
+		</div>
+
+		{%- if blog.articles.size > 1 or blog == blank -%}
+			<script class="js-slider-settings" type="application/json">
+			{{- slider_accessibility_settings -}}
+		</script>
+		{% endif %}
+	</section>
+{%- endcapture -%}
+
+{%- if design == "alternate" -%}
+	{%- render "featured-blog-new.liquid", section: section -%}
+{%- else -%}
+	{{- old_layout -}}
+{%- endif -%}
+
+{%- if blog.articles.size > 1 or blog == blank -%}
+	<script src="{{- 'component-featured-content-slider.build.min.js' | asset_url -}}" defer></script>
+	<script src="{{- 'section-featured-blog.build.min.js' | asset_url -}}" defer></script>
+{%- endif -%}
+
+{%- schema -%}
+{
+	"name": "Blog posts",
+	"disabled_on": {
+		"groups": ["header", "footer"]
+	},
+	"settings": [
+		{
+			"type": "blog",
+			"id": "blog",
+			"label": "Blog",
+			"info": "Will display the last three posts of the selected blog"
+		},
+		{
+			"type": "text",
+			"id": "label",
+			"label": "Label"
+		},
+		{
+			"type": "text",
+			"id": "heading",
+			"label": "Heading"
+		},
+		{
+			"type": "text",
+			"id": "link_text",
+			"label": "Link label"
+		},
+		{
+			"type": "text",
+			"id": "link_aria_label_text",
+			"label": "Link aria-label",
+			"info": "Need for good accessibility, e.g. 'All news about...'. [Learn more](https://utdweb.team/shopify-themes/gain/manual#section-blog-posts)"
+		},
+		{
+			"type": "select",
+			"id": "button_style",
+			"label": "Button style",
+			"options": [
+				{
+					"value": "primary",
+					"label": "Primary"
+				},
+				{
+					"value": "secondary",
+					"label": "Secondary"
+				},
+				{
+					"value": "circle",
+					"label": "Circle"
+				}
+			],
+			"default": "primary",
+			"info": "Circle button appears with an alternate design"
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "checkbox",
+			"id": "full_width",
+			"label": "Make full width",
+			"default": true,
+			"info": "If unchecked - container width will be set based on the group 'Layout' settings in the Theme settings."
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 60
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 60
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 30
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 30
+		}
+	],
+	"presets": [
+		{
+			"name": "Blog posts",
+			"settings": {
+				"label": "Label",
+				"heading": "Heading",
+				"link_text": "Link text",
+				"link_aria_label_text": "Link to blog",
+				"button_style": "primary"
+			}
+		}
+	]
+}
+{%- endschema -%}
+

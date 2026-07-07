@@ -1,0 +1,64 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Reviews new
+	This snippet displays an alternative view for the Reviews snippet
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{{- 'reviews-new.build.css' | asset_url | stylesheet_tag -}}
+
+{%- assign heading = section.settings.heading -%}
+{%- assign label = section.settings.label -%}
+{%- assign enable_autoplay = section.settings.enable_autoplay -%}
+{%- assign autoplay_speed = section.settings.autoplay_speed -%}
+{%- assign image_link_label = section.settings.image_link_label -%}
+{%- assign image_link_label_color = section.settings.image_link_label_color -%}
+{%- assign layout = section.settings.layout -%}
+
+<section class="reviews-new js-animate{% if request.visual_preview_mode or section.index == 1 %} animated{% endif %}"
+		 style="{{ styles }}">
+	<div class="reviews-new__heading-wrapper">
+		{% if label != blank %}
+			<h3 class="subheading">
+				{{- label -}}
+			</h3>
+		{% endif %}
+
+		{%- if heading != blank -%}
+			<h2 class="h2 reviews-new__heading">
+				{{- heading -}}
+			</h2>
+		{%- endif -%}
+	</div>
+
+	<div class="reviews-new__container swiper js-reviews-container"
+		{%- if enable_autoplay == true -%}
+			data-autoplay-speed="{{ autoplay_speed | times: 1000 }}"
+		{%- endif -%}
+		 data-design="alternate">
+		<div class="swiper-wrapper">
+			{%- for block in section.blocks -%}
+				{%- assign review_text = block.settings.review_text -%}
+				{%- assign review_author_name = block.settings.review_author_name -%}
+				{%- assign review_additional_info = block.settings.review_additional_info -%}
+				{%- assign review_author_image = block.settings.review_image -%}
+				{%- assign product = block.settings.product -%}
+				{%- assign product_image = block.settings.product_image -%}
+
+				{% render 'reviews-new-slide',
+					review_text: review_text,
+					review_author_name: review_author_name,
+					review_additional_info: review_additional_info,
+					review_author_image: review_author_image,
+					product: product,
+					product_image: product_image,
+					image_link_label: image_link_label,
+					image_link_label_color: image_link_label_color,
+					layout: layout
+				%}
+			{%- endfor -%}
+		</div>
+
+		<div class="swiper-pagination"></div>
+	</div>
+</section>

@@ -1,0 +1,356 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Section: FAQ simple
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{% case settings.design %}
+	{% when 'alternate' %}
+		{% render 'faq-simple-new.liquid', section: section %}
+	{% when 'standard' %}
+		{{- 'faq-simple.build.css' | asset_url | stylesheet_tag -}}
+
+		{%- style -%}
+			#shopify-section-{{- section.id -}} {
+				padding-top: {{- section.settings.offset_top_mobile -}}px;
+				padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+			}
+
+			@media screen and (min-width: 768px) {
+				#shopify-section-{{- section.id -}} {
+					padding-top: {{- section.settings.offset_top_desktop -}}px;
+					padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+				}
+			}
+		{%- endstyle -%}
+
+		{%- assign title        = section.settings.heading -%}
+		{%- assign label        = section.settings.label -%}
+		{%- assign button_label = section.settings.button_label -%}
+		{%- assign button_link  = section.settings.button_link -%}
+		{%- assign button_style = section.settings.button_style -%}
+		{%- assign blocks       = section.blocks -%}
+
+		{% if button_style == 'circle' %}
+			{%- assign button_style = 'primary' -%}
+		{% endif %}
+
+		{%- assign content = '' -%}
+
+		{%- for block in blocks -%}
+			{%- case block.type -%}
+				{%- when "category" -%}
+					{%- assign category_heading = block.settings.heading -%}
+
+					{%- if category_heading != blank -%}
+						{%- assign handle = category_heading | handleize -%}
+
+						{%- capture content -%}
+							{{- content -}}
+
+							{%- if content != '' -%}
+								</div>
+							{%- endif -%}
+
+							<div id="{{- handle -}}" class="faq-simple__category js-faq-block">
+								<h2 class="faq-simple__category-heading">
+									{{- category_heading -}}
+								</h2>
+						{%- endcapture -%}
+					{%- endif -%}
+
+				{%- when "faq_item" -%}
+					{%- assign item_heading = block.settings.heading -%}
+					{%- assign text         = block.settings.text -%}
+					{%- assign heading_icon = block.settings.heading_icon -%}
+					{%- capture img_focal -%}{%- endcapture -%}
+
+					{%- if item_heading == blank or text == blank -%}
+						{%- continue -%}
+					{%- endif -%}
+
+					{%- capture icon -%}
+						{%- if heading_icon != blank -%}
+							{%- capture img_focal -%}
+								--img-desktop-pos: {{ heading_icon.presentation.focal_point }};
+							{%- endcapture -%}
+
+							<img
+								class="faq-simple__item-image"
+								srcset="{{ heading_icon | img_url: "20x" }} 1x, {{ heading_icon | img_url: "40x" }} 2x"
+								src="{{- heading_icon | img_url: "40x" -}}"
+								alt="{{- heading_icon.alt -}}"
+								style="{{ img_focal }}"
+							/>
+						{%- endif -%}
+					{%- endcapture -%}
+
+					{%- capture content -%}
+						{{- content -}}
+
+						{%- if content == '' -%}
+							<div class="faq-simple__category js-faq-block">
+						{%- endif -%}
+
+						<div class="accordion__item faq-simple__item js-accordion-item">
+							<h3 class="accordion__title faq-simple__item-title">
+								<button
+									id="control-{{- block.id -}}"
+									class="accordion__control faq-simple__item-control js-accordion-control"
+									aria-controls="content-{{- block.id -}}"
+									aria-expanded="false"
+								>
+									<span class="faq-simple__item-title-text">
+										{%- if icon != blank -%}
+											<span class="faq-simple__item-icon">
+												{{- icon -}}
+											</span>
+										{%- endif -%}
+
+										<span>
+											{{- item_heading -}}
+										</span>
+									</span>
+
+									<span class="faq-simple__item-control-icon faq-simple__item-control-icon--plus">
+										{% render 'icons-small', icon: 'plus' %}
+									</span>
+
+									<span class="faq-simple__item-control-icon faq-simple__item-control-icon--minus">
+										{% render 'icons-small', icon: 'minus' %}
+									</span>
+								</button>
+							</h3>
+
+							<div
+								id="content-{{- block.id -}}"
+								class="accordion__content accordion__content--animate faq-simple__item-content js-accordion-content"
+								style="height: 0;"
+								role="region"
+								aria-labelledby="control-{{- block.id -}}"
+							>
+								<div class="faq-simple__item-inner js-accordion-inner section-rte">
+									{{- text -}}
+								</div>
+							</div>
+						</div>
+					{%- endcapture -%}
+			{%- endcase -%}
+		{%- endfor -%}
+
+		{%- if content != '' -%}
+			{%- capture content -%}
+				{{- content -}}
+
+				</div>
+			{%- endcapture -%}
+		{%- endif -%}
+
+		<section class="faq-simple">
+			<div class="faq-simple__container">
+				{%- if label != blank -%}
+					<div class="faq-simple__label">
+						{{- label -}}
+					</div>
+				{%- endif -%}
+
+				<h1 class="h1 faq-simple__heading">
+					{{- title -}}
+				</h1>
+
+				<div class="accordion faq-simple__content js-accordion-container js-animate">
+					{{- content -}}
+				</div>
+
+				{% if button_label != blank and button_link != blank %}
+					<a
+						class="button button--{{- button_style }} faq-simple__button"
+						href="{{- button_link -}}"
+					>
+						{{- button_label -}}
+					</a>
+				{% endif %}
+			</div>
+		</section>
+
+		<script src="{{- 'section-faq-simple.build.min.js' | asset_url -}}" defer></script>
+{% endcase %}
+
+{%- schema -%}
+{
+	"name": "FAQ",
+	"disabled_on": {
+		"groups": ["header", "footer"]
+	},
+	"settings": [
+		{
+			"type": "text",
+			"id": "label",
+			"label": "Label"
+		},
+		{
+			"type": "text",
+			"id": "heading",
+			"label": "Heading",
+			"default": "FAQ"
+		},
+		{
+			"id": "button_label",
+			"type": "text",
+			"label": "Button label"
+		},
+		{
+			"type": "url",
+			"id": "button_link",
+			"label": "Button link"
+		},
+		{
+			"type": "select",
+			"id": "button_style",
+			"label": "Button style",
+			"options": [
+				{
+					"value": "primary",
+					"label": "Primary"
+				},
+				{
+					"value": "secondary",
+					"label": "Secondary"
+				},
+				{
+					"value": "circle",
+					"label": "Circle"
+				}
+			],
+			"default": "primary",
+			"info": "Circle button appears with an alternate design"
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 60
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 60
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 30
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 30
+		}
+	],
+	"blocks": [
+		{
+			"name": "Category",
+			"type": "category",
+			"settings": [
+				{
+					"type": "text",
+					"id": "heading",
+					"label": "Heading"
+				}
+			]
+		},
+		{
+			"name": "Question and answer",
+			"type": "faq_item",
+			"settings": [
+				{
+					"type": "inline_richtext",
+					"id": "heading",
+					"label": "Heading"
+				},
+				{
+					"type": "richtext",
+					"id": "text",
+					"label": "Text"
+				},
+				{
+					"type": "image_picker",
+					"id": "heading_icon",
+					"label": "Icon",
+					"info": "40 x 40px recommended"
+				}
+			]
+		}
+	],
+	"presets": [
+		{
+			"name": "FAQ",
+			"blocks": [
+				{
+					"type": "category",
+					"settings": {
+						"heading": "General"
+					}
+				},
+				{
+					"type": "faq_item",
+					"settings": {
+						"heading": "What products do we sell?",
+						"text": "<p>We sell many useful products.</p><p>You can view them on the collection page.</p>"
+					}
+				},
+				{
+					"type": "faq_item",
+					"settings": {
+						"heading": "How many products are in the store?",
+						"text": "<p>We have a wide variety of products in stock.</p>"
+					}
+				},
+				{
+					"type": "category",
+					"settings": {
+						"heading": "Shipping"
+					}
+				},
+				{
+					"type": "faq_item",
+					"settings": {
+						"heading": "What is the delivery time?",
+						"text": "<p>Delivery time on average 3 days</p>"
+					}
+				},
+				{
+					"type": "faq_item",
+					"settings": {
+						"heading": "Do we have local pickup?",
+						"text": "<p>Yes, we have the option of self-pickup from our stores.</p><p>For detailed information please contact us.</p>"
+					}
+				}
+			]
+		}
+	]
+}
+{%- endschema -%}

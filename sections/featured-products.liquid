@@ -1,0 +1,285 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Featured products
+------------------------------------------------------------------------------
+{%- endcomment -%}
+{% if section.index == 1 %}
+	{{- 'carousel.build.css' | asset_url | stylesheet_tag -}}
+{% endif %}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{% case settings.design %}
+{% when 'alternate' %}
+	{%- render 'featured-products-new', section: section -%}
+{% when 'standard' %}
+	{{- 'featured-products.build.css' | asset_url | stylesheet_tag -}}
+
+	{%- assign heading      		= section.settings.heading -%}
+	{%- assign layout       		= section.settings.layout -%}
+	{%- assign enable_cards_indent	= section.settings.enable_cards_indent -%}
+	{%- assign product_list 		= section.settings.product_list -%}
+	{%- assign link_url 			= section.settings.link_url -%}
+	{%- assign link_text 			= section.settings.link_text -%}
+	{%- assign link_aria_label_text = section.settings.link_aria_label_text -%}
+	{%- assign button_style 		= section.settings.button_style -%}
+	{%- assign full_width 			= section.settings.full_width -%}
+
+	{%- if button_style == "circle" -%}
+		{%- assign button_style = "primary" -%}
+	{%- endif -%}
+
+	{%- capture featured_products_row_wrapper_classes -%}
+		featured-products__row-wrapper swiper js-animate {% if request.visual_preview_mode or section.index == 1 %}animated{% endif %} {{-  -}}
+		{% if product_list.count > 2 or product_list == blank %} js-featured-content-slider {{-  -}} {%- endif -%}
+		{% if product_list.count > 3 or product_list == blank %} js-featured-content-scrollable-wrapper {%- endif -%}
+	{%- endcapture -%}
+
+	{%- capture featured_product_row_classes -%}
+		featured-products__row swiper-wrapper {{-  -}}
+		{% if product_list.count > 3 or product_list == blank %} featured-products__row--scrollable {% endif %}
+		{% if enable_cards_indent %}featured-products__row--indent{% endif %}
+	{%- endcapture -%}
+
+	<section class="featured-products js-featured-products"
+			 id="{{- section.id -}}"
+			 {% if enable_cards_indent %}
+				 data-cards-indent
+			 {% endif %}
+	>
+		<div class="featured-products__container {% if enable_cards_indent %}featured-products__container--indent{% endif %} {%- if full_width == false -%} featured-products__container--max-width {%- endif -%}">
+			{%- if heading != blank -%}
+				<h2 class="h2 featured-products__heading">
+					{{- heading -}}
+				</h2>
+			{%- endif -%}
+
+			<div class="{{- featured_products_row_wrapper_classes | strip_newlines -}}">
+				<div class="{{- featured_product_row_classes | strip_newlines -}}">
+					{%- if product_list != blank and product_list.count > 0 -%}
+						{%- assign image_size        = 640 -%}
+						{%- assign image_size_tablet = 382 -%}
+						{%- assign image_size_mobile = 240 -%}
+
+						{%- if layout == 'alternative' -%}
+							{%- assign image_size = 480 -%}
+						{%- endif -%}
+
+						{%- for product in product_list -%}
+							{% assign is_lazy = true %}
+
+							{% if section.index == 1 and forloop.index < 3 %}
+								{% assign is_lazy = false %}
+							{% endif %}
+
+							<div class="featured-products__col swiper-slide featured-products__col--{{- layout -}}">
+								{%- render
+									'product-card',
+									product: product,
+									size: image_size,
+									tablet_size: image_size_tablet,
+									mobile_size: image_size_mobile,
+									is_lazy: is_lazy
+								-%}
+							</div>
+						{%- endfor -%}
+					{%- else -%}
+						{%- for i in (1..3) -%}
+							<div class="featured-products__col swiper-slide featured-products__col--{{- layout -}}">
+								{%- render 'product-card', product: nil -%}
+							</div>
+						{%- endfor -%}
+					{%- endif -%}
+				</div>
+
+				{%- if product_list.count > 2 or product_list == blank -%}
+					<div class="featured-products__slider-pagination js-featured-content-slider-pagination"></div>
+				{%- endif -%}
+			</div>
+
+			{% if link_text != blank and link_url != blank %}
+				<div class="featured-products__link-wrapper">
+					<a href="{{ link_url }}"
+					   class="button button--{{ button_style }} focus-visible-outline"
+					   {% if link_aria_label_text != blank %}
+						   aria-label="{{ link_aria_label_text }}"
+					   {% endif %}
+					>
+						{{ link_text }}
+					</a>
+				</div>
+			{% endif %}
+		</div>
+	</section>
+
+	{%- if product_list.count > 2 or product_list == blank -%}
+		<script src="{{- 'component-featured-content-slider.build.min.js' | asset_url -}}" defer></script>
+		<script src="{{- 'section-featured-products.build.min.js' | asset_url -}}" defer></script>
+	{%- endif -%}
+{% endcase %}
+
+{%- schema -%}
+{
+	"name": "Featured products",
+	"disabled_on": {
+		"groups": ["header", "footer"],
+		"templates": ["password"]
+	},
+	"settings": [
+		{
+			"type": "text",
+			"id": "heading",
+			"label": "Heading",
+			"default": "Featured products"
+		},
+		{
+			"type": "text",
+			"id": "subheading",
+			"label": "Subheading",
+			"default": "Check new products",
+			"info": "The setting is used for alternative design."
+		},
+		{
+			"type": "textarea",
+			"id": "description",
+			"label": "Description",
+			"info": "The setting is used for alternative design."
+		},
+		{
+			"type": "product_list",
+			"id": "product_list",
+			"label": "Products",
+			"limit": 12
+		},
+		{
+			"type": "select",
+			"id": "layout",
+			"label": "Layout",
+			"options": [
+				{
+					"value": "main",
+					"label": "3 products per row"
+				},
+				{
+					"value": "alternative",
+					"label": "4 products per row"
+				}
+			],
+			"default": "main",
+			"info": "Mobile resolutions will always have 2 products per row"
+		},
+		{
+			"type": "checkbox",
+			"id": "enable_cards_indent",
+			"label": "Enable product cards indent",
+			"default": false,
+			"info": "The setting is used for standard design."
+		},
+		{
+			"type": "url",
+			"id": "link_url",
+			"label": "Link url"
+		},
+		{
+			"type": "text",
+			"id": "link_text",
+			"label": "Link label"
+		},
+		{
+			"type": "text",
+			"id": "link_aria_label_text",
+			"label": "Link aria-label",
+			"info": "Need for good accessibility, e.g. 'Shop all shirts'"
+		},
+		{
+			"type": "select",
+			"id": "button_style",
+			"label": "Button style",
+			"options": [
+				{
+					"value": "primary",
+					"label": "Primary"
+				},
+				{
+					"value": "secondary",
+					"label": "Secondary"
+				},
+				{
+					"value": "circle",
+					"label": "Circle"
+				}
+			],
+			"default": "primary",
+			"info": "Circle button appears with an alternate design."
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "checkbox",
+			"id": "full_width",
+			"label": "Make full width",
+			"default": true,
+			"info": "If unchecked - container width will be set based on the group 'Layout' settings in the Theme settings."
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 0
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 0
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 0
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 0
+		}
+	],
+	"presets": [
+		{
+			"name": "Featured products"
+		}
+	]
+}
+{%- endschema -%}

@@ -1,0 +1,85 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Page content
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{%- assign design 				= settings.design -%}
+{%- assign enable_accents_spot 	= settings.enable_accents_spot -%}
+
+<section class="{% if design == "alternate" %}shipping-page-main-new{% if enable_accents_spot %} shipping-page-main--accent-spot{% endif %}{% else %}shipping-page-main{% endif %}">
+	{{- 'shipping-page-main.build.css' | asset_url | stylesheet_tag -}}
+	{% if page.content contains '<slider>' %}
+		<script src="{{- 'component-rte-slider.build.min.js' | asset_url -}}" defer></script>
+	{% endif %}
+
+	<div class="{% if design == "alternate" %}shipping-page-main__container rte-new{% else %}rte{% endif %}">
+		{{ page.content }}
+	</div>
+</section>
+
+{% schema %}
+	{
+		"name": "Page content",
+		"settings": [
+			{
+				"type": "header",
+				"content": "Layout"
+			},
+			{
+				"type": "range",
+				"id": "offset_top_desktop",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Desktop offset top",
+				"default": 60
+			},
+			{
+				"type": "range",
+				"id": "offset_bottom_desktop",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Desktop offset bottom",
+				"default": 60
+			},
+			{
+				"type": "range",
+				"id": "offset_top_mobile",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Mobile offset top",
+				"default": 30
+			},
+			{
+				"type": "range",
+				"id": "offset_bottom_mobile",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Mobile offset bottom",
+				"default": 30
+			}
+		]
+	}
+{% endschema %}

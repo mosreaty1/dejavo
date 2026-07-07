@@ -1,0 +1,18 @@
+.sort-new .sort__select {
+	padding: 12px 29px 10px;
+}
+.sort-new .select-wrapper .icon {
+	width: 20px;
+	height: 20px;
+	transform: translate(-27px, -50%);
+}
+@media (max-width: 1199.98px) {
+	.sort-new .sort__select {
+		padding: 9px 19px 8px;
+	}
+	.sort-new .select-wrapper .icon {
+		width: 25px;
+		height: 25px;
+		transform: translate(-17px, -50%);
+	}
+}

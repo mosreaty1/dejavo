@@ -1,0 +1,30 @@
+{
+	"sections": {
+		"blog": {
+			"type": "blog-template",
+			"settings": {
+				"label": "Latest",
+				"paginate_by": 9,
+				"pagination_type": "pagination",
+				"lazy_load_button_type": "secondary",
+				"show_filter_by_tag": true,
+				"featured_post_bg": "#f3e7da",
+				"featured_post_border_color": "#e6e6e6",
+				"featured_post_text_color": "#000000",
+				"featured_post_date_color": "#757575",
+				"featured_show_border": true,
+				"enable_lazy_load": false,
+				"featured_blog_button_type": "primary",
+				"btn_text_aria_label": "",
+				"full_width": false,
+				"offset_top_desktop": 60,
+				"offset_bottom_desktop": 60,
+				"offset_top_mobile": 30,
+				"offset_bottom_mobile": 30
+			}
+		}
+	},
+	"order": [
+		"blog"
+	]
+}

@@ -1,0 +1,173 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Shop by brand (ONLY alternate design from settings.design == 'alternate')
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{{- 'shop-by-brand-new.build.css' | asset_url | stylesheet_tag -}}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{%- assign label         	= section.settings.label -%}
+{%- assign heading         	= section.settings.heading -%}
+{%- assign card_background 	= section.settings.card_background -%}
+{%- assign full_width 		= section.settings.full_width -%}
+
+{%- capture section_styles -%}
+	--card-background: {{ card_background }}; {{-  -}}
+{%- endcapture -%}
+
+<section
+	class="shop-by-brand-new js-animate{% if request.visual_preview_mode or section.index == 1 %} animated{% endif %}"
+	style="{{ section_styles }}"
+>
+	<div class="shop-by-brand-new__container {% if full_width == false %}shop-by-brand-new__container--max-width{% endif %}">
+		{%- if label != blank -%}
+			<p class="shop-by-brand-new__label need-animate subheading">
+				{{- label -}}
+			</p>
+		{%- endif -%}
+
+		{%- if heading != blank -%}
+			<h2 class="shop-by-brand-new__heading need-animate h2">
+				{{- heading -}}
+			</h2>
+		{%- endif -%}
+
+		<div class="shop-by-brand-new__items-container">
+			{%- for block in section.blocks -%}
+				{%- assign delay_step = forloop.index0 -%}
+				{%- assign brand_image = block.settings.brand_image -%}
+				{%- assign brand_link  = block.settings.brand_link -%}
+
+				<div class="shop-by-brand-new__item-wrapper need-animate" style="--delay-step: {{- delay_step -}};">
+					{%- if brand_link != blank -%}
+						<a href="{{ brand_link }}" class="shop-by-brand-new__item focus-visible-outline">
+					{%- else -%}
+						<div class="shop-by-brand-new__item">
+					{%- endif -%}
+
+					{%- if brand_image != blank -%}
+						{%- capture img_focal -%}
+							--img-desktop-pos: {{ brand_image.presentation.focal_point }};
+						{%- endcapture -%}
+
+						<picture class="lazy">
+							<source
+								data-srcset="{{ brand_image | img_url: '85x85' }} 1x, {{ brand_image | img_url: '170x170' }} 2x"
+								srcset="{{ brand_image | img_url: '10x' }} 1x, {{ brand_image | img_url: '10x' }} 2x"
+								media="(max-width: 375px)"
+								width="85"
+								height="85"
+							/>
+
+							<source
+								data-srcset="{{ brand_image | img_url: '150x150' }} 1x, {{ brand_image | img_url: '300x300' }} 2x"
+								srcset="{{ brand_image | img_url: '10x' }} 1x, {{ brand_image | img_url: '10x' }} 2x"
+								media="(max-width: 575px)"
+								width="150"
+								height="150"
+							/>
+
+							<source
+								data-srcset="{{ brand_image | img_url: '170x170' }} 1x, {{ brand_image | img_url: '340x340' }} 2x"
+								srcset="{{ brand_image | img_url: '10x' }} 1x, {{ brand_image | img_url: '10x' }} 2x"
+								media="(max-width: 991px)"
+								width="170"
+								height="170"
+							/>
+
+							<source
+								data-srcset="{{ brand_image | img_url: '130x130' }} 1x, {{ brand_image | img_url: '260x260' }} 2x"
+								srcset="{{ brand_image | img_url: '10x' }} 1x, {{ brand_image | img_url: '10x' }} 2x"
+								media="(max-width: 1199px)"
+								width="130"
+								height="130"
+							/>
+
+							<img
+								class="shop-by-brand-new__item-image"
+								data-srcset="{{ brand_image | img_url: "150x150" }} 1x, {{ brand_image | img_url: "300x300" }} 2x"
+								srcset="{{ brand_image | img_url: "10x" }} 1x, {{ brand_image | img_url: "10x" }} 2x"
+								data-src="{{ brand_image | img_url: "150x150" }}"
+								src="{{ brand_image | img_url: "10x" }}"
+								alt="{{ brand_image.alt }}"
+								width="150"
+								height="150"
+								style="{{ img_focal }}"
+							/>
+						</picture>
+
+						<noscript>
+							<picture>
+								<source
+									srcset="{{ brand_image | img_url: '85x85' }} 1x, {{ brand_image | img_url: '170x170' }} 2x"
+									media="(max-width: 375px)"
+									width="85"
+									height="85"
+								/>
+
+								<source
+									srcset="{{ brand_image | img_url: '150x150' }} 1x, {{ brand_image | img_url: '300x300' }} 2x"
+									media="(max-width: 575px)"
+									width="150"
+									height="150"
+								/>
+
+								<source
+									srcset="{{ brand_image | img_url: '170x170' }} 1x, {{ brand_image | img_url: '340x340' }} 2x"
+									media="(max-width: 991px)"
+									width="170"
+									height="170"
+								/>
+
+								<source
+									srcset="{{ brand_image | img_url: '130x130' }} 1x, {{ brand_image | img_url: '260x260' }} 2x"
+									media="(max-width: 1199px)"
+									width="130"
+									height="130"
+								/>
+
+								<img
+									class="shop-by-brand-new__item-image"
+									srcset="{{ brand_image | img_url: "150x150" }} 1x, {{ brand_image | img_url: "300x300" }} 2x"
+									src="{{ brand_image | img_url: "150x150" }}"
+									alt="{{ brand_image.alt }}"
+									width="150"
+									height="150"
+									style="{{ img_focal }}"
+								/>
+							</picture>
+						</noscript>
+					{%- else -%}
+						{%- assign odd =  forloop.index | modulo: 2 -%}
+
+						{%- if odd  == 1 -%}
+							{{- "lifestyle-1" | placeholder_svg_tag: "shop-by-brand-new__item-image" -}}
+						{%- else -%}
+							{{- "lifestyle-2" | placeholder_svg_tag: "shop-by-brand-new__item-image" -}}
+						{%- endif -%}
+					{%- endif -%}
+
+					{%- if brand_link != blank -%}
+						</a>
+					{%- else -%}
+						</div>
+					{%- endif -%}
+				</div>
+			{%- endfor -%}
+		</div>
+	</div>
+</section>

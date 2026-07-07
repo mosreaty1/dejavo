@@ -1,0 +1,57 @@
+{% comment %}
+{%- assign image = product.selected_or_first_available_variant.image | default: product.featured_image | default: default_image -%}
+{% endcomment %}
+
+{% if image == settings.product_default_image %}
+	{%- capture img_focal -%}
+		--img-desktop-pos: {{ settings.product_default_image.presentation.focal_point }};
+	{%- endcapture -%}
+{% endif %}
+
+<picture {% if is_model %}class="js-quick-view-image"{% endif %}>
+	<source
+		srcset="{{ image | img_url: '236x' }} 1x, {{ image | img_url: '472x' }} 2x"
+		media="(max-width: 360px)"
+		data-size="236"
+		width="236"
+		height="236"
+	>
+
+	<source
+		srcset="{{ image | img_url: '380x' }} 1x, {{ image | img_url: '760x' }} 2x"
+		media="(max-width: 380px)"
+		data-size="380"
+		width="380"
+		height="380"
+	>
+
+	<source
+		srcset="{{ image | img_url: '356x' }} 1x, {{ image | img_url: '712x' }} 2x"
+		media="(max-width: 480px)"
+		data-size="480"
+		width="356"
+		height="356"
+	>
+
+	<source
+		srcset="{{ image | img_url: '416x' }} 1x, {{ image | img_url: '832x' }} 2x"
+		media="(max-width: 767px)"
+		data-size="767"
+		width="416"
+		height="416"
+	>
+
+	<img
+		class="quick-view__image"
+		srcset="{{ image | img_url: '442x' }} 1x, {{ image | img_url: '884x' }} 2x"
+		data-size="342"
+		src="{{ image | img_url: '442x' }}"
+		alt="{{- image.alt -}}"
+		data-img-id="{{ image.id }}"
+		width="342"
+		height="684"
+		{% if img_focal != blank %}
+			style="{{ img_focal }}"
+		{% endif %}
+	>
+</picture>

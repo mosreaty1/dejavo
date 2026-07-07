@@ -1,0 +1,18 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Header menu row separator
+	Render row separator
+	- index: column index (required)
+	- position: separator position (required)
+	- count: total columns (required)
+
+	Usage:
+	{%- render 'header-mega-menu-row-separator', index: index, position: position, count: count -%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign column_index = index | modulo: position -%}
+
+{%- if column_index == 0 and index != count -%}
+	<li class="header-mega-menu__row-separator header-mega-menu__row-separator--{{- position -}}"></li>
+{%- endif -%}

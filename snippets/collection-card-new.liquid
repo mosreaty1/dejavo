@@ -1,0 +1,238 @@
+{% comment %}
+	------------------------------------------------------------------------------
+	Snippet: Collection card new
+	- collection: Collection object (required)
+	- text_position: select (optional)
+	- is_show_products_count: boolean (optional)
+	- text_position: select (optional)
+	------------------------------------------------------------------------------
+{% endcomment %}
+
+{{- 'collection-card-new.build.css' | asset_url | stylesheet_tag -}}
+
+{%- assign min = 1 -%}
+{%- assign max = 6 -%}
+{%- assign diff = max | minus: min -%}
+
+{%- assign size_width 		= 428 -%}
+{%- assign size_height 		= 739 -%}
+{%- assign size_width_2x 	= size_width | times: 2 -%}
+{%- assign size_height_2x 	= size_height | times: 2 -%}
+
+{%- assign size_width_1500 		= 345 -%}
+{%- assign size_height_1500 	= 596 -%}
+{%- assign size_width_1500_2x 	= size_width_1500 | times: 2 -%}
+{%- assign size_height_1500_2x 	= size_height_1500 | times: 2 -%}
+
+{%- assign size_width_1199 		= 292 -%}
+{%- assign size_height_1199 	= 504 -%}
+{%- assign size_width_1199_2x 	= size_width_1199 | times: 2 -%}
+{%- assign size_height_1199_2x 	= size_height_1199 | times: 2 -%}
+
+{%- assign size_width_991 		= 480 -%}
+{%- assign size_height_991 		= 829 -%}
+{%- assign size_width_991_2x 	= size_width_991 | times: 2 -%}
+{%- assign size_height_991_2x 	= size_height_991 | times: 2 -%}
+
+{%- assign size_width_767 		= 368 -%}
+{%- assign size_height_767 		= 537 -%}
+{%- assign size_width_767_2x 	= size_width_767 | times: 2 -%}
+{%- assign size_height_767_2x 	= size_height_767 | times: 2 -%}
+
+{%- assign size_width_575 		= 272 -%}
+{%- assign size_height_575 		= 397 -%}
+{%- assign size_width_575_2x 	= size_width_575 | times: 2 -%}
+{%- assign size_height_575_2x 	= size_height_575 | times: 2 -%}
+
+{%- assign size_width_420 		= 194 -%}
+{%- assign size_height_420 		= 284 -%}
+{%- assign size_width_420_2x 	= size_width_420 | times: 2 -%}
+{%- assign size_height_420_2x 	= size_height_420 | times: 2 -%}
+
+{%- assign size_width_375 		= 172 -%}
+{%- assign size_height_375 		= 251 -%}
+{%- assign size_width_375_2x 	= size_width_375 | times: 2 -%}
+{%- assign size_height_375_2x 	= size_height_375 | times: 2 -%}
+
+{%- if collection != blank -%}
+	{% if collection.featured_image %}
+		{%- assign image = collection.featured_image -%}
+	{%- endif -%}
+
+	<a
+		class="focus-visible-outline collection-card-new"
+		href="{{- collection.url -}}"
+		aria-label="{{- 'collections.general.collection_card_link_aria_label' | t: title: collection.title | escape -}}"
+	>
+		<span class="collection-card-new__image-wrapper{% if text_position == "under_the_image" %} collection-list-new__image-wrapper--no-overlay-mob{% endif %}">
+			{% if image != blank %}
+				<picture class="lazy no-js-hidden">
+					<source
+						data-srcset="{{ image | image_url: width: size_width_375, height: size_height_375 }} 1x,
+									 {{ image | image_url: width: size_width_375_2x, height: size_height_375_2x }} 2x"
+						srcset="{{ image | image_url: width: 10, height: 10 }} 1x,
+								{{ image | image_url: width: 20, height: 20 }} 2x"
+						media="(max-width: 375px)"
+						width="{{- size_width_375 -}}"
+						height="{{- size_height_375 -}}"
+					>
+
+					<source
+						data-srcset="{{ image | image_url: width: size_width_420, height: size_height_420 }} 1x,
+									 {{ image | image_url: width: size_width_420_2x, height: size_height_420_2x }} 2x"
+						srcset="{{ image | image_url: width: 10, height: 10 }} 1x,
+								{{ image | image_url: width: 20, height: 20 }} 2x"
+						media="(max-width: 420px)"
+						width="{{- size_width_420 -}}"
+						height="{{- size_height_420 -}}"
+					>
+
+					<source
+						data-srcset="{{ image | image_url: width: size_width_575, height: size_height_575 }} 1x,
+									 {{ image | image_url: width: size_width_575_2x, height: size_height_575_2x }} 2x"
+						srcset="{{ image | image_url: width: 10, height: 10 }} 1x,
+								{{ image | image_url: width: 20, height: 20 }} 2x"
+						media="(max-width: 575px)"
+						width="{{- size_width_575 -}}"
+						height="{{- size_height_575 -}}"
+					>
+
+					<source
+						data-srcset="{{ image | image_url: width: size_width_767, height: size_height_767 }} 1x,
+									 {{ image | image_url: width: size_width_767_2x, height: size_height_767_2x }} 2x"
+						srcset="{{ image | image_url: width: 10, height: 10 }} 1x,
+								{{ image | image_url: width: 20, height: 20 }} 2x"
+						media="(max-width: 767px)"
+						width="{{- size_width_767 -}}"
+						height="{{- size_height_767 -}}"
+					>
+
+					<source
+						data-srcset="{{ image | image_url: width: size_width_991, height: size_height_991 }} 1x,
+									 {{ image | image_url: width: size_width_991_2x, height: size_height_991_2x }} 2x"
+						srcset="{{ image | image_url: width: 10, height: 10 }} 1x,
+								{{ image | image_url: width: 20, height: 20 }} 2x"
+						media="(max-width: 991px)"
+						width="{{- size_width_991 -}}"
+						height="{{- size_height_991 -}}"
+					>
+
+					<source
+						data-srcset="{{ image | image_url: width: size_width_1199, height: size_height_1199 }} 1x,
+									 {{ image | image_url: width: size_width_1199_2x, height: size_height_1199_2x }} 2x"
+						srcset="{{ image | image_url: width: 10, height: 10 }} 1x,
+								{{ image | image_url: width: 20, height: 20 }} 2x"
+						media="(max-width: 1199px)"
+						width="{{- size_width_1199 -}}"
+						height="{{- size_height_1199 -}}"
+					>
+
+					<source
+						data-srcset="{{ image | image_url: width: size_width_1500, height: size_height_1500 }} 1x,
+									 {{ image | image_url: width: size_width_1500_2x, height: size_height_1500_2x }} 2x"
+						srcset="{{ image | image_url: width: 10, height: 10 }} 1x,
+								{{ image | image_url: width: 20, height: 20 }} 2x"
+						media="(max-width: 1500px)"
+						width="{{- size_width_1500 -}}"
+						height="{{- size_height_1500 -}}"
+					>
+
+					<img
+						class="collection-card-new__image"
+						src="{{- image | image_url: width: 10, height: 10 -}}"
+						data-src="{{ image | image_url: width: size_width, height: size_height }}"
+						data-srcset="{{ image | image_url: width: size_width, height: size_height }} 1x,
+									 {{ image | image_url: width: size_width, height: size_height }} 2x"
+						alt="{{- image.alt | escape -}}"
+						width="{{- size_width -}}"
+						height="{{- size_height -}}"
+					>
+				</picture>
+
+				<noscript>
+					<picture>
+						<source
+							srcset="{{ image | image_url: width: size_width_375, height: size_height_375 }}"
+							media="(max-width: 375px)"
+							width="{{- size_width_375 -}}"
+							height="{{- size_height_375 -}}"
+						>
+
+						<source
+							srcset="{{ image | image_url: width: size_width_420, height: size_height_420 }}"
+							media="(max-width: 420px)"
+							width="{{- size_width_420 -}}"
+							height="{{- size_height_420 -}}"
+						>
+
+						<source
+							srcset="{{ image | image_url: width: size_width_575, height: size_height_575 }}"
+							media="(max-width: 575px)"
+							width="{{- size_width_575 -}}"
+							height="{{- size_height_575 -}}"
+						>
+
+						<source
+							srcset="{{ image | image_url: width: size_width_767, height: size_height_767 }}"
+							media="(max-width: 767px)"
+							width="{{- size_width_767 -}}"
+							height="{{- size_height_767 -}}"
+						>
+
+						<source
+							srcset="{{ image | image_url: width: size_width_991, height: size_height_991 }}"
+							media="(max-width: 991px)"
+							width="{{- size_width_991 -}}"
+							height="{{- size_height_991 -}}"
+						>
+
+						<source
+							srcset="{{ image | image_url: width: size_width_1199, height: size_height_1199 }}"
+							media="(max-width: 1199px)"
+							width="{{- size_width_1199 -}}"
+							height="{{- size_height_1199 -}}"
+						>
+
+						<source
+							srcset="{{ image | image_url: width: size_width_1500, height: size_height_1500 }}"
+							media="(max-width: 1500px)"
+							width="{{- size_width_1500 -}}"
+							height="{{- size_height_1500 -}}"
+						>
+
+						<img
+							class="collection-card-new__image"
+							src="{{- image | image_url: width: size_width, height: size_height -}}"
+							srcset="{{ image | image_url: width: size_width, height: size_height }} 1x,
+									{{ image | image_url: width: size_width_2x, height: size_height_2x }} 2x"
+							alt="{{- image.alt -}}"
+							width="{{- size_width -}}"
+							height="{{- size_height -}}"
+							loading="lazy"
+						>
+					</picture>
+				</noscript>
+			{% else %}
+				{%- assign random_number = "now" | date: "%N" | modulo: diff | plus: min -%}
+				{%- assign placeholder_svg_name = 'collection-' | append: random_number -%}
+
+				<span aria-hidden="true">
+					{{- placeholder_svg_name | placeholder_svg_tag: 'collection-card-new__image collection-card-new__image--placeholder' -}}
+				</span>
+			{% endif %}
+		</span>
+
+		<span class="collection-card-new__title{% if text_position == "inside_the_image" %} collection-card-new__title--inside-the-image{% endif %}">
+			{{- collection.title -}}
+		</span>
+
+		{% if is_show_products_count %}
+			{% assign one_product_label = 'sections.collection_list.one_product' | t %}
+			{% assign many_product_label = 'sections.collection_list.many_products' | t %}
+
+			<div class="collection-card-new__count{% if text_position == "inside_the_image" %} collection-card-new__count--inside-the-image{% endif %}">
+				{{ collection.all_products_count }} {{ collection.all_products_count | pluralize: one_product_label, many_product_label }}
+			</div>
+		{% endif %}
+	</a>
+{%- endif -%}

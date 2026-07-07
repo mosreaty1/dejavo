@@ -1,0 +1,19 @@
+<svg class="icon" aria-hidden="true" focusable="false" width="36" height="40" viewBox="0 0 36 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_758_5756)">
+	<path d="M0.554688 14.916H35.46" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+	<path d="M26.6992 22.5645H26.7168" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+	<path d="M18.0078 22.5645H18.0254" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+	<path d="M9.30078 22.5645H9.31841" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+	<path d="M26.6992 30.1748H26.7168" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+	<path d="M18.0117 30.1748H18.0293" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+	<path d="M9.30078 30.1748H9.31841" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+	<path d="M25.9219 0.416016V6.86089" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+	<path d="M10.1016 0.416016V6.86089" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+	<path fill-rule="evenodd" clip-rule="evenodd" d="M26.2999 3.50879H9.71814C3.96712 3.50879 0.375 6.71249 0.375 12.6014V30.3236C0.375 36.3051 3.96712 39.5829 9.71814 39.5829H26.2818C32.051 39.5829 35.625 36.3606 35.625 30.4718V12.6014C35.6431 6.71249 32.0691 3.50879 26.2999 3.50879Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<defs>
+	<clipPath id="clip0_758_5756">
+		<rect width="36" height="40" fill="white"/>
+	</clipPath>
+</defs>
+</svg>

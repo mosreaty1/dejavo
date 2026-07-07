@@ -1,0 +1,229 @@
+.promotion-banner-new {
+	position: fixed;
+	left: 50%;
+	overflow: hidden;
+	z-index: 12;
+	display: none;
+	width: calc(100% - 32px);
+	background-color: var(--banner-bg);
+	color: var(--banner-text-color);
+	transform: translateX(-50%);
+	max-width: 350px;
+	border-radius: 50px 0;
+}
+.promotion-banner-new .promotion-banner-new__inner {
+	display: flex;
+	padding: 30px 89px;
+	flex-direction: column;
+}
+.promotion-banner-new .promotion-banner-new__subtitle {
+	font-size: calc(var(--body-font-size) * 0.875);
+	word-break: break-word;
+}
+.promotion-banner-new .promotion-banner-new__content {
+	display: flex;
+	padding: 20px 7px 0;
+	text-align: center;
+	flex-direction: column;
+}
+.promotion-banner-new .promotion-banner-new__content .button-link-new {
+	align-self: center;
+	font-size: calc(var(--body-font-size) * 0.875);
+	color: var(--button-text-color);
+}
+.promotion-banner-new .promotion-banner-new__content .button-link-new .button-link-new__icon {
+	transform: translate(0, -50%);
+}
+.promotion-banner-new .promotion-banner-new__content .promotion-banner-new__title {
+	color: inherit;
+}
+.promotion-banner-new .promotion-banner-new__content .promotion-banner-new__title ~ .promotion-banner-new__subtitle {
+	margin-top: 10px;
+}
+.promotion-banner-new .promotion-banner-new__content .promotion-banner-new__title ~ .button-link-new {
+	margin-top: 17px;
+}
+.promotion-banner-new.promotion-banner-new--no-image .promotion-banner-new__content {
+	width: 100%;
+	padding: 0;
+}
+.promotion-banner-new.promotion-banner-new--no-image .promotion-banner-new__inner {
+	padding: 30px 42px;
+}
+.promotion-banner-new.promotion-banner-new--shadow {
+	box-shadow: 0 0 9px 1px rgba(0, 0, 0, 0.5607843137);
+}
+.promotion-banner-new.is-active {
+	display: block;
+	animation-name: promoBannerShow;
+	animation-duration: 0.5s;
+	animation-fill-mode: forwards;
+}
+.promotion-banner-new .promotion-banner-new__close-button {
+	position: absolute;
+	top: 15px;
+	inset-inline-end: 11px;
+	z-index: 3;
+	color: var(--banner-text-color);
+}
+.promotion-banner-new .promotion-banner-new__close-button .icon {
+	width: 20px;
+	height: 20px;
+}
+.promotion-banner-new .promotion-banner-new__image-wrapper {
+	margin: 0 auto;
+}
+.promotion-banner-new .promotion-banner-new__image {
+	border-radius: 50px 0;
+	-o-object-fit: cover;
+	   object-fit: cover;
+	-o-object-position: var(--img-desktop-pos);
+	   object-position: var(--img-desktop-pos);
+}
+.promotion-banner-new .promotion-banner-new__link-wrapper {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 2;
+	width: 100%;
+	height: 100%;
+	transition-property: background-color;
+	transition-duration: var(--timing-base);
+}
+@media (-moz-touch-enabled: 0), (hover: hover), (pointer: fine) {
+	.promotion-banner-new .promotion-banner-new__link-wrapper:hover {
+		background-color: rgba(255, 255, 255, 0.2);
+	}
+}
+@media (min-width: 576px) {
+	.promotion-banner-new {
+		width: 100%;
+		max-width: 550px;
+	}
+	.promotion-banner-new .promotion-banner-new__inner {
+		padding: 0;
+		flex-direction: row;
+	}
+	.promotion-banner-new .promotion-banner-new__content {
+		padding: 70px 40px;
+		text-align: initial;
+	}
+	.promotion-banner-new .promotion-banner-new__content .button-link-new {
+		align-self: inherit;
+		font-size: var(--body-font-size);
+	}
+	.promotion-banner-new .promotion-banner-new__content .promotion-banner-new__title {
+		font-size: calc(var(--heading-font-size) * 1.5);
+	}
+	.promotion-banner-new .promotion-banner-new__content .promotion-banner-new__title ~ .button-link-new {
+		margin-top: 20px;
+	}
+	.promotion-banner-new .promotion-banner-new__content .promotion-banner-new__subtitle {
+		font-size: var(--body-font-size);
+	}
+	.promotion-banner-new.promotion-banner-new--no-image {
+		max-width: 339px;
+	}
+	.promotion-banner-new.promotion-banner-new--no-image .promotion-banner-new__content {
+		text-align: center;
+	}
+	.promotion-banner-new.promotion-banner-new--no-image .promotion-banner-new__content .button-link-new {
+		align-self: center;
+	}
+	.promotion-banner-new.promotion-banner-new--no-image .promotion-banner-new__inner {
+		padding-top: 35px;
+		padding-bottom: 35px;
+	}
+	.promotion-banner-new .promotion-banner-new__image-wrapper {
+		width: 39.09%;
+		margin: 0;
+		flex-shrink: 0;
+	}
+	.promotion-banner-new .promotion-banner-new__image {
+		height: 100%;
+	}
+	.promotion-banner-new .promotion-banner-new__close-button {
+		top: 18px;
+		inset-inline-end: 12px;
+	}
+}
+.promotion-products-popup {
+	border-radius: 50px 0;
+}
+@media (min-width: 992px) {
+	.promotion-products-popup {
+		border-radius: 80px 0;
+	}
+}
+@keyframes promoBannerShow {
+	0% {
+		bottom: 0;
+		visibility: hidden;
+		opacity: 0;
+	}
+	100% {
+		bottom: 25px;
+		visibility: visible;
+		opacity: 1;
+	}
+}
+.promotion-products-popup {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	flex-direction: column;
+	width: calc(100% - 40px);
+	max-width: 1200px;
+	max-height: calc(100% - 40px);
+	padding: 0;
+	background-color: #fff;
+	transform: translate(-50%, -50%);
+}
+.promotion-products-popup .modal__header {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 55px;
+	padding: 0 20px;
+}
+.promotion-products-popup .modal__body {
+	width: 100%;
+	padding: 10px;
+	padding-bottom: 30px;
+}
+.promotion-products-popup .promotion-products-popup__close-button {
+	position: absolute;
+	top: 50%;
+	right: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 44px;
+	height: 44px;
+	padding: 0;
+	color: #000;
+	transform: translateY(-50%);
+}
+.promotion-products-popup .promotion-products-popup__container {
+	display: none;
+	flex-wrap: wrap;
+	max-width: 1200px;
+	margin: auto;
+	gap: 10px;
+}
+.promotion-products-popup .promotion-products-popup__product-col {
+	width: calc(50% - 5px);
+}
+.promotion-products-popup .promotion-products-popup__button-wrapper {
+	margin-top: 25px;
+	text-align: center;
+}
+.promotion-products-popup.is-loaded-once .promotion-products-popup__container {
+	display: flex;
+}
+@media (min-width: 992px) {
+	.promotion-products-popup .promotion-products-popup__product-col {
+		width: calc(25% - 7.5px);
+	}
+}

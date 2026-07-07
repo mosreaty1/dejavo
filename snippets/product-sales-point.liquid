@@ -1,0 +1,18 @@
+{%- if block.settings.sales_point_icon != blank or block.settings.sales_point_text != blank -%}
+	<div class="{% if design == 'alternate' %}product-sales-point-new{% else %}product-sales-point{% endif %}">
+		{% if block.settings.sales_point_icon != blank %}
+			<img class="product-sales-point__icon"
+				 src="{{ block.settings.sales_point_icon | image_url: width: 22, height: 22 }}"
+				 srcset="{{ block.settings.sales_point_icon | image_url: width: 22, height: 22 }} 1x,
+						{{ block.settings.sales_point_icon | image_url: width: 44, height: 44 }} 2x"
+				 alt=""
+				 width="22"
+				 height="22"
+			>
+		{% endif %}
+
+		{% if block.settings.sales_point_text != blank %}
+			<p class="product-sales-point__text">{{ block.settings.sales_point_text }}</p>
+		{% endif %}
+	</div>
+{%- endif -%}

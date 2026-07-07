@@ -1,0 +1,50 @@
+{% comment %}
+	------------------------------------------------------------------------------
+	Snippet: Sort
+	- product_list: Collection or Search object (required)
+
+	Usage:
+
+	{%- render 'sort', product_list: collection -%}
+	or
+	{%- render 'sort', product_list: search -%}
+	------------------------------------------------------------------------------
+{% endcomment %}
+
+{%- assign sort_by = product_list.sort_by | default: product_list.default_sort_by -%}
+{%- assign design = settings.design -%}
+
+{%- if design == "alternate" -%}
+	{{- 'sort-new.build.css' | asset_url | stylesheet_tag -}}
+{%- else -%}
+	{{- 'sort.build.css' | asset_url | stylesheet_tag -}}
+{%- endif -%}
+
+<div class="{% if design == "alternate" %}sort-new{% else %}sort{% endif %}">
+	<div class="select-wrapper">
+		<label class="visually-hidden" for="Sort">
+			{{- 'collections.sorting.title' | t -}}
+		</label>
+
+		<select
+			class="focus-visible-outline sort__select"
+			id="Sort"
+			name="sort_by"
+			aria-label="{{- 'collections.sorting.title' | t | escape -}}"
+		>
+			{%- for option in product_list.sort_options -%}
+				<option
+					class="sort__option"
+					value="{{- option.value | escape -}}"
+					{%- if option.value == sort_by -%}
+						selected
+					{%- endif -%}
+				>
+					{{- option.name | escape -}}
+				</option>
+			{%- endfor -%}
+		</select>
+
+		{%- render 'icons-small', icon: 'arrow-down' -%}
+	</div>
+</div>

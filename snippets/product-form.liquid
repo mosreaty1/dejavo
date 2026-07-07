@@ -1,0 +1,204 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Product Form
+  ---------------------------
+  Use blocks:
+  	- "Vendor | Badges"
+	- "Title"
+	- "SKU | Reviews"
+	- "Options"
+	- "Quantity"
+	- "Price"
+	- "Add to cart"
+	- "Pickup availability"
+	- "Sales point"
+	- "Notify me"
+	- "Custom liquid"
+------------------------------------------------------------------------------
+{% endcomment %}
+{% assign is_preset = false %}
+
+{% if product == blank %}
+	{% assign is_preset = true %}
+{% endif %}
+
+{%- assign show_sticky_add_to_cart = section.settings.show_sticky_add_to_cart -%}
+
+{%- assign design = settings.design -%}
+
+{% if blocks.size > 0 %}
+	{% comment %}
+			The repeated content inside the <form> and <div> tags is there for a reason.
+			Liquid "form" tag cannot be designated as separately opening and separately closing.
+			If the Liquid "form" tag is replaced with an HTML tag,
+			then we will not be able to pass the "form" object to the "Price" snippet.
+			There, the "form" object is used to render "payment_terms"
+			Please fix this issue before changing anything.
+		{% endcomment %}
+	{% if product != blank %}
+		{% form 'product',
+			product,
+			data-js-product-form: true,
+			class: 'product-form js-product-sticky-container',
+			data-section-id: section.id,
+			data-enable-history-state: enable_history_state,
+			data-template: product_template
+		%}
+			{% include 'product-json' %}
+
+			{% if product.template_suffix == 'pre-order' %}
+				<input type="hidden" name="properties[_Pre-order]" value="true">
+			{% endif %}
+
+			{% for block in blocks  %}
+				{% case block.type %}
+					{% when 'badges' %}
+						{% include 'product-badges', design: design %}
+					{% when 'vendor' %}
+						{% include 'product-vendor', design: design %}
+					{% when 'title' %}
+						{% include 'product-title', design: design %}
+					{% when 'description' %}
+						{% include 'product-description', design: design %}
+					{% when 'sku_reviews' %}
+						{% include 'product-sku-reviews', design: design %}
+					{% when 'product_combination' %}
+						{% include 'product-combination' %}
+					{% when 'options' %}
+						{% include 'product-options', design: design %}
+					{% when 'quantity' %}
+						{% include 'product-quantity', design: design %}
+					{% when 'price' %}
+						{% assign use_variant = false %}
+						{% assign price_class = 'product-price h3' %}
+
+						{% if design == 'alternate' %}
+							{% assign price_class = 'product-price-new h4' %}
+						{% endif %}
+
+						{% if product.variants.size > 1 %}
+							{% assign use_variant = true %}
+						{% endif %}
+
+						{%- render 'price',
+							product: product,
+							use_variant: use_variant,
+							show_unit_price: settings.is_show_unit_price,
+							currency_code_enabled: settings.is_currency_code_enabled,
+							price_class: price_class,
+							hide_from_price: true,
+							show_taxes_included: section.settings.show_taxes_included,
+							show_pay_installments: section.settings.show_pay_installments,
+							form: form,
+							show_volume_pricing_info: true
+						-%}
+					{% when 'add_to_cart' %}
+						{% include 'product-add-to-cart', design: design %}
+					{% when 'pickup_availability' %}
+						{% include 'product-pickup-availability', section_id: section.id, design: design %}
+					{% when 'drawers' %}
+						{% include 'product-drawers', design: design %}
+					{% when 'complementary' %}
+						{% include 'product-complementary', design: design %}
+					{% when 'sales_point' %}
+						{% include 'product-sales-point', design: design %}
+					{% when 'inventory_status' %}
+						{% include 'product-inventory-status', design: design %}
+					{% when 'custom_liquid' %}
+						{% include 'product-custom-liquid' %}
+					{% when 'notify_me' %}
+						{% include 'product-notify-me-button', design: design %}
+					{% when 'ask_question' %}
+						{% include 'product-ask-question-button', design: design %}
+					{% when 'gift_wrap_product' %}
+						{% render 'product-gift-box', product: product, design: design %}
+					{% when 'countdown_timer' %}
+						{%- assign text 					= block.settings.text -%}
+						{%- assign icon 					= block.settings.icon -%}
+						{%- assign text_color 				= block.settings.text_color | default: "#000000" -%}
+						{%- assign timer_text_color 		= block.settings.timer_text_color  | default: "#ffffff" -%}
+						{%- assign timer_background_color 	= block.settings.timer_background_color  | default: "#000000" -%}
+
+						{% render 'product-countdown-timer',
+							product: product,
+							text: text,
+							icon: icon,
+							text_color: text_color,
+							timer_text_color: timer_text_color,
+							timer_background_color: timer_background_color,
+							design: design
+						%}
+					{% when 'custom_field' %}
+						{% include 'product-custom-field', design: design %}
+					{% else %}
+						{% render block %}
+				{% endcase %}
+			{% endfor %}
+
+			{% if section.settings.show_share_buttons %}
+				{% include 'share-buttons', design: design %}
+			{% endif %}
+		{% endform %}
+	{% else %}
+		<div
+			id="product_form_{{- product.id -}}"
+			class="shopify-product-form product-form js-product-sticky-container"
+			data-section-id="{{- section.id -}}"
+		>
+			{% for block in blocks  %}
+				{% case block.type %}
+					{% when 'badges' %}
+						{% include 'product-badges', design: design %}
+					{% when 'vendor' %}
+						{% include 'product-vendor', design: design %}
+					{% when 'title' %}
+						{% include 'product-title', design: design %}
+					{% when 'sku_reviews' %}
+						{% include 'product-sku-reviews', design: design %}
+					{% when 'options' %}
+						{% include 'product-options', design: design %}
+					{% when 'quantity' %}
+						{% include 'product-quantity', design: design %}
+					{% when 'price' %}
+						{% assign use_variant = false %}
+
+						{% assign price_class = 'product-price h3' %}
+
+						{% if design == 'alternate' %}
+							{% assign price_class = 'product-price-new h4' %}
+						{% endif %}
+
+						{% if product.variants.size > 1 %}
+							{% assign use_variant = true %}
+						{% endif %}
+
+						{%- render 'price',
+							product: product,
+							use_variant: use_variant,
+							show_unit_price: settings.is_show_unit_price,
+							currency_code_enabled: settings.is_currency_code_enabled,
+							price_class: price_class,
+							hide_from_price: true,
+							show_taxes_included: section.settings.show_taxes_included,
+							show_pay_installments: section.settings.show_pay_installments,
+							form: form
+						-%}
+					{% when 'add_to_cart' %}
+						{% include 'product-add-to-cart', design: design %}
+					{% when 'pickup_availability' %}
+						{% include 'product-pickup-availability', section_id: section.id, design: design %}
+					{% when 'drawers' %}
+						{% include 'product-drawers', design: design %}
+					{% when 'custom_liquid' %}
+						{% include 'product-custom-liquid' %}
+					{% else %}
+						{% render block %}
+				{% endcase %}
+			{% endfor %}
+
+			{% if section.settings.show_share_buttons %}
+				{% include 'share-buttons', design: design %}
+			{% endif %}
+		</div>
+	{% endif %}
+{% endif %}

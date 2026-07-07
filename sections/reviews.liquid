@@ -1,0 +1,322 @@
+{%- if section.blocks.size > 0 -%}
+	{%- assign heading			= section.settings.heading -%}
+	{%- assign label            = section.settings.label -%}
+	{%- assign enable_autoplay	= section.settings.enable_autoplay -%}
+	{%- assign autoplay_speed	= section.settings.autoplay_speed -%}
+	{%- assign layout			= section.settings.layout -%}
+
+	{%- assign product_info_text_color	= section.settings.product_info_text_color -%}
+	{%- assign product_info_background_color	= section.settings.product_info_background_color -%}
+
+	{%- style -%}
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_mobile -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+		}
+
+		@media screen and (min-width: 768px) {
+			#shopify-section-{{- section.id -}} {
+				padding-top: {{- section.settings.offset_top_desktop -}}px;
+				padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+			}
+		}
+
+		:root {
+			--product-info-text-color: {{- product_info_text_color -}};
+			--product-info-background-color: {{- product_info_background_color -}};
+		}
+	{%- endstyle -%}
+
+	{% if settings.design == 'alternate' %}
+		{% render 'reviews-new' %}
+	{% else %}
+		{{- 'reviews.build.css' | asset_url | stylesheet_tag -}}
+
+		<section class="reviews js-animate">
+			<div class="container">
+				{%- if label != blank -%}
+					<div class="reviews__label">
+						{{- label -}}
+					</div>
+				{%- endif -%}
+
+				{%- if heading != blank -%}
+					<h2 class="h2 reviews__heading">
+						{{- heading -}}
+					</h2>
+				{%- endif -%}
+
+				<div
+					class="reviews__items-container swiper-container js-reviews-container"
+					{%- if enable_autoplay == true -%}
+						data-autoplay-speed="{{ autoplay_speed | times: 1000 }}"
+					{%- endif -%}
+				>
+					<div class="reviews__items-wrapper swiper-wrapper">
+						{%- for block in section.blocks -%}
+							{%- assign review_text = block.settings.review_text -%}
+							{%- assign review_author_name = block.settings.review_author_name -%}
+							{%- assign review_additional_info = block.settings.review_additional_info -%}
+							{%- assign review_image = block.settings.review_image -%}
+							{%- assign product = block.settings.product -%}
+							{%- assign product_image = block.settings.product_image -%}
+
+							{% render 'reviews-slide',
+								review_text: review_text,
+								review_author_name: review_author_name,
+								review_additional_info: review_additional_info,
+								review_image: review_image,
+								product: product,
+								product_image: product_image,
+								layout: layout
+							%}
+						{%- endfor -%}
+
+						{% if section.blocks.size == 1 %}
+							{%- assign review_text = section.blocks[0].settings.review_text -%}
+							{%- assign review_author_name = section.blocks[0].settings.review_author_name -%}
+							{%- assign review_additional_info = section.blocks[0].settings.review_additional_info -%}
+							{%- assign review_image = section.blocks[0].settings.review_image -%}
+							{%- assign product = section.blocks[0].settings.product -%}
+							{%- assign product_image = section.blocks[0].settings.product_image -%}
+
+							{% render 'reviews-slide',
+								review_text: review_text,
+								review_author_name: review_author_name,
+								review_additional_info: review_additional_info,
+								review_image: review_image,
+								product: product,
+								product_image: product_image,
+								layout: layout
+							%}
+						{% endif %}
+					</div>
+
+					<div class="swiper-pagination"></div>
+				</div>
+			</div>
+		</section>
+	{% endif %}
+
+	<script src="{{- 'component-swiper-modules.build.min.js' | asset_url -}}" defer></script>
+	<script src="{{- 'section-reviews.build.min.js' | asset_url -}}" defer></script>
+{%- endif -%}
+
+{%- schema -%}
+{
+	"name": "Reviews",
+	"disabled_on": {
+		"groups": ["header", "footer"]
+	},
+	"settings": [
+		{
+			"id": "heading",
+			"type": "text",
+			"label": "Heading",
+			"default": "Testimonials"
+		},
+		{
+			"id": "label",
+			"type": "text",
+			"label": "Label"
+		},
+		{
+			"type": "checkbox",
+			"id": "enable_autoplay",
+			"label": "Autoplay",
+			"default": false
+		},
+		{
+			"type": "range",
+			"id": "autoplay_speed",
+			"min": 3,
+			"max": 10,
+			"step": 1,
+			"unit": "s",
+			"label": "Autoplay speed",
+			"default": 3
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "select",
+			"id": "layout",
+			"label": "Layout",
+			"options": [
+				{
+					"value": "only_text",
+					"label": "Only text"
+				},
+				{
+					"value": "text_with_product",
+					"label": "Text with product"
+				}
+			],
+			"default": "only_text"
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 0
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 0
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 0
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 0
+		},
+		{
+			"type": "header",
+			"content": "Colors"
+		},
+		{
+			"type": "color",
+			"id": "product_info_text_color",
+			"label": "Product info text color",
+			"default": "#000",
+			"info": "The setting is used for standard design."
+		},
+		{
+			"type": "color",
+			"id": "product_info_background_color",
+			"label": "Product info background color",
+			"default": "#fff",
+			"info": "The setting is used for standard design."
+		},
+		{
+			"type": "color",
+			"id": "image_link_label_color",
+			"label": "Image link label color",
+			"default": "#fff",
+			"info": "The setting is used for alternative design."
+		}
+	],
+	"blocks": [
+		{
+			"name": "Review",
+			"type": "review",
+			"settings": [
+				{
+					"type": "textarea",
+					"id": "review_text",
+					"label": "Text",
+					"default": "Review text about the product"
+				},
+				{
+					"type": "text",
+					"id": "review_author_name",
+					"label": "Author name",
+					"default": "Author name"
+				},
+				{
+					"type": "text",
+					"id": "review_additional_info",
+					"label": "Author additional info",
+					"default": "Author position"
+				},
+				{
+					"type": "image_picker",
+					"id": "review_image",
+					"label": "Author image"
+				},
+				{
+					"type": "product",
+					"id": "product",
+					"label": "Product"
+				},
+				{
+					"type": "image_picker",
+					"id": "product_image",
+					"label": "Custom product image"
+				},
+				{
+					"type": "text",
+					"id": "image_link_label",
+					"label": "Image link label",
+					"default": "Shop now",
+					"info": "The setting is used for alternative design."
+				}
+			]
+		}
+	],
+	"presets": [
+		{
+			"name": "Reviews",
+			"settings": {},
+			"blocks": [
+				{
+					"type": "review",
+					"settings": {
+						"review_text": "Review text of 1st author",
+						"review_author_name": "Name of 1st author",
+						"review_additional_info": "Additional info of 1st author"
+					}
+				},
+				{
+					"type": "review",
+					"settings": {
+						"review_text": "Review text of 2nd author",
+						"review_author_name": "Name of 2nd author",
+						"review_additional_info": "Additional info of 2nd author"
+					}
+				},
+				{
+					"type": "review",
+					"settings": {
+						"review_text": "Review text of 3rd author",
+						"review_author_name": "Name of 3rd author",
+						"review_additional_info": "Additional info of 3rd author"
+					}
+				},
+				{
+					"type": "review",
+					"settings": {
+						"review_text": "Review text of 4th author",
+						"review_author_name": "Name of 4th author",
+						"review_additional_info": "Additional info of 4th author"
+					}
+				},
+				{
+					"type": "review",
+					"settings": {
+						"review_text": "Review text of 5th author",
+						"review_author_name": "Name of 5th author",
+						"review_additional_info": "Additional info of 5th author"
+					}
+				}
+			]
+		}
+	]
+}
+{%- endschema -%}

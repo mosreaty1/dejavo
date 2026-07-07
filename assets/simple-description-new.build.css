@@ -1,0 +1,79 @@
+/**
+	Timings
+ */
+:root {
+	--timing-micro: 0.1s;
+	--timing-short: 0.2s;
+	--timing-base: 0.4s;
+	--timing-long: 0.7s;
+	--timing-second: 1s;
+	--animate-time: 0.7s;
+	--animate-delay: 0.3s;
+	--animate-img-scale: 0.5s;
+	/**
+	* Easing.
+	*/
+	--easing-linear: cubic-bezier(0, 0, 1, 1);
+	--easing-ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+	--easing-ease-in-out: cubic-bezier(0.42, 0, 0.58, 1);
+	--easing-ease-in: cubic-bezier(0.42, 0, 1, 1);
+	--easing-ease-out: cubic-bezier(0, 0, 0.09, 1);
+	/**
+	* Config: Layers
+	* -----------------------------------------------------------------------------
+	* Visual motif used to create groupings, content associations and focus through depth.
+	*/
+	--layer-negative: -1;
+	--layer-base: 0;
+	--layer-flat: 1;
+	--layer-raised: 2;
+	--layer-sticky-btn: 7;
+	--layer-sticky: 11;
+	--layer-overlay: 14;
+	--layer-temporary: 16;
+	--layer-pop-out: 24;
+	--layer-pop-out-overlay: 25;
+	--layer-pop-out-overlay-loader: 26;
+}
+.simple-description.simple-description-new {
+	display: flex;
+	justify-content: var(--simple-description-block-alignment);
+	opacity: 0;
+	text-align: var(--simple-description-content-alignment);
+	word-break: break-word;
+}
+.simple-description.simple-description-new.animated {
+	opacity: 1;
+	transition-property: opacity;
+	transition-duration: var(--animate-time);
+}
+.simple-description.simple-description-new .simple-description__container {
+	max-width: 840px;
+	padding: 0 16px;
+}
+.simple-description.simple-description-new .simple-description__heading + .simple-description__content {
+	margin-top: 30px;
+}
+.simple-description.simple-description-new .simple-description__subheading {
+	margin-bottom: 5px;
+}
+html.no-js .simple-description.simple-description-new {
+	opacity: 1;
+}
+@media (min-width: 768px) {
+	.simple-description.simple-description-new .simple-description__subheading {
+		margin-bottom: 10px;
+	}
+}
+@media (min-width: 1200px) {
+	.simple-description.simple-description-new .simple-description__container {
+		max-width: 960px;
+		padding: 0 60px;
+	}
+}
+@media (min-width: 1920px) {
+	.simple-description.simple-description-new .simple-description__container {
+		max-width: 1050px;
+		padding: 0 105px;
+	}
+}

@@ -1,0 +1,120 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Header mobile mega menu images
+	Render header mobile mega menu images
+	- menu: Menu object (required)
+	- blocks: blocks object using for output media content.
+	- enable_mega_menu_borders: option to show/hide borders in mega menu
+
+	Usage:
+	{%- render 'header-mobile-mega-menu-images', menu: first_level_link, megamenu_object: megamenu_object, enable_mega_menu_borders: enable_mega_menu_borders -%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign design 			= settings.design -%}
+
+{%- assign label            		= megamenu_object.settings.label -%}
+{%- assign image            		= megamenu_object.settings.image -%}
+{%- assign heading          		= megamenu_object.settings.heading -%}
+{%- assign link             		= megamenu_object.settings.link -%}
+{%- assign link_label				= megamenu_object.settings.link_label -%}
+{%- assign product1					= megamenu_object.settings.product1 -%}
+{%- assign media_rounded_corners 	= megamenu_object.settings.media_rounded_corners -%}
+
+{%- assign label2         			= megamenu_object.settings.label2 -%}
+{%- assign image2          			= megamenu_object.settings.image2 -%}
+{%- assign heading2         		= megamenu_object.settings.heading2 -%}
+{%- assign link2            		= megamenu_object.settings.link2 -%}
+{%- assign link_label2				= megamenu_object.settings.link_label2 -%}
+{%- assign product2					= megamenu_object.settings.product2 -%}
+{%- assign media_rounded_corners2 	= megamenu_object.settings.media_rounded_corners2 -%}
+
+{%- assign label3   		        = megamenu_object.settings.label3 -%}
+{%- assign image3           		= megamenu_object.settings.image3 -%}
+{%- assign heading3 		        = megamenu_object.settings.heading3 -%}
+{%- assign link3      			    = megamenu_object.settings.link3 -%}
+{%- assign link_label3				= megamenu_object.settings.link_label3 -%}
+{%- assign product3					= megamenu_object.settings.product3 -%}
+{%- assign media_rounded_corners3 	= megamenu_object.settings.media_rounded_corners3 -%}
+
+{%- assign label4       		    = megamenu_object.settings.label4 -%}
+{%- assign image4      			    = megamenu_object.settings.image4 -%}
+{%- assign heading4         		= megamenu_object.settings.heading4 -%}
+{%- assign link4            		= megamenu_object.settings.link4 -%}
+{%- assign link_label4				= megamenu_object.settings.link_label4 -%}
+{%- assign product4					= megamenu_object.settings.product4 -%}
+{%- assign media_rounded_corners4 	= megamenu_object.settings.media_rounded_corners4 -%}
+
+{%- assign no_content = true -%}
+
+{%- if image != blank or product1 != blank or image2 != blank or product2 != blank or image3 != blank or product3 != blank or image4 != blank or product4 != blank -%}
+	{%- assign no_content = false -%}
+{%- endif -%}
+
+{%- capture classes -%}
+	{%- if design == 'alternate' -%}
+		header-mega-menu-new header-mega-menu-new--images
+	{%- else -%}
+		header-mega-menu header-mega-menu--images
+	{%- endif -%}
+{%- endcapture -%}
+
+<div class="{{- classes -}}">
+	<div class="header-mega-menu__container">
+		{%- if image != blank or no_content == true or product1 != blank -%}
+			<div class="header-mega-menu__block header-mega-menu__block--image">
+				{%- if product1 != blank -%}
+					{%- if design == 'alternate' -%}
+						{%- render 'product-card-new', product: product1, size: 494, tablet_size: 354, mobile_size_small: 294 -%}
+					{%- else -%}
+						{%- render 'product-card', product: product1, size: 494, tablet_size: 354, mobile_size_small: 294, simplified_view: true -%}
+					{%- endif -%}
+				{%- elsif image != blank or no_content == true -%}
+					{%- render 'header-mega-menu-image-card', image: image, label: label, heading: heading, link: link, link_label: link_label, media_rounded_corners: media_rounded_corners -%}
+				{%- endif -%}
+			</div>
+		{%- endif -%}
+
+		{%- if image2 != blank or no_content == true or product2 != blank -%}
+			<div class="header-mega-menu__block header-mega-menu__block--image">
+				{%- if product2 != blank -%}
+					{%- if design == 'alternate' -%}
+						{%- render 'product-card-new', product: product2, size: 494, tablet_size: 354, mobile_size_small: 294 -%}
+					{%- else -%}
+						{%- render 'product-card', product: product2, size: 494, tablet_size: 354, mobile_size_small: 294, simplified_view: true -%}
+					{%- endif -%}
+				{%- elsif image2 != blank or no_content == true -%}
+					{%- render 'header-mega-menu-image-card', image: image2, label: label2, heading: heading2, link: link2, link_label: link_label2, media_rounded_corners: media_rounded_corners2 -%}
+				{%- endif -%}
+			</div>
+		{%- endif -%}
+
+		{%- if image3 != blank or no_content == true or product3 != blank -%}
+			<div class="header-mega-menu__block header-mega-menu__block--image">
+				{%- if product3 != blank -%}
+					{%- if design == 'alternate' -%}
+						{%- render 'product-card-new', product: product3, size: 494, tablet_size: 354, mobile_size_small: 294 -%}
+					{%- else -%}
+						{%- render 'product-card', product: product3, size: 494, tablet_size: 354, mobile_size_small: 294, simplified_view: true -%}
+					{%- endif -%}
+				{%- elsif image3 != blank or no_content == true -%}
+					{%- render 'header-mega-menu-image-card', image: image3, label: label3, heading: heading3, link: link3, link_label: link_label3, media_rounded_corners: media_rounded_corners3 -%}
+				{%- endif -%}
+			</div>
+		{%- endif -%}
+
+		{%- if image4 != blank or no_content == true or product4 != blank -%}
+			<div class="header-mega-menu__block header-mega-menu__block--image">
+				{%- if product4 != blank -%}
+					{%- if design == 'alternate' -%}
+						{%- render 'product-card-new', product: product4, size: 494, tablet_size: 354, mobile_size_small: 294 -%}
+					{%- else -%}
+						{%- render 'product-card', product: product4, size: 494, tablet_size: 354, mobile_size_small: 294, simplified_view: true -%}
+					{%- endif -%}
+				{%- elsif image4 != blank or no_content == true -%}
+					{%- render 'header-mega-menu-image-card', image: image4, label: label4, heading: heading4, link: link4, link_label: link_label4, media_rounded_corners: media_rounded_corners4 -%}
+				{%- endif -%}
+			</div>
+		{%- endif -%}
+	</div>
+</div>

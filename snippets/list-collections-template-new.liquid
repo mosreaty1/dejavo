@@ -1,0 +1,79 @@
+{% comment %}
+	------------------------------------------------------------------------------
+	Snippet: List collections template new
+	- section: section object (required)
+	------------------------------------------------------------------------------
+{% endcomment %}
+
+{{- "list-collections-new.build.css" | asset_url | stylesheet_tag -}}
+
+{%- assign label 				= section.settings.label -%}
+{%- assign heading 				= section.settings.heading -%}
+{%- assign text 				= section.settings.text -%}
+{%- assign text_position 		= section.settings.text_position -%}
+{%- assign paginate_by 			= section.settings.paginate_by -%}
+{%- assign color_overlay 		= section.settings.color_overlay -%}
+{%- assign inside_the_image_text 		= section.settings.inside_the_image_text -%}
+{%- assign inside_the_image_text_hover 	= section.settings.inside_the_image_text_hover -%}
+{%- assign show_products_count 	= section.settings.show_products_count -%}
+{%- assign full_width 			= section.settings.full_width -%}
+{%- assign enable_accents_spot 	= settings.enable_accents_spot -%}
+
+{%- capture styles -%}
+	--text-alignment: {{ text_alignment }};
+	--color-overlay: {{ color_overlay }};
+	--inside-the-image-text: {{ inside_the_image_text }};
+	--inside-the-image-text-count: {{ inside_the_image_text | color_mix: '#adadad', 50 }};
+	--inside-the-image-text-hover: {{ inside_the_image_text_hover }};
+	--inside-the-image-text-count-hover: {{ inside_the_image_text_hover | color_mix: '#aca8a2', 50 }};
+{%- endcapture -%}
+
+{%- capture collections_grid -%}
+	{%- paginate collections by paginate_by -%}
+		<div class="list-collections-new__row{% if text_position == "under_the_image" %} list-collections-new__row--under-the-image{% endif %}">
+			{%- for collection in collections -%}
+				<div class="list-collections-new__col">
+					{%- render 'collection-card-new', collection: collection, text_position: text_position, is_show_products_count: show_products_count -%}
+				</div>
+			{%- endfor -%}
+		</div>
+
+		{%- if paginate.pages > 1 -%}
+			<div class="list-collections-new__pagination-wrapper">
+				{%- render 'pagination-new', paginate: paginate -%}
+			</div>
+		{%- endif -%}
+	{%- endpaginate -%}
+{%- endcapture -%}
+
+<section class="list-collections-new"
+		 style="{{- styles -}}"
+>
+	<div class="list-collections-new__container{% if full_width %} list-collections-new__container--full-width{% endif %}{% if enable_accents_spot %} list-collections-new__container--accent-spot{% endif %}">
+		{%- if label != blank or heading != blank or text != blank -%}
+			<div class="list-collections-new__header">
+				{%- if label != blank -%}
+					<div class="subheading">
+						{{- label -}}
+					</div>
+				{%- endif -%}
+
+				{%- if heading != blank -%}
+					<h1 class="h2 list-collections-new__heading">
+						{{- heading -}}
+					</h1>
+				{%- endif -%}
+
+				{%- if text != blank -%}
+					<div class="list-collections-new__text rte-new">
+						{{- text -}}
+					</div>
+				{%- endif -%}
+			</div>
+		{%- endif -%}
+
+		{%- if collections_grid != blank -%}
+			{{- collections_grid -}}
+		{%- endif -%}
+	</div>
+</section>

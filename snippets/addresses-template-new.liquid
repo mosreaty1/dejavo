@@ -1,0 +1,583 @@
+{{- "addresses-new.build.css" | asset_url | stylesheet_tag -}}
+
+{%- paginate customer.addresses by 5 -%}
+	<section class="addresses-new">
+		{% if settings.enable_accents_spot %}
+			<div class="addresses-new__ellipse-aspect-ratio">
+				<div class="addresses-new__ellipse"></div>
+			</div>
+		{% endif %}
+
+		<div class="container addresses-new__container js-addresses-container">
+			<div class="addresses-new__heading-wrapper">
+				<div class="subheading addresses-new__label">
+					{{- "customer.addresses.label" | t -}}
+				</div>
+
+				<h1 class="h2">
+					{{- "customer.addresses.title" | t -}}
+				</h1>
+
+				<div class="addresses-new__buttons">
+					<button
+						class="button-circle js-address-new-toggle"
+						type="button"
+						aria-label="{{- 'customer.addresses.add_new' | t | escape -}}"
+					>
+						<span class="button__text">
+							{{- "customer.addresses.add_new" | t -}}
+						</span>
+
+						<span class="button-new__icon-container">
+							<span class="button-new__icon-wrapper">
+								{% render "icons-new", icon: "wave" %}
+							</span>
+						</span>
+					</button>
+
+					<a
+						class="button-link-new focus-visible-outline"
+						href="{{- routes.account_url -}}"
+						aria-label="{{- 'customer.account.return' | t | escape -}}"
+					>
+						{{- "customer.account.return" | t -}}
+
+						<span class="button-link-new__icon-wrapper">
+							<span class="button-link-new__icon">
+								{% render 'icons-new', icon: 'arrow-right' %}
+							</span>
+						</span>
+					</a>
+				</div>
+			</div>
+
+			<div class="addresses-new__cards-wrapper">
+				{%- if customer.addresses_count > 0 -%}
+					{%- for address in customer.addresses -%}
+						<div class="addresses-new__col">
+							<div class="is-hidden addresses-new__card js-addresses-new-form">
+								{%- form "customer_address", customer.new_address, class: "addresses-new__form" -%}
+									<h3 class="addresses-new__subtitle h5">
+										{{- "customer.addresses.add_new" | t -}}
+									</h3>
+
+									<div class="addresses-new__inputs-wrapper">
+										<div class="input-wrapper addresses-new__input-wrapper">
+											<input
+												class="input addresses-new__input"
+												type="text"
+												id="AddressFirstNameNew"
+												name="address[first_name]"
+												value="{{- form.first_name -}}"
+												required
+												placeholder="{{- 'customer.addresses.first_name' | t | escape -}}"
+												aria-label="{{- 'customer.addresses.enter_first_name' | t | escape -}}"
+											/>
+
+											<label class="input-label" for="AddressFirstNameNew">
+												{{- "customer.addresses.first_name" | t -}}
+											</label>
+										</div>
+
+										<div class="input-wrapper addresses-new__input-wrapper">
+											<input
+												class="input addresses-new__input"
+												type="text"
+												id="AddressLastNameNew"
+												name="address[last_name]"
+												value="{{- form.last_name -}}"
+												placeholder="{{- 'customer.addresses.last_name' | t | escape -}}"
+												aria-label="{{- 'customer.addresses.enter_last_name' | t | escape -}}"
+											/>
+
+											<label class="input-label" for="AddressLastNameNew">
+												{{- "customer.addresses.last_name" | t -}}
+											</label>
+										</div>
+
+										<div class="input-wrapper addresses-new__input-wrapper">
+											<input
+												class="input addresses-new__input"
+												type="text"
+												id="AddressCompanyNew"
+												name="address[company]"
+												value="{{- form.company -}}"
+												placeholder="{{- 'customer.addresses.company' | t | escape -}}"
+												aria-label="{{- 'customer.addresses.enter_company' | t | escape -}}"
+											/>
+
+											<label class="input-label" for="AddressCompanyNew">
+												{{- "customer.addresses.company" | t -}}
+											</label>
+										</div>
+
+										<div class="input-wrapper addresses-new__input-wrapper">
+											<input
+												class="input addresses-new__input"
+												type="tel"
+												id="AddressPhoneNew"
+												name="address[phone]"
+												value="{{- form.phone -}}"
+												placeholder="{{- 'customer.addresses.phone' | t | escape -}}"
+												aria-label="{{- 'customer.addresses.enter_phone' | t | escape -}}"
+											/>
+
+											<label class="input-label" for="AddressPhoneNew">
+												{{- "customer.addresses.phone" | t -}}
+											</label>
+										</div>
+
+										<div class="input-wrapper addresses-new__input-wrapper">
+											<input
+												class="input addresses-new__input"
+												type="text"
+												id="AddressAddress1New"
+												name="address[address1]"
+												value="{{- form.address1 -}}"
+												required
+												placeholder="{{- 'customer.addresses.address1' | t | escape -}}"
+												aria-label="{{- 'customer.addresses.enter_address_1' | t | escape -}}"
+											/>
+
+											<label class="input-label" for="AddressAddress1New">
+												{{- "customer.addresses.address1" | t -}}
+											</label>
+										</div>
+
+										<div class="input-wrapper addresses-new__input-wrapper">
+											<input
+												class="input addresses-new__input"
+												type="text"
+												id="AddressAddress2New"
+												name="address[address2]"
+												value="{{- form.address2 -}}"
+												placeholder="{{- 'customer.addresses.address2' | t | escape -}}"
+												aria-label="{{- 'customer.addresses.enter_address_2' | t | escape -}}"
+											/>
+
+											<label class="input-label" for="AddressAddress2New">
+												{{- "customer.addresses.address2" | t -}}
+											</label>
+										</div>
+
+										<div class="input-wrapper addresses-new__input-wrapper">
+											<input
+												class="input addresses-new__input"
+												type="text"
+												id="AddressCityNew"
+												name="address[city]"
+												value="{{- form.city -}}"
+												placeholder="{{- 'customer.addresses.city' | t | escape -}}"
+												aria-label="{{- 'customer.addresses.enter_city' | t | escape -}}"
+											/>
+
+											<label class="input-label" for="AddressCityNew">
+												{{- "customer.addresses.city" | t -}}
+											</label>
+										</div>
+
+										<div class="select-wrapper">
+											<select
+												class="select addresses-new__select"
+												id="AddressCountryNew"
+												name="address[country]"
+												required
+												data-default="{{- form.country -}}"
+												aria-label="{{- 'customer.addresses.select_country' | t | escape -}}"
+											>
+												{{- all_country_option_tags | replace: 'value="---"', 'value=""' -}}
+											</select>
+
+											{%- render 'icons-new', icon: 'arrow-down' -%}
+										</div>
+
+										<div id="AddressProvinceContainerNew" style="display: none">
+											<select
+												class="select addresses-new__select"
+												id="AddressProvinceNew"
+												name="address[province]"
+												data-default="{{- form.province -}}"
+												aria-label="{{- 'customer.addresses.select_province' | t | escape -}}"
+											>
+											</select>
+										</div>
+
+										<div class="input-wrapper addresses-new__input-wrapper">
+											<input
+												class="input addresses-new__input"
+												type="text"
+												id="AddressZipNew"
+												name="address[zip]"
+												value="{{- form.zip -}}"
+												placeholder="{{- 'customer.addresses.zip' | t | escape -}}"
+												aria-label="{{- 'customer.addresses.enter_zip' | t | escape -}}"
+											/>
+
+											<label class="input-label" for="AddressZipNew">
+												{{- "customer.addresses.zip" | t -}}
+											</label>
+										</div>
+
+										<div class="addresses-new__checkbox">
+											<input
+												class="visually-hidden checkbox__input"
+												type="checkbox"
+												id="address_default_address_{{- form.id -}}"
+												name="address[default]"
+												value="1"
+											/>
+
+											<label
+												class="checkbox__label addresses-new__checkbox-label"
+												for="address_default_address_{{- form.id -}}"
+												aria-label="{{- "customer.addresses.set_default" | t | escape -}}"
+											>
+												{{- "customer.addresses.set_default" | t -}}
+											</label>
+										</div>
+									</div>
+
+									<div class="addresses-new__update-form-buttons">
+										<button
+											class="button-new button--secondary addresses-new__button focus-visible-outline"
+											type="submit"
+											aria-label="{{- 'customer.addresses.add_address' | t | escape -}}"
+										>
+											{{- 'customer.addresses.add' | t -}}
+										</button>
+
+										<button
+											class="button-new button--primary addresses-new__link js-address-new-toggle focus-visible-outline"
+											type="reset"
+											data-form-id="{{- form.id -}}"
+										>
+											{{- "customer.addresses.cancel" | t -}}
+										</button>
+									</div>
+								{%- endform -%}
+							</div>
+
+							<div class="is-hidden addresses-new__card addresses-new__edit-form"
+								 id="EditAddress_{{- address.id -}}">
+								{%- form "customer_address", address, class: "addresses-new__form js-addresses-edit-form" -%}
+									<h3 class="addresses-new__subtitle h5">
+										{{- "customer.addresses.edit_address" | t -}}
+									</h3>
+
+									<div class="addresses-new__inputs-wrapper">
+										<div class="input-wrapper addresses-new__input-wrapper">
+											<input
+												class="input addresses-new__input"
+												type="text"
+												id="AddressFirstNameNew"
+												name="address[first_name]"
+												value="{{- form.first_name -}}"
+												required
+												placeholder="{{- 'customer.addresses.first_name' | t | escape -}}"
+												aria-label="{{- 'customer.addresses.enter_first_name' | t | escape -}}"
+											/>
+
+											<label class="input-label" for="AddressFirstNameNew">
+												{{- "customer.addresses.first_name" | t -}}
+											</label>
+										</div>
+
+										<div class="input-wrapper addresses-new__input-wrapper">
+											<input
+												class="input addresses-new__input"
+												type="text"
+												id="AddressLastNameNew"
+												name="address[last_name]"
+												value="{{- form.last_name -}}"
+												placeholder="{{- 'customer.addresses.last_name' | t | escape -}}"
+												aria-label="{{- 'customer.addresses.enter_last_name' | t | escape -}}"
+											/>
+
+											<label class="input-label" for="AddressLastNameNew">
+												{{- "customer.addresses.last_name" | t -}}
+											</label>
+										</div>
+
+										<div class="input-wrapper addresses-new__input-wrapper">
+											<input
+												class="input addresses-new__input"
+												type="text"
+												id="AddressCompanyNew"
+												name="address[company]"
+												value="{{- form.company -}}"
+												placeholder="{{- 'customer.addresses.company' | t | escape -}}"
+												aria-label="{{- 'customer.addresses.enter_company' | t | escape -}}"
+											/>
+
+											<label class="input-label" for="AddressCompanyNew">
+												{{- "customer.addresses.company" | t -}}
+											</label>
+										</div>
+
+										<div class="input-wrapper addresses-new__input-wrapper">
+											<input
+												class="input addresses-new__input"
+												type="tel"
+												id="AddressPhoneNew"
+												name="address[phone]"
+												value="{{- form.phone -}}"
+												placeholder="{{- 'customer.addresses.phone' | t | escape -}}"
+												aria-label="{{- 'customer.addresses.enter_phone' | t | escape -}}"
+											/>
+
+											<label class="input-label" for="AddressPhoneNew">
+												{{- "customer.addresses.phone" | t -}}
+											</label>
+										</div>
+
+										<div class="input-wrapper addresses-new__input-wrapper">
+											<input
+												class="input addresses-new__input"
+												type="text"
+												id="AddressAddress1New"
+												name="address[address1]"
+												value="{{- form.address1 -}}"
+												required
+												placeholder="{{- 'customer.addresses.address1' | t | escape -}}"
+												aria-label="{{- 'customer.addresses.enter_address_1' | t | escape -}}"
+											/>
+
+											<label class="input-label" for="AddressAddress1New">
+												{{- "customer.addresses.address1" | t -}}
+											</label>
+										</div>
+
+										<div class="input-wrapper addresses-new__input-wrapper">
+											<input
+												class="input addresses-new__input"
+												type="text"
+												id="AddressAddress2New"
+												name="address[address2]"
+												value="{{- form.address2 -}}"
+												placeholder="{{- 'customer.addresses.address2' | t | escape -}}"
+												aria-label="{{- 'customer.addresses.enter_address_2' | t | escape -}}"
+											/>
+
+											<label class="input-label" for="AddressAddress2New">
+												{{- "customer.addresses.address2" | t -}}
+											</label>
+										</div>
+
+										<div class="input-wrapper addresses-new__input-wrapper">
+											<input
+												class="input addresses-new__input"
+												type="text"
+												id="AddressCityNew"
+												name="address[city]"
+												value="{{- form.city -}}"
+												placeholder="{{- 'customer.addresses.city' | t | escape -}}"
+												aria-label="{{- 'customer.addresses.enter_city' | t | escape -}}"
+											/>
+
+											<label class="input-label" for="AddressCityNew">
+												{{- "customer.addresses.city" | t -}}
+											</label>
+										</div>
+
+										<div class="select-wrapper">
+											<select
+												class="select addresses-new__select js-address-country-option"
+												id="AddressCountry_{{- form.id -}}"
+												name="address[country]"
+												required
+												data-default="{{- form.country -}}"
+												data-form-id="{{ form.id }}"
+												aria-label="{{- 'customer.addresses.select_country' | t | escape -}}"
+											>
+												{{- all_country_option_tags | replace: 'value="---"', 'value=""' -}}
+											</select>
+
+											{%- render 'icons-new', icon: 'arrow-down' -%}
+										</div>
+
+										<div id="AddressProvinceContainer_{{- form.id -}}" style="display: none;">
+											<div class="select-wrapper">
+												<select
+													class="select addresses-new__select"
+													id="AddressProvince_{{- form.id -}}"
+													name="address[province]"
+													data-default="{{- form.province -}}"
+													aria-label="{{- 'customer.addresses.select_province' | t | escape -}}"
+												>
+												</select>
+
+												{%- render 'icons-new', icon: 'arrow-down' -%}
+											</div>
+										</div>
+
+										<div class="input-wrapper addresses-new__input-wrapper">
+											<input
+												class="input addresses-new__input"
+												type="text"
+												id="AddressZipNew"
+												name="address[zip]"
+												value="{{- form.zip -}}"
+												placeholder="{{- 'customer.addresses.zip' | t | escape -}}"
+												aria-label="{{- 'customer.addresses.enter_zip' | t | escape -}}"
+											/>
+
+											<label class="input-label" for="AddressZipNew">
+												{{- "customer.addresses.zip" | t -}}
+											</label>
+										</div>
+
+										<div class="addresses-new__checkbox">
+											<input
+												class="visually-hidden checkbox__input"
+												type="checkbox"
+												id="address_default_address_{{- form.id -}}"
+												name="address[default]"
+												value="1"
+											/>
+
+											<label
+												class="checkbox__label addresses-new__checkbox-label"
+												for="address_default_address_{{- form.id -}}"
+												aria-label="{{- "customer.addresses.set_default" | t | escape -}}"
+											>
+												{{- "customer.addresses.set_default" | t -}}
+											</label>
+										</div>
+									</div>
+
+									<div class="addresses-new__update-form-buttons">
+										<button
+											class="button-new button--secondary addresses-new__button focus-visible-outline"
+											type="submit"
+										>
+											{{- 'customer.addresses.update' | t -}}
+										</button>
+
+										<button
+											class="button-new button--primary addresses-new__link js-address-edit-toggle focus-visible-outline js-address-reset-toggle"
+											type="button"
+											data-form-id="{{- form.id -}}"
+										>
+											{{- "customer.addresses.cancel" | t -}}
+										</button>
+									</div>
+								{%- endform -%}
+							</div>
+
+							<div class="addresses-new__card">
+								<div class="addresses-new__card-heading-wrapper">
+									{%- if address == customer.default_address -%}
+										<h2 class="addresses-new__heading-default h5">
+											{{- "customer.addresses.default" | t -}}
+										</h2>
+									{%- endif -%}
+
+									<button
+										class="addresses-new__delete-button addresses-new__delete-button--mobile focus-visible-outline js-address-delete"
+										type="button"
+										data-form-id="{{- address.id -}}"
+										data-confirm-message="{{- 'customer.addresses.delete_confirm' | t | escape -}}"
+										aria-label="{{- 'customer.addresses.delete' | t | escape -}}"
+									>
+										{% render 'icons-new', icon: 'delete' %}
+									</button>
+								</div>
+
+								<div class="addresses-new__card-info">
+									{% if address.name != blank %}
+										<div class="addresses-new__item">
+											<span class="addresses-new__item-name">
+												{{ 'customer.addresses.name' | t }}:
+											</span>
+											<p class="addresses-new__item-value">{{ address.name }}</p>
+										</div>
+									{% endif %}
+
+									{% if address.company != blank %}
+										<div class="addresses-new__item">
+											<span class="addresses-new__item-name">
+												{{ 'customer.addresses.company' | t }}:
+											</span>
+											<p class="addresses-new__item-value">{{- address.company -}}</p>
+										</div>
+									{% endif %}
+
+									{% if address.street != blank %}
+										<div class="addresses-new__item">
+											<span class="addresses-new__item-name">
+												{{ 'customer.addresses.address' | t }}:
+											</span>
+											<p class="addresses-new__item-value">{{- address.street -}}</p>
+										</div>
+									{% endif %}
+
+									{% if address.zip != blank %}
+										<div class="addresses-new__item">
+											<span class="addresses-new__item-name">
+												{{ 'customer.addresses.zip' | t }}:
+											</span>
+											<p class="addresses-new__item-value">{{- address.zip -}}</p>
+										</div>
+									{% endif %}
+
+									{% if address.country != blank %}
+										<div class="addresses-new__item">
+											<span class="addresses-new__item-name">
+												{{ 'customer.addresses.country' | t }}:
+											</span>
+											<p class="addresses-new__item-value">{{- address.country -}}</p>
+										</div>
+									{% endif %}
+
+									{% if address.province != blank and address.province_code != null %}
+										<div class="addresses-new__item">
+											<span class="addresses-new__item-name">
+												{{ 'customer.addresses.province' | t }}:
+											</span>
+											<p class="addresses-new__item-value">{{- address.province -}}</p>
+										</div>
+									{% endif %}
+
+									{%- if address.phone != blank -%}
+										<div class="addresses-new__item">
+											<span class="addresses-new__item-name">
+												{{ 'customer.addresses.phone' | t }}:
+											</span>
+											<p class="addresses-new__item-value">{{- address.phone -}}</p>
+										</div>
+									{%- endif -%}
+								</div>
+
+								<div class="addresses-new__card-buttons">
+									<button
+										class="button-new button--primary addresses-new__edit-button js-address-edit-toggle focus-visible-outline"
+										type="button"
+										data-form-id="{{- address.id -}}"
+									>
+										{{- "customer.addresses.edit" | t -}}
+									</button>
+
+									<button
+										class="addresses-new__delete-button addresses-new__delete-button--desktop focus-visible-outline js-address-delete"
+										type="button"
+										data-form-id="{{- address.id -}}"
+										data-confirm-message="{{- 'customer.addresses.delete_confirm' | t | escape -}}"
+										aria-label="{{- 'customer.addresses.delete' | t | escape -}}"
+									>
+										{% render 'icons-new', icon: 'delete' %}
+									</button>
+								</div>
+							</div>
+						</div>
+					{%- endfor -%}
+				{%- endif -%}
+
+				{%- if paginate.pages > 1 -%}
+					<div class="addresses-new__pagination">
+						{%- render "pagination-new", paginate: paginate -%}
+					</div>
+				{%- endif -%}
+			</div>
+		</div>
+	</section>
+{%- endpaginate -%}

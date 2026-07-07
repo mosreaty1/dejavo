@@ -1,0 +1,89 @@
+.page-404 .page-404__container {
+	margin: 0 auto;
+	padding: 0 20px;
+	text-align: center;
+}
+.page-404 .page-404__label {
+	margin-bottom: 5px;
+	font-weight: 400;
+	line-height: 1.3;
+	color: var(--color-heading);
+	word-break: break-word;
+}
+.page-404 .page-404__heading {
+	margin-bottom: 10px;
+	font-size: calc(var(--body-font-size) * 7.5);
+	line-height: 1.358;
+	letter-spacing: 0.02em;
+}
+.page-404 .page-404__subheading {
+	margin-bottom: 20px;
+	font-weight: 600;
+	line-height: 1.5;
+	color: var(--color-text-primary);
+	word-break: break-word;
+}
+.page-404 .page-404__text-wrapper {
+	margin-bottom: 30px;
+	color: var(--color-secondary-text);
+}
+.page-404 .page-404__text-wrapper a {
+	color: currentColor;
+}
+.page-404 .page-404__button {
+	display: block;
+	width: -moz-min-content;
+	width: min-content;
+	margin-top: 0;
+	margin-bottom: 40px;
+	margin-left: auto;
+	margin-right: auto;
+	text-decoration: none;
+}
+.page-404 .page-404__navigation-list-item {
+	margin-bottom: 20px;
+	padding: 0 25px;
+}
+.page-404 .page-404__navigation-list-link {
+	line-height: 1.375;
+	letter-spacing: 0.02em;
+	text-decoration: none;
+	color: var(--color-text-primary);
+}
+.page-404 .page-404__navigation-list-link:focus-visible {
+	outline: 2px solid var(--color-text-primary);
+}
+@media (min-width: 576px) {
+	.page-404 .page-404__navigation-list {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+}
+@media (min-width: 768px) {
+	.page-404 .page-404__container {
+		max-width: 780px;
+	}
+	.page-404 .page-404__label {
+		margin-bottom: 10px;
+		font-size: calc(var(--subheading-font-size) * 1.125);
+	}
+	.page-404 .page-404__subheading {
+		margin-bottom: 30px;
+		font-size: calc(var(--body-font-size) * 1.5);
+		line-height: 1.375;
+	}
+	.page-404 .page-404__button {
+		margin-bottom: 50px;
+	}
+	.page-404 .page-404__navigation-list-link {
+		transition-property: opacity;
+		transition-duration: 0.25s;
+		transition-timing-function: ease-in-out;
+	}
+}
+@media (min-width: 768px) and (-moz-touch-enabled: 0), (min-width: 768px) and (hover: hover), (min-width: 768px) and (pointer: fine) {
+	.page-404 .page-404__navigation-list-link:hover {
+		opacity: 0.6;
+	}
+}

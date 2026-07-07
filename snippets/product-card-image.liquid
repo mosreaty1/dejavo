@@ -1,0 +1,202 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Product card image
+	This snippet will output product card images
+
+	- product: Product object (required, object)
+	- image: image object (required, object),
+	- size: desktop image size (required, number)
+	- tablet_size: tablet image size (optional, default: size, number)
+	- mobile_size: mobile image size (optional, default: tablet_size, number)
+	- is_lazy: is lazy load enable (optional, default: true, boolean)
+	- is_hover_image: is it image on hover (optional, default: false, boolean)
+
+	{%- render 'product-card-image',
+		product: product,
+		is_lazy: is_lazy,
+		image: image,
+		is_hover_image: false,
+		size: size,
+		tablet_size: tablet_size,
+		mobile_size: mobile_size
+	-%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign mobile_size_small = mobile_size | divided_by: 1.333 | round -%}
+
+{%- assign image_size					= size | append: 'x' -%}
+{%- assign image_size_2x				= size | times:  2 | append: 'x' -%}
+
+{%- assign large_size					= size | times:  1.5 | round -%}
+{%- assign image_large_size				= size | times:  1.5 | round | append: 'x' -%}
+{%- assign image_large_size_2x			= size | times:  3 | append: 'x' -%}
+
+{%- assign image_tablet_size			= tablet_size | append: 'x' | default: image_size -%}
+{%- assign image_tablet_size_2x			= tablet_size | times: 2 | append: 'x' | default: image_size_2x -%}
+
+{%- assign image_mobile_size			= mobile_size | append: 'x' | default: image_tablet_size -%}
+{%- assign image_mobile_size_2x			= mobile_size | times:  2 | append: 'x' | default: image_tablet_size_2x -%}
+{%- assign image_small_mobile_size		= mobile_size_small | append: 'x' | default: image_tablet_size -%}
+{%- assign image_small_mobile_size_2x	= mobile_size_small | times:  2 | append: 'x' | default: image_tablet_size_2x -%}
+{%- assign is_hover_image				= is_hover_image | default: false -%}
+
+{%- if is_lazy == nil -%}
+	{%- assign is_lazy = true -%}
+{%- endif -%}
+
+{%- capture img_classes -%}
+	{%- if is_hover_image == false -%}
+		product-card__image
+	{%- else -%}
+		product-card__image product-card__image--hover
+	{%- endif -%}
+{%- endcapture -%}
+
+{%- capture img_focal -%}
+	{%- if image == settings.product_default_image and settings.product_default_image != blank -%}
+		--img-desktop-pos: {{ settings.product_default_image.presentation.focal_point }};
+	{%- else -%}
+		--img-desktop-pos: {{ settings.image_crop }};
+	{%- endif -%}
+{%- endcapture -%}
+
+
+
+{%- if is_lazy -%}
+	<picture class="{% unless is_hover_image %}lazy{% endunless %} product-card__image-picture {% if is_hover_image %} product-card__image-picture--hover {%- endif -%}">
+		{% if is_hover_image %}
+			<source
+				srcset="{{ image | img_url: image_small_mobile_size, crop: settings.image_crop }} 1x, {{ image | img_url: image_small_mobile_size_2x, crop: settings.image_crop }} 2x"
+				media="(max-width: 360px)"
+				width="{{- mobile_size_small -}}"
+				height="{{- mobile_size_small -}}"
+			>
+
+			<source
+				srcset="{{ image | img_url: image_mobile_size, crop: settings.image_crop }} 1x, {{ image | img_url: image_mobile_size_2x, crop: settings.image_crop }} 2x"
+				media="(max-width: 420px)"
+				width="{{- mobile_size -}}"
+				height="{{- mobile_size -}}"
+			>
+
+			<source
+				srcset="{{ image | img_url: image_tablet_size, crop: settings.image_crop }} 1x, {{ image | img_url: image_tablet_size_2x, crop: settings.image_crop }} 2x"
+				media="(max-width: 767px)"
+				width="{{- tablet_size -}}"
+				height="{{- tablet_size -}}"
+			>
+
+			<source
+				srcset="{{ image | img_url: image_large_size, crop: settings.image_crop }} 1x, {{ image | img_url: image_large_size_2x, crop: settings.image_crop }} 2x"
+				media="(min-width: 2500px)"
+				width="{{- large_size -}}"
+				height="{{- large_size -}}"
+			>
+
+			<img
+				class="{{- img_classes -}}"
+				srcset="{{ image | img_url: image_size, crop: settings.image_crop }} 1x, {{ image | img_url: image_size_2x, crop: settings.image_crop }} 2x"
+				src="{{ image | img_url: image_size, crop: settings.image_crop }}"
+				alt="{{- image.alt | default: product.title -}}"
+				width="{{- size -}}"
+				height="{{- size -}}"
+				{% if img_focal != blank %}
+					style="{{ img_focal }}"
+				{% endif %}
+				{% if is_hover_image %}
+				loading="lazy"
+				{% endif %}
+			>
+		{% else %}
+			<source
+				data-srcset="{{ image | img_url: image_small_mobile_size, crop: settings.image_crop }} 1x, {{ image | img_url: image_small_mobile_size_2x, crop: settings.image_crop }} 2x"
+				srcset="{{ image | img_url: '10x', crop: settings.image_crop }} 1x, {{ image | img_url: '10x', crop: settings.image_crop }} 2x"
+				media="(max-width: 360px)"
+				width="{{- mobile_size_small -}}"
+				height="{{- mobile_size_small -}}"
+			>
+
+			<source
+				data-srcset="{{ image | img_url: image_mobile_size, crop: settings.image_crop }} 1x, {{ image | img_url: image_mobile_size_2x, crop: settings.image_crop }} 2x"
+				srcset="{{ image | img_url: '10x', crop: settings.image_crop }} 1x, {{ image | img_url: '10x', crop: settings.image_crop }} 2x"
+				media="(max-width: 420px)"
+				width="{{- mobile_size -}}"
+				height="{{- mobile_size -}}"
+			>
+
+			<source
+				data-srcset="{{ image | img_url: image_tablet_size, crop: settings.image_crop }} 1x, {{ image | img_url: image_tablet_size_2x, crop: settings.image_crop }} 2x"
+				srcset="{{ image | img_url: '10x', crop: settings.image_crop }} 1x, {{ image | img_url: '10x', crop: settings.image_crop }} 2x"
+				media="(max-width: 767px)"
+				width="{{- tablet_size -}}"
+				height="{{- tablet_size -}}"
+			>
+
+			<source
+				data-srcset="{{ image | img_url: image_large_size, crop: settings.image_crop }} 1x, {{ image | img_url: image_large_size_2x, crop: settings.image_crop }} 2x"
+				srcset="{{ image | img_url: '10x', crop: settings.image_crop }} 1x, {{ image | img_url: '10x', crop: settings.image_crop }} 2x"
+				media="(min-width: 2500px)"
+				width="{{- large_size -}}"
+				height="{{- large_size -}}"
+			>
+
+			<img
+				class="{{- img_classes -}}"
+				src="{{ image | img_url: '10x', crop: settings.image_crop }}"
+				srcset="{{ image | img_url: '10x', crop: settings.image_crop }}"
+				data-src="{{ image | img_url: image_size, crop: settings.image_crop }}"
+				data-srcset="{{ image | img_url: image_size, crop: settings.image_crop }} 1x, {{ image | img_url: image_size_2x, crop: settings.image_crop }} 2x"
+				alt="{{- image.alt | default: product.title -}}"
+				width="{{- size -}}"
+				height="{{- size -}}"
+				{% if img_focal != blank %}
+					style="{{ img_focal }}"
+				{% endif %}
+			>
+		{% endif %}
+	</picture>
+{%- else -%}
+	<picture class="product-card__image-picture {% if is_hover_image %} product-card__image-picture--hover {%- endif -%}">
+		<source
+			srcset="{{ image | img_url: image_small_mobile_size, crop: settings.image_crop }} 1x, {{ image | img_url: image_small_mobile_size_2x, crop: settings.image_crop }} 2x"
+			media="(max-width: 360px)"
+			width="{{- mobile_size_small -}}"
+			height="{{- mobile_size_small -}}"
+		>
+
+		<source
+			srcset="{{ image | img_url: image_mobile_size, crop: settings.image_crop }} 1x, {{ image | img_url: image_mobile_size_2x, crop: settings.image_crop }} 2x"
+			media="(max-width: 420px)"
+			width="{{- mobile_size -}}"
+			height="{{- mobile_size -}}"
+		>
+
+		<source
+			srcset="{{ image | img_url: image_tablet_size, crop: settings.image_crop }} 1x, {{ image | img_url: image_tablet_size, crop: settings.image_crop }} 2x"
+			media="(max-width: 767px)"
+			width="{{- tablet_size -}}"
+			height="{{- tablet_size -}}"
+		>
+
+		<source
+			srcset="{{ image | img_url: image_large_size, crop: settings.image_crop }} 1x, {{ image | img_url: image_large_size_2x, crop: settings.image_crop }} 2x"
+			media="(min-width: 2500px)"
+			width="{{- large_size -}}"
+			height="{{- large_size -}}"
+		>
+
+		<img
+			class="{{- img_classes -}}"
+			srcset="{{ image | img_url: image_size, crop: settings.image_crop }} 1x, {{ image | img_url: image_size_2x, crop: settings.image_crop }} 2x"
+			src="{{ image | img_url: image_size, crop: settings.image_crop }}"
+			alt="{{- image.alt | default: product.title -}}"
+			width="{{- size -}}"
+			height="{{- size -}}"
+			fetchpriority="high"
+			{% if img_focal != blank %}
+				style="{{ img_focal }}"
+			{% endif %}
+		>
+	</picture>
+{%- endif -%}

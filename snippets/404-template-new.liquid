@@ -1,0 +1,81 @@
+{{- "404-template-new.build.css" | asset_url | stylesheet_tag -}}
+
+{%- style -%}
+    #shopify-section-{{- section.id -}} {
+        padding-top: {{- section.settings.offset_top_mobile -}}px;
+        padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+    }
+
+    @media screen and (min-width: 768px) {
+        #shopify-section-{{- section.id -}} {
+            padding-top: {{- section.settings.offset_top_desktop -}}px;
+            padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+        }
+    }
+{%- endstyle -%}
+
+{%- assign label = section.settings.label -%}
+{%- assign heading = section.settings.heading -%}
+{%- assign subheading = section.settings.subheading -%}
+{%- assign text = section.settings.text -%}
+{%- assign button_url = section.settings.button_url -%}
+{%- assign button_text = section.settings.button_text -%}
+{%- assign menu = section.settings.menu -%}
+{%- assign enable_accents_spot 	= settings.enable_accents_spot -%}
+
+<section class="page-404-new{% if enable_accents_spot %} page-404-new--accent-spot{% endif %}">
+    <div class="page-404__container">
+        {%- if label != blank -%}
+            <p class="subheading page-404__label">
+                {{- label -}}
+            </p>
+        {%- endif -%}
+
+        {%- if heading != blank -%}
+            <h1 class="page-404__heading">
+                {{- heading -}}
+            </h1>
+        {%- endif -%}
+
+        {%- if subheading != blank -%}
+            <p class="page-404__subheading">
+                {{- subheading -}}
+            </p>
+        {%- endif -%}
+
+        {%- if text != blank -%}
+            <div class="page-404__text-wrapper rte-new">
+                {{- text -}}
+            </div>
+        {%- endif -%}
+
+        {%- if menu != blank -%}
+            <ul class="page-404__navigation-list">
+                {%- for link in linklists[menu].links -%}
+                    <li class="page-404__navigation-list-item">
+                        <a
+                            class="page-404__navigation-list-link"
+                            href="{{- link.url -}}"
+                        >
+                            {{- link.title -}}
+                        </a>
+                    </li>
+                {%- endfor -%}
+            </ul>
+        {%- endif -%}
+
+        {%- if button_url != blank and button_text != blank -%}
+            <a class="button-circle" href="{{- button_url -}}">
+                <span class="button__text">
+                    {{- button_text -}}
+                </span>
+
+                <span class="button-new__icon-container">
+                    <span class="button-new__icon-wrapper">
+                        {% render "icons-new", icon: "wave", section_id: 'asdasdsa' %}
+                    </span>
+                </span>
+            </a>
+        {%- endif -%}
+    </div>
+</section>

@@ -1,0 +1,12 @@
+{
+	"sections": {
+		"addresses": {
+			"type": "addresses-template",
+			"settings": {
+			}
+		}
+	},
+	"order": [
+		"addresses"
+	]
+}

@@ -1,0 +1,329 @@
+{% comment %}
+	------------------------------------------------------------------------------
+	Snippet: Pricing table new
+	- section: Section object (required)
+	------------------------------------------------------------------------------
+{% endcomment %}
+
+{{ 'pricing-table-new.build.css' | asset_url | stylesheet_tag }}
+
+{%- assign label 					= section.settings.label -%}
+{%- assign heading 					= section.settings.heading -%}
+{%- assign list_icon 				= section.settings.list_icon -%}
+{%- assign image_aspect 			= section.settings.image_aspect -%}
+{%- assign image_crop 				= section.settings.image_crop -%}
+
+{%- assign card_background_color   	= section.settings.card_background_color -%}
+{%- assign card_border_color       	= section.settings.card_border_color -%}
+{%- assign text_color              	= section.settings.text_color -%}
+{%- assign option_background_color  = section.settings.option_background_color -%}
+{%- assign button_label_color   		 = section.settings.button_label_color -%}
+{%- assign button_label_hover_color      = section.settings.button_label_hover_color -%}
+{%- assign color_background			 	 = settings.color_background -%}
+
+{%- assign is_lazy = true -%}
+
+{%- if section.index == 1 -%}
+	{%- assign is_lazy = false -%}
+{%- endif -%}
+
+{%- capture styles -%}
+	--card-background-color: {{ card_background_color }};
+	--card-border-color: {{ card_border_color }};
+	--text-color: {{ text_color }};
+	--color-background: {{ color_background }};
+	--option-background-color: {{- option_background_color -}};
+	--button-label-color: {{ button_label_color }};
+	--button-label-hover-color: {{ button_label_hover_color }};
+{%- endcapture -%}
+
+<section class="pricing-table-new js-animate{% if request.visual_preview_mode or section.index == 1 %} animated{% endif %}" style="{{- styles -}}">
+	<div class="pricing-table-new__container">
+		{%- if label != blank or heading != blank -%}
+			<div class="pricing-table-new__header need-animate">
+				{%- if label != blank -%}
+					<div class="pricing-table-new__label subheading">
+						{{- label -}}
+					</div>
+				{%- endif -%}
+
+				{%- if heading != blank -%}
+					<h2 class="pricing-table-new__heading h2">
+						{{- heading -}}
+					</h2>
+				{%- endif -%}
+			</div>
+		{%- endif -%}
+
+		<div class="pricing-table-new__items-container pricing-table-new__items-container--{{ section.blocks.size }}">
+			{%- for block in section.blocks -%}
+				{%- assign product     = block.settings.product -%}
+				{%- assign label       = block.settings.label -%}
+				{%- assign heading     = block.settings.heading | default: product.title -%}
+				{%- assign text        = block.settings.text -%}
+				{%- assign image       = block.settings.image | default: product.featured_image -%}
+				{%- assign button_text = block.settings.button_text -%}
+
+				{%- assign label_background_color = block.settings.label_background_color -%}
+				{%- assign label_text_color       = block.settings.label_text_color -%}
+
+				{%- capture block_styles -%}
+					--label-background-color: {{ label_background_color }};
+					--label-text-color: {{ label_text_color }};
+				{%- endcapture -%}
+
+				<div class="pricing-table-new__item"
+					 style="{{ block_styles }}"
+				>
+					{%- if label != blank and image == blank -%}
+						<span class="pricing-table-new__item-label need-animate">
+							{{- label -}}
+						</span>
+					{%- endif -%}
+
+					<div class="pricing-table-new__item-wrapper need-animate{% if forloop.index == section.blocks.size and forloop.index > 1 %} pricing-table-new__item-wrapper--last{% elsif forloop.index == 1 %} pricing-table-new__item-wrapper--first{% endif %}">
+						{%- if image != blank -%}
+							{%- assign size_width 		= 548 -%}
+							{%- assign size_height 		= 639 -%}
+							{%- assign size_width_2x 	= size_width | times: 2 -%}
+							{%- assign size_height_2x 	= size_height | times: 2 -%}
+
+							{%- assign size_width_1199 		= 524 -%}
+							{%- assign size_height_1199 	= 611 -%}
+							{%- assign size_width_1199_2x 	= size_width_1199 | times: 2 -%}
+							{%- assign size_height_1199_2x 	= size_height_1199 | times: 2 -%}
+
+							{%- assign size_width_991 		= 574 -%}
+							{%- assign size_height_991 		= 669 -%}
+							{%- assign size_width_991_2x 	= size_width_991 | times: 2 -%}
+							{%- assign size_height_991_2x 	= size_height_991 | times: 2 -%}
+
+							{%- assign size_width_767 		= 440 -%}
+							{%- assign size_height_767 		= 513 -%}
+							{%- assign size_width_767_2x 	= size_width_767 | times: 2 -%}
+							{%- assign size_height_767_2x 	= size_height_767 | times: 2 -%}
+
+							{%- assign size_width_420 		= 386 -%}
+							{%- assign size_height_420 		= 451 -%}
+							{%- assign size_width_420_2x 	= size_width_420 | times: 2 -%}
+							{%- assign size_height_420_2x 	= size_height_420 | times: 2 -%}
+
+							{%- assign size_width_375 		= 342 -%}
+							{%- assign size_height_375 		= 398 -%}
+							{%- assign size_width_375_2x 	= size_width_375 | times: 2 -%}
+							{%- assign size_height_375_2x 	= size_height_375 | times: 2 -%}
+
+							{%- if image_aspect == "square" -%}
+								{%- assign size_height 		= size_width -%}
+								{%- assign size_height_2x 	= size_height | times: 2 -%}
+
+								{%- assign size_height_1199 	= size_width_1199 -%}
+								{%- assign size_height_1199_2x 	= size_height_1199 | times: 2 -%}
+
+								{%- assign size_height_991 		= size_width_991 -%}
+								{%- assign size_height_991_2x 	= size_height_991 | times: 2 -%}
+
+								{%- assign size_height_767 		= size_width_767 -%}
+								{%- assign size_height_767_2x 	= size_height_767 | times: 2 -%}
+
+								{%- assign size_height_420 		= size_width_420 -%}
+								{%- assign size_height_420_2x 	= size_height_420 | times: 2 -%}
+
+								{%- assign size_height_375 		= size_width_375 -%}
+								{%- assign size_height_375_2x 	= size_height_375 | times: 2 -%}
+							{%- endif -%}
+
+							{%- capture img_focal -%}
+								--img-desktop-pos: {{ image.presentation.focal_point }};
+							{%- endcapture -%}
+
+							<div class="pricing-table-new__item-image-container{% if image_aspect == "portrait" %} pricing-table-new__item-image-container--portrait{% endif %}">
+								<picture class="{% if is_lazy %}lazy{% endif %}">
+									<source
+										{% if is_lazy %}
+										data-srcset="{{ image | image_url: width: size_width_375, height: size_height_375, crop: image_crop }} 1x,
+													 {{ image | image_url: width: size_width_375_2x, height: size_height_375_2x, crop: image_crop }} 2x"
+										srcset="{{ image | image_url: width: 10, height: 10 }} 1x,
+												{{ image | image_url: width: 20, height: 20 }} 2x"
+										{% else %}
+											srcset="{{ image | image_url: width: size_width_375, height: size_height_375, crop: image_crop }} 1x,
+													{{ image | image_url: width: size_width_375_2x, height: size_height_375_2x, crop: image_crop }} 2x"
+										{% endif %}
+										media="(max-width: 375px)"
+										width="{{- size_width_375 -}}"
+										height="{{- size_height_375 -}}"
+									/>
+
+									<source
+										{% if is_lazy %}
+										data-srcset="{{ image | image_url: width: size_width_420, height: size_height_420, crop: image_crop }} 1x,
+													 {{ image | image_url: width: size_width_420_2x, height: size_height_420_2x, crop: image_crop }} 2x"
+										srcset="{{ image | image_url: width: 10, height: 10 }} 1x,
+												{{ image | image_url: width: 20, height: 20 }} 2x"
+										{% else %}
+											srcset="{{ image | image_url: width: size_width_420, height: size_height_420, crop: image_crop }} 1x,
+													{{ image | image_url: width: size_width_420_2x, height: size_height_420_2x, crop: image_crop }} 2x"
+										{% endif %}
+										media="(max-width: 420px)"
+										width="{{- size_width_420 -}}"
+										height="{{- size_height_420 -}}"
+									/>
+
+									<source
+										{% if is_lazy %}
+											data-srcset="{{ image | image_url: width: size_width_767, height: size_height_767, crop: image_crop }} 1x,
+													 	 {{ image | image_url: width: size_width_767_2x, height: size_height_767_2x, crop: image_crop }} 2x"
+											srcset="{{ image | image_url: width: 10, height: 10 }} 1x,
+													{{ image | image_url: width: 20, height: 20 }} 2x"
+										{% else %}
+											srcset="{{ image | image_url: width: size_width_767, height: size_height_767, crop: image_crop }} 1x,
+													{{ image | image_url: width: size_width_767_2x, height: size_height_767_2x, crop: image_crop }} 2x"
+										{% endif %}
+										media="(max-width: 767px)"
+										width="{{- size_width_767 -}}"
+										height="{{- size_height_767 -}}"
+									/>
+
+									<source
+										{% if is_lazy %}
+											data-srcset="{{ image | image_url: width: size_width_991, height: size_height_991, crop: image_crop }} 1x,
+														 {{ image | image_url: width: size_width_991_2x, height: size_height_991_2x, crop: image_crop }} 2x"
+											srcset="{{ image | image_url: width: 10, height: 10 }} 1x,
+													{{ image | image_url: width: 20, height: 20 }} 2x"
+										{% else %}
+											srcset="{{ image | image_url: width: size_width_991, height: size_height_991, crop: image_crop }} 1x,
+													{{ image | image_url: width: size_width_991_2x, height: size_height_991_2x, crop: image_crop }} 2x"
+										{% endif %}
+										media="(max-width: 991px)"
+										width="{{- size_width_991 -}}"
+										height="{{- size_height_991 -}}"
+									/>
+
+									<source
+										{% if is_lazy %}
+											data-srcset="{{ image | image_url: width: size_width_1199, height: size_height_1199, crop: image_crop }} 1x,
+														 {{ image | image_url: width: size_width_1199_2x, height: size_height_1199_2x, crop: image_crop }} 2x"
+											srcset="{{ image | image_url: width: 10, height: 10 }} 1x,
+													{{ image | image_url: width: 20, height: 20 }} 2x"
+										{% else %}
+											srcset="{{ image | image_url: width: size_width_1199, height: size_height_1199, crop: image_crop }} 1x,
+													{{ image | image_url: width: size_width_1199_2x, height: size_height_1199_2x, crop: image_crop }} 2x"
+										{% endif %}
+										media="(max-width: 1199px)"
+										width="{{- size_width_1199 -}}"
+										height="{{- size_height_1199 -}}"
+									/>
+
+									<img
+										class="pricing-table-new__item-image need-animate"
+										{% if is_lazy %}
+											data-srcset="{{ image | image_url: width: size_width, height: size_height, crop: image_crop }} 1x,
+														 {{ image | image_url: width: size_width_2x, height: size_height_2x, crop: image_crop }} 2x"
+											srcset="{{ image | image_url: width: 10, height: 10 }} 1x,
+													{{ image | image_url: width: 20, height: 20 }} 2x"
+											data-src="{{ image | image_url: width: size_width, height: size_height, crop: image_crop }}"
+											src="{{ image | image_url: width: 10, height: 10 }}"
+										{% else %}
+											srcset="{{ image | image_url: width: size_width, height: size_height, crop: image_crop }} 1x,
+													{{ image | image_url: width: size_width_2x, height: size_height_2x, crop: image_crop }} 2x"
+											src="{{ image | image_url: width: size_width, height: size_height, crop: image_crop }}"
+										{% endif %}
+										alt="{{ image.alt | escape }}"
+										width="{{- size_width -}}"
+										height="{{- size_height -}}"
+										style="{{ img_focal }}"
+									/>
+								</picture>
+
+								<noscript>
+									<picture>
+										<source
+											srcset="{{ image | image_url: width: size_width_375, height: size_height_375, crop: image_crop }} 1x,
+															{{ image | image_url: width: size_width_375_2x, height: size_height_375_2x, crop: image_crop }} 2x"
+											media="(max-width: 375px)"
+											width="{{- size_width_375 -}}"
+											height="{{- size_height_375 -}}"
+										/>
+
+										<source
+											srcset="{{ image | image_url: width: size_width_420, height: size_height_420, crop: image_crop }} 1x,
+															{{ image | image_url: width: size_width_420_2x, height: size_height_420_2x, crop: image_crop }} 2x"
+											media="(max-width: 420px)"
+											width="{{- size_width_420 -}}"
+											height="{{- size_height_420 -}}"
+										/>
+
+										<source
+											srcset="{{ image | image_url: width: size_width_767, height: size_height_767, crop: image_crop }} 1x,
+															{{ image | image_url: width: size_width_767_2x, height: size_height_767_2x, crop: image_crop }} 2x"
+											media="(max-width: 767px)"
+											width="{{- size_width_767 -}}"
+											height="{{- size_height_767 -}}"
+										/>
+
+										<source
+											srcset="{{ image | image_url: width: size_width_991, height: size_height_991, crop: image_crop }} 1x,
+															{{ image | image_url: width: size_width_991_2x, height: size_height_991_2x, crop: image_crop }} 2x"
+											media="(max-width: 991px)"
+											width="{{- size_width_991 -}}"
+											height="{{- size_height_991 -}}"
+										/>
+
+										<source
+											srcset="{{ image | image_url: width: size_width_1199, height: size_height_1199, crop: image_crop }} 1x,
+															{{ image | image_url: width: size_width_1199_2x, height: size_height_1199_2x, crop: image_crop }} 2x"
+											media="(max-width: 1199px)"
+											width="{{- size_width_1199 -}}"
+											height="{{- size_height_1199 -}}"
+										/>
+
+										<img
+											class="pricing-table-new__item-image need-animate"
+											srcset="{{ image | image_url: width: size_width, height: size_height, crop: image_crop }} 1x,
+													{{ image | image_url: width: size_width_2x, height: size_height_2x, crop: image_crop }} 2x"
+											src="{{ image | image_url: width: size_width, height: size_height, crop: image_crop }}"
+											alt="{{ image.alt | escape }}"
+											width="{{- size_width -}}"
+											height="{{- size_height -}}"
+											style="{{ img_focal }}"
+										/>
+									</picture>
+								</noscript>
+
+								{%- if label != blank -%}
+									<span class="pricing-table-new__item-label">
+										{{- label -}}
+									</span>
+								{%- endif -%}
+							</div>
+						{%- endif -%}
+
+						<div class="pricing-table-new__item-inner{% if image == blank %} pricing-table-new__item-inner--no-image{% endif %} need-animate">
+							<h3 class="pricing-table-new__item-heading">
+								{{- heading -}}
+							</h3>
+
+							{% render 'price', product: product %}
+
+							{%- if text != blank -%}
+								<div class="pricing-table-new__item-list-wrapper {% if list_icon == blank %}pricing-table-new__item-list-wrapper--without-icon{% endif %} section-rte">
+									{{ text }}
+								</div>
+							{%- endif -%}
+
+							{%- if button_text != blank -%}
+								<a href="{{ product.url }}" class="pricing-table-new__item-link focus-visible-outline">
+									<span class="pricing-table-new__item-link-text">
+										{{- button_text -}}
+									</span>
+
+									{%- render 'icons-new', icon: 'arrow-right' -%}
+								</a>
+							{%- endif -%}
+						</div>
+					</div>
+				</div>
+			{%- endfor -%}
+		</div>
+	</div>
+</section>

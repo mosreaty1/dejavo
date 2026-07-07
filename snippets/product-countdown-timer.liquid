@@ -1,0 +1,143 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Product countdown timer
+	- product: Product object (required, object)
+	- text: heading (optional, string)
+	- icon: image left of heading (optional, image)
+	- text_color: text color (optional, color)
+	- timer_text_color: timer text color (optional, color)
+	- timer_background_color: timer background color (optional, color)
+
+	{%- render 'product-countdown-timer',
+					product: product,
+					text: text,
+					icon: icon,
+					text_color: text_color,
+					timer_text_color: timer_text_color,
+					timer_background_color: timer_background_color
+	-%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign promo_deadline 			= product.metafields.custom.promo_timer_date | date: '%s' -%}
+{%- assign promo_deadline_timestamp = promo_deadline | date: '%s' -%}
+{%- assign today_date 				= 'now' | date: '%s' -%}
+
+{%- capture style -%}
+	--text-color: {{ text_color -}}; {{-  -}}
+	--timer-text-color: {{ timer_text_color -}}; {{-  -}}
+	--timer-background-color: {{ timer_background_color -}};
+{%- endcapture -%}
+
+{%- if promo_deadline_timestamp != blank and promo_deadline_timestamp > today_date -%}
+	{% if design == 'alternate' %}
+		<link rel="stylesheet" href="{{ 'product-countdown-timer-new.build.css' | asset_url }}">
+	{% else %}
+		<link rel="stylesheet" href="{{ 'product-countdown-timer.build.css' | asset_url }}">
+	{% endif %}
+
+	<div class="{% if design == 'alternate' %}product-countdown-timer-new{% else %}product-countdown-timer{% endif %} js-product-countdown-timer" style="{{- style -}}">
+		{%- if text != blank -%}
+			<div class="product-countdown-timer__header">
+				{%- if icon != blank -%}
+					<img
+						srcset="{{ icon | image_url: width: 24 }} 1x, {{ icon | image_url: width: 48 }} 2x"
+						src="{{ icon | image_url: width: 24 }}"
+						alt="{{ icon.alt }}"
+						class="product-countdown-timer__icon"
+						height="24"
+						width="24"
+					/>
+				{%- endif -%}
+
+				<h3 class="h3 product-countdown-timer__heading">
+					{{- text -}}
+				</h3>
+			</div>
+		{%- endif -%}
+
+		<div class="product-countdown-timer__timer js-timer" role="timer" aria-live="off">
+			<script class="js-timer-settings" type="application/json">
+					{
+						"year": {{ promo_deadline | date: "%Y" | json -}},
+						"month": {{-promo_deadline | date: "%m" | minus: 1 | json -}},
+						"day": {{ promo_deadline | date: "%d" | json -}},
+						"hour": {{ promo_deadline | date: "%H" | json -}},
+						"minutes": {{ promo_deadline | date: "%M" | json -}},
+						"timezone": "-4"
+					}
+			</script>
+
+			<div class="product-countdown-timer__timer-row">
+				<div class="product-countdown-timer__timer-col">
+					<div class="product-countdown-timer__timer-values">
+						<p class="h2 is-hidden product-countdown-timer__timer-value js-timer-days-hundreds">
+							0
+						</p>
+
+						<p class="h2 product-countdown-timer__timer-value js-timer-days-dozens">
+							0
+						</p>
+
+						<p class="h2 product-countdown-timer__timer-value js-timer-days-units">
+							0
+						</p>
+					</div>
+
+					<p class="text product-countdown-timer__timer-label">
+						{{- 'products.product.timer.timer_days_label' | t -}}
+					</p>
+				</div>
+
+				<div class="product-countdown-timer__timer-col">
+					<div class="product-countdown-timer__timer-values">
+						<p class="h2 product-countdown-timer__timer-value js-timer-hours-dozens">
+							0
+						</p>
+
+						<p class="h2 product-countdown-timer__timer-value js-timer-hours-units">
+							0
+						</p>
+					</div>
+
+					<p class="text product-countdown-timer__timer-label">
+						{{- 'products.product.timer.timer_hours_label' | t -}}
+					</p>
+				</div>
+
+				<div class="product-countdown-timer__timer-col">
+					<div class="product-countdown-timer__timer-values">
+						<p class="h2 product-countdown-timer__timer-value js-timer-minutes-dozens">
+							0
+						</p>
+
+						<p class="h2 product-countdown-timer__timer-value js-timer-minutes-units">
+							0
+						</p>
+					</div>
+
+					<p class="text product-countdown-timer__timer-label">
+						{{- 'products.product.timer.timer_minutes_label' | t -}}
+					</p>
+				</div>
+
+				<div class="product-countdown-timer__timer-col">
+					<div class="product-countdown-timer__timer-values">
+						<p class="h2 product-countdown-timer__timer-value js-timer-seconds-dozens">
+							0
+						</p>
+
+						<p class="h2 product-countdown-timer__timer-value js-timer-seconds-units">
+							0
+						</p>
+					</div>
+
+					<p class="text product-countdown-timer__timer-label">
+						{{- 'products.product.timer.timer_seconds_label' | t -}}
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+{%- endif -%}
+

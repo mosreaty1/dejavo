@@ -1,0 +1,264 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+  Snippet: Product options
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign variants_type 				= block.settings.variant_picker -%}
+{%- assign swatch_option				= settings.color_swatches_option | default: 'Color' | downcase -%}
+{%- assign is_color_swatches_enabled	= settings.is_color_swatches_enabled -%}
+
+<div
+	class="product-variants {% if product.has_only_default_variant %}is-hidden{% endif %}"
+	data-js-product-variant
+>
+	<input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+
+	{% if product.has_only_default_variant %}
+		<script type="application/json" data-selected-variant>
+			{{ product.selected_or_first_available_variant | json }}
+		</script>
+	{% endif %}
+</div>
+
+{%- unless product.has_only_default_variant -%}
+	<div class="{% if design == 'alternate' %}product-option-new{% else %}product-options{% endif %} js-product-options">
+		{%- assign is_size_guide_in_label = false -%}
+
+		{%- for option in product.options_with_values -%}
+			{%- assign downcased_option = option.name | downcase -%}
+			{%- assign handleized_option = option.name | handleize -%}
+			{%- assign swatch_count = option.values | map: 'swatch' | compact | size -%}
+
+			{%- comment -%}
+				Size guide
+			{%- endcomment -%}
+			{%- assign size_guide_page = product.metafields.size_guide.page.value -%}
+			{%- assign show_size_guide = false -%}
+			{%- assign show_size_guide_in_label = false -%}
+			{%- assign size_guide_option_name = block.settings.size_guide_option_name | downcase -%}
+
+			{%- if block.settings.show_size_guide and size_guide_page != blank and size_guide_page.content != blank -%}
+				{%- assign show_size_guide = true -%}
+
+				{%- if downcased_option == size_guide_option_name -%}
+					{%- assign show_size_guide_in_label = true -%}
+					{%- assign is_size_guide_in_label = true -%}
+				{%- endif -%}
+			{%- endif -%}
+
+			{%- capture size_guide -%}
+				<div class="product-options__size-guide {% if show_size_guide_in_label == false %}product-options__size-guide--offset{% endif %}">
+					<button
+						class="product-options__size-guide-toggle"
+						data-target="productSizeGuideDrawer-{{- section.id -}}"
+						data-js-toggle="productSizeGuideDrawer-{{- section.id -}}"
+						type="button"
+					>
+						{%- assign size_guide_icon = block.settings.size_guide_icon -%}
+
+						{%- if size_guide_icon != blank and design == 'standard' -%}
+							{%- capture img_focal -%}
+								--img-desktop-pos: {{ size_guide_icon.presentation.focal_point }};
+							{%- endcapture -%}
+
+							<img
+								class="product-options__size-guide-toggle-icon"
+								srcset="{{ size_guide_icon | img_url: "30x" }} 1x, {{ size_guide_icon | img_url: "60x" }} 2x"
+								src="{{- size_guide_icon | img_url: "60x" -}}"
+								alt="{{- size_guide_icon.alt | escape -}}"
+								style="{{ img_focal }}"
+							/>
+						{%- endif -%}
+
+						{{- block.settings.size_guide_text -}}
+
+						{%- if size_guide_icon != blank and design == 'alternate' -%}
+							{%- capture img_focal -%}
+								--img-desktop-pos: {{ size_guide_icon.presentation.focal_point }};
+							{%- endcapture -%}
+
+							<img
+								class="product-options__size-guide-toggle-icon"
+								srcset="{{ size_guide_icon | img_url: "30x" }} 1x, {{ size_guide_icon | img_url: "60x" }} 2x"
+								src="{{- size_guide_icon | img_url: "60x" -}}"
+								alt="{{- size_guide_icon.alt | escape -}}"
+								style="{{ img_focal }}"
+							/>
+						{%- endif -%}
+					</button>
+				</div>
+			{%- endcapture -%}
+
+			{%- comment -%}
+				Swatch options
+			{%- endcomment -%}
+			{%- capture swatch_options -%}
+				<div class="product-options__swatch">
+					{%- if block.settings.show_labels or show_size_guide_in_label -%}
+						<div class="product-options__label-size-guide">
+							{%- if block.settings.show_labels -%}
+								<div class="product-options__option-label">
+									{{- option.name -}}:
+
+									<span class="product-options__swatch-value js-swatch-label-name"
+										  data-swatch-name="{{ option.name }}"
+										  data-swatch-position="{{ option.position }}"
+									>
+										{{- option.selected_value -}}
+									</span>
+								</div>
+							{%- endif -%}
+
+							{%- if show_size_guide_in_label -%}
+								{{- size_guide -}}
+							{%- endif -%}
+						</div>
+					{%- endif -%}
+
+					{%- for value in option.values  -%}
+						{%- assign handleized_value = value | handleize -%}
+
+						<div class="radio__container radio__option-swatch">
+							{%- assign is_disabled = true -%}
+
+							{% if value.available %}
+								{%- assign is_disabled = false -%}
+							{% endif %}
+
+							{%- capture swatch_styles -%}
+								{% assign image_name = value | handle | prepend: 'swatch-' | append: '.png' %}
+								{% assign swatch_color_fallback = value | split: ' ' | last | handle %}
+								{% assign swatch_image = value.swatch.image | default: images[image_name] %}
+								{% assign swatch_color = value.swatch.color | default: swatch_color_fallback %}
+
+								style="
+								{%- if swatch_image != blank -%}
+									--swatch-image: url({{- swatch_image | image_url: width: 60, height: 60 -}});
+								{%- else -%}
+									--swatch-color: {{ swatch_color }};
+								{%- endif -%}"
+							{%- endcapture -%}
+							<input
+								id="section-{{- section.id -}}-product-{{- product.id -}}-option-{{- handleized_option -}}-value-{{- handleized_value -}}"
+								type="radio"
+								class="visually-hidden radio__input"
+								value="{{- value -}}"
+								name="option{{- option.position  -}}"
+								{% if value.selected %}
+									checked
+								{% endif %}
+								data-option="{{- option.name -}}"
+								data-option-value-id="{{ value.id }}"
+							/>
+
+							<label
+								for="section-{{- section.id -}}-product-{{- product.id -}}-option-{{- handleized_option -}}-value-{{- handleized_value -}}"
+								class="radio__label {% if is_disabled %}is-disabled{% endif %}"
+								{{- swatch_styles -}}
+							>
+								<span class="radio__label-text">{{- value -}}</span>
+							</label>
+						</div>
+					{%- endfor -%}
+				</div>
+			{%- endcapture -%}
+
+			{%- comment -%}
+				Default options
+			{%- endcomment -%}
+			{%- capture other_options -%}
+				<div class="product-options__default-options">
+					{%- if block.settings.show_labels or show_size_guide_in_label -%}
+						<div class="product-options__label-size-guide">
+							{%- if block.settings.show_labels -%}
+								<div class="product-options__option-label">
+									{{- option.name -}}:
+								</div>
+							{%- endif -%}
+
+							{%- if show_size_guide_in_label -%}
+								{{- size_guide -}}
+							{%- endif -%}
+						</div>
+					{%- endif -%}
+
+					{% if variants_type == "radio" %}
+						{%- for value in option.values  -%}
+							{%- assign handleized_value = value | handleize -%}
+							{%- assign is_disabled = true -%}
+
+							{% if value.available %}
+								{%- assign is_disabled = false -%}
+							{% endif %}
+
+							<div class="radio__container radio__option">
+								<input
+									id="section-{{- section.id -}}-product-{{- product.id -}}-option-{{- handleized_option -}}-value-{{- handleized_value -}}"
+									type="radio"
+									class="visually-hidden radio__input"
+									value="{{- value | escape -}}"
+									name="option{{- option.position -}}"
+									{% if value.selected %}
+										checked
+									{% endif %}
+									data-option="{{- option.name -}}"
+									data-option-value-id="{{ value.id }}"
+								>
+
+								<label
+									for="section-{{- section.id -}}-product-{{- product.id -}}-option-{{- handleized_option -}}-value-{{- handleized_value -}}"
+									class="radio__label {% if is_disabled %}is-disabled{% endif %}"
+								>
+									<span class="radio__label-text">{{- value -}}</span>
+								</label>
+							</div>
+						{%- endfor -%}
+					{% else %}
+						<select id="section-{{- section.id -}}-product-{{- product.id -}}-option-{{- handleized_option -}}"
+								class="product-options__select {% if design == 'alternate' %}select-rounded{% endif %}"
+								name="option{{- option.position -}}"
+								data-option="{{- option.name -}}"
+						>
+							{% comment %} selected="selected" not replace to selected, to prevent js-error {% endcomment %}
+							{%- for value in option.values  -%}
+								<option
+									value="{{- value | escape -}}"
+									data-option-value-id="{{ value.id }}"
+									{% if value.selected %}
+										selected="selected"
+									{% endif %}
+								>
+									{{- value -}}
+								</option>
+							{%- endfor -%}
+						</select>
+
+						<label
+							for="section-{{- section.id -}}-product-{{- product.id -}}-option-{{- handleized_option -}}"
+							class="visually-hidden"
+						>
+							{{- value -}}
+						</label>
+					{% endif %}
+				</div>
+			{%- endcapture -%}
+
+			{%- if swatch_count > 0 and is_color_swatches_enabled -%}
+				{{- swatch_options -}}
+			{% elsif downcased_option == swatch_option and is_color_swatches_enabled %}
+				{{- swatch_options -}}
+			{%- else -%}
+				{{- other_options -}}
+			{%- endif -%}
+		{%- endfor -%}
+
+		<script type="application/json" data-selected-variant>
+			{{ product.selected_or_first_available_variant | json }}
+		</script>
+
+		{% if show_size_guide and is_size_guide_in_label == false %}
+			{{- size_guide -}}
+		{% endif %}
+	</div>
+{%- endunless -%}

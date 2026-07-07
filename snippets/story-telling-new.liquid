@@ -1,0 +1,334 @@
+{%- assign blocks = section.blocks -%}
+
+{%- if blocks.size > 0 -%}
+	{{- 'story-telling-new.build.css' | asset_url | stylesheet_tag -}}
+
+	{%- assign full_width = section.settings.full_width -%}
+	{%- assign image_position_modifier = "" -%}
+
+	{%- style -%}
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_mobile -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+		}
+
+		@media screen and (min-width: 768px) {
+			#shopify-section-{{- section.id -}} {
+				padding-top: {{- section.settings.offset_top_desktop -}}px;
+				padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+			}
+		}
+	{%- endstyle -%}
+
+	{%- for block in blocks -%}
+		{%- assign image_position_modifier = block.settings.image_position -%}
+
+		{%- break -%}
+	{%- endfor -%}
+
+	{%- capture tabs -%}
+		<div class="story-telling__tabs-wrapper">
+			<span class="story-telling__tabs-border"></span>
+
+			<div class="story-telling__tabs js-story-telling-tabs" data-new-design="true">
+				{%- for block in blocks -%}
+					{% assign tab_heading = block.settings.tab_heading | default: 'Tab' %}
+
+					<button
+						class="story-telling__tab-button focus-visible-outline js-story-telling-tab-button{% if forloop.first %} story-telling__tab-button--active{% endif %}"
+						data-index="{{- forloop.index -}}"
+					>
+						{{- tab_heading -}}
+					</button>
+				{%- endfor -%}
+			</div>
+		</div>
+	{%- endcapture -%}
+
+	<section
+		class="story-telling story-telling-new{% if image_position_modifier == 'left' %} story-telling--image-left{% endif %}{% if request.visual_preview_mode or section.index == 1 %} animated{% endif %} js-animate js-story-telling">
+		<div class="story-telling__container{% if full_width == false %} story-telling__container--max-width{% endif %}">
+			<div class="story-telling__content-wrapper">
+				{%- for block in blocks -%}
+					{%- assign image_desktop     = block.settings.image_desktop -%}
+					{%- assign image_mobile      = block.settings.image_mobile | default: image_desktop -%}
+					{%- assign image_position    = block.settings.image_position -%}
+					{%- assign text_alignment    = block.settings.text_alignment -%}
+					{%- assign heading           = block.settings.heading -%}
+					{%- assign subheading        = block.settings.subheading -%}
+					{%- assign text              = block.settings.text -%}
+					{%- assign button_text       = block.settings.button_text -%}
+					{%- assign button_aria_label = block.settings.button_aria_label -%}
+					{%- assign button_link       = block.settings.button_link -%}
+
+					{%- assign is_lazy = true -%}
+
+					{% if section.index == 1 and forloop.index == 1 %}
+						{%- assign is_lazy = false -%}
+					{% endif %}
+
+					{%- capture image -%}
+						{%- if image_desktop != blank -%}
+							{%- capture img_focal -%}
+								--img-desktop-pos: {{ image_desktop.presentation.focal_point }};
+								--img-mob-pos: {{ image_mobile.presentation.focal_point }};
+							{%- endcapture -%}
+
+							<div class="story-telling__item-image-container{% if forloop.first %} need-animate{% endif %}">
+								<div class="story-telling__item-image-wrapper">
+									{% if is_lazy %}
+										<picture class="lazy">
+											<source
+												data-srcset="{{ image_mobile | img_url: "343x343", crop: 'center' }} 1x, {{ image_mobile | img_url: "686x686", crop: 'center' }} 2x"
+												srcset="{{ image_mobile | img_url: "10x10", crop: 'center' }} 1x, {{ image_mobile | img_url: "20x20", crop: 'center' }} 2x"
+												media="(max-width: 375px)"
+												width="343"
+												height="343"
+											/>
+
+											<source
+												data-srcset="{{ image_mobile | img_url: "388x388", crop: 'center' }} 1x, {{ image_mobile | img_url: "776x776", crop: 'center' }} 2x"
+												srcset="{{ image_mobile | img_url: "10x10", crop: 'center' }} 1x, {{ image_mobile | img_url: "20x20", crop: 'center' }} 2x"
+												media="(max-width: 420px)"
+												width="388"
+												height="388"
+											/>
+
+											<source
+												data-srcset="{{ image_mobile | img_url: "543x543", crop: 'center' }} 1x, {{ image_mobile | img_url: "1086x1086", crop: 'center' }} 2x"
+												srcset="{{ image_mobile | img_url: "10x10", crop: 'center' }} 1x, {{ image_mobile | img_url: "20x20", crop: 'center' }} 2x"
+												media="(max-width: 575px)"
+												width="543"
+												height="543"
+											/>
+
+											<source
+												data-srcset="{{ image_mobile | img_url: "735x735", crop: 'center' }} 1x, {{ image_mobile | img_url: "1470x1470", crop: 'center' }} 2x"
+												srcset="{{ image_mobile | img_url: "10x10", crop: 'center' }} 1x, {{ image_mobile | img_url: "20x20", crop: 'center' }} 2x"
+												media="(max-width: 767px)"
+												width="735"
+												height="735"
+											/>
+
+											<source
+												data-srcset="{{ image_mobile | img_url: "959x959", crop: 'center' }} 1x, {{ image_mobile | img_url: "1918x1918", crop: 'center' }} 2x"
+												srcset="{{ image_mobile | img_url: "10x10", crop: 'center' }} 1x, {{ image_mobile | img_url: "20x20", crop: 'center' }} 2x"
+												media="(max-width: 991px)"
+												width="959"
+												height="959"
+											/>
+
+											<source
+												data-srcset="{{ image_desktop | img_url: "645x645", crop: 'center' }} 1x, {{ image_desktop | img_url: "1290x1290", crop: 'center' }} 2x"
+												srcset="{{ image_desktop | img_url: "10x10", crop: 'center' }} 1x, {{ image_desktop | img_url: "20x20", crop: 'center' }} 2x"
+												media="(max-width: 1440px)"
+												width="645"
+												height="645"
+											/>
+
+											<img
+												data-srcset="{{ image_desktop | img_url: "840x840", crop: 'center' }} 1x, {{ image_desktop | img_url: "1680x1680", crop: 'center' }} 2x"
+												srcset="{{ image_desktop | img_url: "10x10", crop: 'center' }} 1x, {{ image_desktop | img_url: "20x20", crop: 'center' }} 2x"
+												data-src="{{ image_desktop | img_url: "840x840", crop: 'center' }}"
+												src="{{ image_desktop | img_url: "10x10", crop: 'center' }}"
+												alt="{{ image_desktop.alt }}"
+												width="840"
+												height="840"
+												class="story-telling__item-image"
+												style="{{ img_focal }}"
+											/>
+										</picture>
+
+										<noscript>
+											<picture>
+												<source
+													srcset="{{ image_mobile | img_url: "343x343", crop: 'center' }} 1x, {{ image_mobile | img_url: "686x686", crop: 'center' }} 2x"
+													media="(max-width: 375px)"
+													width="343"
+													height="343"
+												/>
+
+												<source
+													srcset="{{ image_mobile | img_url: "388x388", crop: 'center' }} 1x, {{ image_mobile | img_url: "776x776", crop: 'center' }} 2x"
+													media="(max-width: 420px)"
+													width="388"
+													height="388"
+												/>
+
+												<source
+													srcset="{{ image_mobile | img_url: "543x543", crop: 'center' }} 1x, {{ image_mobile | img_url: "1086x1086", crop: 'center' }} 2x"
+													media="(max-width: 575px)"
+													width="543"
+													height="543"
+												/>
+
+												<source
+													srcset="{{ image_mobile | img_url: "735x735", crop: 'center' }} 1x, {{ image_mobile | img_url: "1470x1470", crop: 'center' }} 2x"
+													media="(max-width: 767px)"
+													width="735"
+													height="735"
+												/>
+
+												<source
+													srcset="{{ image_mobile | img_url: "959x959", crop: 'center' }} 1x, {{ image_mobile | img_url: "1918x1918", crop: 'center' }} 2x"
+													media="(max-width: 991px)"
+													width="959"
+													height="959"
+												/>
+
+												<source
+													srcset="{{ image_desktop | img_url: "645x645", crop: 'center' }} 1x, {{ image_desktop | img_url: "1290x1290", crop: 'center' }} 2x"
+													media="(max-width: 1440px)"
+													width="645"
+													height="645"
+												/>
+
+												<img
+													srcset="{{ image_desktop | img_url: "840x840", crop: 'center' }} 1x, {{ image_desktop | img_url: "1680x1680", crop: 'center' }} 2x"
+													src="{{ image_desktop | img_url: "840x", crop: 'center' }}"
+													alt="{{ image_desktop.alt }}"
+													width="840"
+													height="840"
+													fetchpriority="high"
+													class="story-telling__item-image"
+													style="{{ img_focal }}"
+												/>
+											</picture>
+										</noscript>
+									{% else %}
+										<picture>
+											<source
+												srcset="{{ image_mobile | img_url: "343x343", crop: 'center' }} 1x, {{ image_mobile | img_url: "686x686", crop: 'center' }} 2x"
+												media="(max-width: 375px)"
+												width="343"
+												height="343"
+											/>
+
+											<source
+												srcset="{{ image_mobile | img_url: "388x388", crop: 'center' }} 1x, {{ image_mobile | img_url: "776x776", crop: 'center' }} 2x"
+												media="(max-width: 420px)"
+												width="388"
+												height="388"
+											/>
+
+											<source
+												srcset="{{ image_mobile | img_url: "543x543", crop: 'center' }} 1x, {{ image_mobile | img_url: "1086x1086", crop: 'center' }} 2x"
+												media="(max-width: 575px)"
+												width="543"
+												height="543"
+											/>
+
+											<source
+												srcset="{{ image_mobile | img_url: "735x735", crop: 'center' }} 1x, {{ image_mobile | img_url: "1470x1470", crop: 'center' }} 2x"
+												media="(max-width: 767px)"
+												width="735"
+												height="735"
+											/>
+
+											<source
+												srcset="{{ image_mobile | img_url: "959x959", crop: 'center' }} 1x, {{ image_mobile | img_url: "1918x1918", crop: 'center' }} 2x"
+												media="(max-width: 991px)"
+												width="959"
+												height="959"
+											/>
+
+											<source
+												srcset="{{ image_desktop | img_url: "645x645", crop: 'center' }} 1x, {{ image_desktop | img_url: "1290x1290", crop: 'center' }} 2x"
+												media="(max-width: 1440px)"
+												width="645"
+												height="645"
+											/>
+
+											<img
+												srcset="{{ image_desktop | img_url: "840x840", crop: 'center' }} 1x, {{ image_desktop | img_url: "1680x1680", crop: 'center' }} 2x"
+												src="{{ image_desktop | img_url: "840x", crop: 'center' }}"
+												alt="{{ image_desktop.alt }}"
+												width="840"
+												height="840"
+												fetchpriority="high"
+												class="story-telling__item-image"
+												style="{{ img_focal }}"
+											/>
+										</picture>
+									{% endif %}
+								</div>
+							</div>
+						{%- else -%}
+							<div class="story-telling__item-image-container{% if forloop.first %} need-animate{% endif %}">
+								<div class="story-telling__item-image-wrapper">
+									{{ 'image' | placeholder_svg_tag: 'story-telling__item-image story-telling__item-image--placeholder' }}
+								</div>
+							</div>
+						{%- endif -%}
+					{%- endcapture -%}
+
+					{%- capture block_css_variables -%}
+						--text-alignment: {{- text_alignment | replace: "left", "start" | replace: "right", "end" -}}; {{-  -}}
+					{%- endcapture -%}
+
+					<div
+						class="story-telling__item{% if image_position == 'left' %} story-telling__item--image-left{% endif %}{% if forloop.first %} story-telling__item--visible{% endif %} js-story-telling-slide"
+						style="{{ block_css_variables }}"
+						data-index="{{- forloop.index -}}"
+					>
+						{%- if image_position == 'left' -%}
+							{{- image -}}
+						{%- endif -%}
+
+						{%- if heading != blank or subheading != blank or text != blank -%}
+							<div class="story-telling__item-text-content-wrapper{% if forloop.first %} need-animate{% endif %}">
+								<div class="story-telling__item-text-content{% if text_alignment == 'center' %} story-telling__item-text-content--center{% elsif text_alignment == 'right' %} story-telling__item-text-content--right{% endif %}">
+									{%- if subheading != blank -%}
+										<p class="subheading story-telling__item-subheading">
+											{{- subheading -}}
+										</p>
+									{%- endif -%}
+
+									{%- if heading != blank -%}
+										<h2 class="h2 story-telling__item-heading">
+											{{- heading -}}
+										</h2>
+									{%- endif -%}
+
+									{{- tabs -}}
+
+									{%- if text != blank -%}
+										<div class="rte-new story-telling__item-text">
+											{{- text -}}
+										</div>
+									{%- endif -%}
+
+									{%- if button_text != blank and button_link != blank -%}
+										<a
+											href="{{ button_link }}"
+											class="story-telling__item-link button-circle focus-visible-outline"
+											{% if button_aria_label != blank -%}
+												aria-label="{{- button_aria_label | escape -}}"
+											{%- endif -%}
+										>
+											<span class="button__text">
+												{{- button_text -}}
+											</span>
+
+											<span class="button-new__icon-container">
+												<span class="button-new__icon-wrapper">
+													{% render "icons-new", icon: "wave", section_id: section.id %}
+												</span>
+											</span>
+										</a>
+									{%- endif -%}
+								</div>
+							</div>
+						{%- endif -%}
+
+						{%- if image_position == 'right' -%}
+							{{- image -}}
+						{%- endif -%}
+					</div>
+				{%- endfor -%}
+			</div>
+		</div>
+	</section>
+
+	<script src="{{- 'section-story-telling.build.min.js' | asset_url -}}" defer></script>
+{%- endif -%}

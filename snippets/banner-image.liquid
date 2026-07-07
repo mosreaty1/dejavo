@@ -1,0 +1,223 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Banner image
+	This snippet will output banner image
+
+	- image_desktop: image to be shown on Desktop
+	- image_mobile: image to be shown on Mobile
+	- enable_lazy_load: condition that determines whether lazy loading will be applied
+	- is_full_width: condition that determines whether the image will be stretched to full width
+	- image_width_380: image width at a resolution of 380 and below
+	- image_width_420: Image width at a resolution of 420 and below
+    - image_width_480: Image width at a resolution of 480 and below
+	- image_width_575: Image width at a resolution of 575 and below
+	- image_width_767: Image width at a resolution of 767 and below
+	- image_width_991: Image width at a resolution of 991 and below
+	- image_width_1199: Image width at a resolution of 1199 and below
+	- image_width_1500: Image width at a resolution of 1500 and below
+	- image_width_1680: Image width at a resolution of 1680 and below
+	- image_width_1920: Image width at a resolution of 1681 and above
+	- image_height_mobile: Image height for mobile view
+	- image_height_desktop: Image height for desktop view
+
+	{%- render
+		'banner-image',
+		image_desktop: image_desktop,
+		image_mobile: image_mobile,
+		enable_lazy_load: enable_lazy_load
+	-%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign image_width_380 	= image_width_380 | default: 380 -%}
+{%- assign image_width_420 	= image_width_420 | default: 420 -%}
+{%- assign image_width_480 	= image_width_480 | default: 480 -%}
+{%- assign image_width_575 	= image_width_575 | default: 575 -%}
+{%- assign image_width_767 	= image_width_767 | default: 767 -%}
+{%- assign image_width_991 	= image_width_991 | default: 991 -%}
+{%- assign image_width_1199 = image_width_1199 | default: 1199 -%}
+{%- assign image_width_1500 = image_width_1500 | default: 1500 -%}
+{%- assign image_width_1680 = image_width_1680 | default: 1680 -%}
+{%- assign image_width_1920 = image_width_1920 | default: 1920 -%}
+{%- assign image_height_mobile = image_height_mobile | default: 800 -%}
+{%- assign image_height_desktop = image_height_desktop | default: 900 -%}
+
+{%- assign image_width_380_x2 = image_width_380 | times: 2 -%}
+{%- assign image_width_420_x2 = image_width_420 | times: 2 -%}
+{%- assign image_width_480_x2 = image_width_480 | times: 2 -%}
+{%- assign image_width_575_x2 = image_width_575 | times: 2 -%}
+{%- assign image_width_767_x2 = image_width_767 | times: 2 -%}
+{%- assign image_width_991_x2 = image_width_991 | times: 2 -%}
+{%- assign image_width_1199_x2 = image_width_1199 | times: 2 -%}
+{%- assign image_width_1500_x2 = image_width_1500 | times: 2 -%}
+{%- assign image_width_1680_x2 = image_width_1680 | times: 2 -%}
+{%- assign image_width_1920_x2 = image_width_1920 | times: 2 -%}
+
+{%- capture img_focal -%}
+	--img-desktop-pos: {{ image_desktop.presentation.focal_point }}; --img-mob-pos: {{ image_mobile.presentation.focal_point }};
+{%- endcapture -%}
+
+{%- if enable_lazy_load -%}
+		<picture class="lazy">
+			<source
+				data-srcset="{{ image_mobile | image_url: width: image_width_380 }} 1x, {{ image_mobile | image_url: width: image_width_380_x2 }} 2x"
+				srcset="{{ image_mobile | img_url: '10x' }} 1x, {{ image_mobile | img_url: '10x' }} 2x"
+				media="(max-width: 380px)"
+				width="{{ image_width_380 }}"
+				height="{{ image_height_mobile }}"
+			>
+
+			<source
+				data-srcset="{{ image_mobile | image_url: width: image_width_420 }} 1x, {{ image_mobile | image_url: width: image_width_420_x2 }} 2x"
+				srcset="{{ image_mobile | img_url: '10x' }} 1x, {{ image_mobile | img_url: '10x' }} 2x"
+				media="(max-width: 420px)"
+				width="{{ image_width_420 }}"
+				height="{{ image_height_mobile }}"
+			>
+
+			<source
+				data-srcset="{{ image_mobile | image_url: width: image_width_480 }} 1x, {{ image_mobile | image_url: width: image_width_480_x2 }} 2x"
+				srcset="{{ image_mobile | img_url: '10x' }} 1x, {{ image_mobile | img_url: '10x' }} 2x"
+				media="(max-width: 480px)"
+				width="{{ image_width_480 }}"
+				height="{{ image_height_mobile }}"
+			>
+
+			<source
+				data-srcset="{{ image_mobile | image_url: width: image_width_575 }} 1x, {{ image_mobile | image_url: width: image_width_420_x2 }} 2x"
+				srcset="{{ image_mobile | img_url: '10x' }} 1x, {{ image_mobile | img_url: '10x' }} 2x"
+				media="(max-width: 575px)"
+				width="{{ image_width_575 }}"
+				height="{{ image_height_mobile }}"
+			>
+
+			<source
+				data-srcset="{{ image_desktop | image_url: width: image_width_767 }} 1x, {{ image_desktop | image_url: width: image_width_767_x2 }} 2x"
+				srcset="{{ image_desktop | img_url: '10x' }} 1x, {{ image_mobile | img_url: '10x' }} 2x"
+				media="(max-width: 767px)"
+				width="{{ image_width_767 }}"
+				height="{{ image_height_desktop }}"
+			>
+
+			<source
+				data-srcset="{{ image_desktop | image_url: width: image_width_991 }} 1x, {{ image_desktop | image_url: width: image_width_991_x2 }} 2x"
+				srcset="{{ image_desktop | img_url: '10x' }} 1x, {{ image_mobile | img_url: '10x' }} 2x"
+				media="(max-width: 991px)"
+				width="{{ image_width_991 }}"
+				height="{{ image_height_desktop }}"
+			>
+
+			<source
+				data-srcset="{{ image_desktop | image_url: width: image_width_1199 }} 1x, {{ image_desktop | image_url: width: image_width_1199_x2 }} 2x"
+				srcset="{{ image_desktop | img_url: '10x' }} 1x, {{ image_mobile | img_url: '10x' }} 2x"
+				media="(max-width: 1199px)"
+				width="{{ image_width_1199 }}"
+				height="{{ image_height_desktop }}"
+			>
+
+			<source
+				data-srcset="{{ image_desktop | image_url: width: image_width_1500 }} 1x, {{ image_desktop | image_url: width: image_width_1500_x2 }} 2x"
+				srcset="{{ image_desktop | img_url: '10x' }} 1x, {{ image_mobile | img_url: '10x' }} 2x"
+				media="(max-width: 1500px)"
+				width="{{ image_width_1500 }}"
+				height="{{ image_height_desktop }}"
+			>
+
+			<source
+				data-srcset="{{ image_desktop | image_url: width: image_width_1680 }} 1x, {{ image_desktop | image_url: width: image_width_1680_x2 }} 2x"
+				srcset="{{ image_desktop | img_url: '10x' }} 1x, {{ image_mobile | img_url: '10x' }} 2x"
+				media="(max-width: 1680px)"
+				width="{{ image_width_1680 }}"
+				height="{{ image_height_desktop }}"
+			>
+
+			<img
+				class="banner__media banner__media-animate need-animate"
+				src="{{- image_desktop | img_url: "10x" -}}"
+				data-src="{{ image_desktop | image_url: width: image_width_1920 }}"
+				data-srcset="{{ image_desktop | image_url: width: image_width_1920 }} 1x, {{ image_desktop | image_url: width: image_width_1920_x2 }} 2x"
+				alt="{{- image_desktop.alt -}}"
+				width="{{ image_width_1920 }}"
+				height="{{ image_height_desktop }}"
+				style="{{ img_focal }}"
+			>
+		</picture>
+{% else %}
+	<picture>
+		<source
+			srcset="{{ image_mobile | image_url: width: image_width_380 }} 1x, {{ image_mobile | image_url: width: image_width_380_x2 }} 2x"
+			media="(max-width: 380px)"
+			width="{{ image_width_380 }}"
+			height="{{ image_height_mobile }}"
+		>
+
+		<source
+			srcset="{{ image_mobile | image_url: width: image_width_420 }} 1x, {{ image_mobile | image_url: width: image_width_420_x2 }} 2x"
+			media="(max-width: 420px)"
+			width="{{ image_width_420 }}"
+			height="{{ image_height_mobile }}"
+		>
+
+		<source
+			srcset="{{ image_mobile | image_url: width: image_width_480 }} 1x, {{ image_mobile | image_url: width: image_width_480_x2 }} 2x"
+			media="(max-width: 480px)"
+			width="{{ image_width_480 }}"
+			height="{{ image_height_mobile }}"
+		>
+
+		<source
+			srcset="{{ image_mobile | image_url: width: image_width_575 }} 1x, {{ image_mobile | image_url: width: image_width_575_x2 }} 2x"
+			media="(max-width: 575px)"
+			width="{{ image_width_575 }}"
+			height="{{ image_height_mobile }}"
+		>
+
+		<source
+			srcset="{{ image_desktop | image_url: width: image_width_767 }} 1x, {{ image_desktop | image_url: width: image_width_767_x2 }} 2x"
+			media="(max-width: 767px)"
+			width="{{ image_width_767 }}"
+			height="{{ image_height_desktop }}"
+		>
+
+		<source
+			srcset="{{ image_desktop | image_url: width: image_width_991 }} 1x, {{ image_desktop | image_url: width: image_width_991_x2 }} 2x"
+			media="(max-width: 991px)"
+			width="{{ image_width_991 }}"
+			height="{{ image_height_desktop }}"
+		>
+
+		<source
+			srcset="{{ image_desktop | image_url: width: image_width_1199 }} 1x, {{ image_desktop | image_url: width: image_width_1199_x2 }} 2x"
+			media="(max-width: 1199px)"
+			width="{{ image_width_1199 }}"
+			height="{{ image_height_desktop }}"
+		>
+
+		<source
+			srcset="{{ image_desktop | image_url: width: image_width_1500 }} 1x, {{ image_desktop | image_url: width: image_width_1500_x2 }} 2x"
+			media="(max-width: 1500px)"
+			width="{{ image_width_1500 }}"
+			height="{{ image_height_desktop }}"
+		>
+
+		<source
+			srcset="{{ image_desktop | image_url: width: image_width_1680 }} 1x, {{ image_desktop | image_url: width: image_width_1680_x2 }} 2x"
+			media="(max-width: 1680px)"
+			width="{{ image_width_1680 }}"
+			height="{{ image_height_desktop }}"
+		>
+
+		<img
+			class="banner__media banner__media-animate need-animate"
+			srcset="{{ image_desktop | image_url: width: image_width_1920 }} 1x, {{ image_desktop | image_url: width: image_width_1920_x2 }} 2x"
+			src="{{- image_desktop | image_url: width: image_width_1920 -}}"
+			alt="{{- image_desktop.alt -}}"
+			width="{{ image_width_1920 }}"
+			height="{{ image_height_desktop }}"
+			{% if section.index == 1 %}
+				fetchpriority="high"
+			{% endif %}
+			style="{{ img_focal }}"
+		>
+	</picture>
+{%- endif -%}

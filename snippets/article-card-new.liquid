@@ -1,0 +1,380 @@
+{% comment %}
+	------------------------------------------------------------------------------
+	Snippet: Article card new
+	- article: Article object (optional)
+	- layout: The settings to set image size (optional)
+	- delay_step: Number (optional)
+
+	{%- render 'article-card-new', article: article, layout: -%}
+	------------------------------------------------------------------------------
+{% endcomment %}
+
+{%- assign show_date 		   = settings.show_date -%}
+{%- assign show_author 		   = settings.show_author -%}
+{%- assign show_tag 		   = settings.show_tag -%}
+{%- assign is_strip_title      = settings.is_strip_title -%}
+{%- assign is_strip_content    = settings.is_strip_content -%}
+{%- assign show_comments_count = settings.show_comments_count -%}
+
+{{- 'article-card-new.build.css' | asset_url | stylesheet_tag -}}
+
+<article class="article-card-new">
+	{%- assign tag 				= article.tags[0] -%}
+	{%- assign article_title 	= article.title | default: 'Article title' -%}
+	{%- assign article_url 		= article.url | default: '#' -%}
+	{%- assign article_image 	= article.image | default: settings.article_default_image -%}
+
+	{%- if article.image == blank and settings.article_default_image != blank -%}
+		{%- capture img_focal -%}
+			--img-desktop-pos: {{ settings.article_default_image.presentation.focal_point }};
+		{%- endcapture -%}
+	{%- endif -%}
+
+	{%- if article == blank -%}
+		{%- capture article_description_exmaple -%}
+			An example of a blog post description. An example of a blog post description. An example of a blog post description. An example of a blog post description. An example of a blog post description. An example of a blog post description. An example of a blog post description. An example of a blog post description. An example of a blog post description. An example of a blog post description.
+		{%- endcapture -%}
+
+		{%- assign article_date_example 			= 'May 25, 2020' -%}
+		{%- assign article_author_example 			= 'Article author' -%}
+		{%- assign article_tag_example 				= 'Article tag' -%}
+		{%- assign article_comments_count_example	= 0 -%}
+	{%- endif-%}
+
+	{% comment %}
+			Image width map
+		{% endcomment %}
+	{% assign size380 = 		314 %}
+	{% assign size380_2x = 		size380 | times: 2 %}
+	{% assign size420 = 		354 %}
+	{% assign size420_2x = 		size420 | times: 2 %}
+	{% assign size575 = 		509 %}
+	{% assign size575_2x = 		size575 | times: 2 %}
+	{% assign size767 = 		702 %}
+	{% assign size767_2x = 		size767 | times: 2 %}
+	{% if layout == 'big' %}
+		{% assign size991 = 	439 %}
+		{% assign size991_2x = 	size991 | times: 2 %}
+	{% else %}
+		{% assign size991 = 	279 %}
+		{% assign size991_2x = 	size991 | times: 2 %}
+	{% endif %}
+	{% assign size1199 = 		327 %}
+	{% assign size1199_2x = 	size1199 | times: 2 %}
+	{% assign size1500 = 		338 %}
+	{% assign size1500_2x = 	size1500 | times: 2 %}
+	{% assign size_default = 	448 %}
+	{% assign size_default_2x = size_default | times: 2 %}
+
+	{% assign max_width = 9999 %}
+
+	{% if size380 > 		 max_width %}{% assign size380 = 		  max_width %}{% endif %}
+	{% if size380_2x > 		 max_width %}{% assign size380_2x = 	  max_width %}{% endif %}
+	{% if size420 > 		 max_width %}{% assign size420 = 		  max_width %}{% endif %}
+	{% if size420_2x > 		 max_width %}{% assign size420_2x = 	  max_width %}{% endif %}
+	{% if size575 > 		 max_width %}{% assign size575 = 		  max_width %}{% endif %}
+	{% if size575_2x > 		 max_width %}{% assign size575_2x = 	  max_width %}{% endif %}
+	{% if size767 > 		 max_width %}{% assign size767 = 		  max_width %}{% endif %}
+	{% if size767_2x > 		 max_width %}{% assign size767_2x = 	  max_width %}{% endif %}
+	{% if size991 > 		 max_width %}{% assign size991 = 		  max_width %}{% endif %}
+	{% if size991_2x > 		 max_width %}{% assign size991_2x = 	  max_width %}{% endif %}
+	{% if size1199 > 		 max_width %}{% assign size1199 = 		  max_width %}{% endif %}
+	{% if size1199_2x > 	 max_width %}{% assign size1199_2x = 	  max_width %}{% endif %}
+	{% if size1500 > 		 max_width %}{% assign size1500 = 		  max_width %}{% endif %}
+	{% if size1500_2x > 	 max_width %}{% assign size1500_2x =	  max_width %}{% endif %}
+	{% if size_default >  	 max_width %}{% assign size_default = 	  max_width %}{% endif %}
+	{% if size_default_2x > max_width %}{% assign size_default_2x = max_width %}{% endif %}
+
+
+	{% comment %}
+		End image width map
+	{% endcomment %}
+
+	<div class="article-card-new__image-wrapper{% if article_image == blank %} article-card-new__image-wrapper--svg{% endif %}">
+		<a class="focus-visible-outline article-card-new__link-image-wrapper"
+		   href="{{- article_url -}}"
+			{% if article.image == blank %}
+				aria-label="{{ article.title | escape }}"
+			{% endif %}
+
+			{% if delay_step != blank %}
+				style="transition-delay: {{ delay_step }}s;"
+			{% endif %}
+		>
+			{%- if article_image != blank -%}
+				<picture class="lazy no-js-hidden">
+					<source
+						data-srcset="{{ article_image | image_url: width: size380 }} 1x,
+									 {{ article_image | image_url: width: size380_2x }} 2x"
+						srcset="{{ article_image | image_url: width: 10 }} 1x,
+								{{ article_image | image_url: width: 10 }} 2x"
+						width="314"
+						height="314"
+						media="(max-width: 380px)"
+					>
+
+					<source
+						data-srcset="{{ article_image | image_url: width: size420 }} 1x,
+								 	 {{ article_image | image_url: width: size420_2x }} 2x"
+						srcset="{{ article_image | image_url: width: 10 }} 1x,
+								{{ article_image | image_url: width: 10 }} 2x"
+						width="354"
+						height="354"
+						media="(max-width: 420px)"
+					>
+
+					<source
+						data-srcset="{{ article_image | image_url: width: size575 }} 1x,
+								 	 {{ article_image | image_url: width: size575_2x }} 2x"
+						srcset="{{ article_image | image_url: width: 10 }} 1x,
+								{{ article_image | image_url: width: 10 }} 2x"
+						width="510"
+						height="510"
+						media="(max-width: 575px)"
+					>
+
+					<source
+						data-srcset="{{ article_image | image_url: width: size767 }} 1x,
+								 	 {{ article_image | image_url: width: size767_2x }} 2x"
+						srcset="{{ article_image | image_url: width: 10 }} 1x,
+								{{ article_image | image_url: width: 10 }} 2x"
+						width="702"
+						height="702"
+						media="(max-width: 767px)"
+					>
+
+					<source
+						{% if layout == 'big' %}
+							data-srcset="{{ article_image | image_url: width: size991 }} 1x,
+									 	 {{ article_image | image_url: width: size991_2x }} 2x"
+							srcset="{{ article_image | image_url: width: 10 }} 1x,
+									{{ article_image | image_url: width: 10 }} 2x"
+							width="439"
+							height="439"
+						{% else %}
+							data-srcset="{{ article_image | image_url: width: size991 }} 1x,
+									 	 {{ article_image | image_url: width: size991_2x }} 2x"
+							srcset="{{ article_image | image_url: width: 10 }} 1x,
+									{{ article_image | image_url: width: 10 }} 2x"
+							width="279"
+							height="279"
+						{% endif %}
+						media="(max-width: 991px)"
+					>
+
+					<source
+						data-srcset="{{ article_image | image_url: width: size1199 }} 1x,
+								 	 {{ article_image | image_url: width: size1199_2x }} 2x"
+						srcset="{{ article_image | image_url: width: 10 }} 1x,
+								{{ article_image | image_url: width: 10 }} 2x"
+						width="327"
+						height="211"
+						media="(max-width: 1199px)"
+					>
+
+					<source
+						data-srcset="{{ article_image | image_url: width: size1500 }} 1x,
+								 	 {{ article_image | image_url: width: size1500_2x }} 2x"
+						srcset="{{ article_image | image_url: width: 10 }} 1x,
+								{{ article_image | image_url: width: 10 }} 2x"
+						width="338"
+						height="218"
+						media="(max-width: 1500px)"
+					>
+
+					<img
+						class="article-card-new__image"
+						src="{{- article_image | image_url: width: 10 -}}"
+						data-src="{{ article_image | image_url: width: size_default -}}"
+						srcset="{{- article_image | image_url: width: 10 }}"
+						data-srcset="{{ article_image | image_url: width: size_default }} 1x,
+								 	 {{ article_image | image_url: width: size_default_2x }} 2x"
+						alt="{{- article_image.alt | escape -}}"
+						width="448"
+						height="289"
+						{% if img_focal != blank %}
+							style="{{ img_focal }}"
+						{% endif %}
+					>
+				</picture>
+
+				<noscript>
+					<picture>
+						<source
+							srcset="{{ article_image | image_url: width: size380 }} 1x,
+									{{ article_image | image_url: width: size380_2x }} 2x"
+							width="314"
+							height="314"
+							media="(max-width: 380px)"
+						>
+
+						<source
+							srcset="{{ article_image | image_url: width: size420 }} 1x,
+									{{ article_image | image_url: width: size420_2x }} 2x"
+							width="354"
+							height="354"
+							media="(max-width: 420px)"
+						>
+
+						<source
+							srcset="{{ article_image | image_url: width: size575 }} 1x,
+									{{ article_image | image_url: width: size575_2x }} 2x"
+							width="510"
+							height="510"
+							media="(max-width: 575px)"
+						>
+
+						<source
+							srcset="{{ article_image | image_url: width: size767 }} 1x,
+									{{ article_image | image_url: width: size767_2x }} 2x"
+							width="702"
+							height="702"
+							media="(max-width: 767px)"
+						>
+
+						<source
+							{% if layout == 'big' %}
+								srcset="{{ article_image | image_url: width: size991 }} 1x,
+										{{ article_image | image_url: width: size991_2x }} 2x"
+								width="439"
+								height="439"
+							{% else %}
+								srcset="{{ article_image | image_url: width: size991 }} 1x,
+										{{ article_image | image_url: width: size991_2x }} 2x"
+								width="279"
+								height="279"
+							{% endif %}
+							media="(max-width: 991px)"
+						>
+
+						<source
+							srcset="{{ article_image | image_url: width: size1199 }} 1x,
+									{{ article_image | image_url: width: size1199_2x }} 2x"
+							width="327"
+							height="211"
+							media="(max-width: 1199px)"
+						>
+
+						<source
+							srcset="{{- article_image | image_url: width: size1500 }} 1x,
+								{{ article_image | image_url: width: size1500_2 }} 2x"
+							width="338"
+							height="218"
+							media="(max-width: 1500px)"
+						>
+
+						<img
+							class="article-card-new__image"
+							src="{{- article_image | image_url: width: size_default -}}"
+							srcset="{{- article_image | image_url: width: size_default }} 1x,
+								{{ article_image | image_url: width: size_default_2x }} 2x"
+							alt="{{- article_image.alt | escape -}}"
+							width="448"
+							height="289"
+							loading="lazy"
+							{% if img_focal != blank %}
+								style="{{ img_focal }}"
+							{% endif %}
+						>
+					</picture>
+				</noscript>
+			{%- else -%}
+				{{- 'image' | placeholder_svg_tag: 'article-card-new__image' -}}
+			{%- endif -%}
+		</a>
+	</div>
+
+	<div class="article-card-new__title{% if is_strip_title %} article-card-new__title--clipped{%- endif -%}">
+		<a href="{{ article_url }}" class="article-card-new__title-link">{{- article_title -}}</a>
+	</div>
+
+	{%- if show_date or show_author or show_tag or show_comments_count -%}
+		<ul class="article-card-new__info">
+			{%- if show_date -%}
+				<li class="article-card-new__info-label">
+					<span class="visually-hidden">
+						{{- 'blogs.article.published_at' | t -}}
+					</span>
+
+					{%- if article != blank -%}
+						{{- article.published_at | time_tag: format: 'date' -}}
+					{%- else -%}
+						{{- article_date_example -}}
+					{%- endif -%}
+				</li>
+			{%- endif -%}
+
+			{%- if show_author -%}
+				{%- if article.author != blank or article == blank -%}
+					<li class="article-card-new__info-label">
+						<span class="visually-hidden">
+							{{- 'blogs.article.author' | t -}}
+						</span>
+
+						{%- if article.author != blank -%}
+							{{- article.author -}}
+						{%- elsif article == blank -%}
+							{{- article_author_example -}}
+						{%- endif -%}
+					</li>
+				{%- endif -%}
+			{%- endif -%}
+
+			{%- if show_tag -%}
+				{%- if tag != blank or article == blank -%}
+					<li class="article-card-new__info-label">
+						<span class="visually-hidden">
+							{{- 'blogs.article.tag' | t -}}
+						</span>
+
+						{%- if tag != blank -%}
+							{{- tag -}}
+						{%- elsif article == blank -%}
+							{{- article_tag_example -}}
+						{%- endif -%}
+					</li>
+				{%- endif -%}
+			{%- endif -%}
+
+			{%- if show_comments_count -%}
+				<li class="article-card-new__info-label">
+					<span class="visually-hidden">
+						{{- 'blogs.article.comments_count' | t -}}
+					</span>
+
+					{%- if article.comments_count != blank -%}
+						{{- 'blogs.article.comments' | t: count: article.comments_count -}}
+					{%- elsif article == blank -%}
+						{{- 'blogs.article.comments' | t: count: article_comments_count_example -}}
+					{%- endif -%}
+				</li>
+			{%- endif -%}
+		</ul>
+	{%- endif -%}
+
+	{%- capture article_description_classes -%}
+		article-card-new__description {% if is_strip_content %} article-card-new__description--clipped {%- endif -%}
+	{%- endcapture -%}
+
+	{%- if article.excerpt_or_content != blank or article == blank -%}
+		<div class="{{- article_description_classes | strip_newlines -}}">
+			{%- if article.excerpt_or_content != blank -%}
+				{{- article.excerpt_or_content | strip_html -}}
+			{%- elsif article == blank -%}
+				{{- article_description_exmaple -}}
+			{%- endif -%}
+		</div>
+	{%- endif -%}
+
+	<a
+		class="focus-visible-outline article-card-new__link"
+		href="{{- article_url -}}"
+		aria-label="{{- 'blogs.article.learn_more_link_aria' | t: title: article_title | escape -}}"
+	>
+		<span class="article-card-new__link-text">
+			{{- 'blogs.article.learn_more' | t -}}
+		</span>
+
+		{%- render 'icons-new', icon: 'arrow-right' -%}
+	</a>
+</article>

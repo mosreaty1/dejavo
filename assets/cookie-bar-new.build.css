@@ -1,0 +1,90 @@
+.cookie-bar-new {
+	position: fixed;
+	bottom: 0;
+	right: 20px;
+	z-index: 12;
+	padding: 40px 20px;
+	border: 1px solid var(--color-border-secondary, #d2d2d2);
+	background-color: var(--background-color, var(--color-black));
+	color: var(--text-color, var(--color-white));
+	animation-name: fadeInBottom;
+	animation-duration: 0.5s;
+	animation-delay: 0s;
+	animation-fill-mode: forwards;
+	max-width: min(550px, 100vw - 32px);
+	max-height: calc(100vh - var(--header-height) - var(--header-offset-top) - 40px);
+	overflow-y: auto;
+	border-top-left-radius: 50px;
+	border-bottom-right-radius: 50px;
+}
+.cookie-bar-new.cookie-bar-new--shadow {
+	box-shadow: 0 0 9px 1px rgba(0, 0, 0, 0.5607843137);
+}
+.cookie-bar-new .cookie-bar-new__close {
+	position: absolute;
+	top: 5px;
+	inset-inline-end: 5px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	opacity: 1;
+	width: 44px;
+	height: 44px;
+	padding: 0;
+	color: inherit;
+	transition-property: opacity;
+	transition-timing-function: ease;
+	transition-duration: 0.3s;
+}
+.cookie-bar-new .cookie-bar-new__close:focus-visible {
+	outline-color: var(--text-color, var(--color-white));
+}
+@media (-moz-touch-enabled: 0), (hover: hover), (pointer: fine) {
+	.cookie-bar-new .cookie-bar-new__close:hover {
+		opacity: 0.5;
+	}
+}
+.cookie-bar-new .cookie-bar-new__heading {
+	margin-bottom: 10px;
+	color: inherit;
+}
+.cookie-bar-new .cookie-bar-new__description {
+	color: var(--text-color, var(--color-text-thirdly));
+}
+.cookie-bar-new .cookie-bar-new__button {
+	margin-top: 20px;
+	color: var(--button-label-color, #ffffff);
+	transition-property: background-color, color, border-color;
+	transition-duration: var(--timing-short);
+}
+.cookie-bar-new .cookie-bar-new__button:focus-visible {
+	outline-color: var(--text-color, var(--color-white));
+}
+@media (-moz-touch-enabled: 0), (hover: hover), (pointer: fine) {
+	.cookie-bar-new .cookie-bar-new__button:hover {
+		color: var(--button-label-hover-color, #ffffff);
+	}
+}
+@media (min-width: 992px) {
+	.cookie-bar-new {
+		padding: 46px 40px;
+	}
+	.cookie-bar-new .cookie-bar-new__heading {
+		margin-bottom: 20px;
+	}
+	.cookie-bar-new .cookie-bar-new__button {
+		margin-top: 30px;
+	}
+}
+.template-search .cookie-bar-new,
+.template-collection .cookie-bar-new {
+	bottom: 50px;
+	animation-name: fadeInBottomHigh;
+}
+@media (min-width: 768px) {
+	.template-search .cookie-bar-new,
+	.template-collection .cookie-bar-new {
+		bottom: 0;
+		animation-name: fadeInBottom;
+	}
+}

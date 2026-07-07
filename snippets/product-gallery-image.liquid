@@ -1,0 +1,156 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Product gallery image
+	This snippet will output main image on product page
+
+	- image: image object (optional, object),
+	- is_lazy: is lazy load enable (optional, default: true, boolean)
+	- additional_class: additional class for image
+
+	{%- render "product-gallery-image", image: image, is_lazy: is_lazy -%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- if image -%}
+	{% if image == settings.product_default_image %}
+		{%- capture img_focal -%}
+			--img-desktop-pos: {{ settings.product_default_image.presentation.focal_point }};
+		{%- endcapture -%}
+	{% endif %}
+
+	{% assign w_380 = 380 %}
+	{% assign h_380 = w_380 | divided_by: image.aspect_ratio |  round %}
+	{% assign w_420 = 420 %}
+	{% assign h_420 = w_420 | divided_by: image.aspect_ratio | round %}
+	{% assign w_480 = 480 %}
+	{% assign h_480 = w_480 | divided_by: image.aspect_ratio | round %}
+	{% assign w_767 = 767 %}
+	{% assign h_767 = w_767 | divided_by: image.aspect_ratio |  round %}
+	{% assign w_840 = 840 %}
+	{% assign h_840 = w_840 | divided_by: image.aspect_ratio |  round %}
+	{% assign w_741 = 741 %}
+	{% assign h_741 = w_741 | divided_by: image.aspect_ratio | round %}
+
+	{%- if is_lazy -%}
+		<picture class="{{- additional_class }} lazy">
+			<source
+				data-srcset="{{ image | img_url: '380x' }} 1x, {{ image | img_url: '760x' }} 2x"
+				srcset="{{ image | img_url: '10x' }} 1x, {{ image | img_url: '10x' }} 2x"
+				media="(max-width: 380px)"
+				width="{{ w_380 }}"
+				height="{{ h_380 }}"
+			>
+
+			<source
+				data-srcset="{{ image | img_url: '420x' }} 1x, {{ image | img_url: '840x' }} 2x"
+				srcset="{{ image | img_url: '10x' }} 1x, {{ image | img_url: '10x' }} 2x"
+				media="(max-width: 420px)"
+				width="{{ w_420 }}"
+				height="{{ h_420 }}"
+			>
+
+			<source
+				data-srcset="{{ image | img_url: '480x' }} 1x, {{ image | img_url: '960x' }} 2x"
+				srcset="{{ image | img_url: '10x' }} 1x, {{ image | img_url: '10x' }} 2x"
+				media="(max-width: 480px)"
+				width="{{ w_480 }}"
+				height="{{ h_480 }}"
+			>
+
+			<source
+				data-srcset="{{- image | img_url: '767x' }} 1x, {{ image | img_url: '1534x' }} 2x"
+				srcset="{{ image | img_url: '10x' }} 1x, {{ image | img_url: '10x' }} 2x"
+				media="(max-width: 767px)"
+				width="{{ w_767 }}"
+				height="{{ h_767 }}"
+			>
+
+			<source
+				data-srcset="{{- image | img_url: '840x' }} 1x, {{ image | img_url: '1680x' }} 2x"
+				srcset="{{ image | img_url: '10x' }} 1x, {{ image | img_url: '10x' }} 2x"
+				media="(max-width: 1199px)"
+				width="{{ w_840 }}"
+				height="{{ h_840 }}"
+			>
+
+			<source
+				data-srcset="{{- image | img_url: '741x' }} 1x, {{ image | img_url: '1482x' }} 2x"
+				srcset="{{ image | img_url: '10x' }} 1x, {{ image | img_url: '10x' }} 2x"
+				media="(max-width: 1500px)"
+				width="{{ w_741 }}"
+				height="{{ h_741 }}"
+			>
+
+			<img
+				class="product-media__image"
+				data-srcset="{{- image | img_url: '840x' }} 1x, {{ image | img_url: '1680x' }} 2x"
+				data-src="{{- image | img_url: '840x' }}"
+				srcset="{{- image | img_url: '10x' -}}"
+				src="{{- image | img_url: '10x' -}}"
+				alt="{{- image.alt -}}"
+				width="{{ w_840 }}"
+				height="{{ h_840 }}"
+				{% if img_focal != blank %}
+					style="{{ img_focal }}"
+				{% endif %}
+			>
+		</picture>
+	{%- else -%}
+		<picture class="{{- additional_class -}}">
+			<source
+				srcset="{{- image | img_url: '380x' }} 1x, {{ image | img_url: '760x' }} 2x"
+				media="(max-width: 380px)"
+				width="{{ w_380 }}"
+				height="{{ h_380 }}"
+			>
+
+			<source
+				srcset="{{- image | img_url: '420x' }} 1x, {{ image | img_url: '840x' }} 2x"
+				media="(max-width: 420px)"
+				width="{{ w_420 }}"
+				height="{{ h_420 }}"
+			>
+
+			<source
+				srcset="{{- image | img_url: '480x' }} 1x, {{ image | img_url: '960x' }} 2x"
+				media="(max-width: 480px)"
+				width="{{ w_480 }}"
+				height="{{ h_480 }}"
+			>
+
+			<source
+				srcset="{{- image | img_url: '767x' }} 1x, {{ image | img_url: '1534x' }} 2x"
+				media="(max-width: 767px)"
+				width="{{ w_767 }}"
+				height="{{ h_767 }}"
+			>
+
+			<source
+				srcset="{{- image | img_url: '840x' }} 1x, {{ image | img_url: '1680x' }} 2x"
+				media="(max-width: 1199px)"
+				width="{{ w_840 }}"
+				height="{{ h_840 }}"
+			>
+
+			<source
+				srcset="{{- image | img_url: '741x' }} 1x, {{ image | img_url: '1482x' }} 2x"
+				media="(max-width: 1500px)"
+				width="{{ w_741 }}"
+				height="{{ h_741 }}"
+			>
+
+			<img
+				class="product-media__image"
+				srcset="{{- image | img_url: '840x' }} 1x, {{ image | img_url: '1680x' }} 2x"
+				src="{{- image | img_url: image_size -}}"
+				alt="{{- image.alt -}}"
+				width="{{ w_840 }}"
+				height="{{ h_840 }}"
+				{% if img_focal != blank %}
+					style="{{ img_focal }}"
+				{% endif %}
+				fetchpriority="high"
+			>
+		</picture>
+	{%- endif -%}
+{% endif %}

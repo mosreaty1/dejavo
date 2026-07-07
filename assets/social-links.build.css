@@ -1,0 +1,17 @@
+.social-links .social-links__list {
+	display: flex;
+	flex-wrap: wrap;
+	margin: 0 -5px;
+}
+.social-links .social-links__item {
+	padding: 5px;
+}
+.social-links-new .social-links__list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+}
+.social-links-new .social-links__item svg {
+	width: 16px;
+	height: 16px;
+}

@@ -1,0 +1,126 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Header mega menu image card
+	Render row separator
+	- image: image
+	- label: label
+	- heading: heading
+	- link: link
+	- link_label: link label
+	- media_rounded_corners: enable media rounded corners
+
+
+	Usage:
+	{%- render 'header-mega-menu-image-card', image: image, label: label, heading: heading, link: link, link_label: link_label, media_rounded_corners: media_rounded_corners -%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign design = settings.design -%}
+
+{%- if design == 'alternate' -%}
+	{%- assign image_width_375 		= 343 -%}
+	{%- assign image_width_991		= 388 -%}
+	{%- assign image_width_1199 	= 528 -%}
+	{%- assign image_width_1500 	= 323 -%}
+	{%- assign image_width			= 405 -%}
+{%- else -%}
+	{%- assign image_width_375 		= 315 -%}
+	{%- assign image_width_991		= 360 -%}
+	{%- assign image_width_1199 	= 500 -%}
+	{%- assign image_width_1500 	= 325 -%}
+	{%- assign image_width			= 420 -%}
+{%- endif -%}
+
+
+
+{% assign image_width_375_x2 	= image_width_375 | times: 2 %}
+{% assign image_width_991_x2	= image_width_991 | times: 2 %}
+{% assign image_width_1199_x2 	= image_width_1199 | times: 2 %}
+{% assign image_width_1500_x2 	= image_width_1500 | times: 2 %}
+{% assign image_width_x2 		= image_width | times: 2 %}
+
+{%- capture img_focal -%}
+	--img-desktop-pos: {{ image.presentation.focal_point }};
+{%- endcapture -%}
+
+{%- capture image_capture -%}
+	{%- if image == blank -%}
+		{{ 'hero-apparel-1' | placeholder_svg_tag: 'header-mega-menu__image' }}
+	{%- else -%}
+		<picture>
+			<source
+				srcset="{{ image | image_url: width: image_width_375 }} 1x, {{ image | image_url: width: image_width_375_x2 }} 2x"
+				media="(max-width: 375px)"
+			>
+
+			<source
+				srcset="{{ image | image_url: width: image_width_991 }} 1x, {{ image | image_url: width: image_width_991_x2 }} 2x"
+				media="(max-width: 991px)"
+			>
+
+			<source
+				srcset="{{ image | image_url: width: image_width_1199_x2 }} 1x, {{ image | image_url: width: image_width_1199_x2 }} 2x"
+				media="(max-width: 1199px)"
+			>
+
+			<source
+				srcset="{{ image | image_url: width: image_width_1500 }} 1x, {{ image | image_url: width: image_width_1500_x2 }} 2x"
+				media="(max-width: 1500px)"
+			>
+
+			<img
+				class="header-mega-menu__image"
+				src="{{- image | image_url: width: image_width -}}"
+				srcset="{{- image | image_url: width: image_width }} 1x, {{ image | image_url: width: image_width_x2 }} 2x"
+				alt="{{- image.alt | escape -}}"
+				style="{{ img_focal }}"
+			>
+		</picture>
+	{%- endif -%}
+
+	{%- if design == 'standard' -%}
+		<div class="header-mega-menu__image-overlay"></div>
+	{%- endif -%}
+
+	{%- if link != blank and link_label != blank and design == 'alternate' -%}
+		<span class="header-mega-menu__image-link-label">
+			<span class="header-mega-menu__image-link-label-text">
+				{{- link_label -}}
+			</span>
+		</span>
+	{%- endif -%}
+
+	{%- if label != blank or heading != blank -%}
+		<div class="header-mega-menu__image-text-content">
+			{%- if label != blank -%}
+				<h4 class="header-mega-menu__image-label">
+					{{- label -}}
+				</h4>
+			{%- endif -%}
+
+			{%- if heading != blank -%}
+				<h3 class="header-mega-menu__image-heading">
+					{{- heading -}}
+				</h3>
+			{%- endif -%}
+		</div>
+	{%- endif -%}
+{%- endcapture -%}
+
+{%- if link != blank -%}
+	<a href="{{- link -}}" class="header-mega-menu__image-wrapper header-mega-menu__image-wrapper--hover {% if design == 'alternate' and media_rounded_corners %} header-mega-menu__image-wrapper--rounded {% endif %}">
+		{{- image_capture -}}
+	</a>
+{%- else -%}
+	<div class="header-mega-menu__image-wrapper {% if design == 'alternate' and media_rounded_corners %} header-mega-menu__image-wrapper--rounded {% endif %}">
+		{{- image_capture -}}
+	</div>
+{%- endif -%}
+
+{%- if link != blank and link_label != blank and design == 'standard' -%}
+	<a href="{{- link -}}" class="header-mega-menu__menu-item">
+		<span class="header-mega-menu__menu-item-text">
+			{{- link_label -}}
+		</span>
+	</a>
+{%- endif -%}

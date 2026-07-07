@@ -1,0 +1,218 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Article template new
+	Render an alternative layout for the "Article template" section
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{% assign banner_type               = section.settings.banner_type %}
+{% assign banner_text_color         = section.settings.banner_text_color %}
+{% assign overlay                   = section.settings.overlay %}
+{% assign color_comment_background	= section.settings.color_comment_background %}
+{% assign show_date               	= section.settings.show_date %}
+{% assign show_author               = section.settings.show_author %}
+{% assign show_tag                  = section.settings.show_tag %}
+{% assign show_socials              = section.settings.show_socials %}
+
+{% assign show_related              = section.settings.show_related %}
+{% assign label                     = section.settings.label %}
+{% assign heading                   = section.settings.heading %}
+{% assign show_back_to_blog_btn     = section.settings.show_back_to_blog_btn %}
+{% assign button_style              = section.settings.button_style %}
+{% assign banner_button_style		= section.settings.banner_button_style %}
+
+{% assign button_text_color					= section.settings.button_text_color %}
+{% assign button_background_color			= section.settings.button_background_color %}
+{% assign button_border_color				= section.settings.button_border_color %}
+{% assign button_outer_border_color			= section.settings.button_outer_border_color %}
+{% assign button_text_color_hover			= section.settings.button_text_color_hover %}
+{% assign button_background_color_hover		= section.settings.button_background_color_hover %}
+{% assign button_border_color_hover			= section.settings.button_border_color_hover %}
+{% assign button_outer_border_color_hover	= section.settings.button_outer_border_color_hover %}
+
+{% assign is_show_author 	= false %}
+{% assign is_show_tag 		= false %}
+
+{% if show_author and article.author != blank %}
+	{% assign is_show_author = true %}
+{% endif %}
+
+{% if show_tag and article.tags != blank %}
+	{% assign is_show_tag = true %}
+{% endif %}
+
+{%- capture section_styles -%}
+	--overlay-opacity: {{- overlay -}}%; {{-  -}}
+	--color-comment-background: {{- color_comment_background -}}; {{-  -}}
+	--banner-text-color: {{- banner_text_color -}};
+{%- endcapture -%}
+
+{%- capture button_styles -%}
+	--button-text-color: {{- button_text_color -}};
+	--button-background-color: {{- button_background_color -}};
+	--button-border-color: {{- button_border_color -}};
+	--button-outer-border-color: {{- button_outer_border_color -}};
+	--button-text-color-hover: {{- button_text_color_hover -}};
+	--button-background-color-hover: {{- button_background_color_hover -}};
+	--button-border-color-hover: {{- button_border_color_hover -}};
+	--button-outer-border-color-hover: {{- button_outer_border_color_hover -}};
+{%-endcapture-%}
+
+<link rel="stylesheet" href="{{ 'article-new.build.css' | asset_url }}">
+
+<div class="article-new">
+	<section
+		class="article-banner-new {% if article.image != blank and banner_type == 'full' %}article-banner--{{ banner_type }}{% endif %}"
+		style="{{ section_styles }}"
+	>
+		<div class="article-banner__heading-block {{ banner_type }} {% if article.image != blank and banner_type == 'full' %}article-banner__heading-block--float js-animate{% endif %}">
+			<h1 class="h2 article-banner__heading">
+				{{ article.title }}
+			</h1>
+
+			{% if show_date or is_show_author or is_show_tag %}
+				<div class="article-banner__subheading">
+					{% if show_date %}
+						<span class="article-banner__date">
+						<span class="visually-hidden">{{ "blogs.article.published_at" | t }}</span>
+
+						{{ article.published_at | date: format: 'abbreviated_date' }}
+					</span>
+
+						{% if is_show_author or is_show_tag %}
+							<span class="article-banner__separator" aria-hidden="true">|</span>
+						{% endif %}
+					{% endif %}
+
+					{% if is_show_author %}
+						<span>
+						<span class="visually-hidden">{{- 'blogs.article.author' | t -}}</span>
+
+						{{ article.author }}
+					</span>
+
+						{% if is_show_tag %}
+							<span class="article-banner__separator" aria-hidden="true">|</span>
+						{% endif %}
+					{% endif %}
+
+					{% if is_show_tag %}
+						<span>
+						<span class="visually-hidden">{{- 'blogs.article.tag' | t -}}</span>
+
+						{{ article.tags | first }}
+					</span>
+					{% endif %}
+				</div>
+			{% endif %}
+
+			<a
+				href="{{ blog.url }}"
+				class="{% if banner_button_style == "circle" %}button-circle{% else %} button-new button--primary{% endif %} article-banner__blog-link" style="{{- button_styles -}}"
+			>
+				<span class="button__text">
+					{{ 'blogs.article.back_to_blog' | t: title: blog.title }}
+				</span>
+
+				{%- if banner_button_style == "circle" -%}
+					<span class="button-new__icon-container">
+						<span class="button-new__icon-wrapper">
+							{% render "icons-new", icon: "wave" %}
+						</span>
+					</span>
+				{%- endif -%}
+			</a>
+		</div>
+
+		{% if article.image != blank %}
+			<div class="article-banner__image-container">
+				<div class="article-banner__image-overlay"></div>
+
+				<picture>
+					<source
+						srcset="{{ article.image | img_url: "375x" }} 1x, {{ article.image | img_url: "750x" }} 2x"
+						media="(max-width: 375px)"
+						width="375"
+						height="650"
+					/>
+
+					<source
+						srcset="{{ article.image | img_url: "575x" }} 1x, {{ article.image | img_url: "1150x" }} 2x"
+						media="(max-width: 575px)"
+						width="575"
+						height="690"
+					/>
+
+					<source
+						srcset="{{ article.image | img_url: "767x" }} 1x, {{ article.image | img_url: "1534x" }} 2x"
+						media="(max-width: 767px)"
+						width="767"
+						height="805"
+					/>
+
+					<source
+						srcset="{{ article.image | img_url: "991x" }} 1x, {{ article.image | img_url: "1982x" }} 2x"
+						media="(max-width: 991px)"
+						width="991"
+						height="892"
+					/>
+
+					<source
+						srcset="{{ article.image | img_url: "1440x" }} 1x, {{ article.image | img_url: "2880x" }} 2x"
+						media="(max-width: 1440px)"
+						width="1440"
+						height="864"
+					/>
+
+					<img
+						srcset="{{ article.image | img_url: "1920x" }} 1x, {{ article.image | img_url: "3840x" }} 2x"
+						src="{{ article.image | img_url: "10px" }}"
+						alt="{{ article.image.alt }}"
+						class="article-banner__image js-animate"
+						width="1920"
+						height="900"
+					/>
+				</picture>
+			</div>
+		{% endif %}
+	</section>
+
+	<section class="article-main-new" style="{{ section_styles }}">
+		{% if article.content != blank %}
+			<div class="article-main__rte">
+				<div class="rte-new">
+					{% if article.content contains '<slider>' %}
+						<script src="{{- 'component-rte-slider.build.min.js' | asset_url -}}" defer></script>
+					{% endif %}
+
+					{{ article.content }}
+				</div>
+			</div>
+		{% endif %}
+
+		{% if show_socials %}
+			<div class="article-main__socials">
+				<span class="article-main__socials-title">
+					{{ 'blogs.article.share' | t }}
+				</span>
+
+				{% render 'socials-share' %}
+			</div>
+		{% endif %}
+	</section>
+
+	{% render 'comment-form-new', section_styles: section_styles %}
+</div>
+
+{% if show_related %}
+	<div class="article-related-new">
+		{% render 'related-articles-new',
+			current_article_id: article.id,
+			blog: blog,
+			label: label,
+			heading: heading,
+			show_back_to_blog_btn: show_back_to_blog_btn,
+			button_style: button_style
+		%}
+	</div>
+{% endif %}

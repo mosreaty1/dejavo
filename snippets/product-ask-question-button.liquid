@@ -1,0 +1,28 @@
+{% assign button_label = block.settings.button_label %}
+{% assign button_icon = block.settings.button_icon %}
+{% assign id = section.id %}
+
+{% if button_label != blank %}
+	<div class="product-form__button-link-container">
+		<button class="{% if design == 'alternate' %}button-link-simple{% else %}button-link{% endif %} focus-visible-outline js-ask-question-button"
+				type="button"
+				data-target="product-ask-question-popup-{{- id -}}"
+				data-js-toggle="product-ask-question-popup-{{- id -}}"
+		>
+			{% if button_icon != blank %}
+				{%- capture img_focal -%}
+					--img-desktop-pos: {{ button_icon.presentation.focal_point }};
+				{%- endcapture -%}
+				<img class="{% if design == 'alternate' %}button-link-simple__icon{% else %}button-link__icon{% endif %}"
+					 src="{{ button_icon | image_url: width: 44, height: 44 }}"
+					 style="{{ img_focal }}"
+					 alt=""
+				>
+			{% endif %}
+
+			{{- button_label -}}
+		</button>
+	</div>
+{% endif %}
+
+

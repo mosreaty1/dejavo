@@ -1,0 +1,356 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Shop the look
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign blocks = section.blocks -%}
+
+{%- if blocks.size > 0 -%}
+	{%- style -%}
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_mobile -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+		}
+
+		@media screen and (min-width: 768px) {
+			#shopify-section-{{- section.id -}} {
+				padding-top: {{- section.settings.offset_top_desktop -}}px;
+				padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+			}
+		}
+	{%- endstyle -%}
+
+	{% case settings.design %}
+		{% when 'alternate' %}
+			{%- render 'shop-the-look-new', section: section -%}
+		{% when 'standard' %}
+			{{- 'shop-the-look.build.css' | asset_url | stylesheet_tag -}}
+
+			{%- assign title			  = section.settings.title -%}
+			{%- assign label			  = section.settings.label -%}
+			{%- assign image			  = section.settings.image -%}
+			{%- assign is_lazy			  = section.settings.is_lazy -%}
+			{%- assign image_crop	  		= section.settings.image_crop -%}
+			{%- assign image_position	  = section.settings.image_position -%}
+			{%- assign image_background	  = section.settings.image_background -%}
+			{%- assign image_border_color = section.settings.image_border_color -%}
+			{%- assign is_point_animated  = section.settings.is_point_animated -%}
+
+			<section class="shop-the-look js-shop-the-look">
+				{% if label != blank %}
+					<h3 class="shop-the-look__subtitle">{{ label }}</h3>
+				{% endif %}
+
+				{% if title != blank %}
+					<h2 class="shop-the-look__title h2">{{ title }}</h2>
+				{% endif %}
+
+				<div class="shop-the-look__container">
+					{%- capture slider -%}
+						<div class="swiper shop-the-look__products-container js-shop-the-look-slider">
+							{%- if image_position == 'right' -%}
+								<button
+									class="swiper-button-next shop-the-look__slider-button shop-the-look__slider-button-next-rtl js-shop-the-look-slider-button-next"
+									type="button"
+									aria-label="{{ "general.accessibility.slider.next_slide_message" | t | escape -}}"
+								>
+									{%- render 'icons-small', icon: 'arrow-left' -%}
+								</button>
+
+								<button
+									class="swiper-button-prev shop-the-look__slider-button shop-the-look__slider-button-prev-rtl js-shop-the-look-slider-button-prev"
+									type="button"
+									aria-label="{{ "general.accessibility.slider.prev_slide_message" | t  | escape -}}"
+								>
+									{%- render 'icons-small', icon: 'arrow-right' -%}
+								</button>
+							{%- else -%}
+								<button
+									class="swiper-button-prev shop-the-look__slider-button shop-the-look__slider-button-prev-ltr js-shop-the-look-slider-button-prev"
+									type="button"
+									aria-label="{{ "general.accessibility.slider.prev_slide_message" | t  | escape -}}"
+								>
+									{%- render 'icons-small', icon: 'arrow-left' -%}
+								</button>
+
+								<button
+									class="swiper-button-next shop-the-look__slider-button shop-the-look__slider-button-next-ltr js-shop-the-look-slider-button-next"
+									type="button"
+									aria-label="{{ "general.accessibility.slider.next_slide_message" | t | escape -}}"
+								>
+									{%- render 'icons-small', icon: 'arrow-right' -%}
+								</button>
+							{%- endif -%}
+
+							<div class="swiper-wrapper shop-the-look__products">
+								{%- for block in blocks -%}
+									{%- assign product = block.settings.product -%}
+
+									<div
+										class="swiper-slide shop-the-look__product js-shop-the-look-slide"
+										data-product-index="{{- forloop.index0 -}}"
+									>
+										{%- render "product-card", product: product, is_lazy: is_lazy, size: 646, tablet_size: 382, mobile_size: 238 -%}
+									</div>
+								{%- endfor -%}
+							</div>
+						</div>
+					{%- endcapture -%}
+
+					{%- if image_position == 'right' -%}
+						{{- slider -}}
+					{%- endif -%}
+
+					<div
+						class="shop-the-look__image-wrapper"
+						style="--shop-the-look-img-bg: {{ image_background | color_modify: 'alpha', 0.1 }}; --image-border-color: {{ image_border_color }}"
+					>
+						{%- render "shop-the-look-image", image: image, image_crop: image_crop, is_lazy: true -%}
+
+						{%- for block in blocks -%}
+							{%- assign point_position_top = block.settings.point_position_top -%}
+							{%- assign point_position_left = block.settings.point_position_left -%}
+							{%- assign product = block.settings.product -%}
+
+							{%- capture point_classes -%}
+								shop-the-look__point{% if is_point_animated == true %} shop-the-look__point--animated{% endif %} js-shop-the-look-point{% if forloop.index0 == 0 %} is-active{%- endif -%}
+							{%- endcapture -%}
+
+							<button
+								class="{{- point_classes -}}"
+								style="--point-position-top: {{ point_position_top -}}%; --point-position-left: {{ point_position_left -}}%;"
+								data-point-index="{{- forloop.index0 -}}"
+								aria-label="{{- 'sections.shop_the_look.point_button' | t : title: product.title | escape -}}"
+							>
+								{%- render 'icons-big', icon: 'point-button' -%}
+
+								{%- render 'icons-big', icon: 'point-button-active' -%}
+							</button>
+						{%- endfor -%}
+					</div>
+
+					{%- if image_position == 'left' -%}
+						{{- slider -}}
+					{%- endif -%}
+				</div>
+			</section>
+
+			<script src="{{- 'shop-the-look.build.min.js' | asset_url -}}" defer></script>
+	{% endcase %}
+{%- endif -%}
+
+{% schema %}
+{
+	"name": "Shop the look",
+	"disabled_on": {
+		"groups": ["header", "footer"],
+		"templates": ["password"]
+	},
+	"settings": [
+		{
+			"type": "text",
+			"id": "title",
+			"label": "Heading"
+		},
+		{
+			"type": "text",
+			"id": "label",
+			"label": "Label"
+		},
+		{
+			"type": "image_picker",
+			"id": "image",
+			"label": "Image",
+			"info": "1916 x 1978px recommended"
+		},
+		{
+			"type": "select",
+			"id": "image_crop",
+			"label": "Image crop",
+			"options": [
+				{
+					"value": "top",
+					"label": "Top"
+				},
+				{
+					"value": "center",
+					"label": "Center"
+				},
+				{
+					"value": "bottom",
+					"label": "Bottom"
+				}
+			],
+			"default": "center",
+			"info": "The setting allows you to specify which part of the image to show if the specified dimensions result in an aspect ratio that differs from the original."
+		},
+		{
+			"type": "select",
+			"id": "image_position",
+			"label": "Image position",
+			"options": [
+				{
+					"value": "left",
+					"label": "Left"
+				},
+				{
+					"value": "right",
+					"label": "Right"
+				}
+			],
+			"default": "left"
+		},
+		{
+			"type": "checkbox",
+			"id": "is_lazy",
+			"label": "Enable lazy load",
+			"default": true
+		},
+		{
+			"type": "checkbox",
+			"id": "is_point_animated",
+			"label": "Enable point button animation",
+			"default": true
+		},
+		{
+			"type": "header",
+			"content": "Colors"
+		},
+		{
+			"type": "color",
+			"id": "point_color",
+			"label": "Point color",
+			"default": "#2C2A28",
+			"info": "The setting is used for alternative design."
+		},
+		{
+			"type": "color",
+			"id": "point_bg_color",
+			"label": "Point background",
+			"default": "#F9F5F0",
+			"info": "The setting is used for alternative design."
+		},
+		{
+			"type": "color",
+			"id": "image_background",
+			"label": "Image background",
+			"default": "#c4c4c4",
+			"info": "The background color of the image with 10% (0.1) opacity. Use a `.png` image."
+		},
+		{
+			"type": "color",
+			"id": "image_border_color",
+			"label": "Border color",
+			"default": "#E6E6E6",
+			"info": "The setting is used for standard design."
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 0
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 0
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 0
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 0
+		}
+	],
+	"blocks": [
+		{
+			"name": "Product",
+			"type": "product",
+			"limit": 5,
+			"settings": [
+				{
+					"type": "product",
+					"id": "product",
+					"label": "Product"
+				},
+				{
+					"type": "range",
+					"id": "point_position_top",
+					"label": "Point position top",
+					"min": 0,
+					"max": 100,
+					"step": 1,
+					"default": 0,
+					"unit": "%"
+				},
+				{
+					"type": "range",
+					"id": "point_position_left",
+					"label": "Point position left",
+					"min": 0,
+					"max": 100,
+					"step": 1,
+					"default": 0,
+					"unit": "%"
+				}
+			]
+		}
+	],
+	"presets": [
+		{
+			"name": "Shop the look",
+			"blocks": [
+				{
+					"type": "product",
+					"settings": {
+						"point_position_top": 35,
+						"point_position_left": 30
+					}
+				},
+				{
+					"type": "product",
+					"settings": {
+						"point_position_top": 60,
+						"point_position_left": 35
+					}
+				},
+				{
+					"type": "product",
+					"settings": {
+						"point_position_top": 50,
+						"point_position_left": 70
+					}
+				}
+			]
+		}
+	]
+}
+{% endschema %}

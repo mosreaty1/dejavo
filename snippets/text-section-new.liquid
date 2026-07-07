@@ -1,0 +1,86 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Text setcion new
+	This snippet displays an alternative view for the Text section snippet
+
+	{% render 'text-section-new',
+		section: section
+	%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign heading      	 = section.settings.heading -%}
+{%- assign subheading   	 = section.settings.subheading -%}
+{%- assign text_content 	 = section.settings.text_content -%}
+{%- assign text_alignment 	 = section.settings.text_alignment -%}
+{%- assign section_alignment = section.settings.section_alignment -%}
+
+{%- assign enable_read_more = section.settings.enable_read_more -%}
+{%- assign read_more_text 	= section.settings.read_more_text -%}
+{%- assign show_less_text 	= section.settings.show_less_text -%}
+
+{%- assign full_width = section.settings.full_width -%}
+
+{%- if heading != blank or text_content != blank -%}
+	{{- 'text-section-new.build.css' | asset_url | stylesheet_tag -}}
+
+	{%- style -%}
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_mobile -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+			background-color: var(--color-background);
+		}
+
+		@media screen and (min-width: 768px) {
+			#shopify-section-{{- section.id -}} {
+				padding-top: {{- section.settings.offset_top_desktop -}}px;
+				padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+			}
+		}
+	{%- endstyle -%}
+
+	{%- capture styles -%}
+		--text-align: {{ text_alignment | replace: 'left', 'start' | replace: 'right', 'end' }}; {{-  -}}
+		--section-alignment: {{ section_alignment }};
+	{%- endcapture -%}
+
+	<section class="text-section text-section-new{% if request.visual_preview_mode or section.index == 1 %} animated{% endif %} js-animate" style="{{ styles }}">
+		<div class="text-section__container {% if full_width %}text-section__container--full-width{% endif %}">
+			{%- if subheading != blank -%}
+				<div class="subheading text-section__subheading">{{- subheading -}}</div>
+			{%- endif -%}
+
+			{%- if heading != blank -%}
+				<h2 class="h2 text-section__heading">
+					{{- heading -}}
+				</h2>
+			{%- endif -%}
+
+			{%- if text_content != blank -%}
+				<div id="text-section-content-{{ section.id }}"
+					 class="rte-new text-section__content{% if enable_read_more %} text-section__content--cut-off{% endif %}"
+				>
+					{{- text_content -}}
+				</div>
+
+				{% if enable_read_more %}
+					<button
+						class="text-section__read-more-button focus-visible-outline js-rich-text-read-more"
+						data-read-more-text="{{ read_more_text }}"
+						data-show-less-text="{{ show_less_text }}"
+						aria-expanded="false"
+						aria-controls="text-section-content-{{ section.id }}"
+					>
+						<span class="text-section__read-more-button-text" data-text>
+							{{- read_more_text -}}
+						</span>
+
+						{%- render 'icons-new', icon: 'arrow-down' -%}
+					</button>
+				{% endif %}
+			{%- endif -%}
+		</div>
+	</section>
+
+	<script src="{{ 'section-richtext.build.min.js' | asset_url }}" defer></script>
+{%- endif -%}

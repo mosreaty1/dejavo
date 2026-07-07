@@ -1,0 +1,66 @@
+.filter-list {
+	display: flex;
+	flex-direction: column;
+	padding-top: 5px;
+}
+.filter-list .filter-list__item {
+	position: relative;
+	margin-bottom: 14px;
+	padding: 4px;
+}
+.filter-list .filter-list__input-label {
+	line-height: 1.375;
+}
+.filter-list .filter-list__input-label::before {
+	background-color: var(--swatch-color);
+	background-image: var(--swatch-image);
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+.filter-list .filter-list__input-label.filter-list__input-label--swatch {
+	-webkit-padding-start: 0;
+	        padding-inline-start: 0;
+}
+.filter-list .filter-list__input-label.filter-list__input-label--swatch::before, .filter-list .filter-list__input-label.filter-list__input-label--swatch::after {
+	display: none;
+}
+.filter-list .filter-list__input-label.filter-list__input-label--swatch .checkbox__label-box {
+	position: relative;
+	display: inline-block;
+	flex-shrink: 0;
+	width: 34px;
+	height: 34px;
+	-webkit-margin-end: 10px;
+	        margin-inline-end: 10px;
+	border: 1px solid var(--color-border-thirdly);
+	border-radius: 50%;
+	background-color: var(--swatch-color, var(--color-accent));
+	background-image: var(--swatch-image);
+	background-repeat: no-repeat;
+	background-size: cover;
+	vertical-align: middle;
+}
+.filter-list .filter-list__checkbox {
+	-webkit-tap-highlight-color: transparent;
+}
+.filter-list .filter-list__checkbox:checked + .filter-list__input-label::before {
+	background-color: var(--swatch-color, var(--color-text-primary));
+	background-image: var(--swatch-image);
+}
+.filter-list .filter-list__checkbox:checked + .filter-list__input-label.filter-list__input-label--swatch .checkbox__label-box {
+	border-color: var(--color-text-primary);
+}
+.filter-list .filter-list__checkbox:checked + .filter-list__input-label.filter-list__input-label--swatch .checkbox__label-box::after {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	box-shadow: inset 0 0 0 3px #fff;
+}
+.filter-list .filter-list__checkbox:focus-visible + .filter-list__input-label.filter-list__input-label--swatch .checkbox__label-box {
+	outline: 2px solid var(--color-border-primary);
+	outline-offset: 2px;
+}

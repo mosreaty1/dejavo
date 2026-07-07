@@ -1,0 +1,404 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Store location
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{% case settings.design %}
+	{% when 'alternate' %}
+		{% render 'store-location-new', section: section %}
+	{% when 'standard' %}
+		{{- "store-location.build.css" | asset_url | stylesheet_tag -}}
+
+		{%- style -%}
+			#shopify-section-{{- section.id -}} {
+				padding-top: {{- section.settings.offset_top_mobile -}}px;
+				padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+			}
+
+			@media screen and (min-width: 768px) {
+				#shopify-section-{{- section.id -}} {
+					padding-top: {{- section.settings.offset_top_desktop -}}px;
+					padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+				}
+			}
+		{%- endstyle -%}
+
+		{% assign reverse_content 		= section.settings.reverse_content %}
+		{% assign title 				= section.settings.title %}
+		{% assign subtitle 				= section.settings.subtitle %}
+		{% assign address_title 		= section.settings.address_title %}
+		{% assign address_text 			= section.settings.address_text %}
+		{% assign schedule_title 		= section.settings.schedule_title %}
+		{% assign schedule_text 		= section.settings.schedule_text %}
+		{% assign phone_title 			= section.settings.phone_title %}
+		{% assign phone_text 			= section.settings.phone_text %}
+		{% assign email_title 			= section.settings.email_title %}
+		{% assign email_text 			= section.settings.email_text %}
+		{% assign text_alignment 		= section.settings.text_alignment %}
+		{% assign first_button_text 	= section.settings.first_button_text %}
+		{% assign first_button_link 	= section.settings.first_button_link %}
+		{% assign first_button_style 	= section.settings.first_button_style %}
+		{% assign second_button_text 	= section.settings.second_button_text %}
+		{% assign second_button_link 	= section.settings.second_button_link %}
+		{% assign second_button_style 	= section.settings.second_button_style %}
+		{% assign store_image 			= section.settings.store_image %}
+		{% assign google_map_api_key 	= section.settings.google_map_api_key %}
+		{% assign map_query 			= section.settings.map_query %}
+		{% assign full_width 			= section.settings.full_width %}
+
+		<section class="store-location"
+				 style="--text-alignment: {{ text_alignment }};"
+		>
+			<div class="store-location__container {% if full_width == false %}store-location__container--max-width{% endif %} {% if reverse_content %}store-location__container--reverse{% endif %}">
+				<div class="store-location__media">
+					{%- capture img_focal -%}
+						--img-desktop-pos: {{ store_image.presentation.focal_point }};
+					{%- endcapture -%}
+
+					<div class="store-location__media-wrapper">
+						{%- if google_map_api_key != blank and map_query != blank -%}
+							<iframe
+								class="store-location__map"
+								width="100%"
+								height="100%"
+								frameborder="0" style="border:0"
+								referrerpolicy="no-referrer-when-downgrade"
+								src="https://www.google.com/maps/embed/v1/place?key={{- google_map_api_key -}}&q={{- map_query -}}"
+								allowfullscreen>
+							</iframe>
+						{%- elsif store_image != blank -%}
+							<picture class="lazy">
+								<source data-srcset="{{ store_image | image_url: width: 400, height: 400 }} 1x,
+												{{ store_image | image_url: width: 800, height: 800 }} 2x"
+										srcset="{{ store_image | image_url: width: 10 }} 1x"
+										media="(max-width: 400px)">
+
+								<source data-srcset="{{ store_image | image_url: width: 767, height: 767 }} 1x,
+												{{ store_image | image_url: width: 1534, height: 1534 }} 2x"
+										srcset="{{ store_image | image_url: width: 10 }} 1x"
+										media="(max-width: 767px)">
+
+								<source data-srcset="{{ store_image | image_url: width: 991, height: 991 }} 1x,
+												{{ store_image | image_url: width: 1982, height: 1982 }} 2x"
+										srcset="{{ store_image | image_url: width: 10 }} 1x"
+										media="(max-width: 991px)">
+
+								<source data-srcset="{{ store_image | image_url: width: 742, height: 742 }} 1x,
+												{{ store_image | image_url: width: 1484, height: 1484 }} 2x"
+										srcset="{{ store_image | image_url: width: 10 }} 1x"
+										media="(max-width: 1500px)">
+
+								<img class="store-location__image"
+									 src="{{ store_image | image_url: width: 10 }}"
+									 data-src="{{ store_image | image_url: width: 900, height: 900 }}"
+									 data-srcset="{{ store_image | image_url: width: 900 }} 1x, {{ store_image | image_url: width: 1800, height: 1800 }} 2x"
+									 alt="{{ store_image.alt | escape }}"
+									 style="{{ img_focal }}"
+								>
+							</picture>
+						{%- else -%}
+							{{- 'lifestyle-1' | placeholder_svg_tag: 'store-location__image' -}}
+						{%- endif -%}
+					</div>
+				</div>
+
+				<div class="store-location__content">
+					{% if title != blank %}
+						<h2 class="store-location__title h2">{{ title }}</h2>
+					{% endif %}
+
+					{% if subtitle != blank %}
+						<p class="store-location__subtitle">{{ subtitle }}</p>
+					{% endif %}
+
+					{% if address_title != blank or address_text != blank %}
+						<div class="store-location__item">
+							{% if address_title != blank %}
+								<h3 class="store-location__content-title">{{ address_title }}</h3>
+							{% endif %}
+
+							{% if address_text != blank %}
+								<div class="section-rte">{{ address_text }}</div>
+							{% endif %}
+						</div>
+					{% endif %}
+
+					{% if schedule_title != blank or schedule_text != blank %}
+						<div class="store-location__item">
+							{% if schedule_title != blank %}
+								<h3 class="store-location__content-title">{{ schedule_title }}</h3>
+							{% endif %}
+
+							{% if schedule_text != blank %}
+								<div class="section-rte">{{ schedule_text }}</div>
+							{% endif %}
+						</div>
+					{% endif %}
+
+					{% if phone_title != blank or phone_text != blank %}
+						<div class="store-location__item">
+							{% if phone_title != blank %}
+								<h3 class="store-location__content-title">{{ phone_title }}</h3>
+							{% endif %}
+
+							{% if phone_text != blank %}
+								<div class="section-rte">{{ phone_text }}</div>
+							{% endif %}
+						</div>
+					{% endif %}
+
+					{% if email_title != blank or email_text != blank %}
+						<div class="store-location__item">
+							{% if email_title != blank %}
+								<h3 class="store-location__content-title">{{ email_title }}</h3>
+							{% endif %}
+
+							{% if email_text != blank %}
+								<div class="section-rte">{{ email_text }}</div>
+							{% endif %}
+						</div>
+					{% endif %}
+
+					{% if first_button_text != blank and first_button_link != blank or second_button_text != blank and second_button_link != blank %}
+						<div class="store-location__buttons">
+							{% if first_button_text != blank and first_button_link != blank %}
+								<a href="{{ first_button_link }}" class="store-location__button button button--{{ first_button_style }}">
+									{{- first_button_text -}}
+								</a>
+							{% endif %}
+
+							{% if second_button_text != blank and second_button_link != blank %}
+								<a href="{{ second_button_link }}" class="store-location__button button button--{{ second_button_style }}">
+									{{- second_button_text -}}
+								</a>
+							{% endif %}
+						</div>
+					{% endif %}
+				</div>
+			</div>
+		</section>
+{% endcase %}
+
+{% schema %}
+{
+	"name": "Store location",
+	"disabled_on": {
+		"groups": ["header", "footer"]
+	},
+	"settings": [
+		{
+			"type": "checkbox",
+			"id": "reverse_content",
+			"label": "Reverse content",
+			"default": false
+		},
+		{
+			"type": "text",
+			"id": "title",
+			"label": "Heading",
+			"default": "Store name"
+		},
+		{
+			"type": "textarea",
+			"id": "subtitle",
+			"label": "Subheading"
+		},
+		{
+			"type": "text",
+			"id": "address_title",
+			"label": "Address heading",
+			"default": "Address"
+		},
+		{
+			"type": "richtext",
+			"id": "address_text",
+			"label": "Address text",
+			"default": "<p>Store address</p>"
+		},
+		{
+			"type": "text",
+			"id": "schedule_title",
+			"label": "Schedule heading",
+			"default": "Schedule"
+		},
+		{
+			"type": "richtext",
+			"id": "schedule_text",
+			"label": "Schedule text",
+			"default": "<p>Store schedule</p>"
+		},
+		{
+			"type": "text",
+			"id": "phone_title",
+			"label": "Phone heading",
+			"default": "Phone"
+		},
+		{
+			"type": "richtext",
+			"id": "phone_text",
+			"label": "Phone text",
+			"default": "<p>Contact phone number</p>"
+		},
+		{
+			"type": "text",
+			"id": "email_title",
+			"label": "Email heading",
+			"default": "Email"
+		},
+		{
+			"type": "richtext",
+			"id": "email_text",
+			"label": "Email text",
+			"default": "<p>Email text</p>"
+		},
+		{
+			"type": "text",
+			"id": "first_button_text",
+			"label": "First button label"
+		},
+		{
+			"type": "url",
+			"id": "first_button_link",
+			"label": "First button link"
+		},
+		{
+			"type": "select",
+			"id": "first_button_style",
+			"label": "First button style",
+			"options": [
+				{
+					"value": "primary",
+					"label": "Primary"
+				},
+				{
+					"value": "secondary",
+					"label": "Secondary"
+				}
+			],
+			"default": "primary"
+		},
+		{
+			"type": "text",
+			"id": "second_button_text",
+			"label": "Second button label"
+		},
+		{
+			"type": "url",
+			"id": "second_button_link",
+			"label": "Second button link"
+		},
+		{
+			"type": "select",
+			"id": "second_button_style",
+			"label": "Second button style",
+			"options": [
+				{
+					"value": "primary",
+					"label": "Primary"
+				},
+				{
+					"value": "secondary",
+					"label": "Secondary"
+				}
+			],
+			"default": "secondary"
+		},
+		{
+			"type": "select",
+			"id": "text_alignment",
+			"label": "Text alignment",
+			"options": [
+				{
+					"value": "left",
+					"label": "Left"
+				},
+				{
+					"value": "center",
+					"label": "Center"
+				},
+				{
+					"value": "right",
+					"label": "Right"
+				}
+			],
+			"default": "left"
+		},
+		{
+			"type": "image_picker",
+			"id": "store_image",
+			"label": "Image",
+			"info": "3840 x 2160px recommended"
+		},
+		{
+			"type": "text",
+			"id": "google_map_api_key",
+			"label": "Google maps API key (text)",
+			"info": "You’ll need to [register a Google Maps API Key](https://utdweb.team/shopify-themes/gain/manual#section-contact-template) to display the map."
+		},
+		{
+			"type": "text",
+			"id": "map_query",
+			"label": "Map query",
+			"info": "Specify the query parameter [learn more](https://utdweb.team/shopify-themes/gain/manual#section-contact-template)",
+			"default": "Eiffel+Tower,Paris+France"
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "checkbox",
+			"id": "full_width",
+			"label": "Make full width",
+			"default": true,
+			"info": "If unchecked - container width will be set based on the group 'Layout' settings in the Theme settings."
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 0
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 0
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 0
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 0
+		}
+	],
+	"presets": [
+		{
+			"name": "Store location"
+		}
+	]
+}
+{% endschema %}

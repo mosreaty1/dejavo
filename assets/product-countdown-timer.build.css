@@ -1,0 +1,80 @@
+.product-countdown-timer {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+.product-countdown-timer .product-countdown-timer__header {
+	display: flex;
+	gap: 10px;
+	margin-bottom: 20px;
+}
+.product-countdown-timer .product-countdown-timer__icon {
+	-o-object-fit: contain;
+	   object-fit: contain;
+}
+.product-countdown-timer .product-countdown-timer__heading {
+	color: var(--text-color, #000000);
+}
+.product-countdown-timer .product-countdown-timer__timer-row {
+	display: flex;
+}
+.product-countdown-timer .product-countdown-timer__timer-values {
+	display: flex;
+}
+.product-countdown-timer .product-countdown-timer__timer-col + .product-countdown-timer__timer-col {
+	-webkit-margin-start: 14px;
+	        margin-inline-start: 14px;
+}
+.product-countdown-timer .product-countdown-timer__timer-col + .product-countdown-timer__timer-col .product-countdown-timer__timer-values {
+	position: relative;
+	color: var(--timer-text-color, #ffffff);
+}
+.product-countdown-timer .product-countdown-timer__timer-col + .product-countdown-timer__timer-col .product-countdown-timer__timer-values::after {
+	content: ":";
+	position: absolute;
+	top: 50%;
+	inset-inline-start: -7px;
+	font-weight: 600;
+	color: var(--timer-background-color, #000000);
+	transform: translate(-50%, -50%);
+}
+.product-countdown-timer .product-countdown-timer__timer-value {
+	padding: 4px 5px;
+	background-color: var(--timer-background-color, #000000);
+	font-size: calc(var(--heading-font-size) * 0.875);
+	line-height: 1.15;
+	letter-spacing: 0.02em;
+	text-align: center;
+	text-transform: uppercase;
+	color: var(--timer-text-color, #ffffff);
+	min-width: 1.3em;
+	border-radius: 5px;
+}
+.product-countdown-timer .product-countdown-timer__timer-value.is-hidden {
+	display: none;
+}
+.product-countdown-timer .product-countdown-timer__timer-value:not(.is-hidden) + .product-countdown-timer__timer-value {
+	-webkit-margin-start: 4px;
+	        margin-inline-start: 4px;
+}
+.product-countdown-timer .product-countdown-timer__timer-label {
+	margin-top: 6px;
+	font-size: calc(var(--body-font-size) * 0.875);
+	text-align: center;
+	color: var(--text-color, #000000);
+}
+@media (min-width: 381px) {
+	.product-countdown-timer .product-countdown-timer__timer-value {
+		font-size: calc(var(--heading-font-size) * 0.9375);
+	}
+}
+@media (min-width: 420px) {
+	.product-countdown-timer .product-countdown-timer__timer-value {
+		font-size: min(var(--heading-font-size) * 1.5, 6.25vw);
+	}
+	.product-countdown-timer .product-countdown-timer__timer-label {
+		font-size: var(--body-font-size);
+	}
+}
+body.rtl .product-countdown-timer .product-countdown-timer__timer-col + .product-countdown-timer__timer-col .product-countdown-timer__timer-values::after {
+	transform: translate(50%, -50%);
+}

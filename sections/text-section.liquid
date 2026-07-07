@@ -1,0 +1,224 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Text
+------------------------------------------------------------------------------
+{%- endcomment -%}
+{%- assign design = settings.design -%}
+
+{%- if design == 'standard' -%}
+	{%- assign heading      		= section.settings.heading -%}
+	{%- assign subheading   		= section.settings.subheading -%}
+	{%- assign text_content 		= section.settings.text_content -%}
+	{%- assign text_alignment 		= section.settings.text_alignment -%}
+	{%- assign section_alignment 	= section.settings.section_alignment -%}
+
+	{%- assign enable_read_more 	= section.settings.enable_read_more -%}
+	{%- assign read_more_text 		= section.settings.read_more_text -%}
+	{%- assign show_less_text 		= section.settings.show_less_text -%}
+
+	{%- assign full_width 			= section.settings.full_width -%}
+
+	{%- if heading != blank or text_content != blank -%}
+		{{- 'text-section.build.css' | asset_url | stylesheet_tag -}}
+
+		{%- style -%}
+			#shopify-section-{{- section.id -}} {
+				padding-top: {{- section.settings.offset_top_mobile -}}px;
+				padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+			}
+
+			@media screen and (min-width: 768px) {
+				#shopify-section-{{- section.id -}} {
+					padding-top: {{- section.settings.offset_top_desktop -}}px;
+					padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+				}
+			}
+		{%- endstyle -%}
+
+		{%- capture styles -%}
+			--text-align: {{ text_alignment | replace: 'left', 'start' | replace: 'right', 'end' }}; {{-  -}}
+			--section-alignment: {{ section_alignment }};
+		{%- endcapture -%}
+
+		<section class="text-section" style="{{ styles }}">
+			<div class="text-section__container {% if full_width %}text-section__container--full-width{% endif %}">
+				{%- if heading != blank -%}
+					<h2 class="h2 text-section__heading">
+						{{- heading -}}
+					</h2>
+				{%- endif -%}
+
+				{%- if subheading != blank -%}
+					<div class="text-section__subheading">{{- subheading -}}</div>
+				{%- endif -%}
+
+				{%- if text_content != blank -%}
+					<div id="text-section-content-{{ section.id }}"
+						 class="text-section__content section-rte {% if enable_read_more %}text-section__content--cut-off{% endif %}"
+					>
+						{{- text_content -}}
+					</div>
+
+					{% if enable_read_more %}
+						<button class="text-section__read-more-button button-link focus-visible-outline js-rich-text-read-more"
+								data-read-more-text="{{ read_more_text }}"
+								data-show-less-text="{{ show_less_text }}"
+								aria-expanded="false"
+								aria-controls="text-section-content-{{ section.id }}"
+						>
+							<span data-text>{{- read_more_text -}}</span>
+							{%- render 'icons-small', icon: 'arrow-down' -%}
+						</button>
+					{% endif %}
+				{%- endif -%}
+			</div>
+		</section>
+
+		<script src="{{ 'section-richtext.build.min.js' | asset_url }}" defer></script>
+	{%- endif -%}
+{%- elsif design == 'alternate' -%}
+	{%- render 'text-section-new', section: section -%}
+{%- endif -%}
+
+{%- schema -%}
+	{
+		"name": "Rich text",
+		"disabled_on": {
+			"groups": ["header", "footer"]
+		},
+		"settings": [
+			{
+				"id": "heading",
+				"type": "text",
+				"label": "Heading",
+				"default": "Rich text"
+			},
+			{
+				"type": "textarea",
+				"id": "subheading",
+				"label": "Subheading",
+				"default": "Subheading"
+			},
+			{
+				"id": "text_content",
+				"type": "richtext",
+				"label": "Text",
+				"default": "<p>Add text to share customers about your store, products, brand.</p>"
+			},
+			{
+				"type": "select",
+				"id": "text_alignment",
+				"label": "Text alignment",
+				"options": [
+					{
+						"value": "left",
+						"label": "Left"
+					},
+					{
+						"value": "center",
+						"label": "Center"
+					},
+					{
+						"value": "right",
+						"label": "Right"
+					}
+				],
+				"default": "center"
+			},
+			{
+				"type": "select",
+				"id": "section_alignment",
+				"label": "Section alignment",
+				"options": [
+					{
+						"value": "flex-start",
+						"label": "Left"
+					},
+					{
+						"value": "center",
+						"label": "Center"
+					},
+					{
+						"value": "flex-end",
+						"label": "Right"
+					}
+				],
+				"default": "center"
+			},
+			{
+				"type": "checkbox",
+				"id": "enable_read_more",
+				"label": "Enable read more button",
+				"default": false,
+				"info": "Enable this feature to truncate text and show read more button."
+			},
+			{
+				"type": "text",
+				"id": "read_more_text",
+				"label": "Read more button label",
+				"default": "Read more"
+			},
+			{
+				"type": "text",
+				"id": "show_less_text",
+				"label": "Show less button label",
+				"default": "Show less"
+			},
+			{
+				"type": "header",
+				"content": "Layout"
+			},
+			{
+				"type": "checkbox",
+				"id": "full_width",
+				"label": "Make full width",
+				"default": false
+			},
+			{
+				"type": "range",
+				"id": "offset_top_desktop",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Desktop offset top",
+				"default": 100
+			},
+			{
+				"type": "range",
+				"id": "offset_bottom_desktop",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Desktop offset bottom",
+				"default": 100
+			},
+			{
+				"type": "range",
+				"id": "offset_top_mobile",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Mobile offset top",
+				"default": 60
+			},
+			{
+				"type": "range",
+				"id": "offset_bottom_mobile",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Mobile offset bottom",
+				"default": 60
+			}
+		],
+		"presets": [
+			{
+				"name": "Rich text"
+			}
+		]
+	}
+{%- endschema -%}

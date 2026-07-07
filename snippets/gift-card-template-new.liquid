@@ -1,0 +1,194 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Gift card
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{{ "gift-card-new.build.css" | asset_url | stylesheet_tag }}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+	padding-top: {{- section.settings.offset_top_mobile -}}px;
+	padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+	#shopify-section-{{- section.id -}} {
+	padding-top: {{- section.settings.offset_top_desktop -}}px;
+	padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+	}
+	}
+{%- endstyle -%}
+
+{%- assign label							= section.settings.label -%}
+{%- assign logo								= section.settings.logo -%}
+{%- assign logo_width						= section.settings.logo_width -%}
+
+{% if settings.currency_code_enabled %}
+	{%- assign formatted_initial_value_stripped = gift_card.initial_value | money_with_currency | strip %}
+{% else %}
+	{%- assign formatted_initial_value_stripped = gift_card.initial_value | money | strip %}
+{% endif %}
+
+{% capture buttons %}
+	<a href="{{ routes.root_url }}" class="button-circle">
+		<span class="button__text">
+			{{- 'gift_cards.issued.shop_link' | t -}}
+		</span>
+
+		<span class="button-new__icon-container">
+			<span class="button-new__icon-wrapper">
+				{% render "icons-new", icon: "wave", section_id: section.id %}
+			</span>
+		</span>
+	</a>
+
+	<button
+		type="button"
+		class="gift-card-new__print-button"
+		onclick="window.print();"
+	>
+		<span class="gift-card-new__print-button-text">
+			{{- 'gift_cards.issued.print' | t -}}
+		</span>
+
+		<span class="gift-card-new__print-button-icon">
+			{% render 'icons-new', icon: 'arrow-right' %}
+		</span>
+	</button>
+{% endcapture %}
+
+{% capture right_col_markup %}
+	<div class="h2 gift-card-new__shop-name">
+		{%- if logo != blank -%}
+			{%- assign logo_alt = logo.alt | default: shop.name | escape -%}
+			{%- assign logo_height = logo_width | divided_by: logo.aspect_ratio | round: 0 -%}
+			{%- assign logo_width_x2 = logo_width | times: 2 -%}
+
+			{%- capture img_focal -%}
+				--img-desktop-pos: {{ logo.presentation.focal_point }};
+			{%- endcapture -%}
+
+			<img
+				class="gift-card-new__logo"
+				src="{{ logo | image_url: width: logo_width }}"
+				srcset="{{ logo | image_url: width: logo_width }} 1x, {{ logo | image_url: width: logo_width_x2 }} 2x"
+				width="{{ logo_width }}"
+				height="{{ logo_height }}"
+				style="{{ img_focal }}"
+				alt="{{ logo.alt | escape }}"
+			/>
+		{%- else -%}
+			{{- shop.name -}}
+		{%- endif -%}
+	</div>
+
+	{% if label != blank %}
+		<p class="gift-card-new__section-label">
+			{{- label -}}
+		</p>
+	{% endif %}
+
+	<h1 class="gift-card-new__title">
+		{{ 'gift_cards.issued.subtext' | t }}
+	</h1>
+
+	<div class="gift-card-new__buttons-wrapper gift-card-new__buttons-wrapper--desktop">
+		{{- buttons -}}
+	</div>
+{%endcapture%}
+
+<div class="gift-card-new">
+	<div class="gift-card-new__row">
+		<div class="gift-card-new__right-col gift-card-new__right-col--mobile">
+			{{- right_col_markup -}}
+		</div>
+
+		<div class="gift-card-new__left-col">
+			<div class="h3 gift-card-new__initial-value">
+				<p>
+					{% if settings.currency_code_enabled %}
+						{{ gift_card.initial_value | money_with_currency }}
+					{% else %}
+						{{ gift_card.initial_value | money }}
+					{% endif %}
+				</p>
+			</div>
+
+			{% assign currentVariant = nil %}
+
+			{% for variant in gift_card.product.variants  %}
+				{% if variant.price == gift_card.initial_value %}
+					{% assign currentVariant = variant %}
+					{% break %}
+				{% endif %}
+			{% endfor %}
+
+			<div class="gift-card-new__image-wrapper">
+				<img
+					src="{%- if currentVariant != nil -%}
+						{{ currentVariant.featured_image.src | image_url: width: 840, height: 450 }}
+					{%- else -%}
+						{{ 'gift-card/card.jpg' | shopify_asset_url }}
+					{%- endif -%}"
+					alt=""
+					class="gift-card-new__image"
+				>
+			</div>
+
+			<div class="gift-card-new__code-content">
+				<div
+					class="gift-card__qr-code gift-card-qr"
+					data-identifier="{{ gift_card.qr_identifier }}"
+				></div>
+
+				<div class="gift-card-new__copy-code">
+					<button class="gift-card-new__copy-link js-gift-card-copy-link" type="button">
+						{{ 'gift_cards.issued.copy_code' | t }}
+					</button>
+
+					<p class="gift-card-new__code js-gift-card-number" data-value="{{ gift_card.code }}">
+						{{ gift_card.code }}
+					</p>
+				</div>
+
+				<span
+					class="gift-card-new__copy-success js-gift-card-copy-success"
+					role="status"
+				></span>
+
+				<template>
+					{% render "icons-small", icon: "success" %}{{ 'gift_cards.issued.copy_code_success' | t }}
+				</template>
+
+				<p class="gift-card-new__redeem">
+					{{ 'gift_cards.issued.redeem_html' | t: value: formatted_initial_value_stripped }}
+				</p>
+			</div>
+
+			<div class="gift-card-new__buttons-wrapper gift-card-new__buttons-wrapper--mobile">
+				{{- buttons -}}
+			</div>
+		</div>
+
+		<div class="gift-card-new__right-col gift-card-new__right-col--desktop">
+			{{- right_col_markup -}}
+		</div>
+
+		{% if gift_card.pass_url %}
+			<a
+				class="gift-card-new__apple-wallet"
+				href="{{ gift_card.pass_url }}"
+			>
+				<img
+					id="apple-wallet-badge"
+					class="gift-card-new__apple-wallet-image"
+					src="{{ 'gift-card/add-to-apple-wallet.svg' | shopify_asset_url }}"
+					width="120"
+					height="40"
+					alt="{{ 'gift_cards.issued.add_to_apple_wallet' | t }}"
+				>
+			</a>
+		{% endif %}
+	</div>
+</div>

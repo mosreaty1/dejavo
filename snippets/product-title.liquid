@@ -1,0 +1,23 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Product Title
+------------------------------------------------------------------------------
+{% endcomment %}
+{% assign preset_title = 'Product title' %}
+{% assign title = product.title %}
+{% if is_preset %}
+	{% assign title = preset_title %}
+{% endif %}
+
+{% if template.name == 'product' %}
+	<h1 class="{% if design == 'alternate' %}product-title-new{% else %}product-title{% endif %} h2 js-product-title">
+		{{- title -}}
+	</h1>
+{% else %}
+	<a
+		class="{% if design == 'alternate' %}product-title-new{% else %}product-title{% endif %} h2 js-product-title"
+		href="{{- product.url -}}"
+	>
+		{{- title -}}
+	</a>
+{% endif %}

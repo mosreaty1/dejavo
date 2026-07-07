@@ -1,0 +1,156 @@
+.collection-list {
+	padding: 0 20px;
+}
+.collection-list.collection-list--container {
+	max-width: calc(var(--global-container-width) + 40px);
+	margin: 0 auto;
+}
+.collection-list .collection-list__header {
+	margin-bottom: 36px;
+	text-align: center;
+}
+.collection-list .collection-list__label {
+	margin-bottom: 10px;
+	font-size: calc(var(--body-font-size) * 0.875);
+	word-break: break-word;
+}
+.collection-list .collection-list__slider {
+	opacity: 0;
+	margin-left: -20px;
+	margin-right: -20px;
+	padding-top: 4px;
+}
+.collection-list .collection-list__slider.animated {
+	opacity: 1;
+	transition-property: opacity;
+	transition-duration: var(--animate-time);
+}
+html.no-js .collection-list .collection-list__slider {
+	opacity: 1;
+}
+.collection-list .collection-list__row.swiper-wrapper {
+	display: flex;
+	align-items: unset;
+}
+.collection-list .collection-list__col {
+	width: 100%;
+	padding-bottom: 0;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+.collection-list .collection-list__card {
+	display: block;
+	text-decoration: none;
+}
+.collection-list .collection-list__card.collection-list__card--center {
+	text-align: center;
+}
+.collection-list .collection-list__card.collection-list__card--right {
+	text-align: end;
+}
+.collection-list .collection-list__card:focus-visible {
+	outline: 2px solid var(--color-text-primary);
+	outline-offset: 2px;
+}
+@media (-moz-touch-enabled: 0), (hover: hover), (pointer: fine) {
+	.collection-list .collection-list__card:hover .collection-list__image {
+		transform: scale(1.15);
+	}
+}
+.collection-list .collection-list__image-wrapper {
+	position: relative;
+	overflow: hidden;
+	display: block;
+}
+.collection-list .collection-list__image-wrapper.collection-list__image-wrapper--square {
+	padding-top: 100%;
+}
+.collection-list .collection-list__image-wrapper.collection-list__image-wrapper--portrait {
+	padding-top: 125%;
+}
+.collection-list .collection-list__image-wrapper.collection-list__image-wrapper--landscape {
+	padding-top: 50%;
+}
+.collection-list .collection-list__image {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	-o-object-fit: cover;
+	   object-fit: cover;
+	-o-object-position: var(--img-desktop-pos);
+	   object-position: var(--img-desktop-pos);
+	color: var(--color-text-primary);
+	transition-timing-function: ease-out;
+	transition-property: transform, opacity;
+	transition-duration: var(--animate-img-scale);
+}
+.collection-list .collection-list__card-title {
+	display: block;
+	margin-top: 15px;
+	font-weight: 600;
+	line-height: 1.37;
+	color: var(--color-text-primary);
+	word-wrap: break-word;
+}
+.collection-list .collection-list__card-count {
+	margin-top: 3px;
+	color: var(--color-text-secondary);
+}
+.collection-list .collection-list__pagination {
+	margin-top: 20px;
+	padding-bottom: 2px;
+	text-align: center;
+}
+.collection-list .collection-list__link-wrapper {
+	opacity: 0;
+	margin-top: 30px;
+	padding: 0 20px;
+	text-align: center;
+	transform: translateY(15px);
+}
+.collection-list .collection-list__link-wrapper.animated {
+	opacity: 1;
+	transform: translateY(0);
+	transition-property: opacity, transform;
+	transition-duration: var(--animate-time);
+}
+html.no-js .collection-list .collection-list__link-wrapper {
+	opacity: 1;
+	transform: translateY(0);
+}
+.collection-list .collection-list__link {
+	word-wrap: break-word;
+	-webkit-hyphens: auto;
+	        hyphens: auto;
+}
+@media (min-width: 768px) {
+	.collection-list .collection-list__slider {
+		overflow: visible;
+		margin: 0;
+	}
+	.collection-list .collection-list__row.swiper-wrapper {
+		flex-wrap: wrap;
+		width: auto;
+		margin: 0 -10px;
+		grid-row-gap: 40px;
+	}
+	.collection-list .collection-list__row.swiper-wrapper.collection-list__row--center {
+		justify-content: center;
+	}
+	.collection-list .collection-list__col {
+		width: 25%;
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+	.collection-list .collection-list__card-title {
+		margin-top: 20px;
+	}
+	.collection-list .collection-list__pagination {
+		display: none;
+	}
+	.collection-list .collection-list__link-wrapper {
+		margin-top: 40px;
+	}
+}

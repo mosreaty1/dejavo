@@ -1,0 +1,269 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Product tabs
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign design = settings.design -%}
+
+{%- if design == 'standard' -%}
+	{%- style -%}
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_mobile -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+		}
+
+		@media screen and (min-width: 768px) {
+			#shopify-section-{{- section.id -}} {
+				padding-top: {{- section.settings.offset_top_desktop -}}px;
+				padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+			}
+		}
+	{%- endstyle -%}
+
+	{%- assign full_width 			= section.settings.full_width -%}
+	{%- assign enable_cards_indent 	= section.settings.enable_cards_indent -%}
+	{%- assign blocks 				= section.blocks  -%}
+	{%- assign has_filled_block 	= false -%}
+
+	{%- assign image_size        = 640 -%}
+	{%- assign image_size_tablet = 382 -%}
+	{%- assign image_size_mobile = 240 -%}
+
+	{%- for block in blocks -%}
+		{%- assign heading = block.settings.heading -%}
+
+		{%- if heading != blank -%}
+			{%- assign has_filled_block = true -%}
+			{%- break -%}
+		{%- endif -%}
+	{%- endfor -%}
+
+	{%- assign label 			= section.settings.label -%}
+	{%- assign heading 			= section.settings.heading -%}
+
+	{%- capture style -%}
+		--container-width: {% if full_width -%}100%{% else -%}var(--global-container-width){%- endif -%};
+	{%- endcapture -%}
+
+	{%- if has_filled_block -%}
+		<section class="product-tabs js-product-tabs-section"
+				 style="{{- style -}}"
+				 {% if enable_cards_indent %}data-cards-indent{% endif %}
+		>
+			{{- 'product-tabs.build.css' | asset_url | stylesheet_tag -}}
+
+			<div class="product-tabs__container">
+				{%- if label != blank -%}
+					<div class="product-tabs__label">
+						{{- label -}}
+					</div>
+				{%- endif -%}
+
+				{%- if heading != blank -%}
+					<h2 class="product-tabs__heading">
+						{{- heading -}}
+					</h2>
+				{%- endif -%}
+
+				<div class="product-tabs__button-lists__wrapper js-product-tabs-buttons-wrapper">
+					<ul class="product-tabs__button-lists">
+						{% assign index = 1 %}
+
+						{%- for block in blocks -%}
+							{%- assign heading = block.settings.heading -%}
+
+							{%- if heading != blank -%}
+								<li class="product-tabs__button-list-item">
+									<button
+										class="product-tabs__button focus-visible-outline js-product-tabs-button {% if index == 1 -%}is-active{%- endif -%}"
+										data-index="{{- index -}}"
+										aria-label="{{- 'sections.product_tabs.button_aria' | t: number: index | escape -}}"
+									>
+										{{- heading -}}
+									</button>
+								</li>
+
+								{%- assign index = index | plus: 1 -%}
+							{%- endif -%}
+						{%- endfor -%}
+					</ul>
+				</div>
+
+				<div class="product-tabs__content {% if enable_cards_indent %}product-tabs__content--indent{% endif %}">
+					{% assign index = 1 %}
+
+					{%- for block in blocks -%}
+						{%- assign heading 		= block.settings.heading -%}
+						{%- assign product_list = block.settings.product_list -%}
+
+						{%- if heading != blank -%}
+							<div class="product-tabs__tab js-product-tabs-tab {% if product_list.count > 2 or product_list.count < 1 %} is-loading {% endif %} {% if index != 1 -%}is-hidden{%- endif -%}" data-index="{{- index -}}">
+								<div class="product-tabs-slider swiper {% if product_list.count > 2 or product_list.count < 1 %}js-featured-content-slider{%- endif -%}">
+									<div class="product-tabs__tab-content {% if enable_cards_indent %}product-tabs__tab-content--indent{% endif %} swiper-wrapper">
+										{%- if product_list.count > 0 -%}
+											{%- for product in product_list limit: limit -%}
+												<div class="product-tabs__product  swiper-slide">
+													{%- render
+														'product-card',
+														product: product,
+														size: image_size,
+														tablet_size: image_size_tablet,
+														mobile_size: image_size_mobile
+													-%}
+												</div>
+											{%- endfor -%}
+										{%- else -%}
+											{%- for i in (1..4) -%}
+												<div class="product-tabs__product  swiper-slide">
+													{%- render 'product-card', product: nil -%}
+												</div>
+											{%- endfor -%}
+										{%- endif -%}
+									</div>
+
+									{% if product_list.count > 2 or product_list.count < 1 %}
+										<div class="product-tabs__pagination js-featured-content-slider-pagination"></div>
+									{%- endif -%}
+								</div>
+							</div>
+							{%- assign index = index | plus: 1 -%}
+						{%- endif -%}
+					{%- endfor -%}
+				</div>
+			</div>
+
+			<script src="{{- 'component-featured-content-slider.build.min.js' | asset_url -}}" defer></script>
+			<script src="{{- 'section-product-tabs.build.min.js' | asset_url -}}" defer></script>
+		</section>
+	{%- endif -%}
+{%- elsif design == 'alternate' -%}
+	{%- render 'product-tabs-new', section: section -%}
+{%- endif -%}
+
+{%- schema -%}
+{
+	"name": "Product tabs",
+	"disabled_on": {
+		"groups": ["header", "footer"],
+		"templates": ["password"]
+	},
+	"settings": [
+		{
+			"type": "text",
+			"id": "label",
+			"label": "Label"
+		},
+		{
+			"type": "text",
+			"id": "heading",
+			"label": "Heading",
+			"default": "Trending products"
+		},
+		{
+			"type": "checkbox",
+			"id": "enable_cards_indent",
+			"label": "Enable product cards indent",
+			"default": false,
+			"info": "Works with a standard design"
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "checkbox",
+			"id": "full_width",
+			"label": "Make full width",
+			"default": true,
+			"info": "If unchecked - container width will be set based on the group 'Layout' settings in the Theme settings."
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 50
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 0
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 30
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 30
+		}
+	],
+	"blocks": [
+		{
+			"type": "tab",
+			"name": "Tab",
+			"limit": 3,
+			"settings": [
+				{
+					"type": "text",
+					"id": "heading",
+					"label": "Heading",
+					"default": "Best sellers"
+				},
+				{
+					"type": "product_list",
+					"id": "product_list",
+					"label": "Products",
+					"limit": 4
+				}
+			]
+		}
+	],
+	"presets": [
+		{
+			"name": "Product tabs",
+			"blocks": [
+				{
+					"type": "tab",
+					"settings": {
+						"heading": "Best sellers"
+					}
+				},
+				{
+					"type": "tab",
+					"settings": {
+						"heading": "New Arrivals"
+					}
+				},
+				{
+					"type": "tab",
+					"settings": {
+						"heading": "On sale"
+					}
+				}
+			]
+		}
+	]
+}
+{%- endschema -%}

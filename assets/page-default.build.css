@@ -1,0 +1,60 @@
+.page-default {
+	max-width: 840px;
+	margin: 0 auto;
+	padding: 0 20px;
+}
+.page-default .page-default__title {
+	margin-bottom: 40px;
+	text-align: center;
+}
+@media (min-width: 768px) {
+	.page-default .page-default__title {
+		margin-bottom: 60px;
+	}
+}
+.page-default-new {
+	padding: 0 16px;
+}
+.page-default-new .page-default__container {
+	position: relative;
+	z-index: 1;
+	margin: 0 auto;
+	max-width: 840px;
+}
+.page-default-new .page-default__title {
+	margin-bottom: 30px;
+}
+.page-default-new.page-default--accent-spot {
+	position: relative;
+	overflow-x: clip;
+}
+.page-default-new.page-default--accent-spot::before {
+	content: "";
+	position: absolute;
+	top: 148px;
+	left: -111px;
+	z-index: -1;
+	width: 408px;
+	height: 408px;
+	background: var(--ellipse-gradient);
+	pointer-events: none;
+}
+@media (min-width: 992px) {
+	.page-default-new.page-default--accent-spot::before {
+		top: 71px;
+		left: -193px;
+		width: 600px;
+		height: 600px;
+	}
+	.page-default-new.page-default--accent-spot::after {
+		content: "";
+		position: absolute;
+		bottom: -134px;
+		right: -80px;
+		z-index: -1;
+		width: 600px;
+		height: 600px;
+		background: var(--ellipse-gradient);
+		pointer-events: none;
+	}
+}

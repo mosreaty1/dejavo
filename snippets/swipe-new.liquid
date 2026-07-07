@@ -1,0 +1,242 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Swipe new
+	This snippet displays an alternative view for the Swipe section
+
+	{% render 'swipe-new',
+		section: section
+	%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign enable_accents_spot  = settings.enable_accents_spot -%}
+{%- assign ellipse_spot_opacity = settings.accents_spot_opacity | divided_by: 100.0 -%}
+{%- assign enable_lazy_load     = section.settings.enable_lazy_load -%}
+{%- assign heading 				= section.settings.heading -%}
+{%- assign subheading 			= section.settings.subheading -%}
+{%- assign background_color 	= section.settings.background_color -%}
+{%- assign heading_color 		= section.settings.heading_color -%}
+{%- assign subheading_color 	= section.settings.subheading_color -%}
+{%- assign block_heading_color 	= section.settings.block_heading_color -%}
+{%- assign block_text_color 	= section.settings.text_color -%}
+{%- assign accents_spot_color 	= section.settings.accents_spot_color -%}
+{%- assign blocks 				= section.blocks -%}
+{%- assign blocks_count 	    = 0 -%}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{%- capture section_styles -%}
+	--background-color: {{- background_color -}}; {{- -}}
+	--heading-color: {{- heading_color -}}; {{- -}}
+	--subheading-color: {{- subheading_color -}}; {{- -}}
+	--block-heading-color: {{- block_heading_color -}}; {{- -}}
+	--block-text-color: {{- block_text_color -}}; {{- -}}
+	--accents-spot-color: radial-gradient(50% 50% at 50% 50%, {{ accents_spot_color | color_modify: "alpha", ellipse_spot_opacity }} 0%, {{ accents_spot_color | color_modify: "alpha", 0 }} 100%);
+{%- endcapture -%}
+
+{%- assign content_blocks = '' -%}
+{%- assign image_blocks = '' -%}
+
+{%- for block in blocks -%}
+	{%- assign content_image 				= block.settings.content_image -%}
+	{%- assign content_heading 				= block.settings.content_heading -%}
+	{%- assign content_text 				= block.settings.content_text -%}
+
+	{%- capture img_focal -%}
+		--img-desktop-pos: {{ content_image.presentation.focal_point }};
+	{%- endcapture -%}
+
+	{%- capture content_block -%}
+		{%- if content_heading != blank or content_text != blank -%}
+			{%- if content_heading != blank -%}
+				<p class="swipe__content-block-heading">
+					{{- content_heading -}}
+				</p>
+			{%- endif -%}
+
+			{%- if content_text != blank -%}
+				<p class="swipe__content-block-text">
+					{{- content_text -}}
+				</p>
+			{%- endif -%}
+		{%- endif -%}
+	{%- endcapture -%}
+
+	{%- capture content_block_desktop -%}
+		{%- if content_block != blank -%}
+			<div class="swipe__content-block swipe__content-block--desktop js-swipe-content-block">
+				{{- content_block -}}
+			</div>
+		{%- endif -%}
+	{%- endcapture -%}
+
+	{%- capture content_block_mobile -%}
+		{%- if content_block != blank -%}
+			<div class="swipe__content-block swipe__content-block--mobile">
+				{{- content_block -}}
+			</div>
+		{%- endif -%}
+	{%- endcapture -%}
+
+	{%- capture image_capture -%}
+		<div class="swipe__image-block-image-wrapper">
+			<div class="swipe__image-block-image-container">
+				{%- if content_image != blank -%}
+					{%- if enable_lazy_load -%}
+						<picture class="lazy">
+							<source data-srcset="{{ content_image | image_url: width: 255 }} 1x, {{ content_image | image_url: width: 310 }} 2x"
+									srcset="{{ content_image | image_url: width: 10 }} 1x"
+									media="(max-width: 375px)">
+
+							<source data-srcset="{{ content_image | image_url: width: 455 }} 1x, {{ content_image | image_url: width: 910 }} 2x"
+									srcset="{{ content_image | image_url: width: 10 }} 1x"
+									media="(max-width: 575px)">
+
+							<source data-srcset="{{ content_image | image_url: width: 647 }} 1x, {{ content_image | image_url: width: 1294 }} 2x"
+									srcset="{{ content_image | image_url: width: 10 }} 1x"
+									media="(max-width: 767px)">
+
+							<source data-srcset="{{ content_image | image_url: width: 421 }} 1x, {{ content_image | image_url: width: 842 }} 2x"
+									srcset="{{ content_image | image_url: width: 10 }} 1x"
+									media="(max-width: 991px)">
+
+							<source data-srcset="{{ content_image | image_url: width: 525 }} 1x, {{ content_image | image_url: width: 1050 }} 2x"
+									srcset="{{ content_image | image_url: width: 10 }} 1x"
+									media="(max-width: 1500px)">
+
+							<source data-srcset="{{ content_image | image_url: width: 625 }} 1x, {{ content_image | image_url: width: 1250 }} 2x"
+									srcset="{{ content_image | image_url: width: 10 }} 1x"
+									media="(max-width: 1700px)">
+
+							<img
+								class="swipe__image-block-image"
+								src="{{- content_image | image_url: width: 10 -}}"
+								srcset="{{- content_image | image_url: width: 10 -}}"
+								data-src="{{ content_image | image_url: width: 550 }}"
+								data-srcset="{{ content_image | image_url: width: 550  }} 1x, {{ content_image | image_url: width: 1100 }} 2x"
+								alt="{{- content_image.alt -}}"
+								style="{{ img_focal }}"
+							>
+						</picture>
+					{%- else -%}
+						<picture>
+							<source srcset="{{ content_image | image_url: width: 255 }} 1x, {{ content_image | image_url: width: 310 }} 2x"
+									media="(max-width: 375px)">
+
+							<source srcset="{{ content_image | image_url: width: 455 }} 1x, {{ content_image | image_url: width: 910 }} 2x"
+									media="(max-width: 575px)">
+
+							<source srcset="{{ content_image | image_url: width: 647 }} 1x, {{ content_image | image_url: width: 1294 }} 2x"
+									media="(max-width: 767px)">
+
+							<source srcset="{{ content_image | image_url: width: 421 }} 1x, {{ content_image | image_url: width: 842 }} 2x"
+									media="(max-width: 991px)">
+
+							<source srcset="{{ content_image | image_url: width: 525 }} 1x, {{ content_image | image_url: width: 1050 }} 2x"
+									media="(max-width: 1500px)">
+
+							<source srcset="{{ content_image | image_url: width: 625 }} 1x, {{ content_image | image_url: width: 1250 }} 2x"
+									media="(max-width: 1700px)">
+
+							<img
+								class="swipe__image-block-image"
+								src="{{ content_image | image_url: width: 550 }}"
+								srcset="{{ content_image | image_url: width: 550  }} 1x, {{ content_image | image_url: width: 1100 }} 2x"
+								alt="{{- content_image.alt -}}"
+								style="{{ img_focal }}"
+							>
+						</picture>
+					{%- endif -%}
+				{%- else -%}
+					{{ 'image' | placeholder_svg_tag: 'swipe__image-block-image swipe__image-block-image--placeholder' }}
+				{%- endif -%}
+			</div>
+		</div>
+	{%- endcapture -%}
+
+	{%- capture image_block -%}
+		<div class="swipe__image-with-content-block{% if forloop.first %} active{% endif %} js-swipe-image-block-alternate">
+			{{- image_capture -}}
+		</div>
+	{%- endcapture -%}
+
+	{%- capture image_with_content_block -%}
+		{%- if content_block_mobile != blank -%}
+			<div class="swipe__image-with-content-block js-swipe-image-block">
+				{{- content_block_mobile -}}
+
+				{{- image_capture -}}
+			</div>
+		{%- endif -%}
+	{%- endcapture -%}
+
+	{% if content_block_desktop != blank and image_with_content_block != blank %}
+		{%- assign blocks_count = blocks_count | plus: 1 -%}
+	{% endif %}
+
+	{%- assign content_blocks = content_blocks | append: content_block_desktop -%}
+	{%- assign image_with_content_blocks = image_with_content_blocks | append: image_with_content_block -%}
+	{%- assign image_blocks = image_blocks | append: image_block -%}
+{%- endfor -%}
+
+{%- if heading != blank and blocks_count > 1 -%}
+	{{- "swipe-new.build.css" | asset_url | stylesheet_tag -}}
+
+	<section
+		class="swipe swipe-new{% if settings.enable_sepia and background_color != blank %} swipe--sepia{% endif %}{% if enable_accents_spot %} swipe--accent-spot{% endif %} js-animate{% if request.visual_preview_mode or section.index == 1 %} animated{% endif %} js-swipe"
+		id="{{- section.id -}}"
+		style="{{- section_styles -}}"
+	>
+		<div class="swipe__container">
+			<div class="swipe__row">
+				<div class="swipe__column swipe__column--content need-animate">
+					<div class="swipe__content js-swipe-content">
+						<div class="swipe__content-wrapper">
+							{%- if subheading != blank -%}
+								<div class="swipe__subheading subheading">
+									{{- subheading -}}
+								</div>
+							{%- endif -%}
+
+							{%- if heading != blank -%}
+								<h2 class="swipe__heading h2">
+									{{- heading -}}
+								</h2>
+							{%- endif -%}
+
+							<div class="swipe__content-blocks swipe__content-blocks--desktop">
+								{{- content_blocks -}}
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="swipe__column swipe__column--images-with-content need-animate">
+					<div class="swipe__image-with-content-blocks">
+						{{- image_blocks -}}
+					</div>
+				</div>
+
+				<div class="swipe__column swipe__column--images-with-content-mobile need-animate">
+					<div class="swipe__image-with-content-blocks js-swipe-image-blocks">
+						{{- image_with_content_blocks -}}
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script src="{{- 'section-swipe.build.min.js' | asset_url -}}" defer></script>
+{%- endif -%}

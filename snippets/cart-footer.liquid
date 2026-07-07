@@ -1,0 +1,379 @@
+{% comment %}
+	------------------------------------------------------------------------------
+	Snippet: Cart footer
+	Render shopping cart footer
+	- section: Section object (required)
+
+	Usage:
+	{%- render 'cart-footer' -%}
+	------------------------------------------------------------------------------
+{% endcomment %}
+
+{%- assign design = settings.design -%}
+
+{%- assign enable_minimum_order_amount = settings.enable_minimum_order_amount -%}
+{%- assign minimum_order_amount_goal = settings.minimum_order_amount_goal -%}
+{%- assign minimum_order_amount_goal_message = settings.minimum_order_amount_goal_message -%}
+{%- assign minimum_order_amount_goal_reached_message = settings.minimum_order_amount_goal_reached_message -%}
+{%- assign minimum_order_amount_goal_message_color = settings.minimum_order_amount_goal_message_color | default: "#CC0000" -%}
+{%- assign minimum_order_amount_goal_reached_message_color = settings.minimum_order_amount_goal_reached_message_color | default: "#000000" -%}
+{%- assign terms_and_conditions_text = settings.terms_and_conditions_text -%}
+
+{%- assign cart_total   = cart.total_price -%}
+{%- assign amount_cents = minimum_order_amount_goal | abs | times: 100.0 -%}
+
+{%- capture style -%}
+	--minimum-order-amount-message: {{- minimum_order_amount_goal_message_color -}}; {{-  -}}
+	--minimum-order-amount-reached-message: {{- minimum_order_amount_goal_reached_message_color -}};
+{%- endcapture -%}
+
+{%- capture payment_types -%}
+	{%- if settings.show_payment_types -%}
+		{%- render 'payments' -%}
+	{%- endif -%}
+{%- endcapture -%}
+
+{%- capture footer_tax_text -%}
+	{%- if cart.taxes_included and shop.shipping_policy.body != blank -%}
+		{{ 'cart.general.taxes_included_and_shipping_policy_html' | t: link: shop.shipping_policy.url }}
+	{%- elsif cart.taxes_included -%}
+		{{ 'cart.general.taxes_included_but_shipping_at_checkout' | t }}
+	{%- elsif shop.shipping_policy.body != blank -%}
+		{{ 'cart.general.taxes_and_shipping_policy_at_checkout_html' | t: link: shop.shipping_policy.url }}
+	{%- else -%}
+		{{ 'cart.general.taxes_and_shipping_at_checkout' | t }}
+	{%- endif -%}
+{%- endcapture -%}
+
+{%- assign is_button_message = false -%}
+
+{%- if enable_minimum_order_amount -%}
+	{%- if minimum_order_amount_goal_message != blank and minimum_order_amount_goal_reached_message != blank -%}
+		{%- assign is_button_message = true -%}
+	{%- endif -%}
+{%- endif -%}
+
+{%- if section != blank -%}
+	<div class="{% if design == 'standard' %}cart-footer{% elsif design == 'alternate' %}cart-footer-new{% endif %}" style="{{- style -}}">
+		{%- capture summary -%}
+			{%- if settings.show_cart_note -%}
+				<div class="cart-footer__notes {% if note_accordion %}cart-footer__notes--accordion-container js-accordion-container{% endif %}">
+					{% if note_accordion %}
+						<div class="cart-footer__accordion-item js-accordion-item">
+							<button class="cart-footer__notes-label cart-footer__accordion-control focus-visible-outline js-accordion-control"
+									aria-controls="cart-drawer-note"
+									aria-expanded="false"
+							>
+								<span class="js-cart-drawer-note-control-text cart-footer__note-control">
+									{% if cart.note != blank %}
+										{{- 'cart.general.edit_note' | t -}}
+									{% else %}
+										{{- 'cart.general.note' | t -}}
+									{% endif %}
+								</span>
+
+								{%- if design == 'standard' -%}
+									<span class="cart-footer__notes-icon cart-footer__notes-icon-plus">
+										{%- render 'icons-small', icon: 'plus' -%}
+									</span>
+
+									<span class="cart-footer__notes-icon cart-footer__notes-icon-minus">
+										{%- render 'icons-small', icon: 'minus' -%}
+									</span>
+								{%- elsif design == 'alternate' -%}
+									<span class="cart-footer__notes-icon">
+										{%- render "icons-new", icon: "arrow-down" -%}
+									</span>
+								{%- endif -%}
+							</button>
+
+							<div id="cart-drawer-note"
+								 class="cart-footer__accordion-content js-accordion-content"
+								 style="height: 0;"
+							>
+								<div class="js-accordion-inner">
+									<label for="note" class="visually-hidden">{{- 'cart.general.note' | t -}}</label>
+
+									<textarea
+										id="note"
+										name="note"
+										form="cart-{{- section.id -}}"
+										class="textarea cart-footer__notes-field js-cart-notes-field{% if design == 'alternate' %} textarea-rounded{% endif %}"
+										aria-label="{{- 'cart.general.note' | t | escape -}}"
+									>
+									{{- cart.note -}}
+								</textarea>
+								</div>
+							</div>
+						</div>
+					{% else %}
+						<label for="note" class="cart-footer__notes-label">
+							{{- 'cart.general.note' | t -}}
+						</label>
+
+						<textarea
+							id="note"
+							name="note"
+							form="cart-{{- section.id -}}"
+							class="textarea cart-footer__notes-field js-cart-notes-field {% if design == 'alternate' %} textarea-rounded{% endif %}"
+							aria-label="{{- 'cart.general.note' | t | escape -}}"
+						>
+							{{- cart.note -}}
+						</textarea>
+					{% endif %}
+
+					{%- if settings.show_tax_and_shipping and design == 'alternate' -%}
+						<small
+							class="rte cart-footer__tax cart-footer__tax--mobile">
+							{{- footer_tax_text -}}
+						</small>
+					{%- endif -%}
+				</div>
+			{%- endif -%}
+
+			<div class="cart-footer__shipping_and_subtotal">
+				{% if settings.show_shipping_rates_calculator %}
+					<div
+						class="{% if design == 'standard' %}cart-shipping-calc{% elsif design == 'alternate' %}cart-shipping-calc-new{% endif %} js-accordion-container ">
+						<div class="cart-footer__accordion-item js-accordion-item">
+							<button
+								class="cart-footer__notes-label cart-footer__accordion-control focus-visible-outline js-accordion-control"
+								aria-controls="cart-shipping-calc-content"
+								aria-expanded="false"
+							>
+								<span class="js-cart-drawer-note-control-text cart-footer__note-control">
+									{{- "cart.shipping_rates.accordion_title" | t -}}
+								</span>
+
+								{%- if design == 'standard' -%}
+									<span class="cart-footer__notes-icon cart-footer__notes-icon-plus">
+										{%- render 'icons-small', icon: 'plus' -%}
+									</span>
+
+									<span class="cart-footer__notes-icon cart-footer__notes-icon-minus">
+										{%- render 'icons-small', icon: 'minus' -%}
+									</span>
+								{%- elsif design == 'alternate' -%}
+									<span class="cart-footer__notes-icon">
+										{%- render "icons-new", icon: "arrow-down" -%}
+									</span>
+								{%- endif -%}
+							</button>
+
+							<div id="cart-shipping-calc-content"
+								 class="cart-shipping-calc__content cart-footer__accordion-content js-accordion-content"
+								 style="height: 0;"
+							>
+								<div class="cart-shipping-calc__fields-wrapper js-accordion-inner">
+									<div class="cart-shipping-calc__field">
+										<label
+											class="cart-shipping-calc__label{% if design == 'alternate' %} visually-hidden{% endif %}"
+											for="cart-address-country">
+											{{- "cart.shipping_rates.country_label" | t -}}
+										</label>
+
+										<div class="select-wrapper">
+											<select id="cart-address-country"
+													class="cart-shipping-calc__select js-ship-rate-field"
+													data-default="{% if shop.customer_accounts_enabled and customer %}{{ customer.default_address.country }}{% elsif settings.shipping_calculator_default_country != '' %}{{ settings.shipping_calculator_default_country }}{% endif %}"
+											>{{ all_country_option_tags }}</select>
+
+											{%- render 'icons-new', icon: 'arrow-down' -%}
+										</div>
+
+										<div id="error-cart-address-country" class="error is-hidden"></div>
+									</div>
+
+									<div class="cart-shipping-calc__field">
+										<label
+											class="cart-shipping-calc__label{% if design == 'alternate' %} visually-hidden{% endif %}"
+											for="cart-address-province">
+											{{- "cart.shipping_rates.province_label" | t -}}
+										</label>
+
+										<div
+											class="select-wrapper"
+											id="cart-address-province-container" style="display:none;">
+											<select id="cart-address-province"
+													class="cart-shipping-calc__select js-ship-rate-field"
+													data-default="{% if shop.customer_accounts_enabled and customer and customer.default_address.province != '' %}{{ customer.default_address.province }}{% endif %}"
+											></select>
+
+											{%- render 'icons-new', icon: 'arrow-down' -%}
+										</div>
+									</div>
+
+									<div class="cart-shipping-calc__field">
+										<div class="input-wrapper">
+											{% if design == 'alternate' %}
+												<label class="input-label visually-hidden" for="cart-address-zip">
+													{{- "cart.shipping_rates.zip_label" | t -}}
+												</label>
+											{% endif %}
+
+											<input type="text" id="cart-address-zip"
+												   class="input cart-shipping-calc__input js-ship-rate-field {% if design == 'alternate' %} input-rounded{% endif %}"
+												   placeholder="{{- "cart.shipping_rates.zip_label" | t | escape -}}"
+												   {% if shop.customer_accounts_enabled and customer %}value="{{ customer.default_address.zip }}"{% endif %}
+											/>
+
+											{% if design == 'standard' %}
+												<label class="input-label" for="cart-address-zip">
+													{{- "cart.shipping_rates.zip_label" | t -}}
+												</label>
+											{% endif %}
+										</div>
+
+										<div id="error-cart-address-zip" class="error is-hidden"></div>
+									</div>
+
+									<div class="cart-shipping-calc__field cart-shipping-calc__field--button-wrapper">
+										{%- if design == 'standard' -%}
+											<button type="button" class="button button--primary js-get-ship-rates">
+												{{- "cart.shipping_rates.calculate_button" | t -}}
+											</button>
+										{%- elsif design == 'alternate' -%}
+											<button type="button" class="cart-shipping-calc__button js-get-ship-rates">
+											<span class="cart-shipping-calc__button-text">
+												{{- "cart.shipping_rates.calculate_button" | t -}}
+											</span>
+
+												<span class="cart-shipping-calc__button-icon">
+												{%- render "icons-new", icon: "arrow-right" -%}
+											</span>
+											</button>
+
+											<div id="cart-rates-wrapper" class="cart-shipping-calc__status"></div>
+										{%- endif -%}
+									</div>
+
+									{%- if design == 'standard' -%}
+										<div id="cart-rates-wrapper" class="cart-shipping-calc__status"></div>
+									{%- endif -%}
+								</div>
+							</div>
+						</div>
+					</div>
+				{% endif %}
+
+				<div class="cart-footer__subtotal-wrapper">
+					{%- if design == 'alternate' -%}
+						{{- alternate_design_summary -}}
+					{%- endif -%}
+
+					{%- if settings.show_tax_and_shipping -%}
+						<small
+							class="rte cart-footer__tax {% if design == 'alternate' %}cart-footer__tax--desktop{% endif %}">
+							{{- footer_tax_text -}}
+						</small>
+					{%- endif -%}
+				</div>
+			</div>
+		{%- endcapture -%}
+
+		{%- if summary != '' -%}
+			<div class="cart-footer__summary">
+				{{- summary -}}
+			</div>
+		{%- endif -%}
+
+		{% if terms_and_conditions_text != blank %}
+			<div class="cart-footer__terms--alternate">
+				<div class="cart-footer__terms-and-conditions">
+					<input type="checkbox" id="cart-terms-and-conditions-alternate"
+						   class="js-terms-and-conditions-checkbox checkbox__input visually-hidden">
+					<label for="cart-terms-and-conditions-alternate" class="checkbox__label rte">
+						<span class="checkbox-label__box"></span>
+
+						<span>{{- terms_and_conditions_text -}}</span>
+					</label>
+				</div>
+			</div>
+		{% endif %}
+
+		<div class="cart-footer__ctas">
+			{%- capture default_checkout_button -%}
+				{{- 'cart.general.checkout' | t -}}
+			{%- endcapture -%}
+
+			{%- assign checkout_button = settings.cart_checkout_button | default: default_checkout_button -%}
+			{%- assign gift_product = settings.gift_wrap_product -%}
+
+			{% if show_gift_button and gift_product != blank and gift_product.available %}
+				{% assign gift_button_icon = settings.gift_wrap_button_icon %}
+
+				{%- capture button_styles -%}
+					--gift-button-icon: url({% if gift_button_icon != blank %}'{{ gift_button_icon | img_url }}'{% else %}{{ 'icon-gift.svg' | asset_url }}{% endif %}); {{- -}}
+				{%- endcapture -%}
+
+				<div
+					class="cart-gift-button-container {% if design == 'alternate' %}cart-footer__button-wrapper{% endif %}"
+					style="{{ button_styles }}">
+					<button class="{% if design == 'standard' %}gift-button{% elsif design == 'alternate' %}gift-button-new button-new button--primary{% endif %} focus-visible-outline js-add-to-cart"
+							type="button"
+							data-product-handle="{{- gift_product.handle -}}"
+							data-min-quantity="{{- gift_product.selected_or_first_available_variant.quantity_rule.min -}}"
+						{% if gift_product.template_suffix == 'pre-order' %}
+							data-preorder
+						{% endif %}
+						{% if gift_product.has_only_default_variant or gift_product.variants.size == 1 %}
+							data-variant-id="{{- gift_product.variants[0].id -}}"
+						{% endif %}
+					>
+						{% if design == 'alternate' %}<span class="gift-button-new__icon"></span>{% endif %}
+						{{ settings.gift_wrap_button_label }}
+					</button>
+				</div>
+			{% endif %}
+
+			{% if terms_and_conditions_text != blank %}
+				<div class="cart-footer__terms--standard">
+					<div class="cart-footer__terms-and-conditions">
+						<input type="checkbox" id="cart-terms-and-conditions-standard"
+							   class="js-terms-and-conditions-checkbox checkbox__input visually-hidden">
+						<label for="cart-terms-and-conditions-standard" class="checkbox__label rte">
+							<span class="checkbox-label__box"></span>
+
+							<span>{{- terms_and_conditions_text -}}</span>
+						</label>
+					</div>
+				</div>
+			{% endif %}
+
+			<div class="js-cart-footer-button {% if design == 'alternate' %}cart-footer__button-wrapper{% endif %}">
+				<button
+					type="submit"
+					class="{% if design == 'standard' %}button button--block{% elsif design == 'alternate' %}button-new cart-footer__checkout{% endif %} button--secondary js-cart-footer-checkout"
+					name="checkout"
+					form="cart-{{- section.id -}}"
+					{% if terms_and_conditions_text != blank %}
+						disabled
+					{%- endif -%}
+				>
+					{{- checkout_button -}}
+				</button>
+			</div>
+		</div>
+
+		{%- if settings.show_additional_checkout_buttons and additional_checkout_buttons -%}
+			<div class="additional-checkout-buttons cart-footer__ctas cart-footer__ctas--additional js-cart-footer-additional-buttons">
+				{{ content_for_additional_checkout_buttons }}
+			</div>
+		{%- endif -%}
+
+		{%- if is_button_message -%}
+			<p class="cart-footer__button-message js-cart-footer-button-message"
+			   data-amount-cents="{{ amount_cents }}"
+			   data-cart-total="{{ cart_total }}"
+			   data-amount-message="{{ minimum_order_amount_goal_message | escape }}"
+			   data-success-message="{{ minimum_order_amount_goal_reached_message | escape }}"
+			></p>
+		{%- endif -%}
+
+		{%- if payment_types != '' -%}
+			<div class="cart-footer__payment">
+				{{- payment_types -}}
+			</div>
+		{%- endif -%}
+	</div>
+{%- endif -%}

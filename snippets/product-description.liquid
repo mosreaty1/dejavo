@@ -1,0 +1,9 @@
+{% if product.description != blank %}
+	{% assign description_class = "product-description rte" %}
+
+	{% if design == 'alternate' %}
+		{% assign description_class = "product-description-new rte-new" %}
+	{% endif %}
+
+	<div class="{{ description_class }}">{{ product.description }}</div>
+{% endif %}

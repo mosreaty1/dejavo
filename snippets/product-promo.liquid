@@ -1,0 +1,158 @@
+{%- assign enabled		= settings.is_product_promo_enabled -%}
+{%- assign cookie_time	= settings.product_promo_cookie_time -%}
+{%- assign heading 		= settings.product_promo_heading | default: 'Get 10% off' -%}
+{%- assign description	= settings.product_promo_product_description -%}
+{%- assign product		= settings.product_promo_product -%}
+{%- assign layout		= settings.product_promo_layout -%}
+{%- assign show_shadow	= settings.product_promo_show_shadow -%}
+
+{%- assign background_color 				= settings.product_promo_background_color | default: '#000000' -%}
+{%- assign border_color 					= settings.product_promo_border_color -%}
+{%- assign text_color 						= settings.product_promo_text_color | default: '#ffffff' -%}
+{%- assign button_background_color 			= settings.product_promo_button_background_color | default: "#000000" -%}
+{%- assign button_label_color 				= settings.product_promo_button_label_color | default: "#ffffff" -%}
+{%- assign button_border_color 				= settings.product_promo_button_border_color | default: "#ffffff" -%}
+{%- assign button_background_hover_color 	= settings.product_promo_button_background_hover_color | default: "#ffffff" -%}
+{%- assign button_label_hover_color 		= settings.product_promo_button_label_hover_color | default: "#000000" -%}
+{%- assign button_border_hover_color 		= settings.product_promo_button_border_hover_color | default: "#000000" -%}
+
+{%- capture style -%}
+	--background-color: {{ background_color -}}; {{-  -}}
+	--text-color: {{ text_color -}};
+	--border-color: {{ border_color -}};
+	--button-background-color: {{- button_background_color -}}; {{-  -}}
+	--button-label-color: {{- button_label_color -}}; {{-  -}}
+	--button-border-color: {{- button_border_color -}}; {{-  -}}
+	--button-background-hover-color: {{- button_background_hover_color -}}; {{-  -}}
+	--button-label-hover-color: {{- button_label_hover_color -}}; {{-  -}}
+	--button-border-hover-color: {{- button_border_hover_color -}};
+{%- endcapture -%}
+
+{%- if enabled and product != blank -%}
+	<div
+		class="product-promo product-promo--{{- layout }}{% if border_color != 'rgba(0,0,0,0)' %} product-promo--bordered{% endif %}{% if show_shadow %} product-promo--shadow{% endif %} js-product-promo is-hidden"
+		style="{{- style -}}"
+		data-cookie-time="{{- cookie_time -}}"
+		data-handle="{{- product.handle -}}"
+		data-variant-id="{{- product.first_available_variant.id -}}"
+		data-variant-count="{{- product.variants.size -}}"
+	>
+		{{ 'product-promo.build.css' | asset_url | stylesheet_tag }}
+
+		{%- if layout == "text" -%}
+			<button
+				class="product-promo__content js-product-promo-quick-view-button focus-visible-outline"
+				aria-label="{{- 'product_promo.button_aria' | t: product_title: product.title | escape -}}"
+			>
+				<span class="product-promo__heading">
+					{{- heading -}}
+				</span>
+
+				{%- if description != blank -%}
+					<div class="product-promo__description">
+						{{- description -}}
+					</div>
+				{%- endif -%}
+			</button>
+		{%- else -%}
+			{% assign image = product.featured_image | default: settings.product_default_image %}
+
+			{%- capture img_focal -%}
+				--img-desktop-pos: {{ image.presentation.focal_point }};
+			{%- endcapture -%}
+
+			<div class="product-promo__media">
+				<a href="{{- product.url -}}" class="focus-visible-outline product-promo__link">
+					<span class="visually-hidden">
+						{{- product.title -}}
+					</span>
+				</a>
+
+				<div class="product-promo__image-container">
+					<picture class="lazy">
+						<source
+							data-srcset="{{ image | img_url: '120x'  }} 1x, {{ image | img_url: '240x' }} 2x"
+							srcset="{{ image | img_url: '10x'  }} 1x, {{ image | img_url: '10x' }} 2x"
+							media="(max-width: 480px)"
+							width="120"
+							height="120"
+						/>
+
+						<img
+							class="product-promo__image"
+							src="{{ image | img_url: '10x' }}"
+							data-src="{{ image | img_url: '150x' }}"
+							data-srcset="{{ image | img_url: '150x'  }} 1x, {{ image | img_url: '300x' }} 2x"
+							width="150"
+							height="150"
+							alt="{{- image.alt | escape -}}"
+							{% if img_focal != blank %}
+								style="{{ img_focal }}"
+							{% endif %}
+						/>
+					</picture>
+
+					<noscript>
+						<picture>
+							<source
+								srcset="{{ image | img_url: '120x'  }} 1x, {{ image | img_url: '240x' }} 2x"
+								media="(max-width: 480px)"
+							/>
+
+							<img
+								class="product-promo__image"
+								srcset="{{ image | img_url: '150x'  }} 1x, {{ image | img_url: '300x' }} 2x"
+								src="{{- image | img_url: '150x'  -}}"
+								alt="{{- image.alt | escape -}}"
+								loading="lazy"
+								width="150"
+								height="150"
+								{% if img_focal != blank %}
+									style="{{ img_focal }}"
+								{% endif %}
+							/>
+						</picture>
+					</noscript>
+				</div>
+			</div>
+
+			<div class="product-promo__content">
+				<a class="focus-visible-outline button-link product-promo__title" href="{{ product.url }}">
+					<span class="product-promo__title-text">
+						{{- product.title -}}
+					</span>
+				</a>
+
+				<div class="product-promo__meta">
+					<div class="product-promo__price">
+						{%- render 'price', product: product -%}
+					</div>
+
+					<button
+						class="button product-promo__quick-view-button js-product-promo-quick-view-button focus-visible-outline"
+						aria-label="{{- 'product_promo.button_aria' | t: product_title: product.title | escape -}}"
+					>
+						<span class="product-promo__heading">
+							{%- unless product.available -%}
+								{{- "product_promo.sold_out" | t -}}
+							{%- else -%}
+								{{- "product_promo.add_to_cart" | t -}}
+							{%- endunless -%}
+						</span>
+					</button>
+				</div>
+			</div>
+		{%- endif -%}
+
+		<button
+			class="product-promo__close focus-visible-outline js-product-promo-quick-view-button-close"
+			data-target="product-promo"
+			aria-label="{{ "general.accessibility.close" | t }}"
+			data-js-toggle="product-promo"
+		>
+			{%- render 'icons-small', icon: 'close' -%}
+		</button>
+
+		<script src="{{- 'section-product-promo.build.min.js' | asset_url -}}" defer></script>
+	</div>
+{%- endif -%}

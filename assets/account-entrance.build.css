@@ -1,0 +1,507 @@
+/* stylelint-disable */
+.account-entrance {
+	display: flex;
+	flex-direction: column;
+	flex: 1 0 auto;
+	justify-content: center;
+	text-align: center;
+}
+.account-entrance .account-entrance__label {
+	font-size: calc(var(--heading-font-size) * 0.875);
+	font-family: var(--base-font-family);
+}
+.account-entrance .account-entrance__label + .account-entrance__heading {
+	margin-top: 0.8rem;
+}
+.account-entrance .account-entrance__grid-row {
+	display: flex;
+	flex-direction: column;
+}
+.account-entrance .account-entrance__grid-column {
+	width: 100%;
+}
+.account-entrance .account-entrance__grid-column.account-entrance__grid-column--main {
+	align-self: center;
+	padding-bottom: 50px;
+}
+.account-entrance .account-entrance__grid-column.account-entrance__grid-column--image {
+	position: relative;
+	min-height: 350px;
+}
+.account-entrance .account-entrance__image {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	-o-object-fit: cover;
+	   object-fit: cover;
+}
+.account-entrance .account-entrance__container {
+	max-width: 460px;
+	width: 100%;
+	margin: 0 auto;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+.account-entrance .account-entrance__container.account-entrance__container--large {
+	max-width: 1100px;
+}
+.account-entrance .account-entrance__form {
+	display: flex;
+	flex-direction: column;
+}
+.account-entrance .account-entrance__heading {
+	margin-bottom: 31px;
+	line-height: 1.369;
+	letter-spacing: 0.018em;
+}
+.account-entrance .account-entrance__subtitle {
+	margin-bottom: 40px;
+}
+.account-entrance .account-entrance__error-title {
+	margin-bottom: 15px;
+}
+.account-entrance .account-entrance__text {
+	margin-bottom: 20px;
+}
+.account-entrance .account-entrance__input {
+	margin-bottom: 0;
+	padding-top: 20px;
+	padding-bottom: 15px;
+	font-size: var(--body-font-size);
+	font-weight: 400;
+	line-height: 1.625;
+}
+.account-entrance .account-entrance__input-wrapper {
+	margin-bottom: 0;
+}
+.account-entrance .account-entrance__input-wrapper + .account-entrance__input-wrapper {
+	margin-top: 30px;
+}
+.account-entrance .account-entrance__buttons-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+.account-entrance .account-entrance__button {
+	width: 100%;
+	margin-top: 30px;
+	margin-bottom: 20px;
+	padding-top: 18px;
+	padding-bottom: 18px;
+	font-size: var(--body-font-size);
+	font-weight: 400;
+	line-height: 1.375;
+}
+.account-entrance .account-entrance__button + .account-entrance__button {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+.account-entrance .account-entrance__link,
+.account-entrance .account-entrance__new-customer {
+	line-height: 1.6;
+}
+.account-entrance .account-entrance__link {
+	position: relative;
+	width: -moz-max-content;
+	width: max-content;
+	text-decoration: unset;
+}
+.account-entrance .account-entrance__link::after {
+	content: "";
+	position: absolute;
+	bottom: 2px;
+	left: 0;
+	width: 100%;
+	height: 1px;
+	background-color: currentColor;
+	transform: scaleX(100%);
+	transition-timing-function: var(--easing-ease);
+	transition-duration: var(--timing-short);
+	transition-property: transform;
+}
+.account-entrance .account-entrance__link:focus-visible {
+	outline: 2px solid var(--color-text-primary);
+}
+.account-entrance .account-entrance__link.account-entrance__link--recover, .account-entrance .account-entrance__link.account-entrance__link--cancel {
+	margin-top: 16px;
+	text-transform: unset;
+	color: var(--color-text-primary);
+}
+.account-entrance .account-entrance__link.account-entrance__link--recover::after, .account-entrance .account-entrance__link.account-entrance__link--cancel::after {
+	background-color: var(--color-text-primary);
+	transform: scaleX(0);
+}
+@media (-moz-touch-enabled: 0), (hover: hover), (pointer: fine) {
+	.account-entrance .account-entrance__link.account-entrance__link--recover:hover::after, .account-entrance .account-entrance__link.account-entrance__link--cancel:hover::after {
+		transform: scaleX(100%);
+	}
+}
+@media (-moz-touch-enabled: 0), (hover: hover), (pointer: fine) {
+	.account-entrance .account-entrance__link:hover::after {
+		transform: scaleX(0);
+	}
+}
+.account-entrance .errors,
+.account-entrance .account-entrance__errors {
+	margin-bottom: 20px;
+	color: var(--color-secondary-attention);
+}
+.account-entrance .errors a,
+.account-entrance .account-entrance__errors a {
+	position: relative;
+	text-decoration: unset;
+	color: var(--color-text-primary);
+}
+.account-entrance .errors a::after,
+.account-entrance .account-entrance__errors a::after {
+	content: "";
+	position: absolute;
+	bottom: 2px;
+	left: 0;
+	width: 100%;
+	height: 1px;
+	background-color: var(--color-text-primary);
+	transform: scaleX(100%);
+	transition-timing-function: var(--easing-ease);
+	transition-duration: var(--timing-short);
+	transition-property: transform;
+}
+@media (-moz-touch-enabled: 0), (hover: hover), (pointer: fine) {
+	.account-entrance .errors a:hover::after,
+	.account-entrance .account-entrance__errors a:hover::after {
+		transform: scaleX(0);
+	}
+}
+.account-entrance .errors li + li,
+.account-entrance .account-entrance__errors li + li {
+	margin-top: 7px;
+}
+.account-entrance .account-entrance__header {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 40px;
+	gap: 10px;
+}
+.account-entrance .account-entrance__header .account-entrance__heading {
+	margin-bottom: 0;
+}
+.account-entrance .account-entrance__row {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 10px;
+}
+.account-entrance .account-entrance__row h2 {
+	-webkit-margin-end: 10px;
+	        margin-inline-end: 10px;
+	font-size: calc(var(--body-font-size) * 1.25);
+}
+.account-entrance .account-entrance__row.account-entrance__row--billings {
+	margin-bottom: 0;
+	border-bottom: 1px solid #e6e6e6;
+}
+.account-entrance .responsive-table {
+	border: 1px solid var(--color-border-secondary);
+}
+.account-entrance .responsive-table tr {
+	border-bottom: 1px solid var(--color-border-secondary);
+}
+.account-entrance .account-entrance__order-title {
+	text-align: start;
+}
+.account-entrance .account-entrance__order-date {
+	text-align: end;
+}
+.account-entrance .account-entrance__order-summary-discount {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	flex-wrap: wrap;
+	margin-top: 5px;
+	font-size: 80%;
+}
+.account-entrance .account-entrance__order-summary-discount .icon {
+	display: inline-block;
+	width: 12px;
+	height: 12px;
+	-webkit-margin-end: 5px;
+	        margin-inline-end: 5px;
+}
+.account-entrance .account-entrance__billings {
+	width: 50%;
+	padding: 23px 30px;
+	-webkit-border-start: 1px solid #e6e6e6;
+	        border-inline-start: 1px solid #e6e6e6;
+	text-align: start;
+}
+.account-entrance .account-entrance__billings * {
+	line-height: 1.5;
+}
+.account-entrance .account-entrance__billings:last-of-type {
+	-webkit-border-end: 1px solid #e6e6e6;
+	        border-inline-end: 1px solid #e6e6e6;
+}
+.account-entrance .account-entrance__order-detail-properties {
+	margin-top: 10px;
+	font-size: calc(var(--body-font-size) * 0.875);
+	font-weight: 400;
+	color: var(--color-text-secondary);
+}
+.account-entrance .account-entrance__order-detail-properties li + li {
+	margin-top: 5px;
+}
+.account-entrance .account-entrance__order-detail-note {
+	margin-top: 10px;
+}
+.account-entrance .account-entrance__discount-list-item {
+	display: flex;
+	align-items: center;
+	margin-top: 5px;
+}
+.account-entrance .account-entrance__discount-list-item .icon {
+	min-width: 12px;
+	width: 12px;
+	min-height: 12px;
+	height: 12px;
+	-webkit-margin-end: 5px;
+	        margin-inline-end: 5px;
+}
+@media (min-width: 768px) {
+	.account-entrance .account-entrance__heading {
+		margin-bottom: 39px;
+	}
+	.account-entrance .account-entrance__button {
+		margin-top: 39px;
+	}
+	.account-entrance .account-entrance__order-summary-discount {
+		position: relative;
+		-webkit-padding-start: 15px;
+		        padding-inline-start: 15px;
+	}
+	.account-entrance .account-entrance__order-summary-discount .icon {
+		position: absolute;
+		top: 2px;
+		left: 0;
+	}
+	.account-entrance .account-entrance__grid-column.account-entrance__grid-column--main {
+		padding-top: 50px;
+	}
+}
+@media (min-width: 992px) {
+	.account-entrance .account-entrance__grid-row {
+		flex-direction: row;
+	}
+	.account-entrance .account-entrance__grid-column {
+		width: 50%;
+	}
+	.account-entrance .account-entrance__grid-column.account-entrance__grid-column--main {
+		padding-top: 50px;
+	}
+	.account-entrance .account-entrance__grid-column.account-entrance__grid-column--image {
+		min-height: calc(100vh - 150px);
+	}
+}
+@media (max-width: 767.98px) {
+	.account-entrance .account-entrance__discount-list-item {
+		justify-content: flex-end;
+	}
+	.account-entrance .account-entrance__row {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+	.account-entrance .account-entrance__order-title {
+		margin-bottom: 10px;
+	}
+	.account-entrance .account-entrance__billings {
+		width: 100%;
+		padding: 15px;
+	}
+	.account-entrance .account-entrance__billings:first-of-type {
+		border-bottom: 1px solid #e6e6e6;
+		-webkit-border-end: 1px solid #e6e6e6;
+		        border-inline-end: 1px solid #e6e6e6;
+	}
+}
+.account-entrance-new {
+	position: relative;
+	max-width: 730px;
+	width: calc(100% - 32px);
+	margin: 0 auto;
+}
+.account-entrance-new.account-entrance-new--login {
+	max-width: 670px;
+}
+.account-entrance-new.account-entrance-new--login .account-entrance__link-wrapper {
+	margin-top: 30px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 15px;
+	justify-content: center;
+	align-items: center;
+}
+.account-entrance-new.account-entrance-new--login .account-entrance__create {
+	margin-top: 0;
+}
+.account-entrance-new.account-entrance-new--login .account-entrance__subtitle {
+	margin-top: 5px;
+}
+.account-entrance-new.account-entrance-new--login .account-entrance__text {
+	margin-top: 30px;
+}
+.account-entrance-new.account-entrance-new--login .account-entrance__buttons {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 20px;
+	margin-top: 30px;
+}
+.account-entrance-new.account-entrance-new--login .account-entrance__buttons .account-entrance__button {
+	margin-top: 0;
+}
+.account-entrance-new.account-entrance-new--accent-spot:before {
+	content: "";
+	position: absolute;
+	top: 0;
+	inset-inline-start: -200px;
+	z-index: -1;
+	width: 408px;
+	height: 408px;
+	background: var(--ellipse-gradient);
+	pointer-events: none;
+}
+.account-entrance-new .account-entrance__grid-row {
+	display: flex;
+	flex-direction: column;
+	border: 1px solid var(--color-border-thirdly);
+	border-radius: 0 70px;
+	overflow: hidden;
+}
+.account-entrance-new .account-entrance__grid-row .account-entrance__container {
+	border: 0;
+}
+.account-entrance-new .account-entrance__container {
+	position: relative;
+	text-align: center;
+	border: 1px solid var(--color-border-thirdly);
+	border-radius: 0 70px;
+	padding: 40px 20px;
+	z-index: 1;
+}
+.account-entrance-new .account-entrance__container .account-entrance__label {
+	line-height: 0.8;
+}
+.account-entrance-new .account-entrance__heading {
+	margin-top: 5px;
+	font-size: calc(var(--body-font-size) * 2);
+	line-height: 1.5;
+}
+.account-entrance-new .account-entrance__inputs {
+	margin-top: 30px;
+}
+.account-entrance-new .account-entrance__create {
+	margin-top: 30px;
+	text-align: center;
+}
+.account-entrance-new .account-entrance__button {
+	margin-top: 30px;
+}
+.account-entrance-new .account-entrance__image {
+	height: 100%;
+	width: 100%;
+	-o-object-fit: cover;
+	   object-fit: cover;
+	-o-object-position: var(--img-mob-pos);
+	   object-position: var(--img-mob-pos);
+}
+@media (min-width: 768px) {
+	.account-entrance-new.account-entrance-new--login .account-entrance__link-wrapper {
+		justify-content: space-between;
+	}
+	.account-entrance-new.account-entrance-new--login .account-entrance__container {
+		padding: 60px;
+	}
+	.account-entrance-new.account-entrance-new--login .account-entrance__subtitle {
+		margin-top: 10px;
+	}
+	.account-entrance-new.account-entrance-new--login .account-entrance__buttons {
+		flex-direction: row;
+		margin-top: 50px;
+	}
+	.account-entrance-new .account-entrance__container {
+		padding: 61px 90px;
+	}
+	.account-entrance-new .account-entrance__create {
+		text-align: start;
+	}
+	.account-entrance-new .account-entrance__heading {
+		margin-top: 10px;
+		font-size: calc(var(--heading-font-size) * 3.125);
+	}
+	.account-entrance-new.account-entrance-new--accent-spot:before {
+		width: 600px;
+		height: 600px;
+	}
+	.account-entrance-new .account-entrance__image {
+		-o-object-position: var(--img-desktop-pos);
+		   object-position: var(--img-desktop-pos);
+	}
+}
+@media (min-width: 1200px) {
+	.account-entrance-new.account-entrance-new--full-width {
+		max-width: 1710px;
+		width: calc(100% - 210px);
+	}
+	.account-entrance-new .account-entrance__container {
+		border-radius: 0 100px;
+	}
+	.account-entrance-new .account-entrance__button {
+		margin-top: 50px;
+	}
+	.account-entrance-new .account-entrance__grid-row {
+		flex-direction: row;
+		border-radius: 0 150px;
+	}
+	.account-entrance-new .account-entrance__grid-row .account-entrance__container {
+		text-align: start;
+	}
+	.account-entrance-new .account-entrance__grid-column {
+		width: 50%;
+	}
+	.account-entrance-new.account-entrance-new--accent-spot:before {
+		inset-inline-start: -300px;
+	}
+}
+@media (max-width: 1500.98px) {
+	.account-entrance-new .account-entrance__grid-column--image {
+		position: relative;
+	}
+	.account-entrance-new .account-entrance__grid-column--image:after {
+		content: "";
+		display: block;
+		padding-top: 100%;
+	}
+	.account-entrance-new .account-entrance__image {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
+	.account-entrance-new .account-entrance__inputs .input-wrapper .input-label {
+		top: 0;
+	}
+}
+@media (min-width: 1701px) {
+	.account-entrance-new.account-entrance-new--login .account-entrance__grid-row .account-entrance__container {
+		padding: 76px 152px;
+	}
+	.account-entrance-new .account-entrance__grid-row .account-entrance__container {
+		padding: 91px 150px;
+	}
+}
+/* stylelint-enable */

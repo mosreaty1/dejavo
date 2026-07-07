@@ -1,0 +1,175 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Simple description
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign design = settings.design -%}
+
+{%- if design == 'standard' -%}
+	{{- 'simple-description.build.css' | asset_url | stylesheet_tag -}}
+
+	{%- assign heading = section.settings.heading -%}
+	{%- assign content = section.settings.content -%}
+
+	{%- if heading != blank or content != blank -%}
+		{%- assign content_alignment = section.settings.content_alignment -%}
+		{%- assign block_alignment   = section.settings.block_alignment -%}
+
+		{%- capture styles -%}
+			--simple-description-content-alignment: {{- content_alignment | replace: 'left', 'start' | replace: 'right', 'end' -}}; {{-  -}}
+			--simple-description-block-alignment: {{- block_alignment -}};
+		{%- endcapture -%}
+
+		{%- style -%}
+			#shopify-section-{{- section.id -}} {
+				padding-top: {{- section.settings.offset_top_mobile -}}px;
+				padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+			}
+
+			@media screen and (min-width: 768px) {
+				#shopify-section-{{- section.id -}} {
+					padding-top: {{- section.settings.offset_top_desktop -}}px;
+					padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+				}
+			}
+		{%- endstyle -%}
+
+		<section class="simple-description" style="{{- styles -}}">
+			<div class="simple-description__container">
+				{%- if heading != blank -%}
+					<h2 class="h2 simple-description__heading">
+						{{- heading -}}
+					</h2>
+				{%- endif -%}
+
+				{%- if content != blank -%}
+					<div class="simple-description__content section-rte">
+						{{- content -}}
+					</div>
+				{%- endif -%}
+			</div>
+		</section>
+	{%- endif -%}
+{%- elsif design == 'alternate' -%}
+	{%- render 'simple-description-new', section: section -%}
+{%- endif -%}
+
+{%- schema -%}
+{
+	"name": "Simple description",
+	"disabled_on": {
+		"groups": ["header", "footer"]
+	},
+	"settings": [
+		{
+			"type": "text",
+			"id": "heading",
+			"label": "Heading",
+			"default": "Simple description"
+		},
+		{
+			"type": "textarea",
+			"id": "subheading",
+			"label": "Subheading",
+			"default": "Subheading",
+			"info": "The setting is used for alternative design."
+		},
+		{
+			"type": "richtext",
+			"id": "content",
+			"label": "Text",
+			"default": "<p>Add text to share customers about your store, products, brand.</p>"
+		},
+		{
+			"type": "select",
+			"id": "content_alignment",
+			"label": "Content alignment",
+			"options": [
+				{
+					"value": "left",
+					"label": "Left"
+				},
+				{
+					"value": "center",
+					"label": "Center"
+				},
+				{
+					"value": "right",
+					"label": "Right"
+				},
+				{
+					"value": "justify",
+					"label": "Justify"
+				}
+			],
+			"default": "left"
+		},
+		{
+			"type": "select",
+			"id": "block_alignment",
+			"label": "Block alignment",
+			"options": [
+				{
+					"value": "flex-start",
+					"label": "Left"
+				},
+				{
+					"value": "center",
+					"label": "Center"
+				},
+				{
+					"value": "flex-end",
+					"label": "Right"
+				}
+			],
+			"default": "flex-start"
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 100
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 100
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 50
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 50
+		}
+	],
+	"presets": [
+		{
+			"name": "Simple description"
+		}
+	]
+}
+{%- endschema -%}

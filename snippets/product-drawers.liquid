@@ -1,0 +1,115 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Product Drawers
+------------------------------------------------------------------------------
+{% endcomment %}
+
+{%- capture icon_arrow -%}
+	{%- if design == 'alternate' -%}
+		<span class="button-link-new__icon-wrapper">
+			<span class="button-link-new__icon">
+				{% render 'icons-new', icon: 'arrow-right' %}
+			</span>
+		</span>
+	{%- else -%}
+		{% include 'icons-small', icon: 'arrow-right' %}
+	{%- endif -%}
+{%- endcapture -%}
+
+{% comment %}
+	Description variables
+{% endcomment %}
+{% assign description_show = block.settings.show_description %}
+{% assign description_toggle_text = block.settings.description_toggle_text %}
+{% assign description_drawer_title = block.settings.description_drawer_title %}
+{% assign show_description = false %}
+{% if description_show
+	and description_toggle_text != blank
+	and product.description != blank
+	and description_drawer_title != blank
+%}
+	{% assign show_description = true %}
+{% endif %}
+
+{% comment %}
+	Shipping & Returns variables
+{% endcomment %}
+{% assign shipping_and_returns = block.settings.shipping_and_returns %}
+{% assign shipping_and_returns_toggle_text = block.settings.shipping_and_returns_toggle_text %}
+{% assign show_shipping_and_returns = false %}
+
+{% if shipping_and_returns != blank
+	and shipping_and_returns.content != blank
+	and shipping_and_returns_toggle_text != blank
+%}
+	{% assign show_shipping_and_returns = true %}
+{% endif %}
+
+{% comment %}
+	Custom drawer 1 variables
+{% endcomment %}
+{%- assign custom_drawer_title_1 = block.settings.custom_drawer_title_1 -%}
+{%- assign custom_drawer_text_1 = block.settings.custom_drawer_text_1 -%}
+{%- assign show_custom_drawer_1 = false -%}
+
+{% if custom_drawer_title_1 != blank and custom_drawer_text_1 != blank %}
+	{%- assign show_custom_drawer_1 = true -%}
+{% endif %}
+
+{% capture description %}
+	<div class="product-drawers__item">
+		<button
+			type="button"
+			class="product-drawers__item-toggle {% if design == 'alternate' %}button-link-new{% endif %}"
+			data-target="descriptionDrawer-{{- section.id -}}"
+			data-js-toggle="descriptionDrawer-{{- section.id -}}"
+		>
+			{{- description_toggle_text -}}
+			{{- icon_arrow -}}
+		</button>
+	</div>
+{% endcapture %}
+
+{% capture shipping_and_returns %}
+	<div class="product-drawers__item">
+		<button
+			type="button"
+			class="product-drawers__item-toggle {% if design == 'alternate' %}button-link-new{% endif %}"
+			data-target="shippingAndReturnsDrawer-{{- section.id -}}"
+			data-js-toggle="shippingAndReturnsDrawer-{{- section.id -}}"
+		>
+			{{- shipping_and_returns_toggle_text -}}
+			{{- icon_arrow -}}
+		</button>
+	</div>
+{% endcapture %}
+
+{% capture custom_drawer_1 %}
+	<div class="product-drawers__item">
+		<button
+			type="button"
+			class="product-drawers__item-toggle {% if design == 'alternate' %}button-link-new{% endif %}"
+			data-target="CustomDrawer-1-{{- section.id -}}"
+			data-js-toggle="CustomDrawer-1-{{- section.id -}}"
+		>
+			{{- custom_drawer_title_1 -}}
+			{{- icon_arrow -}}
+		</button>
+	</div>
+{% endcapture %}
+
+{% if show_description or show_shipping_and_returns or show_custom_drawer_1  %}
+	<div class="{% if design == 'alternate' %}product-drawers-new{% else %}product-drawers{% endif %}">
+		{% if show_description %}
+			{{- description -}}
+		{% endif %}
+
+		{% if show_shipping_and_returns %}
+			{{- shipping_and_returns -}}
+		{% endif %}
+
+		{%- if show_custom_drawer_1 -%}
+			{{- custom_drawer_1 -}}
+		{%- endif -%}
+	</div>
+{% endif %}

@@ -1,0 +1,214 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Section: FAQ simple (Only settings.design == 'alternate')
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{{- 'faq-simple-new.build.css' | asset_url | stylesheet_tag -}}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{%- assign title        = section.settings.heading -%}
+{%- assign label        = section.settings.label -%}
+{%- assign button_label = section.settings.button_label -%}
+{%- assign button_link  = section.settings.button_link -%}
+{%- assign button_style = section.settings.button_style -%}
+{%- assign blocks       = section.blocks -%}
+
+{% assign button_classes = 'button button--' | append: button_style %}
+{% if button_style == 'circle' %}
+	{% assign button_classes = 'button-circle' %}
+{% endif %}
+
+{%- assign content = '' -%}
+
+{%- for block in blocks -%}
+	{%- case block.type -%}
+		{%- when "category" -%}
+			{%- assign category_heading = block.settings.heading -%}
+
+			{%- if category_heading != blank -%}
+				{%- assign handle = category_heading | handleize -%}
+
+				{%- capture content -%}
+					{{- content -}}
+
+					{%- if content != '' -%}
+						</div>
+					{%- endif -%}
+
+					<div id="{{- handle -}}" class="faq-simple-new__category js-faq-block">
+						<h3 class="faq-simple-new__category-heading h4">{{- category_heading -}}</h3>
+				{%- endcapture -%}
+			{%- endif -%}
+
+		{%- when "faq_item" -%}
+			{%- assign item_heading = block.settings.heading -%}
+			{%- assign text         = block.settings.text -%}
+			{%- assign heading_icon = block.settings.heading_icon -%}
+			{%- capture img_focal -%}{%- endcapture -%}
+
+			{%- if item_heading == blank or text == blank -%}
+				{%- continue -%}
+			{%- endif -%}
+
+			{%- capture icon -%}
+				{%- if heading_icon != blank -%}
+					{%- capture img_focal -%}
+						--img-desktop-pos: {{ heading_icon.presentation.focal_point }};
+					{%- endcapture -%}
+
+					<img
+						class="faq-simple-new__item-image"
+						srcset="{{ heading_icon | img_url: "20x" }} 1x, {{ heading_icon | img_url: "40x" }} 2x"
+						src="{{- heading_icon | img_url: "40x" -}}"
+						alt="{{- heading_icon.alt -}}"
+						style="{{ img_focal }}"
+					/>
+				{%- endif -%}
+			{%- endcapture -%}
+
+		{%- capture content -%}
+			{{- content -}}
+
+			{%- if content == '' -%}
+				<div class="faq-simple-new__category js-faq-block">
+			{%- endif -%}
+
+			<div class="accordion__item faq-simple-new__item js-accordion-item">
+				<h4 class="accordion__title faq-simple-new__item-title h4">
+					<button
+						id="control-{{- block.id -}}"
+						class="accordion__control faq-simple-new__item-control {% if icon == blank %} faq-simple-new__item-control--without-icon {% endif %} js-accordion-control"
+						aria-controls="content-{{- block.id -}}"
+						aria-expanded="false"
+					>
+						{%- if icon != blank -%}
+							<span class="faq-simple-new__item-icon">
+								{{- icon -}}
+							</span>
+						{%- endif -%}
+
+						<span>
+							{{- item_heading -}}
+						</span>
+
+						<span class="faq-simple-new__item-control-icon faq-simple-new__item-control-icon--plus">
+							{% render "icons-new", icon: "arrow-down" %}
+						</span>
+
+						<span class="faq-simple-new__item-control-icon faq-simple-new__item-control-icon--minus">
+							{% render "icons-new", icon: "close" %}
+						</span>
+					</button>
+				</h4>
+
+				<div
+					id="content-{{- block.id -}}"
+					class="accordion__content accordion__content--animate faq-simple-new__item-content js-accordion-content"
+					style="height: 0;"
+					role="region"
+					aria-labelledby="control-{{- block.id -}}"
+				>
+					<div class="faq-simple-new__item-inner js-accordion-inner rte-new">
+						{{- text -}}
+					</div>
+				</div>
+			</div>
+		{%- endcapture -%}
+	{%- endcase -%}
+{%- endfor -%}
+
+{%- if content != '' -%}
+	{%- capture content -%}
+		{{- content -}}
+
+		</div>
+	{%- endcapture -%}
+{%- endif -%}
+
+<section class="faq-simple-new need-animate js-animate">
+	<div class="faq-simple-new__container">
+		{% assign show_button = false %}
+
+		{% if button_label != blank and button_link != blank %}
+			{% assign show_button = true %}
+		{% endif %}
+
+		{% if label != blank or title != blank or show_button %}
+			<div class="faq-simple-new__info">
+				{%- if label != blank -%}
+					<div class="faq-simple-new__label subheading">
+						{{- label -}}
+					</div>
+				{%- endif -%}
+
+				{%- if title != blank -%}
+					<h2 class="h2 faq-simple-new__heading">
+						{{- title -}}
+					</h2>
+				{%- endif -%}
+
+				{% if show_button %}
+					<a
+						class="{{ button_classes }} faq-simple-new__button faq-simple-new__button--desktop"
+						href="{{- button_link -}}"
+					>
+						{% if button_style == 'circle' %}
+							<span class="button__text">
+								{{- button_label -}}
+							</span>
+
+							<span class="button-new__icon-container">
+								<span class="button-new__icon-wrapper">
+									{% render "icons-new", icon: "wave", section_id: 'asdasdsa' %}
+								</span>
+							</span>
+						{% else %}
+							{{- button_label -}}
+						{% endif %}
+					</a>
+				{% endif %}
+			</div>
+		{% endif %}
+
+		<div class="accordion faq-simple-new__content js-accordion-container js-animate">
+			{{- content -}}
+		</div>
+
+		{% if show_button %}
+			<a
+				class="{{ button_classes }} faq-simple-new__button faq-simple-new__button--mobile"
+				href="{{- button_link -}}"
+			>
+				{% if button_style == 'circle' %}
+					<span class="button__text">
+						{{- button_label -}}
+					</span>
+
+					<span class="button-new__icon-container">
+						<span class="button-new__icon-wrapper">
+							{% render "icons-new", icon: "wave", section_id: 'asdasdsa' %}
+						</span>
+					</span>
+				{% else %}
+					{{- button_label -}}
+				{% endif %}
+			</a>
+		{% endif %}
+	</div>
+</section>
+
+<script src="{{- 'section-faq.build.min.js' | asset_url -}}" defer></script>

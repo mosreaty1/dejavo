@@ -1,0 +1,148 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Story telling image
+	This snippet will output main image on story telling section
+
+	- image: desktop image object (required, object),
+	- mobile_image: mobile image object (optional, object),
+	- is_lazy: (optional, boolean)
+
+	{% render 'story-telling-image', image_desktop: image_desktop, image_mobile: image_mobile %}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- if image_desktop != blank -%}
+	{%- capture img_focal -%}
+		--img-desktop-pos: {{ image_desktop.presentation.focal_point }};
+		--img-mob-pos: {{ image_mobile.presentation.focal_point }};
+	{%- endcapture -%}
+
+	<div class="story-telling__item-image-container">
+		<div class="story-telling__item-image-wrapper">
+			{% if is_lazy %}
+				<picture class="lazy">
+					<source
+						data-srcset="{{ image_mobile | img_url: "375x", crop: 'center' }} 1x, {{ image_mobile | img_url: "750x", crop: 'center' }} 2x"
+						srcset="{{ image_mobile | img_url: "10x", crop: 'center' }} 1x, {{ image_mobile | img_url: "10x", crop: 'center' }} 2x"
+						media="(max-width: 375px)"
+						width="375"
+						height="600"
+					/>
+
+					<source
+						data-srcset="{{ image_mobile | img_url: "420x", crop: 'center' }} 1x, {{ image_mobile | img_url: "840x", crop: 'center' }} 2x"
+						srcset="{{ image_mobile | img_url: "10x", crop: 'center' }} 1x, {{ image_mobile | img_url: "10x", crop: 'center' }} 2x"
+						media="(max-width: 420px)"
+						width="420"
+						height="600"
+					/>
+
+					<source
+						data-srcset="{{ image_mobile | img_url: "575x", crop: 'center' }} 1x, {{ image_mobile | img_url: "1150x", crop: 'center' }} 2x"
+						srcset="{{ image_mobile | img_url: "10x", crop: 'center' }} 1x, {{ image_mobile | img_url: "10x", crop: 'center' }} 2x"
+						media="(max-width: 575px)"
+						width="575"
+						height="600"
+					/>
+
+					<source
+						data-srcset="{{ image_mobile | img_url: "768x", crop: 'center' }} 1x, {{ image_mobile | img_url: "1536x", crop: 'center' }} 2x"
+						srcset="{{ image_mobile | img_url: "10x", crop: 'center' }} 1x, {{ image_mobile | img_url: "10x", crop: 'center' }} 2x"
+						media="(max-width: 768px)"
+						width="768"
+						height="600"
+					/>
+
+					<source
+						data-srcset="{{ image_mobile | img_url: "991x", crop: 'center' }} 1x, {{ image_mobile | img_url: "1982x", crop: 'center' }} 2x"
+						srcset="{{ image_mobile | img_url: "10x", crop: 'center' }} 1x, {{ image_mobile | img_url: "10x", crop: 'center' }} 2x"
+						media="(max-width: 991px)"
+						width="991"
+						height="600"
+					/>
+
+					<source
+						data-srcset="{{ image_desktop | img_url: "720x", crop: 'center' }} 1x, {{ image_desktop | img_url: "1440x", crop: 'center' }} 2x"
+						srcset="{{ image_desktop | img_url: "10x", crop: 'center' }} 1x, {{ image_desktop | img_url: "10x", crop: 'center' }} 2x"
+						media="(max-width: 1440px)"
+						width="720"
+						height="668"
+					/>
+
+					<img
+						data-srcset="{{ image_desktop | img_url: "952x", crop: 'center' }} 1x, {{ image_desktop | img_url: "1904x", crop: 'center' }} 2x"
+						srcset="{{ image_desktop | img_url: "10x", crop: 'center' }} 1x, {{ image_desktop | img_url: "10x", crop: 'center' }} 2x"
+						data-src="{{ image_desktop | img_url: "952x", crop: 'center' }}"
+						src="{{ image_desktop | img_url: "10x", crop: 'center' }}"
+						alt="{{ image_desktop.alt }}"
+						width="840"
+						height="780"
+						class="story-telling__item-image"
+						style="{{ img_focal }}"
+					/>
+				</picture>
+			{% else %}
+				<picture>
+					<source
+						srcset="{{ image_mobile | img_url: "375x", crop: 'center' }} 1x, {{ image_mobile | img_url: "750x", crop: 'center' }} 2x"
+						media="(max-width: 375px)"
+						width="375"
+						height="600"
+					/>
+
+					<source
+						srcset="{{ image_mobile | img_url: "420x", crop: 'center' }} 1x, {{ image_mobile | img_url: "840x", crop: 'center' }} 2x"
+						media="(max-width: 420px)"
+						width="420"
+						height="600"
+					/>
+
+					<source
+						srcset="{{ image_mobile | img_url: "575x", crop: 'center' }} 1x, {{ image_mobile | img_url: "1150x", crop: 'center' }} 2x"
+						media="(max-width: 575px)"
+						width="575"
+						height="600"
+					/>
+
+					<source
+						srcset="{{ image_mobile | img_url: "768x", crop: 'center' }} 1x, {{ image_mobile | img_url: "1536x", crop: 'center' }} 2x"
+						media="(max-width: 768px)"
+						width="768"
+						height="600"
+					/>
+
+					<source
+						srcset="{{ image_mobile | img_url: "991x", crop: 'center' }} 1x, {{ image_mobile | img_url: "1982x", crop: 'center' }} 2x"
+						media="(max-width: 991px)"
+						width="991"
+						height="600"
+					/>
+
+					<source
+						srcset="{{ image_desktop | img_url: "720x", crop: 'center' }} 1x, {{ image_desktop | img_url: "1440x", crop: 'center' }} 2x"
+						media="(max-width: 1440px)"
+						width="720"
+						height="668"
+					/>
+
+					<img
+						srcset="{{ image_desktop | img_url: "952x", crop: 'center' }} 1x, {{ image_desktop | img_url: "1904x", crop: 'center' }} 2x"
+						src="{{ image_desktop | img_url: "952x", crop: 'center' }}"
+						alt="{{ image_desktop.alt }}"
+						width="840"
+						height="780"
+						fetchpriority="high"
+						class="story-telling__item-image"
+						style="{{ img_focal }}"
+					/>
+				</picture>
+			{% endif %}
+		</div>
+	</div>
+{%- else -%}
+	<div class="story-telling__item-image-container">
+		<div class="story-telling__item-image-wrapper">
+			{{ 'image' | placeholder_svg_tag: 'story-telling__item-image' }}
+		</div>
+	</div>
+{%- endif -%}
