@@ -17,7 +17,9 @@
 	padding-bottom: 8px;
 	padding-left: 16px;
 	padding-right: 16px;
-	background-color: var(--header-background);
+	background-color: color-mix(in srgb, var(--header-background) 88%, transparent);
+	-webkit-backdrop-filter: blur(12px);
+	backdrop-filter: blur(12px);
 	transition-property: background-color;
 	transition-duration: var(--timing-short);
 	transition-timing-function: var(--easing-linear);
@@ -516,7 +518,10 @@
 	}
 	.header-menu-new .header-menu__item-text {
 		position: relative;
-		font-size: var(--body-font-size);
+		font-size: 12px;
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		font-weight: 500;
 		line-height: 1.5;
 		text-decoration: underline;
 		-webkit-text-decoration-color: transparent;
