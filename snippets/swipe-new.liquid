@@ -160,7 +160,18 @@
 						</picture>
 					{%- endif -%}
 				{%- else -%}
-					{{ 'image' | placeholder_svg_tag: 'swipe__image-block-image swipe__image-block-image--placeholder' }}
+					{%- assign fallback_swipe_index = forloop.index0 | modulo: 4 -%}
+					{%- case fallback_swipe_index -%}
+						{%- when 0 -%}
+							{%- assign fallback_image_asset = 'suit-1.jpg' -%}
+						{%- when 1 -%}
+							{%- assign fallback_image_asset = 'suit-2.jpg' -%}
+						{%- when 2 -%}
+							{%- assign fallback_image_asset = 'suit-3.jpg' -%}
+						{%- when 3 -%}
+							{%- assign fallback_image_asset = 'suit-4.jpg' -%}
+					{%- endcase -%}
+					<img class="swipe__image-block-image" src="{{ fallback_image_asset | asset_url }}" alt="" loading="lazy" style="width: 100%; height: 100%; object-fit: cover;">
 				{%- endif -%}
 			</div>
 		</div>

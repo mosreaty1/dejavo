@@ -338,13 +338,18 @@
 												full_hd_width_retina: full_hd_width_retina
 											-%}
 										{%- else -%}
-											{% assign odd =  forloop.index | modulo: 2 %}
-
-											{%- if odd  == 1 -%}
-												{{- 'lifestyle-1' | placeholder_svg_tag: 'slideshow__slide-media slideshow__slide-media--placeholder' -}}
-											{%- else -%}
-												{{- 'lifestyle-2' | placeholder_svg_tag: 'slideshow__slide-media slideshow__slide-media--placeholder' -}}
-											{%- endif -%}
+											{% assign fallback_slideshow_index = forloop.index0 | modulo: 4 %}
+											{%- case fallback_slideshow_index -%}
+												{%- when 0 -%}
+													{%- assign fallback_image_asset = 'suit-1.jpg' -%}
+												{%- when 1 -%}
+													{%- assign fallback_image_asset = 'suit-2.jpg' -%}
+												{%- when 2 -%}
+													{%- assign fallback_image_asset = 'suit-3.jpg' -%}
+												{%- when 3 -%}
+													{%- assign fallback_image_asset = 'suit-4.jpg' -%}
+											{%- endcase -%}
+											<img class="slideshow__slide-media" src="{{ fallback_image_asset | asset_url }}" alt="" loading="lazy" style="width: 100%; height: 100%; object-fit: cover;">
 										{%- endif -%}
 									{% when "html_video" -%}
 										{%- assign video_desktop		= block.settings.video_desktop -%}
@@ -413,13 +418,18 @@
 												</video>
 											</div>
 										{%- else -%}
-											{% assign odd =  forloop.index | modulo: 2 %}
-
-											{%- if odd  == 1 -%}
-												{{- 'lifestyle-1' | placeholder_svg_tag: 'slideshow__slide-media  slideshow__slide-media--placeholder' -}}
-											{%- else -%}
-												{{- 'lifestyle-2' | placeholder_svg_tag: 'slideshow__slide-media  slideshow__slide-media--placeholder' -}}
-											{%- endif -%}
+											{% assign fallback_slideshow_index = forloop.index0 | modulo: 4 %}
+											{%- case fallback_slideshow_index -%}
+												{%- when 0 -%}
+													{%- assign fallback_image_asset = 'suit-1.jpg' -%}
+												{%- when 1 -%}
+													{%- assign fallback_image_asset = 'suit-2.jpg' -%}
+												{%- when 2 -%}
+													{%- assign fallback_image_asset = 'suit-3.jpg' -%}
+												{%- when 3 -%}
+													{%- assign fallback_image_asset = 'suit-4.jpg' -%}
+											{%- endcase -%}
+											<img class="slideshow__slide-media" src="{{ fallback_image_asset | asset_url }}" alt="" loading="lazy" style="width: 100%; height: 100%; object-fit: cover;">
 										{%- endif -%}
 
 									{% when "external_video" -%}
@@ -573,7 +583,7 @@
 																full_hd_width_retina: full_hd_width_retina
 															-%}
 														{% else %}
-															{{- 'lifestyle-1' | placeholder_svg_tag: 'slideshow__slide-media  slideshow__slide-media--placeholder' -}}
+															<img class="slideshow__slide-media" src="{{ 'suit-1.jpg' | asset_url }}" alt="" loading="lazy" style="width: 100%; height: 100%; object-fit: cover;">
 														{% endif %}
 													{% when "html_video" %}
 														{% if video_desktop_col_1 != blank %}
@@ -751,7 +761,7 @@
 																full_hd_width_retina: full_hd_width_retina
 															-%}
 														{% else %}
-															{{- 'lifestyle-1' | placeholder_svg_tag: 'slideshow__slide-media  slideshow__slide-media--placeholder' -}}
+												<img class="slideshow__slide-media" src="{{ 'suit-3.jpg' | asset_url }}" alt="" loading="lazy" style="width: 100%; height: 100%; object-fit: cover;">
 														{% endif %}
 													{% when "html_video" %}
 														<div class="js-videos" data-show-button="{{- show_button -}}">

@@ -168,13 +168,18 @@
 				/>
 			</picture>
 		{%- else -%}
-			{%- assign odd =  forloop.index | modulo: 2 -%}
-
-			{%- if odd  == 1 -%}
-				{{- "lifestyle-1" | placeholder_svg_tag: "gallery-carousel__item-image" -}}
-			{%- else -%}
-				{{- "lifestyle-2" | placeholder_svg_tag: "gallery-carousel__item-image" -}}
-			{%- endif -%}
+			{%- assign fallback_slide_index = slide_index | default: 0 | modulo: 4 -%}
+			{%- case fallback_slide_index -%}
+				{%- when 0 -%}
+					{%- assign fallback_image_asset = 'suit-1.jpg' -%}
+				{%- when 1 -%}
+					{%- assign fallback_image_asset = 'suit-2.jpg' -%}
+				{%- when 2 -%}
+					{%- assign fallback_image_asset = 'suit-3.jpg' -%}
+				{%- when 3 -%}
+					{%- assign fallback_image_asset = 'suit-4.jpg' -%}
+			{%- endcase -%}
+			<img class="gallery-carousel__item-image" src="{{ fallback_image_asset | asset_url }}" alt="" loading="lazy" style="width: 100%; height: 100%; object-fit: cover;">
 		{%- endif -%}
 	</div>
 {%- if link != blank -%}
