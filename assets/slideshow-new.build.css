@@ -306,6 +306,19 @@
 	-o-object-position: var(--img-mob-pos);
 	   object-position: var(--img-mob-pos);
 }
+@keyframes slideshow-new-kenburns {
+	from {
+		transform: scale(1);
+	}
+	to {
+		transform: scale(1.08);
+	}
+}
+@media (prefers-reduced-motion: no-preference) {
+	.slideshow-new .swiper-slide-active .slideshow-new__slide-media:not(.slideshow-new__slide-media--placeholder) {
+		animation: slideshow-new-kenburns 10s ease-in-out infinite alternate;
+	}
+}
 .slideshow-new .slideshow-new__slide-media.slideshow-new__slide-media--placeholder {
 	background-color: var(--background-color, var(--color-white));
 }

@@ -62,13 +62,19 @@
 	margin-bottom: 20px;
 	padding-top: 157.48%;
 	border-radius: 300px;
+	perspective: 1000px;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0);
+	transition: box-shadow var(--animate-img-scale, 0.4s) ease-out;
 }
 .cards-grid-new .cards-grid__item-image-wrapper.cards-grid__item-image-wrapper--placeholder {
 	border: 1px solid;
 }
 @media (-moz-touch-enabled: 0), (hover: hover), (pointer: fine) {
+	.cards-grid-new .cards-grid__item-image-wrapper.cards-grid__item-image-wrapper--hover:hover {
+		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
+	}
 	.cards-grid-new .cards-grid__item-image-wrapper.cards-grid__item-image-wrapper--hover:hover .cards-grid__item-image {
-		transform: scale(1.15);
+		transform: scale(1.08) rotateY(-6deg) rotateX(2deg);
 	}
 }
 .cards-grid-new .cards-grid__item-image {
@@ -118,7 +124,9 @@ html.no-js .cards-grid-new .cards-grid__subtitle.need-animate, html.no-js .cards
 .cards-grid-new .cards-grid__item.need-animate {
 	visibility: hidden;
 	opacity: 0;
-	transform: translateX(16px);
+	perspective: 800px;
+	transform: perspective(800px) rotateX(10deg) translateY(24px) scale(0.96);
+	transform-origin: center bottom;
 	transition-delay: var(--delay-duration-grid);
 	transition-duration: var(--animate-time);
 	transition-property: opacity, visibility, transform;
@@ -126,7 +134,7 @@ html.no-js .cards-grid-new .cards-grid__subtitle.need-animate, html.no-js .cards
 html.no-js .cards-grid-new .cards-grid__item.need-animate {
 	visibility: visible;
 	opacity: 1;
-	transform: translateX(0);
+	transform: none;
 }
 @media (max-width: 575.98px) {
 	.cards-grid-new .cards-grid__row.cards-grid__row--center-one {
@@ -154,7 +162,7 @@ html.no-js .cards-grid-new .cards-grid__item.need-animate {
 	.cards-grid-new .cards-grid__row.animated .cards-grid__item.need-animate {
 		visibility: visible;
 		opacity: 1;
-		transform: translateX(0);
+		transform: none;
 	}
 }
 @media (min-width: 768px) {
@@ -179,7 +187,7 @@ html.no-js .cards-grid-new .cards-grid__item.need-animate {
 	.cards-grid-new .cards-grid__column.animated .cards-grid__item.need-animate {
 		visibility: visible;
 		opacity: 1;
-		transform: translateX(0);
+		transform: none;
 	}
 	.cards-grid-new .cards-grid__item.cards-grid__item--sm-shape-1 {
 		width: 65.48%;
