@@ -387,13 +387,13 @@
         "collection_1": {
           "type": "collection",
           "settings": {
-            "collection": "women-style"
+            "collection": "suits"
           }
         },
         "collection_2": {
           "type": "collection",
           "settings": {
-            "collection": "men-style"
+            "collection": "sport-jacket"
           }
         },
         "collection_3": {
@@ -405,7 +405,7 @@
         "collection_4": {
           "type": "collection",
           "settings": {
-            "collection": "shoes"
+            "collection": "mens-shoes"
           }
         }
       },
