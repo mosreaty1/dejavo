@@ -237,7 +237,7 @@
         "card_5": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/cards-grid-category-shirts.webp",
+            "image": "shopify://shop_images/handsome-serious-man-dressed-shirt-posing_171337-10513.avif",
             "title": "Shirts",
             "text": "<p>Crisp dress shirts tailored for a sharp, polished look, from classic solids to modern slim fits.</p>",
             "link_url": "shopify://collections/fashion-shirts"
@@ -246,7 +246,7 @@
         "card_6": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/cards-grid-category-pants.jpg",
+            "image": "shopify://shop_images/hd-digital-art-wallpaper-background_783884-119866.avif",
             "title": "Pants",
             "text": "<p>Tailored dress pants built for comfort and a clean, refined silhouette.</p>",
             "link_url": "shopify://collections/dress-pants"
@@ -255,7 +255,7 @@
         "card_7": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/cards-grid-category-socks.jpg",
+            "image": "shopify://shop_images/man-crossing-legs-wearing-American-flag-dress-socks-with-navy-pants_1200x_492d28a5-ea29-4ce1-ba36-247e2004ed5f.webp",
             "title": "Socks",
             "text": "<p>Dress socks that complete the look, from classic solids to subtle patterns.</p>",
             "link_url": "shopify://collections/dress-socks"
@@ -304,6 +304,26 @@
         "offset_bottom_mobile": 40
       }
     },
+    "featured_products_cwedwC": {
+      "type": "featured-collection",
+      "name": "Featured collection",
+      "settings": {
+        "collection": "suits",
+        "label": "Elegant is our concept",
+        "heading": "Suits",
+        "link_url": "shopify://collections/suits",
+        "link_text": "Shop Suits",
+        "link_aria_label_text": "",
+        "button_style": "primary",
+        "layout": "10",
+        "enable_cards_indent": false,
+        "full_width": true,
+        "offset_top_desktop": 0,
+        "offset_bottom_desktop": 20,
+        "offset_top_mobile": 0,
+        "offset_bottom_mobile": 0
+      }
+    },
     "featured_products_HXwEb7": {
       "type": "featured-products",
       "name": "Featured products",
@@ -327,26 +347,6 @@
         "enable_cards_indent": false,
         "link_url": "shopify://collections/all",
         "link_text": "View all",
-        "link_aria_label_text": "",
-        "button_style": "primary",
-        "full_width": true,
-        "offset_top_desktop": 0,
-        "offset_bottom_desktop": 20,
-        "offset_top_mobile": 0,
-        "offset_bottom_mobile": 0
-      }
-    },
-    "featured_products_cwedwC": {
-      "type": "featured-collection",
-      "name": "Featured collection",
-      "settings": {
-        "collection": "suits",
-        "label": "Elegant is our concept",
-        "heading": "Suits",
-        "layout": "10",
-        "enable_cards_indent": false,
-        "link_url": "shopify://collections/suits",
-        "link_text": "Shop Suits",
         "link_aria_label_text": "",
         "button_style": "primary",
         "full_width": true,
@@ -971,6 +971,7 @@
     },
     "newsletter": {
       "type": "newsletter",
+      "disabled": true,
       "settings": {
         "full_width": false,
         "layout": "two_column",
@@ -1000,8 +1001,7 @@
         "offset_bottom_desktop": 80,
         "offset_top_mobile": 0,
         "offset_bottom_mobile": 40
-      },
-      "disabled": true
+      }
     },
     "gallery": {
       "type": "gallery",
@@ -1041,6 +1041,7 @@
         "block_mTey4a",
         "block_jVLRKq"
       ],
+      "disabled": true,
       "settings": {
         "image_aspect_ratio": "square",
         "image_crop": "center",
@@ -1051,8 +1052,7 @@
         "offset_bottom_desktop": 80,
         "offset_top_mobile": 0,
         "offset_bottom_mobile": 40
-      },
-      "disabled": true
+      }
     }
   },
   "order": [
