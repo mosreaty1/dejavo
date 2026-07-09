@@ -209,6 +209,7 @@
       "blocks": {
         "card_1": {
           "type": "card",
+          "disabled": true,
           "settings": {
             "title": "Women Style",
             "text": "<p>Against a snowy landscape, a model stands in a stylish winter jacket with a hat.</p>",
