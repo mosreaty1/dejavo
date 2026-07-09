@@ -295,22 +295,16 @@
       }
     },
     "featured_products_cwedwC": {
-      "type": "featured-products",
-      "name": "Featured products",
+      "type": "featured-collection",
+      "name": "Featured collection",
       "settings": {
+        "collection": "suits",
+        "label": "Elegant is our concept",
         "heading": "Suits",
-        "subheading": "Elegant is our concept",
-        "description": "",
-        "product_list": [
-          "classic-single-breasted-3-pieces-suits",
-          "fancy-pattern-elegant-jacket-for-every-occasion",
-          "double-breasted-modern-fit-flat-front-pants-side-vents-windowpane",
-          "full-length-48-inches-coat-top-coat-collection"
-        ],
-        "layout": "alternative",
+        "layout": "10",
         "enable_cards_indent": false,
         "link_url": "shopify://collections/suits",
-        "link_text": "",
+        "link_text": "Shop Suits",
         "link_aria_label_text": "",
         "button_style": "primary",
         "full_width": true,
