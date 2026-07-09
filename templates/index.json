@@ -346,23 +346,16 @@
       }
     },
     "featured_products_HXwEb7": {
-      "type": "featured-products",
-      "name": "Featured products",
+      "type": "featured-collection",
+      "name": "Featured collection",
       "settings": {
-        "heading": "Dresses",
-        "subheading": "Be more pretty with us",
-        "description": "",
-        "product_list": [
-          "one-shoulder-sequin-wrap-skirt-mini-dress",
-          "floral-sequin-sweetheart-neck-mini-dress",
-          "sleeveless-bodycon-sequins-mini-dress",
-          "lace-overlay-embroidered-maxi-dress",
-          "elle-dress-midi-velvet-slip-dress-with-low-back-black"
-        ],
-        "layout": "alternative",
+        "collection": "all",
+        "label": "New Arrivals",
+        "heading": "Shop the Collection",
+        "layout": "10",
         "enable_cards_indent": false,
-        "link_url": "shopify://collections/dresses",
-        "link_text": "",
+        "link_url": "shopify://collections/all",
+        "link_text": "View all",
         "link_aria_label_text": "",
         "button_style": "primary",
         "full_width": true,
