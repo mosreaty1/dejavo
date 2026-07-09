@@ -207,15 +207,6 @@
     "cards_grid": {
       "type": "cards-grid",
       "blocks": {
-        "card_1": {
-          "type": "card",
-          "disabled": true,
-          "settings": {
-            "title": "Women Style",
-            "text": "<p>Against a snowy landscape, a model stands in a stylish winter jacket with a hat.</p>",
-            "link_url": "shopify://collections/women-style"
-          }
-        },
         "card_2": {
           "type": "card",
           "settings": {
@@ -257,68 +248,6 @@
         "aspect_ratio": "square",
         "center_cards_on_desktop": false,
         "full_width": false,
-        "offset_top_desktop": 20,
-        "offset_bottom_desktop": 100,
-        "offset_top_mobile": 0,
-        "offset_bottom_mobile": 40
-      }
-    },
-    "gallery_carousel": {
-      "type": "gallery-carousel",
-      "blocks": {
-        "slide_1": {
-          "type": "slide",
-          "settings": {
-            "link": "shopify://collections/men-style"
-          }
-        },
-        "slide_2": {
-          "type": "slide",
-          "settings": {
-            "link": "shopify://pages/contact"
-          }
-        },
-        "slide_5": {
-          "type": "slide",
-          "settings": {
-            "link": "shopify://products/custom-slim-fit-beige-blue-linen-suit-for-men"
-          }
-        },
-        "slide_3": {
-          "type": "slide",
-          "settings": {
-            "link": "shopify://collections/women-style"
-          }
-        },
-        "slide_4": {
-          "type": "slide",
-          "settings": {
-            "link": "shopify://collections/accessories"
-          }
-        },
-        "slide_6fAdbt": {
-          "type": "slide",
-          "settings": {
-            "link": "shopify://collections/shoes"
-          }
-        }
-      },
-      "block_order": [
-        "slide_1",
-        "slide_2",
-        "slide_5",
-        "slide_3",
-        "slide_4",
-        "slide_6fAdbt"
-      ],
-      "settings": {
-        "label": "Popular lookbooks",
-        "heading": "Check our gallary",
-        "image_aspect_ratio": "square",
-        "image_crop": "center",
-        "enable_arrows": true,
-        "enable_autoplay": true,
-        "autoplay_speed": 3,
         "offset_top_desktop": 20,
         "offset_bottom_desktop": 100,
         "offset_top_mobile": 0,
@@ -1094,7 +1023,6 @@
   "order": [
     "slideshow",
     "cards_grid",
-    "gallery_carousel",
     "featured_collection",
     "featured_products_HXwEb7",
     "featured_products_cwedwC",
