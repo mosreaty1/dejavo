@@ -264,6 +264,32 @@ html.no-js .cards-grid-new .cards-grid__item.need-animate {
 		padding-top: 100%;
 		border-radius: 0;
 	}
+	.cards-grid-new .cards-grid__column.cards-grid__column--md-type-4-1,
+	.cards-grid-new .cards-grid__column.cards-grid__column--md-type-4-2,
+	.cards-grid-new .cards-grid__column.cards-grid__column--md-type-4-3,
+	.cards-grid-new .cards-grid__column.cards-grid__column--md-type-4-4,
+	.cards-grid-new .cards-grid__column.cards-grid__column--md-type-3-1,
+	.cards-grid-new .cards-grid__column.cards-grid__column--md-type-3-2,
+	.cards-grid-new .cards-grid__column.cards-grid__column--md-type-3-3 {
+		width: 33.333% !important;
+		padding-top: 0 !important;
+	}
+	.cards-grid-new .cards-grid__item.cards-grid__item--md-shape-1 .cards-grid__item-image-wrapper,
+	.cards-grid-new .cards-grid__item.cards-grid__item--md-shape-2 .cards-grid__item-image-wrapper,
+	.cards-grid-new .cards-grid__item.cards-grid__item--md-shape-3 .cards-grid__item-image-wrapper {
+		padding-top: 125% !important;
+		border-radius: 4px !important;
+	}
+}
+@media (min-width: 768px) and (max-width: 991.98px) {
+	.cards-grid-new .cards-grid__item.cards-grid__item--sm-shape-1 {
+		width: 100% !important;
+	}
+	.cards-grid-new .cards-grid__item.cards-grid__item--sm-shape-1 .cards-grid__item-image-wrapper,
+	.cards-grid-new .cards-grid__item.cards-grid__item--sm-shape-2 .cards-grid__item-image-wrapper {
+		padding-top: 125% !important;
+		border-radius: 4px !important;
+	}
 }
 @media (min-width: 1200px) {
 	.cards-grid-new {

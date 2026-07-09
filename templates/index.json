@@ -207,14 +207,6 @@
     "cards_grid": {
       "type": "cards-grid",
       "blocks": {
-        "card_1": {
-          "type": "card",
-          "settings": {
-            "title": "Women Style",
-            "text": "<p>Against a snowy landscape, a model stands in a stylish winter jacket with a hat.</p>",
-            "link_url": "shopify://collections/women-style"
-          }
-        },
         "card_2": {
           "type": "card",
           "settings": {
@@ -241,7 +233,6 @@
         }
       },
       "block_order": [
-        "card_1",
         "card_2",
         "card_3",
         "card_4"
@@ -250,7 +241,7 @@
         "subtitle": "Find your style",
         "title": "Popular styles",
         "text": "<p>Check our popular Summer 2024 linen styles.</p>",
-        "cards_per_row": "4",
+        "cards_per_row": "3",
         "aspect_ratio": "square",
         "center_cards_on_desktop": false,
         "full_width": false,
