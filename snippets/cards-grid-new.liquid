@@ -328,10 +328,16 @@
 										{% endif %}
 									>
 										{{ image_element }}
+										{% if title != blank %}
+											<h3 class="cards-grid__item-category-badge h4">{{ title }}</h3>
+										{% endif %}
 									</a>
 								{% else %}
 									<div class="cards-grid__item-image-wrapper">
 										{{ image_element }}
+										{% if title != blank %}
+											<h3 class="cards-grid__item-category-badge h4">{{ title }}</h3>
+										{% endif %}
 									</div>
 								{% endif %}
 							{% else %}
@@ -343,22 +349,18 @@
 										{% endif %}
 									>
 										<img class="cards-grid__item-image" src="{{ fallback_image_asset }}" alt="{{ title | escape }}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover;">
+										{% if title != blank %}
+											<h3 class="cards-grid__item-category-badge h4">{{ title }}</h3>
+										{% endif %}
 									</a>
 								{% else %}
 									<div class="cards-grid__item-image-wrapper">
 										<img class="cards-grid__item-image" src="{{ fallback_image_asset }}" alt="{{ title | escape }}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover;">
+										{% if title != blank %}
+											<h3 class="cards-grid__item-category-badge h4">{{ title }}</h3>
+										{% endif %}
 									</div>
 								{% endif %}
-							{% endif %}
-
-							{% if title != blank %}
-								<h3 class="cards-grid__item-title h4">
-									{% if link_url != blank %}
-										<a href="{{ link_url }}" class="cards-grid__item-link-title focus-visible-outline">{{ title }}</a>
-									{% else %}
-										{{- title -}}
-									{% endif %}
-								</h3>
 							{% endif %}
 
 							{% if text != blank %}
