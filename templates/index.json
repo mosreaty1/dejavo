@@ -275,13 +275,25 @@
       }
     },
     "featured_products_HXwEb7": {
-      "type": "featured-collection",
-      "name": "Featured collection",
+      "type": "featured-products",
+      "name": "Featured products",
       "settings": {
-        "collection": "all",
-        "label": "New Arrivals",
         "heading": "Shop the Collection",
-        "layout": "10",
+        "subheading": "A mix of our best across every category",
+        "description": "",
+        "product_list": [
+          "v-sv2900-copy",
+          "d-w-sort-jacket-73922r",
+          "m-slimfit-shirt",
+          "mizumi-shirt-j-138-s",
+          "regular-fit-pants-f-on900",
+          "giorgio-venturi-oxford-shoe-6996-copy",
+          "giorgio-venturi-cap-toe-shoe-7033",
+          "3-pc-cufflinks-set-co-copy",
+          "roxoni-leather-belt-copy",
+          "bowtie-set-pmth-copy"
+        ],
+        "layout": "alternative",
         "enable_cards_indent": false,
         "link_url": "shopify://collections/all",
         "link_text": "View all",
