@@ -213,7 +213,7 @@
             "image": "shopify://shop_images/gerard-butler-man-brunette-coat-wallpaper-preview.jpg",
             "title": "Men Style",
             "text": "<p>Against an autumn park backdrop, a model stands in an elegant coat with an umbrella and handbag, accentuating a stylish fall look , showcasing a dynamic and comfortable outfit.</p>",
-            "link_url": "shopify://collections/men-style"
+            "link_url": "shopify://collections/suits"
           }
         },
         "card_3": {
@@ -231,7 +231,7 @@
             "image": "shopify://shop_images/360_F_145573196_A0NsbT5RGepjU0mbdohn31Lw0nmwUc8V.jpg",
             "title": "Shoes",
             "text": "<p>Against a snowy landscape, a model stands in a stylish winter jacket with a hat.</p>",
-            "link_url": "shopify://collections/shoes"
+            "link_url": "shopify://collections/mens-shoes"
           }
         }
       },
