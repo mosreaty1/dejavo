@@ -600,13 +600,17 @@
         "product_1": {
           "type": "product",
           "settings": {
-            "product": "floral-sequin-sweetheart-neck-mini-dress"
+            "product": "v-sv2900-copy",
+            "image_desktop": "shopify://shop_images/product-banner-suit.jpg",
+            "image_mobile": "shopify://shop_images/product-banner-suit.jpg"
           }
         },
         "product_jrD9TB": {
           "type": "product",
           "settings": {
-            "product": "british-korean-style-high-quality-plaid-three-piece-suit"
+            "product": "d-w-sort-jacket-73922r",
+            "image_desktop": "shopify://shop_images/product-banner-jacket.jpg",
+            "image_mobile": "shopify://shop_images/product-banner-jacket.jpg"
           }
         }
       },
@@ -615,9 +619,9 @@
         "product_jrD9TB"
       ],
       "settings": {
-        "label": "Actual Clothes",
-        "heading": "Check our popular trends to wear it",
-        "text": "Explore our latest collection of women's clothing at our online store. Discover trendy and timeless pieces that effortlessly elevate your wardrobe. From chic dresses to versatile basics, find your style essentials with us!",
+        "label": "Everyday Essentials",
+        "heading": "Check Out Our Popular Trends",
+        "text": "Explore our latest collection of men's clothing at our online store. Discover sharp, timeless pieces that effortlessly elevate your wardrobe. From tailored suits to versatile everyday essentials, find your style with us!",
         "button_label": "Learn More",
         "button_link": "shopify://pages/contact",
         "button_style": "circle",
