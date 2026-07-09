@@ -19,7 +19,7 @@
             "poster_desktop": "shopify://shop_images/HD-wallpaper-well-taylored-man-suit-classy-taylored-gentlemen-black-tie-man-business.jpg",
             "label": "Our the most popular collection",
             "heading": "Feel your inner beauty",
-            "description": "<p>In our shop, you\u2019ll find everything you need to create the perfect look for any occasion. We take pride in offering a wide selection of styles from classic to contemporary trends that enhance your individuality and boost your confidence in every setting.</p>",
+            "description": "<p>In our shop, you’ll find everything you need to create the perfect look for any occasion. We take pride in offering a wide selection of styles from classic to contemporary trends that enhance your individuality and boost your confidence in every setting.</p>",
             "button_text": "",
             "button_aria_label": "",
             "button_link": "/",
@@ -363,7 +363,7 @@
           "type": "content",
           "settings": {
             "content_heading": "Shopping time",
-            "content_text": "Explore our latest collection of women\u2019s clothing at our online store. Discover trendy and timeless pieces that effortlessly elevate your wardrobe. From chic dresses to versatile basics, find your style essentials with us!"
+            "content_text": "Explore our latest collection of women’s clothing at our online store. Discover trendy and timeless pieces that effortlessly elevate your wardrobe. From chic dresses to versatile basics, find your style essentials with us!"
           }
         },
         "content_2": {
@@ -377,7 +377,7 @@
           "type": "content",
           "settings": {
             "content_heading": "Find your best look",
-            "content_text": "At FashionHub, we believe that fashion is more than just clothing; it\u2019s a form of self-expression. Our curated selection of apparel reflects the latest trends while offering timeless classics, ensuring there\u2019s something for every taste and preference.\nWhether you\u2019re searching for the perfect outfit for a special occasion or updating your everyday essentials, our intuitive platform makes shopping a breeze. Dive into a world of endless possibilities where quality meets affordability, and where each piece tells a story of craftsmanship and style."
+            "content_text": "At FashionHub, we believe that fashion is more than just clothing; it’s a form of self-expression. Our curated selection of apparel reflects the latest trends while offering timeless classics, ensuring there’s something for every taste and preference.\nWhether you’re searching for the perfect outfit for a special occasion or updating your everyday essentials, our intuitive platform makes shopping a breeze. Dive into a world of endless possibilities where quality meets affordability, and where each piece tells a story of craftsmanship and style."
           }
         },
         "content_tBE4EW": {
@@ -385,7 +385,7 @@
           "disabled": true,
           "settings": {
             "content_heading": "Find your best look",
-            "content_text": "At FashionHub, we believe that fashion is more than just clothing; it\u2019s a form of self-expression. Our curated selection of apparel reflects the latest trends while offering timeless classics, ensuring there\u2019s something for every taste and preference.\nWhether you\u2019re searching for the perfect outfit for a special occasion or updating your everyday essentials, our intuitive platform makes shopping a breeze. Dive into a world of endless possibilities where quality meets affordability, and where each piece tells a story of craftsmanship and style."
+            "content_text": "At FashionHub, we believe that fashion is more than just clothing; it’s a form of self-expression. Our curated selection of apparel reflects the latest trends while offering timeless classics, ensuring there’s something for every taste and preference.\nWhether you’re searching for the perfect outfit for a special occasion or updating your everyday essentials, our intuitive platform makes shopping a breeze. Dive into a world of endless possibilities where quality meets affordability, and where each piece tells a story of craftsmanship and style."
           }
         }
       },
@@ -397,7 +397,7 @@
       ],
       "settings": {
         "enable_lazy_load": true,
-        "heading": "The Lace is a brand of women\u2019s laconic and feminine clothing",
+        "heading": "The Lace is a brand of women’s laconic and feminine clothing",
         "subheading": "Find us easily",
         "background_color": "#222222",
         "heading_color": "#ffffff",
@@ -688,7 +688,7 @@
         "text_alignment": "left",
         "heading": "Find your best look",
         "subheading": "Popular lookbooks",
-        "text_content": "<p>At FashionHub, we believe that fashion is more than just clothing; it\u2019s a form of self-expression. Our curated selection of apparel reflects the latest trends while offering timeless classics, ensuring there\u2019s something for every taste and preference.Whether you\u2019re searching for the perfect outfit for a special occasion or updating your everyday essentials, our intuitive platform makes shopping a breeze.</p>",
+        "text_content": "<p>At FashionHub, we believe that fashion is more than just clothing; it’s a form of self-expression. Our curated selection of apparel reflects the latest trends while offering timeless classics, ensuring there’s something for every taste and preference.Whether you’re searching for the perfect outfit for a special occasion or updating your everyday essentials, our intuitive platform makes shopping a breeze.</p>",
         "button_label": "Learn More",
         "button_aria_label": "Learn More",
         "button_url": "/",
@@ -711,7 +711,7 @@
           "settings": {
             "product": "",
             "label": "Most popular",
-            "heading": "Woman\u2019s Brown Trench",
+            "heading": "Woman’s Brown Trench",
             "text": "<ul><li>Cotton soft material</li><li>All seasons trend</li><li>High score</li><li>Stylish buttons</li><li>Popular item</li></ul>",
             "button_text": "Learn more",
             "label_background_color": "#000000",
@@ -723,7 +723,7 @@
           "settings": {
             "product": "",
             "label": "Most popular",
-            "heading": "Woman\u2019s White Sweater",
+            "heading": "Woman’s White Sweater",
             "text": "<ul><li>Cotton soft material</li><li>All seasons trend</li><li>Popular item</li><li>Stylish buttons</li><li>High score</li></ul>",
             "button_text": "Learn more",
             "label_background_color": "#000000",
@@ -894,7 +894,7 @@
         "event_BTq3MW": {
           "type": "event",
           "settings": {
-            "title": "What\u2019s Hot in Summer 2024?",
+            "title": "What’s Hot in Summer 2024?",
             "text": "<p>As the fashion world gears up for the upcoming fall season, designers are unveiling a stunning array of trends that promise to redefine wardrobes worldwide...</p>",
             "link_text": "Read more",
             "link_url": "/",
