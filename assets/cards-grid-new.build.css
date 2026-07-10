@@ -206,11 +206,23 @@ html.no-js .cards-grid-new .cards-grid__item.need-animate {
 		transform: none;
 	}
 	.cards-grid-new .cards-grid__column {
-		width: 45% !important;
+		width: 28% !important;
 	}
 	.cards-grid-new .cards-grid__item-image-wrapper {
-		padding-top: 125% !important;
-		border-radius: 4px !important;
+		padding-top: 100% !important;
+		border-radius: 50% !important;
+		border: 1px solid #2c2a28;
+	}
+	.cards-grid-new .cards-grid__item-image {
+		transform: scale(1.18);
+	}
+	.cards-grid-new .cards-grid__item-category-badge {
+		left: 10px;
+		right: 10px;
+		bottom: 10px;
+		font-size: 9px;
+		letter-spacing: 1px;
+		text-align: center;
 	}
 }
 @media (min-width: 768px) {
