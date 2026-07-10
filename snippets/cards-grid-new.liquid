@@ -429,6 +429,37 @@
 			requestAnimationFrame(step);
 		}
 
-		document.querySelectorAll('#shopify-section-{{ section.id }} .cards-grid-new').forEach(initAutoScroll);
+		function initTilt(section) {
+			if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
+			var wrappers = section.querySelectorAll('.cards-grid__item-image-wrapper');
+			var maxTilt = 10;
+
+			wrappers.forEach(function (wrapper) {
+				function handleMove(e) {
+					var rect = wrapper.getBoundingClientRect();
+					var x = (e.clientX - rect.left) / rect.width;
+					var y = (e.clientY - rect.top) / rect.height;
+					var rotateY = (x - 0.5) * maxTilt * 2;
+					var rotateX = (0.5 - y) * maxTilt * 2;
+
+					wrapper.classList.add('cards-grid__tilt-active');
+					wrapper.style.transform = 'perspective(900px) rotateX(' + rotateX.toFixed(2) + 'deg) rotateY(' + rotateY.toFixed(2) + 'deg) scale3d(1.04, 1.04, 1.04)';
+				}
+
+				function handleLeave() {
+					wrapper.classList.remove('cards-grid__tilt-active');
+					wrapper.style.transform = '';
+				}
+
+				wrapper.addEventListener('pointermove', handleMove);
+				wrapper.addEventListener('pointerleave', handleLeave);
+			});
+		}
+
+		document.querySelectorAll('#shopify-section-{{ section.id }} .cards-grid-new').forEach(function (section) {
+			initAutoScroll(section);
+			initTilt(section);
+		});
 	})();
 </script>

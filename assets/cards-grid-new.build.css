@@ -71,10 +71,17 @@
 	border-radius: 300px;
 	perspective: 1000px;
 	box-shadow: 0 8px 24px rgba(0, 0, 0, 0);
-	transition: box-shadow var(--animate-img-scale, 0.4s) ease-out;
+	transition: box-shadow var(--animate-img-scale, 0.4s) ease-out, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+	transform-style: preserve-3d;
+	will-change: transform;
 }
 .cards-grid-new .cards-grid__item-image-wrapper.cards-grid__item-image-wrapper--placeholder {
 	border: 1px solid;
+}
+@media (-moz-touch-enabled: 0), (hover: hover), (pointer: fine) {
+	.cards-grid-new .cards-grid__item-image-wrapper.cards-grid__tilt-active {
+		transition: box-shadow var(--animate-img-scale, 0.4s) ease-out, transform 0.1s linear;
+	}
 }
 @media (-moz-touch-enabled: 0), (hover: hover), (pointer: fine) {
 	.cards-grid-new .cards-grid__item-image-wrapper.cards-grid__item-image-wrapper--hover:hover {
