@@ -376,19 +376,24 @@
 
 <script>
 	(function () {
+		function isMobile() {
+			return window.matchMedia('(max-width: 767.98px)').matches;
+		}
+
 		function initAutoScroll(section) {
 			var row = section.querySelector('.cards-grid__row');
-			if (!row) return;
+			if (!row || !isMobile()) return;
 
-			var direction = 1;
+			var originalColumns = Array.prototype.slice.call(row.children);
+			if (!originalColumns.length) return;
+
+			originalColumns.forEach(function (col) {
+				row.appendChild(col.cloneNode(true));
+			});
+
 			var speed = 0.7;
 			var paused = false;
 			var resumeTimeout;
-			var dwellUntil = 0;
-
-			function isMobile() {
-				return window.matchMedia('(max-width: 767.98px)').matches;
-			}
 
 			function pauseInteraction() {
 				paused = true;
@@ -407,22 +412,14 @@
 			row.addEventListener('pointerdown', pauseInteraction);
 			row.addEventListener('pointerup', resumeInteraction);
 
-			function step(timestamp) {
-				if (isMobile() && !paused && timestamp > dwellUntil) {
-					var maxScroll = row.scrollWidth - row.clientWidth;
+			function step() {
+				if (!paused) {
+					var loopPoint = row.scrollWidth / 2;
 
-					if (maxScroll > 0) {
-						row.scrollLeft += speed * direction;
+					row.scrollLeft += speed;
 
-						if (row.scrollLeft >= maxScroll) {
-							row.scrollLeft = maxScroll;
-							direction = -1;
-							dwellUntil = timestamp + 1000;
-						} else if (row.scrollLeft <= 0) {
-							row.scrollLeft = 0;
-							direction = 1;
-							dwellUntil = timestamp + 1000;
-						}
+					if (row.scrollLeft >= loopPoint) {
+						row.scrollLeft -= loopPoint;
 					}
 				}
 
