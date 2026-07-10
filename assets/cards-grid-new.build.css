@@ -347,7 +347,7 @@ html.no-js .cards-grid-new .cards-grid__item.need-animate {
 	.cards-grid-new .cards-grid__item.cards-grid__item--md-shape-2 .cards-grid__item-image-wrapper,
 	.cards-grid-new .cards-grid__item.cards-grid__item--md-shape-3 .cards-grid__item-image-wrapper {
 		padding-top: 100% !important;
-		border-radius: 4px !important;
+		border-radius: 50% !important;
 	}
 	.cards-grid-new .cards-grid__item-image-wrapper {
 		border: 1px solid #2c2a28;
@@ -361,11 +361,12 @@ html.no-js .cards-grid-new .cards-grid__item.need-animate {
 		}
 	}
 	.cards-grid-new .cards-grid__item-category-badge {
-		left: 12px;
-		right: 12px;
-		bottom: 12px;
+		left: 16px;
+		right: 16px;
+		bottom: 18px;
 		font-size: 11px;
 		letter-spacing: 1.5px;
+		text-align: center;
 	}
 }
 @media (min-width: 768px) and (max-width: 991.98px) {
