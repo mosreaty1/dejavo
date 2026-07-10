@@ -48,7 +48,7 @@
 				"sales_point": {
 					"type": "sales_point",
 					"settings": {
-						"sales_point_text": "Write some text here to inform your client that this is a Pre-order product"
+						"sales_point_text": "This item is available for pre-order. It will ship as soon as it's back in stock."
 					}
 				},
 				"add_to_cart": {

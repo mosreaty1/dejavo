@@ -53,50 +53,6 @@
     "header": {
       "type": "header",
       "blocks": {
-        "megamenu_wX8E9F": {
-          "type": "megamenu",
-          "settings": {
-            "menu_handle": "Women",
-            "menu_type": "tabs",
-            "badge_text": "",
-            "badge_text_color": "#ffffff",
-            "badge_background_color": "#000000",
-            "label": "",
-            "heading": "",
-            "link": "shopify://products/one-shoulder-sequin-wrap-skirt-mini-dress",
-            "link_label": "Link label",
-            "media_rounded_corners": false,
-            "product1": "one-shoulder-sequin-wrap-skirt-mini-dress",
-            "label2": "",
-            "heading2": "",
-            "link2": "shopify://products/floral-sequin-sweetheart-neck-mini-dress",
-            "link_label2": "Link label",
-            "media_rounded_corners2": true,
-            "product2": "floral-sequin-sweetheart-neck-mini-dress"
-          }
-        },
-        "megamenu_bbdVp8": {
-          "type": "megamenu",
-          "settings": {
-            "menu_handle": "Men",
-            "menu_type": "tabs",
-            "badge_text": "",
-            "badge_text_color": "#ffffff",
-            "badge_background_color": "#000000",
-            "label": "",
-            "heading": "",
-            "link": "",
-            "link_label": "Link label",
-            "media_rounded_corners": true,
-            "product1": "british-korean-style-high-quality-plaid-three-piece-suit",
-            "label2": "",
-            "heading2": "",
-            "link2": "shopify://products/three-piece-slim-fit-suit-blazer-vest-pants",
-            "link_label2": "Link label",
-            "media_rounded_corners2": true,
-            "product2": "three-piece-slim-fit-suit-blazer-vest-pants"
-          }
-        },
         "megamenu_half_to_half_r8CGmA": {
           "type": "megamenu-half-to-half",
           "settings": {
@@ -106,59 +62,23 @@
             "badge_background_color": "#000000",
             "heading": "Find us easily",
             "subheading": "Our information",
-            "short_text": "Founded in 2012, Passion has redefined the classic rubber raincoat, becoming a prominent global brand in rainwear.",
+            "short_text": "Prestige is a menswear house built on sharp tailoring and modern craftsmanship. Reach out with any questions about sizing, orders, or our collections.",
             "button_label1": "Contact Us",
-            "button_link1": "/",
+            "button_link1": "/pages/contact",
             "button1_style": "primary",
             "button_label2": "About us",
-            "button_link2": "/",
+            "button_link2": "/pages/our-story",
             "button2_style": "secondary",
-            "image": "shopify://shop_images/untitled-design-26-1365x2048.webp",
+            "image": "shopify://shop_images/HD-wallpaper-well-taylored-man-suit-classy-taylored-gentlemen-black-tie-man-business.jpg",
             "show_shadow": false,
             "shadow_color": "",
             "shadow_color_mobile": "",
             "image_link": ""
           }
-        },
-        "megamenu_images_UNxB6e": {
-          "type": "megamenu-images",
-          "settings": {
-            "menu_handle": "New In",
-            "badge_text": "",
-            "badge_text_color": "#ffffff",
-            "badge_background_color": "#000000",
-            "label": "Check Out",
-            "heading": "New popular brands",
-            "link": "/",
-            "link_label": "Show All",
-            "media_rounded_corners": false,
-            "product1": "three-piece-slim-fit-suit-blazer-vest-pants",
-            "label2": "Label",
-            "heading2": "Heading",
-            "link2": "/",
-            "link_label2": "Shop",
-            "media_rounded_corners2": true,
-            "product2": "sleeveless-bodycon-sequins-mini-dress",
-            "label3": "Label",
-            "heading3": "Heading",
-            "link3": "/",
-            "link_label3": "Link label",
-            "media_rounded_corners3": false,
-            "product3": "british-korean-style-high-quality-plaid-three-piece-suit",
-            "label4": "Label",
-            "heading4": "Heading",
-            "link4": "/",
-            "link_label4": "Link label",
-            "media_rounded_corners4": false,
-            "product4": "floral-sequin-sweetheart-neck-mini-dress"
-          }
         }
       },
       "block_order": [
-        "megamenu_wX8E9F",
-        "megamenu_bbdVp8",
-        "megamenu_half_to_half_r8CGmA",
-        "megamenu_images_UNxB6e"
+        "megamenu_half_to_half_r8CGmA"
       ],
       "settings": {
         "header_type": "sticky_hide",
@@ -210,8 +130,8 @@
           "settings": {
             "heading": "You might also like",
             "product_list": [
-              "three-piece-slim-fit-suit-blazer-vest-pants",
-              "custom-slim-fit-beige-blue-linen-suit-for-men"
+              "v-sv2900-copy",
+              "d-w-sort-jacket-73922r"
             ]
           }
         },

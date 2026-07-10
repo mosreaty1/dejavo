@@ -1,16 +1,1 @@
-{
-	"sections": {
-		"banner-with-text": {
-			"type": "banner-with-text",
-			"settings": {}
-		},
-		"shipping-page-main": {
-			"type": "shipping-page-main",
-			"settings": {}
-		}
-	},
-	"order": [
-		"banner-with-text",
-		"shipping-page-main"
-	]
-}
+{"sections":{"banner-with-text":{"type":"banner-with-text","settings":{"label":"Shipping","heading":"Shipping & Delivery","text":"<p>Everything you need to know about how we get your order to you.</p>","desktop_image":"shopify://shop_images/HD-wallpaper-well-taylored-man-suit-classy-taylored-gentlemen-black-tie-man-business.jpg","mobile_image":"shopify://shop_images/HD-wallpaper-well-taylored-man-suit-classy-taylored-gentlemen-black-tie-man-business.jpg"}},"shipping-page-main":{"type":"shipping-page-main","settings":{}}},"order":["banner-with-text","shipping-page-main"]}
