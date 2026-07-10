@@ -329,6 +329,34 @@ html.no-js .cards-grid-new .cards-grid__item.need-animate {
 		border-radius: 4px !important;
 	}
 }
+@media (min-width: 992px) {
+	.cards-grid-new .cards-grid__column.cards-grid__column--md-type-4-1,
+	.cards-grid-new .cards-grid__column.cards-grid__column--md-type-4-2,
+	.cards-grid-new .cards-grid__column.cards-grid__column--md-type-4-3,
+	.cards-grid-new .cards-grid__column.cards-grid__column--md-type-4-4,
+	.cards-grid-new .cards-grid__column.cards-grid__column--md-type-3-1,
+	.cards-grid-new .cards-grid__column.cards-grid__column--md-type-3-2,
+	.cards-grid-new .cards-grid__column.cards-grid__column--md-type-3-3 {
+		width: 16.666% !important;
+		padding: 0 6px !important;
+	}
+	.cards-grid-new .cards-grid__row {
+		row-gap: 20px;
+	}
+	.cards-grid-new .cards-grid__item.cards-grid__item--md-shape-1 .cards-grid__item-image-wrapper,
+	.cards-grid-new .cards-grid__item.cards-grid__item--md-shape-2 .cards-grid__item-image-wrapper,
+	.cards-grid-new .cards-grid__item.cards-grid__item--md-shape-3 .cards-grid__item-image-wrapper {
+		padding-top: 100% !important;
+		border-radius: 4px !important;
+	}
+	.cards-grid-new .cards-grid__item-category-badge {
+		left: 12px;
+		right: 12px;
+		bottom: 12px;
+		font-size: 11px;
+		letter-spacing: 1.5px;
+	}
+}
 @media (min-width: 768px) and (max-width: 991.98px) {
 	.cards-grid-new .cards-grid__item.cards-grid__item--sm-shape-1 {
 		width: 100% !important;
