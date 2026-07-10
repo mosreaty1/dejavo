@@ -39,7 +39,8 @@
 }
 @media (max-width: 767.98px) {
 	.cards-grid-new .cards-grid__text,
-	.cards-grid-new .cards-grid__title {
+	.cards-grid-new .cards-grid__title,
+	.cards-grid-new .cards-grid__item-text {
 		display: none;
 	}
 }

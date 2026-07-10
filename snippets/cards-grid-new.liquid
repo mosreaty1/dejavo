@@ -373,3 +373,65 @@
 		{% endif %}
 	</div>
 </section>
+
+<script>
+	(function () {
+		function initAutoScroll(section) {
+			var row = section.querySelector('.cards-grid__row');
+			if (!row) return;
+
+			var direction = 1;
+			var speed = 0.7;
+			var paused = false;
+			var resumeTimeout;
+			var dwellUntil = 0;
+
+			function isMobile() {
+				return window.matchMedia('(max-width: 767.98px)').matches;
+			}
+
+			function pauseInteraction() {
+				paused = true;
+				clearTimeout(resumeTimeout);
+			}
+
+			function resumeInteraction() {
+				clearTimeout(resumeTimeout);
+				resumeTimeout = setTimeout(function () {
+					paused = false;
+				}, 2000);
+			}
+
+			row.addEventListener('touchstart', pauseInteraction, { passive: true });
+			row.addEventListener('touchend', resumeInteraction, { passive: true });
+			row.addEventListener('pointerdown', pauseInteraction);
+			row.addEventListener('pointerup', resumeInteraction);
+
+			function step(timestamp) {
+				if (isMobile() && !paused && timestamp > dwellUntil) {
+					var maxScroll = row.scrollWidth - row.clientWidth;
+
+					if (maxScroll > 0) {
+						row.scrollLeft += speed * direction;
+
+						if (row.scrollLeft >= maxScroll) {
+							row.scrollLeft = maxScroll;
+							direction = -1;
+							dwellUntil = timestamp + 1000;
+						} else if (row.scrollLeft <= 0) {
+							row.scrollLeft = 0;
+							direction = 1;
+							dwellUntil = timestamp + 1000;
+						}
+					}
+				}
+
+				requestAnimationFrame(step);
+			}
+
+			requestAnimationFrame(step);
+		}
+
+		document.querySelectorAll('#shopify-section-{{ section.id }} .cards-grid-new').forEach(initAutoScroll);
+	})();
+</script>
