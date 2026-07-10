@@ -197,6 +197,9 @@ html.no-js .cards-grid-new .cards-grid__item.need-animate {
 		opacity: 1;
 		transform: none;
 	}
+	.cards-grid-new .cards-grid__column {
+		width: 45% !important;
+	}
 	.cards-grid-new .cards-grid__item-image-wrapper {
 		padding-top: 125% !important;
 		border-radius: 4px !important;
