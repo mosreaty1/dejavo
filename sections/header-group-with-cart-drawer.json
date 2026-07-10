@@ -13,6 +13,7 @@
   "sections": {
     "announcement-bar": {
       "type": "announcement-bar",
+      "disabled": true,
       "settings": {
         "enable_autoplay": true,
         "autoplay_speed": 5,
@@ -91,7 +92,6 @@
         "is_show_box_shadow": false,
         "is_show_language_selector": true,
         "is_show_country_selector": true,
-        "logo": "",
         "logo_width": 85,
         "logo_position": "left",
         "menu": "main-menu",
