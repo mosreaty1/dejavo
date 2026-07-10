@@ -182,7 +182,7 @@
         "height_mobile": 100,
         "subtract_header_height": false,
         "offset_top_desktop": 0,
-        "offset_bottom_desktop": 100,
+        "offset_bottom_desktop": 31,
         "offset_top_mobile": 0,
         "offset_bottom_mobile": 40,
         "show_arrows": true,
@@ -278,8 +278,8 @@
         "aspect_ratio": "square",
         "center_cards_on_desktop": false,
         "full_width": false,
-        "offset_top_desktop": 20,
-        "offset_bottom_desktop": 100,
+        "offset_top_desktop": 0,
+        "offset_bottom_desktop": 56,
         "offset_top_mobile": 0,
         "offset_bottom_mobile": 40
       }
