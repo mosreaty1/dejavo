@@ -1,3 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Yuyu+Short&display=swap');
+.featured-products-new .featured-products__subheading,
+.featured-products-new .featured-products__heading {
+	font-family: 'Yuyu Short', cursive;
+}
 .featured-products-new .featured-products__heading {
 	margin-bottom: 30px;
 	word-break: break-word;
