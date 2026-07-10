@@ -349,6 +349,17 @@ html.no-js .cards-grid-new .cards-grid__item.need-animate {
 		padding-top: 100% !important;
 		border-radius: 4px !important;
 	}
+	.cards-grid-new .cards-grid__item-image-wrapper {
+		border: 1px solid #2c2a28;
+	}
+	.cards-grid-new .cards-grid__item-image {
+		transform: scale(1.18);
+	}
+	@media (-moz-touch-enabled: 0), (hover: hover), (pointer: fine) {
+		.cards-grid-new .cards-grid__item-image-wrapper.cards-grid__item-image-wrapper--hover:hover .cards-grid__item-image {
+			transform: scale(1.28) rotateY(-6deg) rotateX(2deg);
+		}
+	}
 	.cards-grid-new .cards-grid__item-category-badge {
 		left: 12px;
 		right: 12px;

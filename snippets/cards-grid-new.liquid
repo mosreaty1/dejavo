@@ -221,8 +221,6 @@
 
 					{% if section.index > 1 %}
 						{% assign is_lazy = true %}
-					{% elsif section.index == 1 and forloop.index > cards_per_row_int %}
-						{% assign is_lazy = true %}
 					{% endif %}
 
 					<div class="cards-grid__column cards-grid__column--md-type-{{- cards_per_row -}}-{{- column_type }} js-animate {% if request.visual_preview_mode or section.index == 1 %}animated{% endif %}">
