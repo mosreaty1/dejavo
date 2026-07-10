@@ -1,1 +1,150 @@
-{"sections":{"banner":{"type":"banner","blocks":{"full_width_BtfHKW":{"type":"full_width","settings":{"desktop_image_height":"600px","mobile_image_height":"350px","media_type":"image","label":"","heading":"Banner","text":"<p>Give customers details about the banner image or content on the banner.<\/p>","button_text":"Button label","button_url":"\/","button_aria":"Button label","make_link_full_media":false,"overlay_opacity":0,"overlay_color":"#000000","image_border_width":0,"image_border_indent_desktop":10,"image_border_indent_mobile":10,"enable_lazy_load":true,"external_video_url_desktop":"","external_video_url_mobile":"","content_alignment":"center","content_alignment_mobile":"center","block_alignment":"center"}}},"block_order":["full_width_BtfHKW"],"disabled":true,"name":"Banner 1","settings":{"section_background":"#222222","label_color":"#ffffff","heading_color":"#ffffff","text_color":"#ffffff","link_color":"#d33636","button_background":"#ffffff","button_color":"#000000","button_border":"#ffffff","button_background_hover":"#000000","button_color_hover":"#ffffff","button_border_hover":"#ffffff","image_border_color":"#ffffff","button_circle_text_color":"#f9f5f0","button_circle_background_color":"rgba(0,0,0,0)","button_circle_border_color":"#f9f5f0","button_circle_outer_border_color":"#8b8885","button_circle_text_color_hover":"#2c2a28","button_circle_background_color_hover":"#f4d1b1","button_circle_border_color_hover":"#f4d1b1","button_circle_outer_border_color_hover":"#8b8885","full_width":true,"offset_top_desktop":30,"offset_bottom_desktop":0,"offset_top_mobile":23,"offset_bottom_mobile":0}},"plp-template":{"type":"collection-template","settings":{"show_breadcrumbs":true,"show_img":false,"show_description":false,"custom_image":"shopify:\/\/shop_images\/ad_Top_Seller_for_En_Saison_Mirabella_Tie-Waist.jpg","enable_product_cards_indent":false,"show_color_swatch_in_filters":true,"show_grid_selector":true,"filters_type":"sidebar","paginate_by":20,"paginate_by_basic_grid":16,"pagination_type":"pagination","grid_view":"basic","full_width_grid":true,"offset_top_desktop":0,"offset_bottom_desktop":60,"offset_top_mobile":25,"offset_bottom_mobile":30}},"collection_list":{"type":"collection-list","blocks":{"collection_UWg3Um":{"type":"collection","settings":{"collection":"long-dresses"}},"collection_wcN6Y8":{"type":"collection","settings":{"collection":"booties"}},"collection_HAP4dK":{"type":"collection","settings":{"collection":"belts"}},"collection_DncXdQ":{"type":"collection","settings":{"collection":"heels"}}},"block_order":["collection_UWg3Um","collection_wcN6Y8","collection_HAP4dK","collection_DncXdQ"],"settings":{"label":"Popular collections","heading":"Collection list","link_url":"","link_text":"","link_aria_label_text":"","text_alignment":"left","button_style":"primary","aspect_ratio":"portrait","text_position":"inside_the_image","image_crop":"center","show_products_count":true,"color_overlay":"#2c2a28","inside_the_image_text":"#f7f2ec","inside_the_image_text_hover":"#ffffff","full_width":true,"offset_top_desktop":60,"offset_bottom_desktop":60,"offset_top_mobile":30,"offset_bottom_mobile":30}}},"order":["banner","plp-template","collection_list"]}
+{
+  "sections": {
+    "banner": {
+      "type": "banner",
+      "blocks": {
+        "full_width_BtfHKW": {
+          "type": "full_width",
+          "settings": {
+            "desktop_image_height": "600px",
+            "mobile_image_height": "350px",
+            "media_type": "image",
+            "label": "",
+            "heading": "Banner",
+            "text": "<p>Give customers details about the banner image or content on the banner.</p>",
+            "button_text": "Button label",
+            "button_url": "/",
+            "button_aria": "Button label",
+            "make_link_full_media": false,
+            "overlay_opacity": 0,
+            "overlay_color": "#000000",
+            "image_border_width": 0,
+            "image_border_indent_desktop": 10,
+            "image_border_indent_mobile": 10,
+            "enable_lazy_load": true,
+            "external_video_url_desktop": "",
+            "external_video_url_mobile": "",
+            "content_alignment": "center",
+            "content_alignment_mobile": "center",
+            "block_alignment": "center"
+          }
+        }
+      },
+      "block_order": [
+        "full_width_BtfHKW"
+      ],
+      "disabled": true,
+      "name": "Banner 1",
+      "settings": {
+        "section_background": "#222222",
+        "label_color": "#ffffff",
+        "heading_color": "#ffffff",
+        "text_color": "#ffffff",
+        "link_color": "#d33636",
+        "button_background": "#ffffff",
+        "button_color": "#000000",
+        "button_border": "#ffffff",
+        "button_background_hover": "#000000",
+        "button_color_hover": "#ffffff",
+        "button_border_hover": "#ffffff",
+        "image_border_color": "#ffffff",
+        "button_circle_text_color": "#f9f5f0",
+        "button_circle_background_color": "rgba(0,0,0,0)",
+        "button_circle_border_color": "#f9f5f0",
+        "button_circle_outer_border_color": "#8b8885",
+        "button_circle_text_color_hover": "#2c2a28",
+        "button_circle_background_color_hover": "#f4d1b1",
+        "button_circle_border_color_hover": "#f4d1b1",
+        "button_circle_outer_border_color_hover": "#8b8885",
+        "full_width": true,
+        "offset_top_desktop": 30,
+        "offset_bottom_desktop": 0,
+        "offset_top_mobile": 23,
+        "offset_bottom_mobile": 0
+      }
+    },
+    "plp-template": {
+      "type": "collection-template",
+      "settings": {
+        "show_breadcrumbs": true,
+        "show_img": false,
+        "show_description": false,
+        "custom_image": "shopify://shop_images/ad_Top_Seller_for_En_Saison_Mirabella_Tie-Waist.jpg",
+        "enable_product_cards_indent": false,
+        "show_color_swatch_in_filters": true,
+        "show_grid_selector": true,
+        "filters_type": "sidebar",
+        "paginate_by": 20,
+        "paginate_by_basic_grid": 16,
+        "pagination_type": "pagination",
+        "grid_view": "basic",
+        "full_width_grid": true,
+        "offset_top_desktop": 0,
+        "offset_bottom_desktop": 60,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 30
+      }
+    },
+    "collection_list": {
+      "type": "collection-list",
+      "blocks": {
+        "collection_UWg3Um": {
+          "type": "collection",
+          "settings": {
+            "collection": "suits"
+          }
+        },
+        "collection_wcN6Y8": {
+          "type": "collection",
+          "settings": {
+            "collection": "sport-jacket"
+          }
+        },
+        "collection_HAP4dK": {
+          "type": "collection",
+          "settings": {
+            "collection": "accessories"
+          }
+        },
+        "collection_DncXdQ": {
+          "type": "collection",
+          "settings": {
+            "collection": "mens-shoes"
+          }
+        }
+      },
+      "block_order": [
+        "collection_UWg3Um",
+        "collection_wcN6Y8",
+        "collection_HAP4dK",
+        "collection_DncXdQ"
+      ],
+      "settings": {
+        "label": "Popular collections",
+        "heading": "Explore More Categories",
+        "link_url": "",
+        "link_text": "",
+        "link_aria_label_text": "",
+        "text_alignment": "left",
+        "button_style": "primary",
+        "aspect_ratio": "portrait",
+        "text_position": "inside_the_image",
+        "image_crop": "center",
+        "show_products_count": true,
+        "color_overlay": "#2c2a28",
+        "inside_the_image_text": "#f7f2ec",
+        "inside_the_image_text_hover": "#ffffff",
+        "full_width": true,
+        "offset_top_desktop": 60,
+        "offset_bottom_desktop": 60,
+        "offset_top_mobile": 30,
+        "offset_bottom_mobile": 30
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "plp-template",
+    "collection_list"
+  ]
+}
