@@ -210,34 +210,34 @@
         "card_2": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/gerard-butler-man-brunette-coat-wallpaper-preview.jpg",
-            "title": "Men Style",
-            "text": "<p>Against an autumn park backdrop, a model stands in an elegant coat with an umbrella and handbag, accentuating a stylish fall look , showcasing a dynamic and comfortable outfit.</p>",
+            "image": "shopify://shop_images/prestige-category-suits.png",
+            "title": "Suits",
+            "text": "<p>Sharp, tailored suits built for a polished, confident silhouette.</p>",
             "link_url": "shopify://collections/suits"
           }
         },
         "card_3": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/suit-accessories-guide-men-featured.jpg",
+            "image": "shopify://shop_images/prestige-category-accessories.png",
             "title": "Accessories",
-            "text": "<p>Against a snowy landscape, a model stands in a stylish winter jacket with a hat.</p>",
+            "text": "<p>Ties, belts, cufflinks, and watches to finish the look.</p>",
             "link_url": "shopify://collections/accessories"
           }
         },
         "card_4": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/360_F_145573196_A0NsbT5RGepjU0mbdohn31Lw0nmwUc8V.jpg",
+            "image": "shopify://shop_images/prestige-category-shoes.png",
             "title": "Shoes",
-            "text": "<p>Against a snowy landscape, a model stands in a stylish winter jacket with a hat.</p>",
+            "text": "<p>Polished leather shoes crafted for comfort and a sharp finish.</p>",
             "link_url": "shopify://collections/mens-shoes"
           }
         },
         "card_5": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/handsome-serious-man-dressed-shirt-posing_171337-10513.avif",
+            "image": "shopify://shop_images/prestige-category-shirts.png",
             "title": "Shirts",
             "text": "<p>Crisp dress shirts tailored for a sharp, polished look, from classic solids to modern slim fits.</p>",
             "link_url": "shopify://collections/fashion-shirts"
@@ -246,7 +246,7 @@
         "card_6": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/hd-digital-art-wallpaper-background_783884-119866.avif",
+            "image": "shopify://shop_images/prestige-category-pants.png",
             "title": "Pants",
             "text": "<p>Tailored dress pants built for comfort and a clean, refined silhouette.</p>",
             "link_url": "shopify://collections/dress-pants"
@@ -255,7 +255,7 @@
         "card_7": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/man-crossing-legs-wearing-American-flag-dress-socks-with-navy-pants_1200x_492d28a5-ea29-4ce1-ba36-247e2004ed5f.webp",
+            "image": "shopify://shop_images/prestige-category-socks.png",
             "title": "Socks",
             "text": "<p>Dress socks that complete the look, from classic solids to subtle patterns.</p>",
             "link_url": "shopify://collections/dress-socks"
