@@ -1,1 +1,170 @@
-{"sections":{"banner-with-text":{"type":"banner-with-text","settings":{"label":"Our Story","heading":"Sharp Tailoring, Modern Craftsmanship","text":"<p>Prestige is a menswear house built for the modern gentleman \u2014 combining timeless tailoring with modern comfort, so you always look and feel your best.</p>","desktop_image":"shopify://shop_images/HD-wallpaper-well-taylored-man-suit-classy-taylored-gentlemen-black-tie-man-business.jpg","mobile_image":"shopify://shop_images/HD-wallpaper-well-taylored-man-suit-classy-taylored-gentlemen-black-tie-man-business.jpg"}},"text-section":{"type":"text-section","settings":{"heading":"Our Philosophy","subheading":"Why Prestige","text":"<p>We believe how you dress is how you show up. That's why every piece we carry is chosen for sharp tailoring, quality materials, and lasting style \u2014 from formal suits to everyday essentials.</p>"}},"image-with-text-first":{"type":"image-with-text","settings":{"heading":"Timeless Tailoring","text_content":"<p>From classic suits to modern slim fits, our tailoring is designed to give you a sharp, confident silhouette for any occasion.</p>","button_label":"Shop Suits","button_aria_label":"Shop Suits","button_url":"/collections/suits","first_desktop_image":"shopify://shop_images/gerard-butler-man-brunette-coat-wallpaper-preview.jpg","first_mobile_image":"shopify://shop_images/gerard-butler-man-brunette-coat-wallpaper-preview.jpg"}},"image-with-text-second":{"type":"image-with-text","settings":{"image_position":"right","heading":"Everyday Essentials","text_content":"<p>Dress shirts, dress pants, and accessories built to complete your look, day in and day out.</p>","button_label":"Shop Shirts","button_aria_label":"Shop Shirts","button_url":"/collections/fashion-shirts","first_desktop_image":"shopify://shop_images/handsome-serious-man-dressed-shirt-posing_171337-10513.avif","first_mobile_image":"shopify://shop_images/handsome-serious-man-dressed-shirt-posing_171337-10513.avif"}},"image-with-text-third":{"type":"image-with-text","settings":{"text_alignment":"center","heading":"For the Modern Gentleman","text_content":"<p>Whether you're dressing for the boardroom or a special occasion, Prestige has the pieces to help you make a lasting impression.</p>","button_label":"Shop All","button_aria_label":"Shop All","button_url":"/collections/all","first_desktop_image":"shopify://shop_images/suit-accessories-guide-men-featured.jpg","first_mobile_image":"shopify://shop_images/suit-accessories-guide-men-featured.jpg"}},"our-team":{"type":"our-team","settings":{}},"video":{"type":"video","settings":{},"disabled":true},"featured-collection":{"type":"featured-collection","settings":{"collection":"suits","heading":"Shop Suits","label":"Timeless Tailoring"}},"banner":{"type":"banner","settings":{},"disabled":true},"gallery":{"type":"gallery","settings":{"offset_top_mobile":25,"offset_bottom_mobile":25}},"benefits":{"type":"benefits","blocks":{"benefits_item-0":{"type":"benefits_item","settings":{"heading":"Free Shipping","text":"On all orders over $100"}},"benefits_item-1":{"type":"benefits_item","settings":{"heading":"Easy Returns","text":"30-day hassle-free returns"}},"benefits_item-2":{"type":"benefits_item","settings":{"heading":"Secure Checkout","text":"Your payment information is always protected"}}},"block_order":["benefits_item-0","benefits_item-1","benefits_item-2"],"settings":{"section_background":"#ffffff","heading_color":"#000000","text_color":"#757575","border_color":"#e6e6e6","show_borders":true,"offset_top_desktop":0,"offset_bottom_desktop":0,"offset_top_mobile":0,"offset_bottom_mobile":0}},"newsletter":{"type":"newsletter","settings":{"layout":"one_column","heading":"Newsletter","subheading":"Stay in the loop","success_message":"Thanks for subscribing","text":"<p>Be the first to know about new collections and exclusive offers</p>","image_position":"left","email_placeholder":"Your email","button_aria_label":"Submit"}},"ticker":{"type":"ticker","settings":{}}},"order":["banner-with-text","text-section","image-with-text-first","image-with-text-second","image-with-text-third","our-team","video","featured-collection","banner","gallery","benefits","newsletter","ticker"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "banner-with-text": {
+      "type": "banner-with-text",
+      "settings": {
+        "label": "Our Story",
+        "heading": "Sharp Tailoring, Modern Craftsmanship",
+        "desktop_image": "shopify://shop_images/HD-wallpaper-well-taylored-man-suit-classy-taylored-gentlemen-black-tie-man-business.jpg",
+        "mobile_image": "shopify://shop_images/HD-wallpaper-well-taylored-man-suit-classy-taylored-gentlemen-black-tie-man-business.jpg"
+      }
+    },
+    "text-section": {
+      "type": "text-section",
+      "settings": {
+        "heading": "Our Philosophy",
+        "subheading": "Why Prestige"
+      }
+    },
+    "image-with-text-first": {
+      "type": "image-with-text",
+      "settings": {
+        "first_desktop_image": "shopify://shop_images/gerard-butler-man-brunette-coat-wallpaper-preview.jpg",
+        "first_mobile_image": "shopify://shop_images/gerard-butler-man-brunette-coat-wallpaper-preview.jpg",
+        "heading": "Timeless Tailoring",
+        "text_content": "<p>From classic suits to modern slim fits, our tailoring is designed to give you a sharp, confident silhouette for any occasion.</p>",
+        "button_label": "Shop Suits",
+        "button_aria_label": "Shop Suits",
+        "button_url": "/collections/suits"
+      }
+    },
+    "image-with-text-second": {
+      "type": "image-with-text",
+      "settings": {
+        "image_position": "right",
+        "first_desktop_image": "shopify://shop_images/handsome-serious-man-dressed-shirt-posing_171337-10513.avif",
+        "first_mobile_image": "shopify://shop_images/handsome-serious-man-dressed-shirt-posing_171337-10513.avif",
+        "heading": "Everyday Essentials",
+        "text_content": "<p>Dress shirts, dress pants, and accessories built to complete your look, day in and day out.</p>",
+        "button_label": "Shop Shirts",
+        "button_aria_label": "Shop Shirts",
+        "button_url": "/collections/fashion-shirts"
+      }
+    },
+    "image-with-text-third": {
+      "type": "image-with-text",
+      "settings": {
+        "text_alignment": "center",
+        "first_desktop_image": "shopify://shop_images/suit-accessories-guide-men-featured.jpg",
+        "first_mobile_image": "shopify://shop_images/suit-accessories-guide-men-featured.jpg",
+        "heading": "For the Modern Gentleman",
+        "text_content": "<p>Whether you're dressing for the boardroom or a special occasion, Prestige has the pieces to help you make a lasting impression.</p>",
+        "button_label": "Shop All",
+        "button_aria_label": "Shop All",
+        "button_url": "/collections/all"
+      }
+    },
+    "our-team": {
+      "type": "our-team",
+      "settings": {}
+    },
+    "video": {
+      "type": "video",
+      "disabled": true,
+      "settings": {}
+    },
+    "featured-collection": {
+      "type": "featured-collection",
+      "settings": {
+        "collection": "suits",
+        "label": "Timeless Tailoring",
+        "heading": "Shop Suits"
+      }
+    },
+    "banner": {
+      "type": "banner",
+      "disabled": true,
+      "settings": {}
+    },
+    "gallery": {
+      "type": "gallery",
+      "settings": {
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "benefits": {
+      "type": "benefits",
+      "blocks": {
+        "benefits_item-0": {
+          "type": "benefits_item",
+          "settings": {
+            "heading": "Free Shipping",
+            "text": "On all orders over $100"
+          }
+        },
+        "benefits_item-1": {
+          "type": "benefits_item",
+          "settings": {
+            "heading": "Easy Returns",
+            "text": "30-day hassle-free returns"
+          }
+        },
+        "benefits_item-2": {
+          "type": "benefits_item",
+          "settings": {
+            "heading": "Secure Checkout",
+            "text": "Your payment information is always protected"
+          }
+        }
+      },
+      "block_order": [
+        "benefits_item-0",
+        "benefits_item-1",
+        "benefits_item-2"
+      ],
+      "settings": {
+        "section_background": "#ffffff",
+        "heading_color": "#000000",
+        "text_color": "#757575",
+        "border_color": "#e6e6e6",
+        "show_borders": true,
+        "offset_top_desktop": 0,
+        "offset_bottom_desktop": 0,
+        "offset_top_mobile": 0,
+        "offset_bottom_mobile": 0
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "layout": "one_column",
+        "heading": "Newsletter",
+        "subheading": "Stay in the loop",
+        "success_message": "Thanks for subscribing",
+        "text": "<p>Be the first to know about new collections and exclusive offers</p>",
+        "image_position": "left",
+        "email_placeholder": "Your email",
+        "button_aria_label": "Submit"
+      }
+    },
+    "ticker": {
+      "type": "ticker",
+      "settings": {}
+    }
+  },
+  "order": [
+    "banner-with-text",
+    "text-section",
+    "image-with-text-first",
+    "image-with-text-second",
+    "image-with-text-third",
+    "our-team",
+    "video",
+    "featured-collection",
+    "banner",
+    "gallery",
+    "benefits",
+    "newsletter",
+    "ticker"
+  ]
+}
