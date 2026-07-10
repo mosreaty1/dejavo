@@ -1,9 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Yuyu+Short&display=swap');
 .cards-grid-new {
 	position: relative;
 	max-width: calc(var(--global-container-width) + 32px);
 	margin: 0 auto;
 	padding: 0 16px;
 	text-align: center;
+}
+.cards-grid-new .cards-grid__subtitle,
+.cards-grid-new .cards-grid__title,
+.cards-grid-new .cards-grid__text {
+	font-family: 'Yuyu Short', cursive;
 }
 .cards-grid-new.cards-grid-new--full-width {
 	max-width: 100%;
