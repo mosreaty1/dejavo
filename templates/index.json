@@ -328,7 +328,7 @@
       "type": "featured-products",
       "name": "Featured products",
       "settings": {
-        "heading": "Shop the Collection",
+        "heading": "",
         "subheading": "A mix of our best across every category",
         "description": "",
         "product_list": [
