@@ -249,6 +249,10 @@
 	border-color: var(--button-border-color, var(--color-text-primary));
 	background-color: transparent;
 	color: var(--button-text-color, var(--color-white));
+	padding: 14px 32px;
+	text-transform: none;
+	letter-spacing: normal;
+	font-weight: 500;
 }
 .slideshow-new .slideshow-new__slide-button .button__text {
 	transition: color var(--timing-short);
