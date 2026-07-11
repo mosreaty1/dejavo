@@ -3,6 +3,13 @@
 .featured-collection-new .h2 {
 	font-family: 'Yuyu Short', cursive;
 }
+.featured-collection-new .button.button--primary {
+	min-width: unset;
+	padding: 12px 28px;
+	text-transform: none;
+	letter-spacing: normal;
+	font-weight: 500;
+}
 .featured-collection-new {
 	opacity: 0;
 }
