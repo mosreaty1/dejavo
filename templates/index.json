@@ -324,38 +324,6 @@
         "offset_bottom_mobile": 0
       }
     },
-    "featured_products_HXwEb7": {
-      "type": "featured-products",
-      "name": "Featured products",
-      "settings": {
-        "heading": "",
-        "subheading": "A mix of our best across every category",
-        "description": "",
-        "product_list": [
-          "v-sv2900-copy",
-          "d-w-sort-jacket-73922r",
-          "m-slimfit-shirt",
-          "mizumi-shirt-j-138-s",
-          "regular-fit-pants-f-on900",
-          "giorgio-venturi-oxford-shoe-6996-copy",
-          "giorgio-venturi-cap-toe-shoe-7033",
-          "3-pc-cufflinks-set-co-copy",
-          "roxoni-leather-belt-copy",
-          "bowtie-set-pmth-copy"
-        ],
-        "layout": "alternative",
-        "enable_cards_indent": false,
-        "link_url": "",
-        "link_text": "",
-        "link_aria_label_text": "",
-        "button_style": "primary",
-        "full_width": true,
-        "offset_top_desktop": 0,
-        "offset_bottom_desktop": 20,
-        "offset_top_mobile": 0,
-        "offset_bottom_mobile": 0
-      }
-    },
     "swipe": {
       "type": "swipe",
       "blocks": {
@@ -1061,7 +1029,6 @@
     "cards_grid",
     "featured_collection",
     "featured_products_cwedwC",
-    "featured_products_HXwEb7",
     "swipe",
     "collection_list",
     "trends_products",
