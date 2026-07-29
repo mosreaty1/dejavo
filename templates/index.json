@@ -210,7 +210,7 @@
         "item_1": {
           "type": "item",
           "settings": {
-            "image": "shopify://shop_images/MJ375S-02d__74683.jpg",
+            "image": "shopify://shop_images/WMIL2833.webp",
             "title": "Sport Jackets",
             "text": "<p>Refined layers for a sharp, elevated look.</p>",
             "link_url": "shopify://collections/sport-jacket"
@@ -219,7 +219,7 @@
         "item_2": {
           "type": "item",
           "settings": {
-            "image": "shopify://shop_images/prestige-category-suits.png",
+            "image": "shopify://shop_images/pexels-ai25studioai-5264947.jpg",
             "title": "Suits",
             "text": "<p>Sharp, tailored suits built for a polished, confident silhouette.</p>",
             "link_url": "shopify://collections/suits"
@@ -228,7 +228,7 @@
         "item_3": {
           "type": "item",
           "settings": {
-            "image": "shopify://shop_images/prestige-category-accessories.png",
+            "image": "shopify://shop_images/istockphoto-1152151580-612x612.jpg",
             "title": "Accessories",
             "text": "<p>Ties, belts, cufflinks, and watches to finish the look.</p>",
             "link_url": "shopify://collections/accessories"
@@ -237,7 +237,7 @@
         "item_4": {
           "type": "item",
           "settings": {
-            "image": "shopify://shop_images/prestige-category-shoes.png",
+            "image": "shopify://shop_images/360_F_145573196_A0NsbT5RGepjU0mbdohn31Lw0nmwUc8V_ca0103a2-0c5c-4cb3-9645-c40cf9a85bca.jpg",
             "title": "Men's Shoes",
             "text": "<p>Polished leather shoes crafted for comfort and a sharp finish.</p>",
             "link_url": "shopify://collections/mens-shoes"
