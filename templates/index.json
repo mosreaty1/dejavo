@@ -204,11 +204,20 @@
         "play_background_hover_color": "#2c2a28"
       }
     },
-    "cards_grid": {
-      "type": "cards-grid",
+    "style_collage": {
+      "type": "style-collage",
       "blocks": {
-        "card_2": {
-          "type": "card",
+        "item_1": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/MJ375S-02d__74683.jpg",
+            "title": "Sport Jackets",
+            "text": "<p>Refined layers for a sharp, elevated look.</p>",
+            "link_url": "shopify://collections/sport-jacket"
+          }
+        },
+        "item_2": {
+          "type": "item",
           "settings": {
             "image": "shopify://shop_images/prestige-category-suits.png",
             "title": "Suits",
@@ -216,8 +225,8 @@
             "link_url": "shopify://collections/suits"
           }
         },
-        "card_3": {
-          "type": "card",
+        "item_3": {
+          "type": "item",
           "settings": {
             "image": "shopify://shop_images/prestige-category-accessories.png",
             "title": "Accessories",
@@ -225,62 +234,28 @@
             "link_url": "shopify://collections/accessories"
           }
         },
-        "card_4": {
-          "type": "card",
+        "item_4": {
+          "type": "item",
           "settings": {
             "image": "shopify://shop_images/prestige-category-shoes.png",
-            "title": "Shoes",
+            "title": "Men's Shoes",
             "text": "<p>Polished leather shoes crafted for comfort and a sharp finish.</p>",
             "link_url": "shopify://collections/mens-shoes"
-          }
-        },
-        "card_5": {
-          "type": "card",
-          "settings": {
-            "image": "shopify://shop_images/prestige-category-shirts.png",
-            "title": "Shirts",
-            "text": "<p>Crisp dress shirts tailored for a sharp, polished look, from classic solids to modern slim fits.</p>",
-            "link_url": "shopify://collections/fashion-shirts"
-          }
-        },
-        "card_6": {
-          "type": "card",
-          "settings": {
-            "image": "shopify://shop_images/prestige-category-pants.png",
-            "title": "Pants",
-            "text": "<p>Tailored dress pants built for comfort and a clean, refined silhouette.</p>",
-            "link_url": "shopify://collections/dress-pants"
-          }
-        },
-        "card_7": {
-          "type": "card",
-          "settings": {
-            "image": "shopify://shop_images/prestige-category-socks.png",
-            "title": "Socks",
-            "text": "<p>Dress socks that complete the look, from classic solids to subtle patterns.</p>",
-            "link_url": "shopify://collections/dress-socks"
           }
         }
       },
       "block_order": [
-        "card_2",
-        "card_3",
-        "card_4",
-        "card_5",
-        "card_6",
-        "card_7"
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
       ],
       "settings": {
-        "subtitle": "Find your style",
-        "title": "Popular styles",
-        "text": "<p>Suits, shirts, shoes, and the essentials to complete your look.</p>",
-        "cards_per_row": "3",
-        "aspect_ratio": "square",
-        "center_cards_on_desktop": false,
-        "full_width": false,
-        "offset_top_desktop": 0,
-        "offset_bottom_desktop": 56,
-        "offset_top_mobile": 0,
+        "label": "",
+        "heading": "",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 60,
+        "offset_top_mobile": 20,
         "offset_bottom_mobile": 40
       }
     },
@@ -1026,7 +1001,7 @@
   },
   "order": [
     "slideshow",
-    "cards_grid",
+    "style_collage",
     "featured_collection",
     "featured_products_cwedwC",
     "swipe",
