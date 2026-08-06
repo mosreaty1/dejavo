@@ -11,7 +11,7 @@
 {%- assign heading = section.settings.heading -%}
 {%- assign layout = section.settings.layout -%}
 {%- assign collection = section.settings.collection -%}
-{%- assign products = collection.products -%}
+{%- assign products = collection.products | where: "available" -%}
 {%- assign link_url = section.settings.link_url -%}
 {%- assign link_text = section.settings.link_text -%}
 {%- assign button_style = section.settings.button_style -%}
