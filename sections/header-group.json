@@ -21,7 +21,8 @@
 				"megamenu_shop"
 			],
 			"settings": {
-				"menu_type_desktop": "both"
+				"menu_type_desktop": "both",
+				"open_menu_type": "hover"
 			}
 		}
 	},
