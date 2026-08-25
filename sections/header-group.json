@@ -8,7 +8,21 @@
 		},
 		"header": {
 			"type": "header",
-			"settings": {}
+			"blocks": {
+				"megamenu_shop": {
+					"type": "megamenu",
+					"settings": {
+						"menu_handle": "shop",
+						"menu_type": "list"
+					}
+				}
+			},
+			"block_order": [
+				"megamenu_shop"
+			],
+			"settings": {
+				"menu_type_desktop": "both"
+			}
 		}
 	},
 	"order": [
