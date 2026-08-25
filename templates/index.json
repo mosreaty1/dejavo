@@ -367,16 +367,28 @@
         "collection_2": {
           "type": "collection",
           "settings": {
-            "collection": "sport-jacket"
+            "collection": "dress-pants"
           }
         },
         "collection_3": {
           "type": "collection",
           "settings": {
-            "collection": "accessories"
+            "collection": "sport-jacket"
           }
         },
         "collection_4": {
+          "type": "collection",
+          "settings": {
+            "collection": "knits-polos"
+          }
+        },
+        "collection_5": {
+          "type": "collection",
+          "settings": {
+            "collection": "accessories"
+          }
+        },
+        "collection_6": {
           "type": "collection",
           "settings": {
             "collection": "mens-shoes"
@@ -387,11 +399,13 @@
         "collection_1",
         "collection_2",
         "collection_3",
-        "collection_4"
+        "collection_4",
+        "collection_5",
+        "collection_6"
       ],
       "settings": {
         "label": "Popular collections",
-        "heading": "Shop by Category",
+        "heading": "Our Collections",
         "link_url": "",
         "link_text": "",
         "link_aria_label_text": "",
