@@ -364,6 +364,22 @@
 						}
 					});
 				});
+
+				if (openMenuType === "hover") {
+					headerMenuTogglers.forEach((toggler) => {
+						const target = document.getElementById(toggler.dataset.target);
+
+						on("mouseenter", toggler, () => {
+							if (window.matchMedia("(hover: none)").matches) {
+								return;
+							}
+
+							if (!isTargetActive(target)) {
+								openToggleTarget(target, false);
+							}
+						});
+					});
+				}
 			}
 
 			if (headerMegaMenuTogglers) {
