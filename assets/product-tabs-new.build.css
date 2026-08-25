@@ -1,4 +1,9 @@
 /* stylelint-disable */
+@import url('https://fonts.googleapis.com/css2?family=Yuyu+Short&display=swap');
+.product-tabs.product-tabs-new .product-tabs__label,
+.product-tabs.product-tabs-new .product-tabs__heading {
+	font-family: 'Yuyu Short', cursive;
+}
 .product-tabs.product-tabs-new.animated .product-tabs__heading.need-animate,
 .product-tabs.product-tabs-new.animated .product-tabs__label.need-animate,
 .product-tabs.product-tabs-new.animated .product-tabs__button-lists__container.need-animate,

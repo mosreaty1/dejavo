@@ -110,7 +110,9 @@
 							<div class="product-tabs-slider swiper {% if product_list.count > 2 or product_list.count < 1 %}js-featured-content-slider{%- endif -%}">
 								<div class="product-tabs__tab-content swiper-wrapper">
 									{%- if product_list.count > 0 -%}
-										{%- for product in product_list limit: limit -%}
+										{%- assign available_product_list = product_list | where: "available" | where: "featured_image" -%}
+
+										{%- for product in available_product_list limit: limit -%}
 											{%- unless forloop.first -%}
 												{%- assign animation_delay_step = animation_delay_step | plus: 0.25 -%}
 											{%- endunless -%}

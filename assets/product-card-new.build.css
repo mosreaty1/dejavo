@@ -138,6 +138,8 @@
 .product-card-new .product-card__label.product-card__label--secondary {
 	background-color: var(--color-background-label-secondary);
 	color: var(--color-label-secondary);
+	padding: 3px 7px;
+	font-size: calc(var(--body-font-size) * 0.5);
 }
 .product-card-new .product-card__label.product-card__label--sale {
 	background-color: var(--color-background-label-sale);

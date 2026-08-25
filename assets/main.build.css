@@ -1384,47 +1384,40 @@ label {
 	display: inline-flex;
 	justify-content: center;
 	align-items: center;
-	width: 166px;
-	height: 166px;
+	width: auto;
+	height: auto;
 	flex-shrink: 0;
-	padding: 16px;
-	border-radius: 100%;
+	padding: 18px 44px;
+	border-radius: 2px;
 	border: 1px solid var(--button-circle-outer-border-color);
 	font-family: var(--heading-font-family);
 	font-size: calc(var(--body-font-size) * 0.875);
 	line-height: 1.5;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
 	font-weight: 500;
 	text-align: center;
 	text-decoration: none;
 	color: var(--button-circle-text-color);
-	transition: color var(--timing-short), border var(--timing-short);
+	transition: color var(--timing-short), border var(--timing-short), background-color var(--timing-short);
 }
 .button-circle:focus-visible {
 	outline: 2px solid var(--button-circle-border-color);
 	outline-offset: 1px;
 }
 .button-circle:after {
-	content: "";
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	width: calc(100% - 32px);
-	height: calc(100% - 32px);
-	border-radius: 100%;
-	border: 1px solid var(--button-circle-border-color);
-	transform: translate(-50%, -50%);
-	transition: border var(--timing-short);
+	display: none;
 }
 .button-circle .button-new__icon-container {
 	position: absolute;
-	top: 50%;
-	left: 50%;
+	inset: 0;
 	overflow: hidden;
-	width: calc(100% - 32px);
-	height: calc(100% - 32px);
+	width: 100%;
+	height: 100%;
 	background-color: var(--button-circle-background-color);
-	border-radius: 100%;
-	transform: translate(-50%, -50%);
+	border-radius: 2px;
+	transform: none;
+	z-index: -1;
 }
 .button-circle .button-new__icon-wrapper {
 	position: relative;
@@ -1456,24 +1449,20 @@ label {
 	.button-circle:hover .icon {
 		top: -20%;
 	}
-	.button-circle:hover:after {
-		border-color: var(--button-circle-border-color-hover);
+	.button-circle:hover .button-new__icon-container {
+		background-color: var(--button-circle-outer-border-color-hover);
 	}
 }
 @media (min-width: 768px) {
 	.button-circle {
-		width: 200px;
-		height: 200px;
-		padding: 20px;
+		width: auto;
+		height: auto;
+		padding: 20px 52px;
 		font-size: var(--body-font-size);
 	}
-	.button-circle:after {
-		width: calc(100% - 40px);
-		height: calc(100% - 40px);
-	}
 	.button-circle .button-new__icon-container {
-		width: calc(100% - 40px);
-		height: calc(100% - 40px);
+		width: 100%;
+		height: 100%;
 	}
 }
 .button-social {

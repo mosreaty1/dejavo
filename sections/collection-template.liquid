@@ -252,21 +252,23 @@
 						{%- endfor -%}
 					{%- else -%}
 						{%- for product in collection.products -%}
-							{% assign is_lazy = true %}
+							{%- if product.available -%}
+								{% assign is_lazy = true %}
 
-							{% if show_img == false and section.index == 1 and forloop.index < 3 %}
-								{% assign is_lazy = false %}
-							{% endif %}
-							{% if show_img == true and image == blank and forloop.index < 3 and section.index == 1 %}
-								{% assign is_lazy = false %}
-							{% endif %}
-							<div class="collection__item">
-								{% if show_grid_selector %}
-									{%- render 'product-card', product: product, size: 650, tablet_size: 500, mobile_size: 208, is_lazy: is_lazy -%}
-								{% else %}
-									{%- render 'product-card', product: product, size: 430, tablet_size: 500, mobile_size: 208, is_lazy: is_lazy -%}
+								{% if show_img == false and section.index == 1 and forloop.index < 3 %}
+									{% assign is_lazy = false %}
 								{% endif %}
-							</div>
+								{% if show_img == true and image == blank and forloop.index < 3 and section.index == 1 %}
+									{% assign is_lazy = false %}
+								{% endif %}
+								<div class="collection__item">
+									{% if show_grid_selector %}
+										{%- render 'product-card', product: product, size: 650, tablet_size: 500, mobile_size: 208, is_lazy: is_lazy -%}
+									{% else %}
+										{%- render 'product-card', product: product, size: 430, tablet_size: 500, mobile_size: 208, is_lazy: is_lazy -%}
+									{% endif %}
+								</div>
+							{%- endif -%}
 						{%- endfor -%}
 					{%- endif -%}
 				</div>

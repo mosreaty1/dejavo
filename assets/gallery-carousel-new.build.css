@@ -56,6 +56,14 @@ html.no-js .gallery-carousel-new .gallery-carousel-new__slider.animated .gallery
 	width: 100%;
 	height: 0;
 	padding-top: 100%;
+	perspective: 1000px;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0);
+	transition: box-shadow 0.4s ease-out;
+}
+@media (-moz-touch-enabled: 0), (hover: hover), (pointer: fine) {
+	.gallery-carousel-new a.gallery-carousel-new__item:hover .gallery-carousel-new__item-image-wrapper {
+		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
+	}
 }
 .gallery-carousel-new .gallery-carousel-new__items-container .gallery-carousel-new__item-image-wrapper.gallery-carousel-new__item-image-wrapper--portrait {
 	padding-top: 135%;
@@ -81,7 +89,7 @@ html.no-js .gallery-carousel-new .gallery-carousel-new__slider.animated .gallery
 }
 @media (-moz-touch-enabled: 0), (hover: hover), (pointer: fine) {
 	.gallery-carousel-new a.gallery-carousel-new__item:hover .gallery-carousel-new__item-image {
-		transform: scale(1.1);
+		transform: scale(1.06) rotateY(-6deg) rotateX(2deg);
 	}
 }
 .gallery-carousel-new .gallery-carousel-new__wrapper-button {

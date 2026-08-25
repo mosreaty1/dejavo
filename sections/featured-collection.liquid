@@ -28,7 +28,7 @@
 {%- assign layout               = section.settings.layout -%}
 {%- assign enable_cards_indent  = section.settings.enable_cards_indent -%}
 {%- assign full_width           = section.settings.full_width -%}
-{%- assign products             = collection.products -%}
+{%- assign products             = collection.products | where: "available" | where: "featured_image" -%}
 
 {% if link_url != blank %}
 	{% assign button_link = link_url  %}
